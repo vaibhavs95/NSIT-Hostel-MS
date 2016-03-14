@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> HOSTEL BASE PAGE </title>
+</head>
+<body>
+    <div>
+        {% if name %}
+        <p>  Welcome Student !!. Your Name is {{ name }}.</p>
+        {% endif %}
+        <a href="{% url 'logout' %}">Logout</a></h1>
+    </div>
+</body>
+</html>

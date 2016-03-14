@@ -1,0 +1,21 @@
+<!doctype html>
+{% load staticfiles %}
+<html>
+    <head>
+        <link rel = "stylesheet" type="text/css" href = "{% static 'base/css/reset.css' %}">
+        <link rel = "stylesheet" type="text/css" href = "{% static 'base/css/form.css' %}">
+    </head>
+    <body>
+        {% if act %}
+            <p> Your account is activated. Login to Procceed. </p>
+        {% endif %}
+        <form action = "{% url 'login' %}" method = 'POST'>
+            {% if next %}
+            <input type="hidden" name='next' value ="{{next}}">
+            {% endif %}
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type ="submit" value ="submit" name = "submit">
+        </form>
+    </body>
+</html>

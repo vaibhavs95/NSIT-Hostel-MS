@@ -1,0 +1,217 @@
+
+<!doctype html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name = "viewport" content = "width=device-width, initial-scale = 1">
+	<title> {% block title %} HMS {% endblock %} </title>
+	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	{% include 'material/includes/material_css.html' %}
+	<link type="text/css" rel="stylesheet" href='{% static "assets/main-page/css/styleHostel.css" %}'/>
+	{% block extrahead %}{% endblock %}
+</head>
+<body>
+	<!-- Header -->
+	<header>
+		<nav class="indigo">
+			<a href="#" data-activates="nav-mobile" class="button-collapse top-nav waves-effect waves-light circle hide-on-large-only"><i class="mdi-navigation-menu"></i></a>
+			<div class="nav-wrapper">
+				<a href="#!" class="brand-logo ">
+					<div id="header-text-nsit" class="brand-logo flow-text left-align">
+						Netaji Subhas Institue of Technology
+					</div>
+					<div id="header-text-hms" class="brand-logo flow-text left-align">
+						Hostel Management System
+					</div>
+				</a>
+			</div>
+			<ul id="nav-mobile" class="side-nav fixed">
+				<li>
+					<a class="logo-side-nav" href="#!"><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'></a>
+				</li>
+				<ul class="collapsible collapsible-accordian">
+				{% if user.is_authenticated %}
+				<li class="login-tton">
+					<a class='collapsible-header' data-activates='dropdown1' href="#!">
+						{{user}}
+						<i class="mdi-navigation-arrow-drop-down"></i>
+					</a>
+					<div class="collapsible-body">
+						<ul>
+							<li><a class="waves-effect" href="{% url 'logout' %}">Logout</a></li>
+							<li><a class="waves-effect" href="#!">Profile</a></li>
+						</ul>
+					</div>
+				</li>
+				{% else %}
+				<li class="login-button">
+					<a class="modal-trigger waves-effect waves-light btn" href="#login-modal">
+						Login
+					</a>
+				</li>
+				{% endif %}
+					<li>
+						<a class="collapsible-header">BH1<i class="mdi-navigation-arrow-drop-down"></i></a>
+						<div class="collapsible-body">
+							<ul>
+								<li><a class="waves-effect" href="#!">Facilities</a></li>
+								<li><a class="waves-effect" href="#!">Basic Info.</a></li>
+								<li><a class="waves-effect" href="#!">Forms</a></li>
+								<li><a class="waves-effect" href="#!">Mess</a></li>
+							</ul>
+						</div>
+					</li>
+					<li>
+						<a class="collapsible-header">BH2<i class="mdi-navigation-arrow-drop-down"></i></a>
+						<div class="collapsible-body">
+							<ul>
+								<li><a class="waves-effect" href="#!">Facilities</a></li>
+								<li><a class="waves-effect" href="#!">Basic Info.</a></li>
+								<li><a class="waves-effect" href="#!">Forms</a></li>
+								<li><a class="waves-effect" href="#!">Mess</a></li>
+							</ul>
+						</div>
+					</li>
+					<li>
+						<a class="collapsible-header">BH3warden<i class="mdi-navigation-arrow-drop-down"></i></a>
+						<div class="collapsible-body">
+							<ul>
+								<li><a class="waves-effect" href="#!">Facilities</a></li>
+								<li><a class="waves-effect" href="#!">Basic Info.</a></li>
+								<li><a class="waves-effect" href="#!">Forms</a></li>
+								<li><a class="waves-effect" href="#!">Mess</a></li>
+							</ul>
+						</div>
+					</li>
+					<li>
+						<a class="collapsible-header">BH4<i class="mdi-navigation-arrow-drop-down"></i></a>
+						<div class="collapsible-body">
+							<ul>
+								<li><a class="waves-effect" href="#!">Facilities</a></li>
+								<li><a class="waves-effect" href="#!">Basic Info.</a></li>
+								<li><a class="waves-effect" href="#!">Forms</a></li>
+								<li><a class="waves-effect" href="#!">Mess</a></li>
+							</ul>
+						</div>
+					</li>
+					<li>
+						<a class="collapsible-header">GH1<i class="mdi-navigation-arrow-drop-down"></i></a>
+						<div class="collapsible-body">
+							<ul>
+								<li><a class="waves-effect" href="#!">Facilities</a></li>
+								<li><a class="waves-effect" href="#!">Basic Info.</a></li>
+								<li><a class="waves-effect" href="#!">Forms</a></li>
+								<li><a class="waves-effect" href="#!">Mess</a></li>
+							</ul>
+						</div>
+					</li>
+					<li>
+						<a class="collapsible-header">GH2<i class="mdi-navigation-arrow-drop-down"></i></a>
+						<div class="collapsible-body">
+							<ul>
+								<li><a class="waves-effect" href="#!">Facilities</a></li>
+								<li><a class="waves-effect" href="#!">Basic Info.</a></li>
+								<li><a class="waves-effect" href="#!">Forms</a></li>
+								<li><a class="waves-effect" href="#!">Mess</a></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</ul>    
+		</nav>
+	</header>
+
+	<!-- main center content -->
+	<main>
+		<div class="container">
+                {% block content %}
+                {% endblock %}
+        </div>
+	</main>
+
+	<!-- Footer --> 
+	<footer id="footr" class="page-footer grey darken-4">
+		<div class="container footer">
+			<a class="grey-text text-lighten-3" href="#!">About</a>
+			<a class="grey-text text-lighten-3" href="#!">Contact Us</a>
+			<a class="grey-text text-lighten-3" href="#!">Locate Us</a>
+			<a class="grey-text text-lighten-3" href="#!">Feedback</a>
+			<a class="grey-text text-lighten-3" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
+		</div>
+	</footer>    
+
+	<!-- Modals -->
+	<!--login-->
+
+	<!--<div id="login-modal" class="modal">
+		<div class="modal-content">
+			<h4>Log In</h4>
+			<hr>
+			<div class="row">
+				<div class="input-field col s12">
+					<input id="username" type="text" class="validate">
+					<label for="username">Username/Roll No.</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s12">
+					<input id="password" type="password" class="validate">
+					<label for="password">Password</label>
+				</div>
+			</div>
+			<div class="row">
+				<span class="col s6">
+					<input type="checkbox" id="remember-me" checked="checked" />
+					<label for="remember-me">Remember Me</label>
+				</span>
+				<span id="forgot-button" data-target="forgot-password"class="modal-trigger col s6 waves-effect wave-teal btn-flat align-centre">Forgot Password</span>
+			</div>
+			<button class="btn waves-effect waves-light" type="submit" name="action">Log In</button>
+		</div>
+		<div class="modal-footer">
+			<a href="#!" class="modal-action modal-close waves-effect btn-flat ">Cancel</a>
+		</div>
+	</div>-->
+
+	<!-- forgot password -->
+
+	<!--<div id="forgot-password" class="modal">
+		<div class="modal-content">
+			<h4> Forgot Password</h4>
+			<hr>
+			<div class="row">
+				<div class="input-field col s12">
+					<input id="username" type="text" class="validate">
+					<label for="username">Username/Roll No.</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s12">
+					<input type="date" class="datepicker">
+					<label for="password">Date of Birth</label>
+				</div>
+			</div>
+			<div class="row">
+				<button class="btn waves-effect waves-light" type="submit" name="action">Reset Password</button>
+				<button id="flogin-button" class="btn waves-effect waves-light" type="submit" name="action">Log In</button>
+			</div>
+			<div class="modal-footer">
+				<a href="#!" class="modal-action modal-close waves-effect btn-flat ">Cancel</a>
+			</div>
+		</div>-->
+
+
+		<!--Scripts -->
+
+		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+		{% include 'material/includes/material_js.html' %}
+		<script type="text/javascript" src='{% static "assets/main-page/js/script.js" %}'></script>
+		<script type="text/javascript">
+			$( window ).load(function() {
+				main();
+			});
+		</script>
+	</body>
+	</html>

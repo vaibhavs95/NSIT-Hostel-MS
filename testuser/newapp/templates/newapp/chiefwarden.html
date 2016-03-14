@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> HOSTEL BASE PAGE </title>
+</head>
+<body>
+    <div>
+            {% if name %}
+            <p>  Hello Chief Warden - {{ name }}. Create a Hostel by assigning username and password to hostel's warden</p>
+            {% endif %}
+        <form action = "{% url 'warden' %}" method = 'POST' class="form">
+            {% csrf_token %}
+            {{ form }}
+            <!--<p>Username : </p>
+            <input type="text" name="userid"><br>
+            <p>Password : </p>
+            <input type="password" name="password">-->
+            <input type="submit" value="Create Hostel">
+        </form>
+        {% if userid %}
+        <p>  Congratulations !! New Hostel with username {{ userid }} is created.</p>
+        {% endif %}
+        {% if useridfail %}
+        <p>  Sorry !! New Hostel with username {{ useridfail }} cannot be created as it already exists.</p>
+        {% endif %}
+        <a href="{% url 'logout' %}">Logout</a></h1>
+
+    </div>
+</body>
+</html>

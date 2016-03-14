@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+ <html>
+ <head>
+ 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    {% include 'material/includes/material_css.html' %}   
+ 	<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+ 	<link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/styleHostel.css' %}"/>
+ 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+ </head>
+
+ <body>
+ 	<!-- Header -->
+ 	
+ 	<header>
+ 		<nav class="indigo">
+ 			<div class="nav-wrapper">
+ 				<a href="#!" class="brand-logo "><img id="logo1" src= "{% static 'assets/main-page/media/images/logo.png' %}">
+ 					<div id="header-text-nsit" class="brand-logo flow-text left-align">
+						Netaji Subhas Institue of Technology
+ 					</div>
+ 					<div id="header-text-hms" class="brand-logo flow-text left-align">
+						Hostel Management System
+					</div>
+ 				</a>
+ 				<a href="#!" data-activates="mobile-demo" class="button-collapse"><i class="material-icons mdi-navigation-menu"></i></a>
+ 				<ul class="right hide-on-med-and-down">
+ 					<li>
+						<a id="login-button" class="modal-trigger waves-effect waves-light btn login-button" href="#login-modal">Login</a>
+					</li>
+ 				</ul>	
+ 			</div>
+ 		</nav>
+ 	</header>
+	
+		<ul id="nav-mobile" class="side-nav fixed">
+          <li id="lback"><a class="logo-side-nav" href="#!"><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'></a></li>
+		  <br>
+          <ul class="collapsible collapsible-accordion">
+            {% for hos in all_hostels %}			
+				{% if hos.id == target_hostel.username %}
+					<li>
+					  <a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
+					  <div class="collapsible-body">
+						<ul id="colBod">
+						  <li><a class="waves-effect" href="#facilities">Facilities</a></li>
+						  <li><a class="waves-effect" href="#basicInfo">Basic Info.</a></li>
+						  <li><a class="waves-effect" href="#!">Forms</a></li>
+						  <li><a class="waves-effect" href="#messs">Mess</a></li>
+						</ul>
+					  </div>
+					</li>
+				{% else %}
+					<li>
+					  <a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
+					  <div class="collapsible-body">
+						<ul id="colBod">
+							{% url 'hostel' hos.id as the_url %}
+						  <li><a class="waves-effect" href={{ the_url }}>Facilities</a></li>
+						  <li><a class="waves-effect" href={{ the_url }}>Basic Info.</a></li>
+						  <li><a class="waves-effect" href={{ the_url }}>Forms</a></li>
+						  <li><a class="waves-effect" href={{ the_url }}>Mess</a></li>
+						</ul>
+					  </div>
+					</li>
+				{% endif  %}
+			{% endfor %}
+            
+          </ul>
+        </ul>
+	<!-- for mobile version -->
+	<ul class="side-nav" id="mobile-demo">
+		<li><a class="login-button" href="#!">Home</a></li>
+		<li><a class="modal-trigger waves-effect waves-light btn login-button" href="#login-modal">Login</a></li>
+		<ul class="collapsible collapsible-accordion">
+			<li>
+				<a class="collapsible-header waves-effect btn">BH1<i class="mdi-navigation-arrow-drop-down"></i></a>
+				<div class="collapsible-body">
+				<ul>
+					<li><a class="waves-effect" href="bh1_facilities.html">Facilities</a></li>
+					<li><a class="waves-effect" href="basicInfo.html">Basic Info.</a></li>
+					<li><a class="waves-effect" href="forms.html">Forms</a></li>
+					<li><a class="waves-effect" href="mess.html">Mess</a></li>
+					<li><a class="waves-effect" href="announcements.html">Announcements</a></li>
+				</ul>
+				</div>
+			</li>
+			<li>
+				<a class="collapsible-header waves-effect btn">BH2<i class="mdi-navigation-arrow-drop-down"></i></a>
+				<div class="collapsible-body">
+				<ul>
+					<li><a class="waves-effect" href="bh1_facilities.html">Facilities</a></li>
+					<li><a class="waves-effect" href="basicInfo.html">Basic Info.</a></li>
+					<li><a class="waves-effect" href="forms.html">Forms</a></li>
+					<li><a class="waves-effect" href="mess.html">Mess</a></li>
+					<li><a class="waves-effect" href="announcements.html">Announcements</a></li>
+				</ul>
+				</div>
+			</li>
+			<li>
+				<a class="collapsible-header waves-effect btn">BH3<i class="mdi-navigation-arrow-drop-down"></i></a>
+				<div class="collapsible-body">
+				<ul>
+					<li><a class="waves-effect" href="bh1_facilities.html">Facilities</a></li>
+					<li><a class="waves-effect" href="basicInfo.html">Basic Info.</a></li>
+					<li><a class="waves-effect" href="forms.html">Forms</a></li>
+					<li><a class="waves-effect" href="mess.html">Mess</a></li>
+					<li><a class="waves-effect" href="announcements.html">Announcements</a></li>
+				</ul>
+				</div>
+			</li>
+			<li>
+				<a class="collapsible-header waves-effect btn">BH4<i class="mdi-navigation-arrow-drop-down"></i></a>
+				<div class="collapsible-body">
+				<ul>
+					<li><a class="waves-effect" href="bh1_facilities.html">Facilities</a></li>
+					<li><a class="waves-effect" href="basicInfo.html">Basic Info.</a></li>
+					<li><a class="waves-effect" href="forms.html">Forms</a></li>
+					<li><a class="waves-effect" href="mess.html">Mess</a></li>
+					<li><a class="waves-effect" href="announcements.html">Announcements</a></li>
+				</ul>
+				</div>
+			</li>
+			<li>
+				<a class="collapsible-header waves-effect btn">GH1<i class="mdi-navigation-arrow-drop-down"></i></a>
+				<div class="collapsible-body">
+				<ul>
+					<li><a class="waves-effect" href="bh1_facilities.html">Facilities</a></li>
+					<li><a class="waves-effect" href="basicInfo.html">Basic Info.</a></li>
+					<li><a class="waves-effect" href="forms.html">Forms</a></li>
+					<li><a class="waves-effect" href="mess.html">Mess</a></li>
+					<li><a class="waves-effect" href="announcements.html">Announcements</a></li>
+				</ul>
+				</div>
+			</li>
+			<li>
+				<a class="collapsible-header waves-effect btn">GH2<i class="mdi-navigation-arrow-drop-down"></i></a>
+				<div class="collapsible-body">
+				<ul>
+					<li><a class="waves-effect" href="bh1_facilities.html">Facilities</a></li>
+					<li><a class="waves-effect" href="basicInfo.html">Basic Info.</a></li>
+					<li><a class="waves-effect" href="forms.html">Forms</a></li>
+					<li><a class="waves-effect" href="mess.html">Mess</a></li>
+					<li><a class="waves-effect" href="announcements.html">Announcements</a></li>
+				</ul>
+				</div>
+			</li>
+		</ul>
+	</ul>
+	
+	
+	
+		<!-- main center content -->
+		<main id="facilities">
+			<h3 class="center">
+				Facilities
+			</h3>
+			<ul id="listFac">
+				<li>
+			      <div>
+					<h5 class="center">
+						Facility no. 1
+					</h5>
+				  </div>
+			      <div id="facContent">			
+					<p id="facText" class="left">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at magna eget nisi rutrum ultrices. Duis sagittis mauris enim, quis placerat lectus hendrerit in. Maecenas consequat convallis lorem et condimentum. Suspendisse laoreet odio id purus tempus, at facilisis leo molestie. Phasellus eu sapien rutrum, rhoncus ligula id, elementum justo. Maecenas dolor ligula, suscipit sit amet velit ut, rutrum euismod enim. Sed venenatis dolor sed sollicitudin placerat. Donec efficitur augue vel risus semper, ac efficitur elit sollicitudin.
+					</p>
+					<div>
+						<img id="facPic" src="assets/main-page/media/images/logo.png">				
+					</div>					
+				  </div>
+				  
+			    </li>
+				<li>
+					<div>
+						<h5 class="center">
+							Facility no. 2
+						</h5>
+					</div>
+					<div id="facContent">			
+						<p id="facText" class="left">
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at magna eget nisi rutrum ultrices. Duis sagittis mauris enim, quis placerat lectus hendrerit in. Maecenas consequat convallis lorem et condimentum. Suspendisse laoreet odio id purus tempus, at facilisis leo molestie. Phasellus eu sapien rutrum, rhoncus ligula id, elementum justo. Maecenas dolor ligula, suscipit sit amet velit ut, rutrum euismod enim. Sed venenatis dolor sed sollicitudin placerat. Donec efficitur augue vel risus semper, ac efficitur elit sollicitudin.
+						</p>
+						<div>
+							<img id="facPic" src="assets/main-page/media/images/logo.png">				
+						</div>					
+					</div>
+			    </li>
+				<li>
+			      <div>
+					<h5 class="center">
+						Facility no. 3
+					</h5>
+				  </div>
+			      <div id="facContent">			
+					<p id="facText" class="left">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at magna eget nisi rutrum ultrices. Duis sagittis mauris enim, quis placerat lectus hendrerit in. Maecenas consequat convallis lorem et condimentum. Suspendisse laoreet odio id purus tempus, at facilisis leo molestie. Phasellus eu sapien rutrum, rhoncus ligula id, elementum justo. Maecenas dolor ligula, suscipit sit amet velit ut, rutrum euismod enim. Sed venenatis dolor sed sollicitudin placerat. Donec efficitur augue vel risus semper, ac efficitur elit sollicitudin.
+					</p>
+					<div>
+						<img id="facPic" src="assets/main-page/media/images/logo.png">				
+					</div>					
+				  </div>
+			    </li>
+				<li>
+			      <div>
+					<h5 class="center">
+						Facility no. 4
+					</h5>
+				  </div>
+			      <div id="facContent">			
+					<p id="facText" class="left">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at magna eget nisi rutrum ultrices. Duis sagittis mauris enim, quis placerat lectus hendrerit in. Maecenas consequat convallis lorem et condimentum. Suspendisse laoreet odio id purus tempus, at facilisis leo molestie. Phasellus eu sapien rutrum, rhoncus ligula id, elementum justo. Maecenas dolor ligula, suscipit sit amet velit ut, rutrum euismod enim. Sed venenatis dolor sed sollicitudin placerat. Donec efficitur augue vel risus semper, ac efficitur elit sollicitudin.
+					</p>
+					<div>
+						<img id="facPic" src="assets/main-page/media/images/logo.png">				
+					</div>					
+				  </div>
+			    </li>
+				<li>
+			      <div>
+					<h5 class="center">
+						Facility no. 5
+					</h5>
+				  </div>
+			      <div id="facContent">			
+					<p id="facText" class="left">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at magna eget nisi rutrum ultrices. Duis sagittis mauris enim, quis placerat lectus hendrerit in. Maecenas consequat convallis lorem et condimentum. Suspendisse laoreet odio id purus tempus, at facilisis leo molestie. Phasellus eu sapien rutrum, rhoncus ligula id, elementum justo. Maecenas dolor ligula, suscipit sit amet velit ut, rutrum euismod enim. Sed venenatis dolor sed sollicitudin placerat. Donec efficitur augue vel risus semper, ac efficitur elit sollicitudin.
+					</p>
+					<div>
+						<img id="facPic" src="assets/main-page/media/images/logo.png">				
+					</div>					
+				  </div>
+			    </li>
+				<li id="listFac">
+			      <div>
+					<h5 class="center">
+						Facility no. 6
+					</h5>
+				  </div>
+			     			
+					<p id="facText" class="left">
+						6 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at magna eget nisi rutrum ultrices. Duis sagittis mauris enim, quis placerat lectus hendrerit in. Maecenas consequat convallis lorem et condimentum. Suspendisse laoreet odio id purus tempus, at facilisis leo molestie. Phasellus eu sapien rutrum, rhoncus ligula id, elementum justo. Maecenas dolor ligula, suscipit sit amet velit ut, rutrum euismod enim. Sed venenatis dolor sed sollicitudin placerat. Donec efficitur augue vel risus semper, ac efficitur elit sollicitudin.
+					</p>
+					<div>
+						<img id="facPic" src="assets/main-page/media/images/logo.png">				
+					</div>					
+			    </li>
+			</ul>
+			<hr>
+		</main>
+		
+		<main id="basicInfo">
+			<h3 class="center">
+				Basic Information
+			</h3>
+			<ul id="listFac">
+				<li>
+					<div>
+						<h5 class="center">
+							Warden
+						</h5>
+					</div>
+					<div id="facContent">
+						<p id="facText" class="left">
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							<br>Contact : 9876543210
+                            email : xyz@abc.com
+						</p>
+						<div>
+							<img id="facPic" src="assets/main-page/media/images/logo.png">				
+						</div>
+					</div>
+				</li>
+				<li>
+					<div>
+						<h5 class="center">
+							Caretaker1
+						</h5>
+					</div>
+					<div id="facContent">
+						<p id="facText" class="left">
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							<br>Contact : 9876543210
+                            email : xyz@abc.com
+						</p>
+						<div>
+							<img id="facPic" src="assets/main-page/media/images/logo.png">				
+						</div>
+					</div>
+				</li>
+				<li>
+					<div>
+						<h5 class="center">
+							Caretaker2
+						</h5>
+					</div>
+					<div id="facContent">
+						<p id="facText" class="left">
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							<br>Contact : 9876543210
+                            email : xyz@abc.com
+						</p>
+						<div>
+							<img id="facPic" src="assets/main-page/media/images/logo.png">				
+						</div>
+					</div>
+				</li>
+				<li>
+					<div>
+						<h5 class="center">
+							Caretaker3
+						</h5>
+					</div>
+					<div id="facContent">
+						<p id="facText" class="left">
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							<br>Contact : 9876543210
+                            email : xyz@abc.com
+						</p>
+						<div>
+							<img id="facPic" src="assets/main-page/media/images/logo.png">				
+						</div>
+					</div>
+				</li>
+				<li>
+					<div>
+						<h5 class="center">
+							Caretaker4
+						</h5>
+					</div>
+					<div id="facContent">
+						<p id="facText" class="left">
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							<br>Contact : 9876543210
+                            email : xyz@abc.com
+						</p>
+						<div>
+							<img id="facPic" src="assets/main-page/media/images/logo.png">				
+						</div>
+					</div>
+				</li>
+				<hr>
+			</ul>
+		</main>
+		<main id="messs">
+			<h3 class="center">
+				Mess Information
+			</h3>
+			<h5 class="center">
+                Mess timings :<br>
+            </h5>
+            <ul>
+                <li>
+                    <p class="center">
+                        <u>Weekdays</u><br>
+                        Breakfast : 8:00 AM to 9:30 AM<br>
+                        Lunch     : 12:30 PM to 2:00 PM<br>
+                        Snacks    : 5 PM to 6 PM<br>
+                        Dinner    : 8:30 PM to 10:00 PM<br>
+                    </p>
+                </li>
+                <li>
+                    <p class="center">
+                        <u>Weekends</u><br>
+                        Breakfast : 9:00 AM to 10:00 AM<br>
+                        Lunch     : 1:00 PM to 2:00 PM<br>
+                        Snacks    : 5 PM to 6 PM<br>
+                        Dinner    : 8:30 PM to 10:00 PM<br>
+                    </p>
+                </li>
+				<li class="center">
+					<a href="#!" id="messmenu">Mess Menu</a>
+					<br><br><br><br><br><br><br>
+				</li>
+            </ul>
+            
+		</main>		
+				
+				
+				
+				
+ 		<!-- Footer --> 
+
+ 		<footer id="footr" class="page-footer grey darken-4">
+ 			<div class="container footer">
+ 				<a class="grey-text text-lighten-3" href="#!">About</a>
+ 				<a class="grey-text text-lighten-3" href="#!">Contact Us</a>
+ 				<a class="grey-text text-lighten-3" href="#!">Locate Us</a>
+ 				<a class="grey-text text-lighten-3" href="#!">Feedback</a>
+ 				<a class="grey-text text-lighten-3" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
+ 			</div>
+ 		</footer>
+		
+<!--  
+ Modal Structure for hostel options
+			  <div id="bhostel1" class="modal bottom-sheet">
+				<div class="modal-content">
+					<h4 id="headList" class="center"><span class="red-text text-darken-2">Bh1</span></h4>
+					<ul>
+						<li><a class="waves-effect btn center modal-action modal-close" id="leftMenuContents2" href="#facilities"><span class="#ffffff white-text">Facilities</span></a></li>
+						<li><a class="waves-effect btn center modal-action modal-close" id="leftMenuContents2" href="#basicInfo"><span class="#ffffff white-text">Basic Information</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="forms.html"><span class="#ffffff white-text">Forms</span></a></li>
+						<li><a class="waves-effect btn center modal-action modal-close" id="leftMenuContents2" href="#messs"><span class="#ffffff white-text">Mess</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="announcements.html"><span class="#ffffff white-text">Announcements</span></a></li>
+					</ul>
+				</div>
+			  </div>
+			  <div id="bhostel2" class="modal bottom-sheet">
+				<div class="modal-content">
+					<h4 id="headList" class="center"><span class="red-text text-darken-2">Bh2</span></h4>
+					<ul>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="bh1_facilities.html"><span class="#ffffff white-text">Facilities</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="basicInfo.html"><span class="#ffffff white-text">Basic Information</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="forms.html"><span class="#ffffff white-text">Forms</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="mess.html"><span class="#ffffff white-text">Mess</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="announcements.html"><span class="#ffffff white-text">Announcements</span></a></li>
+					</ul>
+				</div>
+			  </div>
+			  <div id="bhostel3" class="modal bottom-sheet">
+				<div class="modal-content">
+					<h4 id="headList" class="center"><span class="red-text text-darken-2">Bh3</span></h4>
+					<ul>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="bh1_facilities.html"><span class="#ffffff white-text">Facilities</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="basicInfo.html"><span class="#ffffff white-text">Basic Information</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="forms.html"><span class="#ffffff white-text">Forms</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="mess.html"><span class="#ffffff white-text">Mess</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="announcements.html"><span class="#ffffff white-text">Announcements</span></a></li>
+					</ul>
+				</div>
+			  </div>
+			  <div id="bhostel4" class="modal bottom-sheet">
+				<div class="modal-content">
+					<h4 id="headList" class="center"><span class="red-text text-darken-2">Bh4</span></h4>
+					<ul>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="bh1_facilities.html"><span class="#ffffff white-text">Facilities</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="basicInfo.html"><span class="#ffffff white-text">Basic Information</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="forms.html"><span class="#ffffff white-text">Forms</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="mess.html"><span class="#ffffff white-text">Mess</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="announcements.html"><span class="#ffffff white-text">Announcements</span></a></li>
+					</ul>
+				</div>
+			  </div>
+			  <div id="ghostel1" class="modal bottom-sheet">
+				<div class="modal-content">
+					<h4 id="headList" class="center"><span class="red-text text-darken-2">gh1</span></h4>
+					<ul>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="bh1_facilities.html"><span class="#ffffff white-text">Facilities</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="basicInfo.html"><span class="#ffffff white-text">Basic Information</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="forms.html"><span class="#ffffff white-text">Forms</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="mess.html"><span class="#ffffff white-text">Mess</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="announcements.html"><span class="#ffffff white-text">Announcements</span></a></li>
+					</ul>
+				</div>
+			  </div>
+			  <div id="ghostel2" class="modal bottom-sheet">
+				<div class="modal-content">
+					<h4 id="headList" class="center"><span class="red-text text-darken-2">Gh2</span></h4>
+					<ul>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="bh1_facilities.html"><span class="#ffffff white-text">Facilities</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="basicInfo.html"><span class="#ffffff white-text">Basic Information</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="forms.html"><span class="#ffffff white-text">Forms</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="mess.html"><span class="#ffffff white-text">Mess</span></a></li>
+						<li><a class="waves-effect btn center" id="leftMenuContents2" href="announcements.html"><span class="#ffffff white-text">Announcements</span></a></li>
+					</ul>
+				</div>
+			  </div>  
+		
+	-->	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+ 		<!-- Modals -->
+
+ 		<!--login-->
+ 		<div id="login-modal" class="modal">
+ 			<div class="modal-content">
+ 				<h4>Log In</h4>
+ 				<hr>
+ 				<div class="row">
+ 					<div class="input-field col s12">
+ 						<input id="username" type="text" class="validate">
+ 						<label for="username">Username/Roll No.</label>
+ 					</div>
+ 				</div>
+ 				<div class="row">
+ 					<div class="input-field col s12">
+ 						<input id="password" type="password" class="validate">
+ 						<label for="password">Password</label>
+ 					</div>
+ 				</div>
+ 				<div class="row">
+ 					<span class="col s12">
+ 						<input type="checkbox" id="remember-me" checked="checked" />
+ 						<label for="remember-me">Remember Me</label>
+ 					</span>
+					<br>
+ 					<span id="forgot-button" data-target="forgot-password"class="modal-trigger col s12 waves-effect wave-teal btn-flat align-centre">Forgot Password</span>
+ 				</div>
+ 				<button class="btn waves-effect waves-light" type="submit" name="action">Log In</button>
+ 			</div>
+ 			<div class="modal-footer">
+ 				<a href="#!" class="modal-action modal-close waves-effect btn-flat ">Cancel</a>
+ 			</div>
+ 		</div>
+
+ 		<!-- forgot password -->
+
+ 		<div id="forgot-password" class="modal">
+ 			<div class="modal-content">
+ 				<h4> Forgot Password</h4>
+ 				<hr>
+ 				<div class="row">
+ 					<div class="input-field col s12">
+ 						<input id="username" type="text" class="validate">
+ 						<label for="username">Username/Roll No.</label>
+ 					</div>
+ 				</div>
+ 				<div class="row">
+ 					<div class="input-field col s12">
+ 						<input type="date" class="datepicker">
+ 						<label for="password">Date of Birth</label>
+ 					</div>
+ 				</div>
+ 				<div class="row">
+ 					<button class="btn waves-effect waves-light col s6 offset-s3" type="submit" name="action">Reset Password</button><br>
+ 				</div>
+ 				<div class="modal-footer">
+ 					<a href="#!" class="modal-action modal-close waves-effect btn-flat ">Cancel</a>
+ 				</div>
+ 			</div>
+			
+
+ 			<!--Scripts -->
+
+ 			<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+			{% include 'material/includes/material_js.html' %}
+ 			<script type="text/javascript" src="{% static 'assets/main-page/js/script.js' %}"></script>
+ 			<script type="text/javascript">
+ 				$( window ).load(function() {
+ 					main();
+ 				});
+ 			</script>
+ 		</body>
+ 		</html>
