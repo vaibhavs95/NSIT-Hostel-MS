@@ -3,5 +3,5 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^$',views.createWarden, name='chiefwarden-home'),
+    url(r'^$',views.home, name='student-home'),
 ]

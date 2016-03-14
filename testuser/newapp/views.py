@@ -37,15 +37,15 @@ def handleLogin(request):
         if re.match("chief[a-zA-Z0-9_]*",str(user))!=None:
             a = ChiefWarden.objects.get(username = user)
             data = {'next' : nexturl, 'name': a.name}
-            return redirect('warden')
+            return redirect('chiefwarden-home')
         elif re.match("[a-zA-Z0-9_]*warden",str(user))!=None:
             a = Hostels.objects.get(username = user)
             data = {'next' : nexturl, 'name': a.username}
-            return redirect('warden')
+            return redirect('warden-home')
         elif re.match("[0-9]*-[a-zA-Z0-9]*",str(user))!=None:
             a = Students.objects.get(username = user)
             data = {'next' : nexturl, 'name': a.name}
-            return render(request, 'newapp/student/home.html', data)
+            return redirect('student-home')
         else:
             return redirect('logout')
     else:

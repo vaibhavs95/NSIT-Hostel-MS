@@ -39,7 +39,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'newapp',
     'material',
-    'materialize_forms',
     'chief',
     'student',
     'warden',
@@ -86,7 +85,7 @@ DATABASES = {
         'NAME': 'testuser',
         'USER' : 'root',
         'HOST' : 'localhost', 
-        'PASSWORD' : 'howareyou',
+        'PASSWORD' : 'cyclekapedal',
         'PORT' : 3306
     }
 }

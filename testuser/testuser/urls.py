@@ -21,5 +21,7 @@ urlpatterns = [
     url(r'^$', 'newapp.views.base', name='base'),
     url(r'^newapp/',include('newapp.urls')),
     url(r'^chiefwarden/',include('chief.urls')),
+    url(r'^warden/',include('warden.urls')),
+    url(r'^student/',include('student.urls')),
     url(r'^admin/', include(admin.site.urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
