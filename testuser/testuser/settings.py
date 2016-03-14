@@ -40,6 +40,9 @@ INSTALLED_APPS = (
     'newapp',
     'material',
     'materialize_forms',
+    'chief',
+    'student',
+    'warden',
 )
 
 MIDDLEWARE_CLASSES = (

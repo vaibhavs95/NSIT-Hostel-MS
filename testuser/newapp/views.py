@@ -56,7 +56,13 @@ def handleLogin(request):
 @require_GET    
 @login_required
 def home(request):
-	return render(request, 'newapp/home.html')
+    a=Hostels.objects.all();
+    b=[]
+    for i in a:
+        d={'name':i.hostel_name,'id':i.username}
+        b.append(d)
+    data = {'all_hostels': b}
+    return render(request, 'newapp/home.html',data)
 
 @require_GET
 def logoutview(request):

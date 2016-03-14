@@ -52,72 +52,20 @@
 					</a>
 				</li>
 				{% endif %}
+				{% for hos in all_hostels %}			
 					<li>
-						<a class="collapsible-header">BH1<i class="mdi-navigation-arrow-drop-down"></i></a>
-						<div class="collapsible-body">
-							<ul>
-								<li><a class="waves-effect" href="#!">Facilities</a></li>
-								<li><a class="waves-effect" href="#!">Basic Info.</a></li>
-								<li><a class="waves-effect" href="#!">Forms</a></li>
-								<li><a class="waves-effect" href="#!">Mess</a></li>
-							</ul>
-						</div>
+					  <a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
+					  <div class="collapsible-body">
+						<ul id="colBod">
+							{% url 'hostel' hos.id as the_url %}
+						  <li><a class="waves-effect" href={{ the_url }}>Facilities</a></li>
+						  <li><a class="waves-effect" href={{ the_url }}>Basic Info.</a></li>
+						  <li><a class="waves-effect" href={{ the_url }}>Forms</a></li>
+						  <li><a class="waves-effect" href={{ the_url }}>Mess</a></li>
+						</ul>
+					  </div>
 					</li>
-					<li>
-						<a class="collapsible-header">BH2<i class="mdi-navigation-arrow-drop-down"></i></a>
-						<div class="collapsible-body">
-							<ul>
-								<li><a class="waves-effect" href="#!">Facilities</a></li>
-								<li><a class="waves-effect" href="#!">Basic Info.</a></li>
-								<li><a class="waves-effect" href="#!">Forms</a></li>
-								<li><a class="waves-effect" href="#!">Mess</a></li>
-							</ul>
-						</div>
-					</li>
-					<li>
-						<a class="collapsible-header">BH3warden<i class="mdi-navigation-arrow-drop-down"></i></a>
-						<div class="collapsible-body">
-							<ul>
-								<li><a class="waves-effect" href="#!">Facilities</a></li>
-								<li><a class="waves-effect" href="#!">Basic Info.</a></li>
-								<li><a class="waves-effect" href="#!">Forms</a></li>
-								<li><a class="waves-effect" href="#!">Mess</a></li>
-							</ul>
-						</div>
-					</li>
-					<li>
-						<a class="collapsible-header">BH4<i class="mdi-navigation-arrow-drop-down"></i></a>
-						<div class="collapsible-body">
-							<ul>
-								<li><a class="waves-effect" href="#!">Facilities</a></li>
-								<li><a class="waves-effect" href="#!">Basic Info.</a></li>
-								<li><a class="waves-effect" href="#!">Forms</a></li>
-								<li><a class="waves-effect" href="#!">Mess</a></li>
-							</ul>
-						</div>
-					</li>
-					<li>
-						<a class="collapsible-header">GH1<i class="mdi-navigation-arrow-drop-down"></i></a>
-						<div class="collapsible-body">
-							<ul>
-								<li><a class="waves-effect" href="#!">Facilities</a></li>
-								<li><a class="waves-effect" href="#!">Basic Info.</a></li>
-								<li><a class="waves-effect" href="#!">Forms</a></li>
-								<li><a class="waves-effect" href="#!">Mess</a></li>
-							</ul>
-						</div>
-					</li>
-					<li>
-						<a class="collapsible-header">GH2<i class="mdi-navigation-arrow-drop-down"></i></a>
-						<div class="collapsible-body">
-							<ul>
-								<li><a class="waves-effect" href="#!">Facilities</a></li>
-								<li><a class="waves-effect" href="#!">Basic Info.</a></li>
-								<li><a class="waves-effect" href="#!">Forms</a></li>
-								<li><a class="waves-effect" href="#!">Mess</a></li>
-							</ul>
-						</div>
-					</li>
+			{% endfor %}
 				</ul>
 			</ul>    
 		</nav>

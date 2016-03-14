@@ -14,9 +14,13 @@ from .forms import *
 @login_required
 @require_http_methods(['GET', 'POST'])
 def createWarden(request):
-    c = str(request.user)
-    print(c == 'chiefwarden')
-    if c =='chiefwarden':
+    a=Hostels.objects.all();
+    b=[]
+    for i in a:
+        d={'name':i.hostel_name,'id':i.username}
+        b.append(d)
+    alpha = str(request.user)
+    if alpha =='chiefwarden':
         print (request)
         if request.method == 'POST':
             f = CreateWardenForm(request.POST or None)
@@ -35,14 +39,14 @@ def createWarden(request):
                 elif f=='g':
                     warden.hostel_name= "Girls Hostel "+m
                 warden.save()
-                data = {'form': f, 'userid': hos}
-                return render(request, 'newapp/chiefwarden/home.html', data)
+                data = {'form': f, 'userid': hos,'all_hostels': b}
+                return render(request, 'chief/chiefwarden/home.html', data)
             else:
-                data = {'form': f, 'useridfail': f.cleaned_data.get('userid')}
-                return render(request, 'newapp/chiefwarden/home.html', data)
+                data = {'form': f, 'useridfail': f.cleaned_data.get('userid'),'all_hostels': b}
+                return render(request, 'chief/chiefwarden/home.html', data)
         else:
             f = CreateWardenForm()
-        data = {'form': f}
-        return render(request, 'newapp/chiefwarden/home.html',data)
+        data = {'form': f,'all_hostels': b}
+        return render(request, 'chief/chiefwarden/home.html',data)
     else:
         return redirect('logout')
