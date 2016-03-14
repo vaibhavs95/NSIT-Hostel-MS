@@ -26,9 +26,20 @@
  				</a>
  				<a href="#!" data-activates="mobile-demo" class="button-collapse"><i class="material-icons mdi-navigation-menu"></i></a>
  				<ul class="right hide-on-med-and-down">
- 					<li>
-						<a id="login-button" class="modal-trigger waves-effect waves-light btn login-button" href="#login-modal">Login</a>
-					</li>
+ 					{% if user.is_authenticated %}
+                    <!-- Dropdown Trigger -->
+                    <a class='dropdown-button btn login-button' href='#' data-activates='dropdown2'>{{user}}</a>
+                                      
+                    <ul id='dropdown2' class='dropdown-content'>
+                      <li><a href="{% url 'logout' %}">Profile</a></li>
+                      <li><a href="{% url 'logout' %}">Logout</a></li>
+                    </ul>
+                        
+                    {% else %}
+                    <li class="login-button"><a class="modal-trigger waves-effect waves-light btn" href="#login-modal">
+                        Login
+                    </a></li>
+                    {% endif %}
  				</ul>	
  			</div>
  		</nav>
@@ -364,35 +375,23 @@
 
  		<!--login-->
  		<div id="login-modal" class="modal">
- 			<div class="modal-content">
- 				<h4>Log In</h4>
- 				<hr>
- 				<div class="row">
- 					<div class="input-field col s12">
- 						<input id="username" type="text" class="validate">
- 						<label for="username">Username/Roll No.</label>
- 					</div>
- 				</div>
- 				<div class="row">
- 					<div class="input-field col s12">
- 						<input id="password" type="password" class="validate">
- 						<label for="password">Password</label>
- 					</div>
- 				</div>
- 				<div class="row">
- 					<span class="col s12">
- 						<input type="checkbox" id="remember-me" checked="checked" />
- 						<label for="remember-me">Remember Me</label>
- 					</span>
-					<br>
- 					<span id="forgot-button" data-target="forgot-password"class="modal-trigger col s12 waves-effect wave-teal btn-flat align-centre">Forgot Password</span>
- 				</div>
- 				<button class="btn waves-effect waves-light" type="submit" name="action">Log In</button>
- 			</div>
- 			<div class="modal-footer">
- 				<a href="#!" class="modal-action modal-close waves-effect btn-flat ">Cancel</a>
- 			</div>
- 		</div>
+        <div class="modal-content">
+            <h4>Log In</h4>
+            <hr>
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next }}" />
+                {{ form }}
+                <div class="row">
+                    <button class="btn waves-effect waves-light col s6" type="submit" name="login">Log In</button>
+                    <a id="forgot-button" data-target="forgot-password" class="modal-trigger col s6" href="#!">Forgot Password</a>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-action modal-close waves-effect btn-flat ">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
 
  		<!-- forgot password -->
 

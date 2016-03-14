@@ -16,7 +16,6 @@ def base(request):
     if request.method=='POST':
         f = LoginForm(request.POST or None)
         if f.is_valid():
-            print(1,request)
             return redirect('login')
     else:
         f=LoginForm()
@@ -69,8 +68,14 @@ def logoutview(request):
     logout(request)
     return redirect('base')
 
-@require_GET
+@require_http_methods(['GET', 'POST'])
 def hostels(request,hostel_name):
+    if request.method=='POST':
+        f = LoginForm(request.POST or None)
+        if f.is_valid():
+            return redirect('login')
+    else:
+        f=LoginForm()
     a=Hostels.objects.all();
     b=[]
     for i in a:
@@ -78,5 +83,5 @@ def hostels(request,hostel_name):
         b.append(d)
         if i.username == hostel_name:
             c = i
-    data = {'all_hostels': b,'target_hostel':c}
+    data = {'all_hostels': b,'target_hostel':c,'form':f}
     return render(request,'newapp/bh1_facilities.html',data)
