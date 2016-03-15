@@ -41,7 +41,7 @@ def handleLogin(request):
             a = Hostels.objects.get(username = user)
             data = {'next' : nexturl, 'name': a.username}
             return redirect('warden-home')
-        elif re.match("[0-9]*-[a-zA-Z0-9]*",str(user))!=None:
+        elif re.match("[0-9]*-[A-Z0-9]*",str(user))!=None:
             a = Students.objects.get(username = user)
             data = {'next' : nexturl, 'name': a.name}
             return redirect('student-home')
@@ -55,13 +55,15 @@ def handleLogin(request):
 @require_GET    
 @login_required
 def home(request):
-    a=Hostels.objects.all();
-    b=[]
-    for i in a:
-        d={'name':i.hostel_name,'id':i.username}
-        b.append(d)
-    data = {'all_hostels': b}
-    return render(request, 'newapp/home.html',data)
+    a=request.user
+    if re.match("AnonymousUser",str(a))!=None:
+        return redirect('base')
+    elif re.match("chief[a-zA-Z0-9_]*",str(a))!=None:
+        return redirect('chiefwarden-home')
+    elif re.match("[a-zA-Z0-9_]*warden",str(a))!=None:
+        return redirect('warden-home')
+    else:
+        return redirect('student-home')
 
 @require_GET
 def logoutview(request):
