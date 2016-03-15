@@ -39,10 +39,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'newapp',
     'material',
-<<<<<<< HEAD
-=======
-    # 'materialize_forms',
->>>>>>> 6e0479f8e5a120685d8df58736bd687c6dfb7ef0
     'chief',
     'student',
     'warden',
