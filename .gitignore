@@ -1,3 +1,22 @@
-/testuser/testuser/settings.py
-settings.py
+#
+##############
 *.pyc
+*.swo
+*.swp
+*.swn
+
+# Directories #
+###############
+logs/
+
+# Specific files #
+##################
+testuser/testuser/settings.py
+
+# OS generated files #
+######################
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
+*~
