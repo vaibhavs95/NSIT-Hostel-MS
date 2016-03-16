@@ -57,11 +57,10 @@
 					  <a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
 					  <div class="collapsible-body">
 						<ul id="colBod">
-							{% url 'hostel' hos.id as the_url %}
-						  <li><a class="waves-effect" href={{ the_url }}>Facilities</a></li>
-						  <li><a class="waves-effect" href={{ the_url }}>Basic Info.</a></li>
+						  <li><a class="waves-effect" href="/newapp/hostel/{{ hos.id }}/#facilities">Facilities</a></li>
+						  <li><a class="waves-effect" href="/newapp/hostel/{{ hos.id }}/#basicInfo">Basic Info.</a></li>
 						  <li><a class="waves-effect" href={{ the_url }}>Forms</a></li>
-						  <li><a class="waves-effect" href={{ the_url }}>Mess</a></li>
+						  <li><a class="waves-effect" href="/newapp/hostel/{{ hos.id }}/#messs">Mess</a></li>
 						</ul>
 					  </div>
 					</li>
@@ -90,65 +89,6 @@
 		</div>
 	</footer>    
 
-	<!-- Modals -->
-	<!--login-->
-
-	<!--<div id="login-modal" class="modal">
-		<div class="modal-content">
-			<h4>Log In</h4>
-			<hr>
-			<div class="row">
-				<div class="input-field col s12">
-					<input id="username" type="text" class="validate">
-					<label for="username">Username/Roll No.</label>
-				</div>
-			</div>
-			<div class="row">
-				<div class="input-field col s12">
-					<input id="password" type="password" class="validate">
-					<label for="password">Password</label>
-				</div>
-			</div>
-			<div class="row">
-				<span class="col s6">
-					<input type="checkbox" id="remember-me" checked="checked" />
-					<label for="remember-me">Remember Me</label>
-				</span>
-				<span id="forgot-button" data-target="forgot-password"class="modal-trigger col s6 waves-effect wave-teal btn-flat align-centre">Forgot Password</span>
-			</div>
-			<button class="btn waves-effect waves-light" type="submit" name="action">Log In</button>
-		</div>
-		<div class="modal-footer">
-			<a href="#!" class="modal-action modal-close waves-effect btn-flat ">Cancel</a>
-		</div>
-	</div>-->
-
-	<!-- forgot password -->
-
-	<!--<div id="forgot-password" class="modal">
-		<div class="modal-content">
-			<h4> Forgot Password</h4>
-			<hr>
-			<div class="row">
-				<div class="input-field col s12">
-					<input id="username" type="text" class="validate">
-					<label for="username">Username/Roll No.</label>
-				</div>
-			</div>
-			<div class="row">
-				<div class="input-field col s12">
-					<input type="date" class="datepicker">
-					<label for="password">Date of Birth</label>
-				</div>
-			</div>
-			<div class="row">
-				<button class="btn waves-effect waves-light" type="submit" name="action">Reset Password</button>
-				<button id="flogin-button" class="btn waves-effect waves-light" type="submit" name="action">Log In</button>
-			</div>
-			<div class="modal-footer">
-				<a href="#!" class="modal-action modal-close waves-effect btn-flat ">Cancel</a>
-			</div>
-		</div>-->
 
 
 		<!--Scripts -->

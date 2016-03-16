@@ -3,11 +3,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate
 from .models import *
 class LoginForm(forms.Form):
-    class Meta:
-        model = MyUser
-        fields = ['userid', 'password']
-    userid = forms.CharField(max_length = 254)
-    password = forms.CharField(widget = forms.PasswordInput)
+    userid = forms.CharField(max_length = 254,required = True)
+    password = forms.CharField(widget = forms.PasswordInput,required=True)
 
     def __init__(self, *args, **kwargs):
         self.user_cache = None
@@ -22,6 +19,10 @@ class LoginForm(forms.Form):
                 raise forms.ValidationError('Please enter a correct username and password')
             elif not self.user_cache.is_active:
                 raise forms.ValidationError('This account is inactive')
+        else:
+            raise forms.ValidationError('Both fields are required')
         return self.cleaned_data
     def get_user(self):
         return self.user_cache
+    
+    

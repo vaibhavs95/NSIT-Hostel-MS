@@ -67,11 +67,10 @@
 					  <a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
 					  <div class="collapsible-body">
 						<ul id="colBod">
-							{% url 'hostel' hos.id as the_url %}
-						  <li><a class="waves-effect" href={{ the_url }}>Facilities</a></li>
-						  <li><a class="waves-effect" href={{ the_url }}>Basic Info.</a></li>
+						  <li><a class="waves-effect" href="/newapp/hostel/{{ hos.id }}/#facilities">Facilities</a></li>
+						  <li><a class="waves-effect" href="/newapp/hostel/{{ hos.id }}/#basicInfo">Basic Info.</a></li>
 						  <li><a class="waves-effect" href={{ the_url }}>Forms</a></li>
-						  <li><a class="waves-effect" href={{ the_url }}>Mess</a></li>
+						  <li><a class="waves-effect" href="/newapp/hostel/{{ hos.id }}/#messs">Mess</a></li>
 						</ul>
 					  </div>
 					</li>
@@ -85,7 +84,8 @@
 		<li><a class="login-button" href="#!">Home</a></li>
 		<li><a class="modal-trigger waves-effect waves-light btn login-button" href="#login-modal">Login</a></li>
 		<ul class="collapsible collapsible-accordion">
-			{% for hos in all_hostels %}			
+			{% for hos in all_hostels %}
+				<p>{{ hos.id }}</p>
 				{% if hos.id == target_hostel.username %}
 					<li>
 					  <a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
@@ -100,14 +100,14 @@
 					</li>
 				{% else %}
 					<li>
-					  <a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
+						<p>{{ hos.id }}</p>
+					  <a class="btn collapsible-header waves-effect waves-teal">{{ hos.id }}<i class="mdi-navigation-arrow-drop-down"></i></a>
 					  <div class="collapsible-body">
 						<ul id="colBod">
-							{% url 'hostel' hos.id as the_url %}
-						  <li><a class="waves-effect" href={{ the_url }}>Facilities</a></li>
-						  <li><a class="waves-effect" href={{ the_url }}>Basic Info.</a></li>
+						  <li><a class="waves-effect" href="/newapp/hostel/{{ hos.id }}/#facilities">Facilities</a></li>
+						  <li><a class="waves-effect" href="{{ the_url }}/#basicInfo">Basic Info.</a></li>
 						  <li><a class="waves-effect" href={{ the_url }}>Forms</a></li>
-						  <li><a class="waves-effect" href={{ the_url }}>Mess</a></li>
+						  <li><a class="waves-effect" href="{{ the_url }}/#messs">Mess</a></li>
 						</ul>
 					  </div>
 					</li>
