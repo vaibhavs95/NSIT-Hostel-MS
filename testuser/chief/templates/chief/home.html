@@ -1,0 +1,52 @@
+{% extends "newapp/home.html" %}
+{% load staticfiles %}
+{% load material_form %}
+{% block title %} Chief Warden {% endblock %}
+
+{% block extrahead %} 
+<!--<link rel="stylesheet" href="{% static 'assests/main-page/css/cw-home.css' %}">-->
+   <link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/styleHostel.css' %}"/>
+<!--<link rel="stylesheet" href="{% static 'assests/main-page/css/styleHostel.css' %}">-->
+{% endblock %}
+
+{% block content %}
+<table>
+	<tr>
+		<td>
+			S. No.
+		</td>
+		<td>
+			Hostel Name
+		</td>
+		<td>
+			Warden Name
+		</td>
+		<td>
+			Warden Phone. No.
+		</td>
+		<td>
+			
+		</td>
+	</tr>
+	{% for hos in all_hostels %}
+		<tr>
+			<td>
+				{{ forloop.counter }}.
+			</td>
+			<td>
+				{{ hos.name }}
+			</td>
+			<td>
+				{{ hos.warden_name }}
+			</td>
+			<td>
+				{{ hos.warden_nu }}
+			</td>
+			<td>
+				<a href="chiefwarden/delete/{{ hos.id }}">Delete</a>
+			</td>
+		</tr>
+	{% endfor %}
+</table>
+
+{% endblock %}

@@ -48,10 +48,7 @@ def handleLogin(request):
         else:
             return redirect('logout')
     else:
-        l = LoginForm()
-        hos=Hostels.objects.all().order_by('hostel_name')
-        data = {'next' : nexturl, 'form': l,'hostels':hos,'len':len(hos)}
-        return render(request, 'newapp/base.html', data);
+        return redirect('base')
 
 @require_GET    
 @login_required
@@ -86,6 +83,5 @@ def hostels(request,hostel_name):
         b.append(d)
         if i.username == hostel_name:
             c = i
-    print (b)
     data = {'all_hostels': b,'target_hostel':c,'form':f}
     return render(request,'newapp/bh1_facilities.html',data)

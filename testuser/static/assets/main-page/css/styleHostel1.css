@@ -17,15 +17,15 @@ Header
 	padding-left: 10%;
 	padding-right: 10%;
 }
-table, th, td {
-   border: 1px solid black;
-}
 /*
 #login-modal
 {
 	height: 1000px;
 }
 */
+table, th, td {
+   border: 1px solid black;
+}
 #logo{
 	margin: 5% 0% 0% 5%;
 	width: 110px;
