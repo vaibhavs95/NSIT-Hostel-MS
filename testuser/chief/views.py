@@ -23,15 +23,15 @@ def createWarden(request):
     if alpha =='chiefwarden':
         print (request)
         if request.method == 'POST':
-            f = CreateWardenForm(request.POST or None)
-            if f.is_valid():
+            fo = CreateWardenForm(request.POST or None)
+            if fo.is_valid():
                 #print (f.userid)
                 #print(f.cleaned_data.get('userid'))
-                user = MyUser.objects.create_user(f.cleaned_data.get('userid'), '2016-02-02', f.cleaned_data.get('password'))
+                user = MyUser.objects.create_user(fo.cleaned_data.get('userid'), '2016-02-02', fo.cleaned_data.get('password'))
                 user.save()
-                warden = Hostels(username = f.cleaned_data.get('userid'))
+                warden = Hostels(username = fo.cleaned_data.get('userid'))
                 warden.chief_warden = ChiefWarden.objects.all()[0]
-                hos = f.cleaned_data.get('userid')
+                hos = fo.cleaned_data.get('userid')
                 f,m = hos.split('w')
                 f,m=f.split('h')
                 if f=='b':
@@ -39,14 +39,34 @@ def createWarden(request):
                 elif f=='g':
                     warden.hostel_name= "Girls Hostel "+m
                 warden.save()
-                data = {'form': f, 'userid': hos,'all_hostels': b}
+                g = AddBranchForm()
+                data = {'form': fo, 'userid': hos,'all_hostels': b,'branchform':g}
                 return render(request, 'chief/chiefwarden/home.html', data)
             else:
-                data = {'form': f, 'useridfail': f.cleaned_data.get('userid'),'all_hostels': b}
+                g = AddBranchForm()
+                data = {'form': fo, 'useridfail': fo.cleaned_data.get('userid'),'all_hostels': b,'branchform':g}
                 return render(request, 'chief/chiefwarden/home.html', data)
         else:
-            f = CreateWardenForm()
-        data = {'form': f,'all_hostels': b}
+            fo = CreateWardenForm()
+            g = AddBranchForm()
+        data = {'form': fo,'all_hostels': b,'branchform':g}
         return render(request, 'chief/chiefwarden/home.html',data)
     else:
         return redirect('logout')
+@login_required
+@require_http_methods(['GET', 'POST'])
+def addbranch(request):
+    if request.method == 'POST':
+        fb = AddBranchForm(request.POST or None)
+        if fb.is_valid():
+            print(fb.cleaned_data.get('title'))
+            b = Branch(title = fb.cleaned_data.get('title'),name = fb.cleaned_data.get('name'))
+            b.save()
+        g = CreateWardenForm()
+        data = {'branchform': fb,'form':g}
+        return render(request,'chief/chiefwarden/home.html',data)
+    else:
+        g = CreateWardenForm()
+        f = AddBranchForm()
+        data = {'branchform': f,'form':g}
+        return render(request,'chief/chiefwarden/home.html',data)

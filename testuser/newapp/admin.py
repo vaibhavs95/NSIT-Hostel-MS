@@ -4,9 +4,11 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
-from newapp.models import MyUser, Hostels, Students, ChiefWarden
+from newapp.models import *
 
 admin.site.register(Hostels)
+admin.site.register(Rooms)
+admin.site.register(Branch)
 admin.site.register(Students)
 admin.site.register(ChiefWarden)
 

@@ -8,8 +8,8 @@ class CreateWardenForm(forms.Form):
     password = forms.CharField(widget = forms.PasswordInput)
     retype_password = forms.CharField(widget = forms.PasswordInput)
     def __init__(self, *args, **kwargs):
-                    self.user_cache = None
-                    super(CreateWardenForm, self).__init__(*args, **kwargs)
+        self.user_cache = None
+        super(CreateWardenForm, self).__init__(*args, **kwargs)
     def clean(self):
         userid = self.cleaned_data.get('userid')
         password = self.cleaned_data.get('password')
@@ -30,3 +30,21 @@ class CreateWardenForm(forms.Form):
             raise forms.ValidationError('Passwords do not match')
     def get_user(self):
         return self.user_cache
+
+class AddBranchForm(forms.Form):
+    title = forms.CharField(max_length = 5)
+    name = forms.CharField(max_length = 100)
+    def __init__(self, *args, **kwargs):
+        super(AddBranchForm, self).__init__(*args, **kwargs)
+    def clean(self):
+        title = self.cleaned_data.get('title')
+        name = self.cleaned_data.get('name')
+        title = title.upper()
+        b = None
+        try:
+            b = Branch.objects.get(title=title)
+        except ObjectDoesNotExist:
+            pass
+        if b is not None:
+            raise forms.ValidationError('Branch Already Exists')
+        return self.cleaned_data

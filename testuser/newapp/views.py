@@ -48,8 +48,9 @@ def handleLogin(request):
         else:
             return redirect('logout')
     else:
-        l = LoginForm()
-        data = {'next' : nexturl, 'form': l}
+        f=LoginForm()
+        hos=Hostels.objects.all().order_by('hostel_name')
+        data = { 'next' : nexturl, 'form': f,'hostels':hos,'len':len(hos)}
         return render(request, 'newapp/base.html', data);
 
 @require_GET    

@@ -16,6 +16,8 @@ class LoginForm(forms.Form):
     def clean(self):
         userid = self.cleaned_data.get('userid')
         password = self.cleaned_data.get('password')
+        if userid is None or password is None:
+            raise forms.ValidationError('Fields cannot be blank')
         if userid and password:
             self.user_cache = authenticate(userid = userid, password = password)
             if self.user_cache is None:
