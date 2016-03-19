@@ -48,10 +48,14 @@ def handleLogin(request):
         else:
             return redirect('logout')
     else:
+<<<<<<< HEAD
         f=LoginForm()
         hos=Hostels.objects.all().order_by('hostel_name')
         data = { 'next' : nexturl, 'form': f,'hostels':hos,'len':len(hos)}
         return render(request, 'newapp/base.html', data);
+=======
+        return redirect('base')
+>>>>>>> 6f7c0af2dc6fb34ebfe38da446ca9d81fec8e224
 
 @require_GET    
 @login_required

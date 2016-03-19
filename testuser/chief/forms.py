@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate
 from newapp.models import *
+import re
 
 class CreateWardenForm(forms.Form):
     userid = forms.CharField(max_length = 254)
@@ -28,6 +29,13 @@ class CreateWardenForm(forms.Form):
         q = self.cleaned_data.get('retype_password')
         if not q==p:
             raise forms.ValidationError('Passwords do not match')
+    
+    def clean_userid(self):
+        userid = self.cleaned_data.get('userid')
+        if not re.match("[bh]h[0-9]*warden",userid):
+            raise forms.ValidationError('Not a correct format for this field')
+        return self.cleaned_data
+    
     def get_user(self):
         return self.user_cache
 
