@@ -15,24 +15,6 @@
 	<div class="col s12 m12 l12">
 		<div class="card-panel">
 		<h3>Rooms</h3>
-			<table>
-				<thead>
-					<tr>
-						<th data-field="id">Room Number</th>
-						<th data-field="name">Capacity of Room</th>
-						<th data-field="name">Capacity Available</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for r in rooms %}
-					<tr>
-						<td>{{ r.room_no }}</td>
-						<td>{{ r.capacity }}</td>
-						<td>{{ r.capacity_remaining }}</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
 			<ul class="collapsible" data-collapsible="accordion">
 		    <li>
 		      <div class="collapsible-header">Add Room</div>
@@ -51,6 +33,24 @@
 		      </div>
 		    </li>
 		  	</ul>
+			<table>
+				<thead>
+					<tr>
+						<th data-field="id">Room Number</th>
+						<th data-field="name">Capacity of Room</th>
+						<th data-field="name">Capacity Available</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for r in rooms %}
+					<tr>
+						<td>{{ r.room_no }}</td>
+						<td>{{ r.capacity }}</td>
+						<td>{{ r.capacity_remaining }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
 			{% if room_created %}
 			<script type="text/javascript">
 				alert("Room created successfully.");

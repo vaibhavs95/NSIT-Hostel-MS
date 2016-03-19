@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 
 {% load staticfiles %}
-<<<<<<< HEAD
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,6 +9,7 @@
 	<title> {% block title %} HMS {% endblock %} </title>
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	{% include 'material/includes/material_css.html' %}
+	<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
 	<link type="text/css" rel="stylesheet" href='{% static "assets/main-page/css/styleHostel.css" %}'/>
 	{% block extrahead %}
 	{% endblock %}
@@ -22,132 +22,71 @@
 			<div class="nav-wrapper">
 				<a href="#!" class="brand-logo ">
 					<div id="header-text-nsit" class="brand-logo flow-text left-align">
-=======
- <html>
- <head>
- 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    {% include 'material/includes/material_css.html' %}   
- 	<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
- 	<link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/styleHostel.css' %}"/>
- 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
- </head>
-
- <body>
- 	<!-- Header -->
- 	
- 	<header>
- 		<nav class="indigo">
- 			<div class="nav-wrapper">
- 				<a href="#!" class="brand-logo "><img id="logo1" src= "{% static 'assets/main-page/media/images/logo.png' %}">
- 					<div id="header-text-nsit" class="brand-logo flow-text left-align">
->>>>>>> 6f7c0af2dc6fb34ebfe38da446ca9d81fec8e224
 						Netaji Subhas Institue of Technology
- 					</div>
- 					<div id="header-text-hms" class="brand-logo flow-text left-align">
+					</div>
+					<div id="header-text-hms" class="brand-logo flow-text left-align">
 						Hostel Management System
 					</div>
-<<<<<<< HEAD
 				</a>
-			</div>
-			<ul id="nav-mobile" class="side-nav fixed">
-				<li>
-					<a class="logo-side-nav" href="#!"><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'></a>
-				</li>
-				<ul class="collapsible collapsible-accordian">
-				{% if user.is_authenticated %}
-				<li class="login-button">
-					<a class='collapsible-header' data-activates='dropdown1' href="#!">
-						{{user}}
-						<i class="mdi-navigation-arrow-drop-down"></i>
-					</a>
-					<div class="collapsible-body">
-						<ul>
-							<li><a class="waves-effect" href="{% url 'logout' %}">Logout</a></li>
-							<li><a class="waves-effect" href="{% url 'home' %}">Profile</a></li>
-							{% block sidelist %}
-							{% endblock %}
-						</ul>
-					</div>
-				</li>
-				{% else %}
-				<li class="login-button">
-					<a class="modal-trigger waves-effect waves-light btn" href="#login-modal">
+				<ul class="right hide-on-med-and-down">
+					{% if user.is_authenticated %}
+					<!-- Dropdown Trigger -->
+					<a class='dropdown-button btn login-button' href='#' data-activates='dropdown2'>{{user}}</a>
+
+					<ul id='dropdown2' class='dropdown-content'>
+						<li><a href="{% url 'home' %}">Profile</a></li>
+						<li><a href="{% url 'logout' %}">Logout</a></li>
+					</ul>
+
+					{% else %}
+					<li class="login-button"><a class="modal-trigger waves-effect waves-light btn" href="#login-modal">
 						Login
-					</a>
-				</li>
-				{% endif %}
-				{% for hos in all_hostels %}			
-=======
- 				</a>
- 				<a href="#!" data-activates="mobile-demo" class="button-collapse"><i class="material-icons mdi-navigation-menu"></i></a>
- 				<ul class="right hide-on-med-and-down">
- 					{% if user.is_authenticated %}
-                    <!-- Dropdown Trigger -->
-                    <a class='dropdown-button btn login-button' href='#' data-activates='dropdown2'>{{user}}</a>
-                                      
-                    <ul id='dropdown2' class='dropdown-content'>
-                      <li><a href="{% url 'home' %}">Profile</a></li>
-                      <li><a href="{% url 'logout' %}">Logout</a></li>
-                    </ul>
-                        
-                    {% else %}
-                    <li class="login-button"><a class="modal-trigger waves-effect waves-light btn" href="#login-modal">
-                        Login
-                    </a></li>
-                    {% endif %}
- 				</ul>	
- 			</div>
- 		</nav>
- 	</header>
+					</a></li>
+					{% endif %}
+				</ul>	
+			</div>
+		</nav>
+	</header>
 	
-		<ul id="nav-mobile" class="side-nav fixed">
-          <li id="lback"><a class="logo-side-nav" href="#!"><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'></a></li>
-		  <br>
-          <ul class="collapsible collapsible-accordion">
-            {% for hos in all_hostels %}			
->>>>>>> 6f7c0af2dc6fb34ebfe38da446ca9d81fec8e224
-					<li>
-					  <a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
-					  <div class="collapsible-body">
-						<ul id="colBod">
-						  <li><a class="waves-effect" href="/newapp/{{ hos.id }}/#facilities">Facilities</a></li>
-						  <li><a class="waves-effect" href="/newapp/{{ hos.id }}/#basicInfo">Basic Info.</a></li>
-						  <li><a class="waves-effect" href={{ the_url }}>Forms</a></li>
-						  <li><a class="waves-effect" href="/newapp/{{ hos.id }}/#messs">Mess</a></li>
-						</ul>
-					  </div>
-					</li>
-			{% endfor %}
-            
-          </ul>
-        </ul>
-	<!-- for mobile version -->
-	<ul class="side-nav" id="mobile-demo">
-		<li><a class="login-button" href="#!">Home</a></li>
-		<li><a class="modal-trigger waves-effect waves-light btn login-button" href="#login-modal">Login</a></li>
+	<ul id="nav-mobile" class="side-nav fixed">
+		<li id="lback"><a class="logo-side-nav" href="#!"><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'></a></li>
+		<br>
 		<ul class="collapsible collapsible-accordion">
-			{% for hos in all_hostels %}
-					<li>
-						<p>{{ hos.id }}</p>
-					  <a class="btn collapsible-header waves-effect waves-teal">{{ hos.id }}<i class="mdi-navigation-arrow-drop-down"></i></a>
-					  <div class="collapsible-body">
-						<ul id="colBod">
-						  <li><a class="waves-effect" href="/newapp/{{ hos.id }}/#facilities">Facilities</a></li>
-						  <li><a class="waves-effect" href="/newapp/{{ hos.id }}/#basicInfo">Basic Info.</a></li>
-						  <li><a class="waves-effect" href={{ the_url }}>Forms</a></li>
-						  <li><a class="waves-effect" href="/newapp/{{ hos.id }}/#messs">Mess</a></li>
-						</ul>
-					  </div>
-					</li>
+			{% if user.is_authenticated %}
+			<li>
+				<a class="btn collapsible-header waves-effect waves-teal">{{ user }}<i class="mdi-navigation-arrow-drop-down"></i></a>
+				<div class="collapsible-body">
+					<ul id="colBod">
+						<li><a href="{% url 'home' %}">Profile</a></li>
+						<li><a href="{% url 'logout' %}">Logout</a></li>
+						{% block sidelist %}
+						{% endblock %}
+					</ul>
+				</div>
+			</li>
+			{% endif %}
+			{% for hos in all_hostels %}			
+			<li>
+				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
+				<div class="collapsible-body">
+					<ul id="colBod">
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#facilities">Facilities</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#basicInfo">Basic Info.</a></li>
+						<li><a class="waves-effect" href={{ the_url }}>Forms</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#messs">Mess</a></li>
+					</ul>
+				</div>
+			</li>
 			{% endfor %}
+
 		</ul>
 	</ul>
 	<!-- main center content -->
 	<main>
 		<div class="container">
-                {% block content %}
-                {% endblock %}
-        </div>
+			{% block content %}
+			{% endblock %}
+		</div>
 	</main>
 
 	<!-- Footer --> 
@@ -160,23 +99,16 @@
 			<a class="grey-text text-lighten-3" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
 		</div>
 	</footer>    
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 6f7c0af2dc6fb34ebfe38da446ca9d81fec8e224
-
-		<!--Scripts -->
-
-		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-		{% block script %}
-		{% endblock %}
-		{% include 'material/includes/material_js.html' %}
-		<script type="text/javascript" src='{% static "assets/main-page/js/script.js" %}'></script>
-		<script type="text/javascript">
-			$( window ).load(function() {
-				main();
-			});
-		</script>
-	</body>
-	</html>
+	<!--Scripts -->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	{% block script %}
+	{% endblock %}
+	{% include 'material/includes/material_js.html' %}
+	<script type="text/javascript" src='{% static "assets/main-page/js/script.js" %}'></script>
+	<script type="text/javascript">
+		$( window ).load(function() {
+			main();
+		});
+	</script>
+</body>
+</html>
