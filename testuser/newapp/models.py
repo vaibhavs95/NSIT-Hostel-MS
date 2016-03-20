@@ -98,15 +98,15 @@ class ChiefWarden(models.Model):
 
 class Hostels(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True, default='')
-	warden_name = models.CharField(max_length = 20, default='',null=True)
+	name = models.CharField(max_length = 20, default='',null=True)
 	hostel_name = models.CharField(max_length = 20, default='')
 	room_capacity = models.IntegerField(null=True, blank=True)		# calculate from 
 	room_available = models.IntegerField(null=True, blank=True)		# update with each entry
-	warden_phone_num = models.CharField(null = True,max_length=20, blank=True)        #Check if it has 10 digits
-	warden_email = models.EmailField(null = True, blank=True)
-	warden_landLine = models.CharField(null = True, max_length = 300, blank=True)
-	warden_portfolio = models.CharField(null = True,max_length = 40, blank=True)
-	warden_department = models.CharField(null = True,max_length = 20, blank=True)
+	phone = models.CharField(null = True,max_length=20, blank=True)        #Check if it has 10 digits
+	email = models.EmailField(null = True, blank=True)
+	landline = models.CharField(null = True, max_length = 300, blank=True)
+	portfolio = models.CharField(null = True,max_length = 40, blank=True)
+	department = models.CharField(null = True,max_length = 20, blank=True)
 	chief_warden = models.ForeignKey(ChiefWarden)
 	#warden_photo = models.nowField()	
 	#admission_form = models.FileField(upload_to = get_upload_file_name)
@@ -116,55 +116,57 @@ class Hostels(models.Model):
 
 class Branch(models.Model):
 	title = models.CharField(max_length=5, null=False)
-	name = models.CharField(max_length = 20, null=False)
+	name = models.CharField(max_length = 100, null=False)
+	def __str__(self):              # __unicode__ on Python 2
+		return "%s" % (self.title)
 
 class Rooms(models.Model):
 	room_no = models.CharField(null = False,max_length=10)
 	capacity_of_room = models.IntegerField(null = False)
 	hostel = models.ForeignKey(Hostels)
-	student_no1 = models.CharField(null = True, max_length = 30)
-	student_no2 = models.CharField(null = True, max_length = 30)
-	student_no3 = models.CharField(null = True, max_length = 30)
-	filled_rooms = models.IntegerField(null = True)     #calculate
+	student_no1 = models.CharField(null = True, blank = True, max_length = 300)
+	student_no2 = models.CharField(null = True, blank = True, max_length = 300)
+	student_no3 = models.CharField(null = True, blank = True, max_length = 300)
+	capacity_remaining = models.IntegerField(null = True, blank = True)
 	def __str__(self):              # __unicode__ on Python 2
-		return "%s %s" % (self.room_no, self.filled_rooms)
+		return "%s" % (self.room_no)
 class Students(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True , default='');
-	name = models.CharField(max_length=50 , default='');
+	name = models.CharField(max_length=50 , blank = True, default='');
 	date_of_birth = models.DateTimeField(null=False,default = datetime.now)
 	room_number = models.ForeignKey(Rooms);
-	distance_from_nsit = models.IntegerField(null = False, default=0);
-	current_sem_join_date = models.DateTimeField(default=datetime.now, null=True)
-	current_hostel_join_date = models.DateTimeField(default=datetime.now,null=True)
+	distance_from_nsit = models.IntegerField(null = False,  blank = True, default=0);
+	current_sem_join_date = models.DateTimeField(default=datetime.now, blank = True,  null=True)
+	current_hostel_join_date = models.DateTimeField(default=datetime.now, blank = True, null=True)
 	branch = models.ForeignKey(Branch)
-	gender = models.CharField(max_length = 1, choices = GENDER_CHOICES, default = GENDER_CHOICES[0][0])
-	college_category = models.CharField(max_length=1, choices = COLLEGE_CAT, default = COLLEGE_CAT[0][0])
+	gender = models.CharField(max_length = 10,  blank = True, choices = GENDER_CHOICES, default = GENDER_CHOICES[0][0])
+	college_category = models.CharField(max_length=5,  blank = True, choices = COLLEGE_CAT, default = COLLEGE_CAT[0][0])
 	#**hostel_category = models.CharField(null=False,max_length=20)
-	blood_group = models.CharField(max_length=1, choices = BLOOD_GROUP, default = BLOOD_GROUP[0][0])
-	fee_last_submitted = models.DateTimeField(null=True,default = datetime.now)
-	student_phone_num = models.CharField(null = False,max_length=20)
+	blood_group = models.CharField(max_length=5,  blank = True, choices = BLOOD_GROUP, default = BLOOD_GROUP[0][0])
+	fee_last_submitted = models.DateTimeField(null=True, blank = True, default = datetime.now)
+	student_phone_num = models.CharField(null = False, blank = True, max_length=20)
 	student_email = models.EmailField(null=False,unique=True)
-	student_optional_phone_num = models.CharField(null = True,max_length=20)
+	student_optional_phone_num = models.CharField(null = True, blank = True, max_length=20)
 #Corpus
-	corpus_calculated_uptill = models.DateTimeField(null=False)
-	corpus = models.IntegerField(null=False,default =0)
+	corpus_calculated_uptill = models.DateTimeField(null=True, blank = True,default = datetime.now)
+	corpus = models.IntegerField(null=False, blank = True, default =0)
 # Family Details
-	father_name = models.CharField(null=False,max_length=100)
-	mother_name = models.CharField(null=False,max_length=100)
-	parent_email = models.EmailField(null=False,unique=True)
-	parent_phone_num = models.CharField(null = False,max_length=20)
-	parent_optional_phone_num = models.CharField(null = True,max_length=20)
-	permanent_address = models.CharField(null=False,max_length=200)
-	permanent_address_zipcode = models.IntegerField(null=False)
+	father_name = models.CharField(null=False, blank = True, max_length=100)
+	mother_name = models.CharField(null=False, blank = True, max_length=100)
+	parent_email = models.EmailField(null=False, blank = True)
+	parent_phone_num = models.CharField(null = False, blank = True, max_length=20)
+	parent_optional_phone_num = models.CharField(null = True, blank = True, max_length=20)
+	permanent_address = models.CharField(null=False, blank = True, max_length=200)
+	permanent_address_zipcode = models.IntegerField(null=True,  blank = True )
 # Local Guradian
-	local_guardian_name = models.CharField(null=True,max_length=100)
-	local_guardian_address = models.CharField(null= True,max_length=200)
-	local_guardian_address_zipcode = models.IntegerField(null=True)
-	local_guardian_phone_num = models.CharField(null = True,max_length=20)
-	local_guardian_optional_phone_num = models.CharField(null = True,max_length=20)
-	local_guardian_email = models.EmailField(null=True)
+	local_guardian_name = models.CharField(null=True, blank = True, max_length=100)
+	local_guardian_address = models.CharField(null= True, blank = True, max_length=200)
+	local_guardian_address_zipcode = models.IntegerField(null=True, blank = True )
+	local_guardian_phone_num = models.CharField(null = True, blank = True, max_length=20)
+	local_guardian_optional_phone_num = models.CharField(null = True, blank = True, max_length=20)
+	local_guardian_email = models.EmailField(null=True, blank = True )
 	def __str__(self):              # __unicode__ on Python 2
-		return "%s %s" % (self.name, self.roll_num)
+		return "%s" % (self.username)
 	
 class MedicalHistory(models.Model):
 	#code

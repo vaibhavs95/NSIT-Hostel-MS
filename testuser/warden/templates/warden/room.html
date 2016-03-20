@@ -1,0 +1,69 @@
+{% extends "newapp/home.html" %}
+{% load staticfiles %}
+{% load material_form %}
+{% block title %} Warden - HMS {% endblock %}
+
+{% block extrahead %}
+{% endblock %}
+
+{% block sidelist %}
+<li><a class="waves-effect" href="{% url 'warden-room' %}">Room</a></li>
+<li><a class="waves-effect" href="{% url 'warden-student' %}">Student</a></li>
+{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col s12 m12 l12">
+		<div class="card-panel">
+		<h3>Rooms</h3>
+			<ul class="collapsible" data-collapsible="accordion">
+		    <li>
+		      <div class="collapsible-header">Add Room</div>
+		      <div class="collapsible-body">
+				<form method="post" action="{% url 'warden-add-room' %}">
+					{% csrf_token %}
+					<input type="hidden" name="next" value="{{ next }}" />
+					{% form form=addroomform %}
+					{% endform %}
+					<div class="row">
+						<div class="col s12"> 
+							<button type="submit" name="add-room" class="btn waves-effect waves-light left">Add Room</button>
+						</div>
+					</div>
+				</form>
+		      </div>
+		    </li>
+		  	</ul>
+			<table>
+				<thead>
+					<tr>
+						<th data-field="id">Room Number</th>
+						<th data-field="name">Capacity of Room</th>
+						<th data-field="name">Capacity Available</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for r in rooms %}
+					<tr>
+						<td>{{ r.room_no }}</td>
+						<td>{{ r.capacity }}</td>
+						<td>{{ r.capacity_remaining }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			{% if room_created %}
+			<script type="text/javascript">
+				alert("Room created successfully.");
+			</script>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+	$('.collapsible-body').css({
+		"padding": "2%"
+	});
+</script>
+{% endblock %}
