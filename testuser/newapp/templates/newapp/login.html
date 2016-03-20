@@ -1,21 +1,51 @@
-<!doctype html>
+{% extends "newapp/home.html" %}
 {% load staticfiles %}
-<html>
-    <head>
-        <link rel = "stylesheet" type="text/css" href = "{% static 'base/css/reset.css' %}">
-        <link rel = "stylesheet" type="text/css" href = "{% static 'base/css/form.css' %}">
-    </head>
-    <body>
-        {% if act %}
-            <p> Your account is activated. Login to Procceed. </p>
-        {% endif %}
-        <form action = "{% url 'login' %}" method = 'POST'>
-            {% if next %}
-            <input type="hidden" name='next' value ="{{next}}">
-            {% endif %}
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type ="submit" value ="submit" name = "submit">
-        </form>
-    </body>
-</html>
+{% load material_form %}
+{% block title %} Chief Warden {% endblock %}
+
+{% block extrahead %} 
+<!--<link rel="stylesheet" href="{% static 'assests/main-page/css/cw-home.css' %}">-->
+   <link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/styleHostel.css' %}"/>
+<!--<link rel="stylesheet" href="{% static 'assests/main-page/css/styleHostel.css' %}">-->
+{% endblock %}
+
+{% block content %}
+<div class="modal-content">
+    <h4>Log In</h4>
+    <hr>
+    <form method="post" action="">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}" />
+        {% form form=form %}
+        {% endform %}
+        <div class="row">
+            <button class="btn waves-effect waves-light col s6" type="submit" name="login">Log In</button>
+            <a id="forgot-button" data-target="forgot-password" class="modal-trigger col s6" href="#!">Forgot Password</a>
+        </div>
+</div>
+<!--forgot password-->
+<div id="forgot-password" class="modal">
+ 			<div class="modal-content">
+ 				<h4> Forgot Password</h4>
+ 				<hr>
+ 				<div class="row">
+ 					<div class="input-field col s12">
+ 						<input id="username" type="text" class="validate">
+ 						<label for="username">Username/Roll No.</label>
+ 					</div>
+ 				</div>
+ 				<div class="row">
+ 					<div class="input-field col s12">
+ 						<input type="date" class="datepicker">
+ 						<label for="password">Date of Birth</label>
+ 					</div>
+ 				</div>
+ 				<div class="row">
+ 					<button class="btn waves-effect waves-light col s6 offset-s3" type="submit" name="action">Reset Password</button><br>
+ 				</div>
+ 				<div class="modal-footer">
+ 					<a href="#!" class="modal-action modal-close waves-effect btn-flat ">Cancel</a>
+ 				</div>
+ 			</div>
+
+{% endblock %}

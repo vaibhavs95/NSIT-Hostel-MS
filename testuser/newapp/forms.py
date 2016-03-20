@@ -9,13 +9,22 @@ class LoginForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.user_cache = None
         super(LoginForm, self).__init__(*args, **kwargs)
-
+    def clean_userid(self):
+        user = self.cleaned_data.get('userid') 
+        if user is None:
+            raise forms.ValidationError("This Field is required")
+        return user
+    def clean_password(self):
+        password = self.cleaned_data.get('password') 
+        if password is None:
+            raise forms.ValidationError("This Field is required")
+        return password
     def clean(self):
         userid = self.cleaned_data.get('userid')
         password = self.cleaned_data.get('password')
         self.user_cache = authenticate(userid = userid, password = password)
         if self.user_cache is None:
-            raise forms.ValidationError('Please enter a correct username and password')
+            raise forms.ValidationError('Invalid Username or Password')
         elif not self.user_cache.is_active:
             raise forms.ValidationError('This account is inactive')
         return self.cleaned_data

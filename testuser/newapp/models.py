@@ -122,15 +122,14 @@ class Rooms(models.Model):
 	room_no = models.CharField(null = False,max_length=10)
 	capacity_of_room = models.IntegerField(null = False)
 	hostel = models.ForeignKey(Hostels)
-	student_no1 = models.CharField(null = True, max_length = 300)
-	student_no2 = models.CharField(null = True, max_length = 300)
-	student_no3 = models.CharField(null = True, max_length = 300)
+	student_no1 = models.CharField(null = True, max_length = 30)
+	student_no2 = models.CharField(null = True, max_length = 30)
+	student_no3 = models.CharField(null = True, max_length = 30)
 	filled_rooms = models.IntegerField(null = True)     #calculate
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s %s" % (self.room_no, self.filled_rooms)
 class Students(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True , default='');
-
 	name = models.CharField(max_length=50 , default='');
 	date_of_birth = models.DateTimeField(null=False,default = datetime.now)
 	room_number = models.ForeignKey(Rooms);

@@ -65,14 +65,21 @@ def add_hos(request):
 
 @login_required
 @require_http_methods(['GET', 'POST'])
-def delete_hos(request):
+def delete_hos(request,target):
     a=Hostels.objects.all();
     b=[]
     for i in a:
-        d={'name':i.hostel_name,'id':i.username,'warden_name':i.warden_name,'warden_nu':i.warden_phone_num}
+        d={'name':i.hostel_name,'id':i.username}
         b.append(d)
     alpha = str(request.user)
     if alpha =='chiefwarden':
+        try:
+            a=Rooms.objects.filter(hostel = target)
+        except ObjectDoesNotExist:
+            pass
+        for i in a:
+            if i.filled_rooms != 0:             
+                messages.warning(request, 'Your account expires in three days.')
         data = {'all_hostels': b}
         return render(request, 'chief/home.html',data)
     else:

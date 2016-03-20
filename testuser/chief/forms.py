@@ -11,6 +11,14 @@ class CreateWardenForm(forms.Form):
     def __init__(self, *args, **kwargs):
                     self.user_cache = None
                     super(CreateWardenForm, self).__init__(*args, **kwargs)
+    
+    def clean_userid(self):
+        userid = self.cleaned_data.get('userid')
+        if not re.match("[bh]h[0-9]*warden",userid):
+            raise forms.ValidationError('Not a correct format for this field')
+        return self.cleaned_data
+    
+    
     def clean(self):
         userid = self.cleaned_data.get('userid')
         password = self.cleaned_data.get('password')
@@ -29,12 +37,6 @@ class CreateWardenForm(forms.Form):
         q = self.cleaned_data.get('retype_password')
         if not q==p:
             raise forms.ValidationError('Passwords do not match')
-    
-    def clean_userid(self):
-        userid = self.cleaned_data.get('userid')
-        if not re.match("[bh]h[0-9]*warden",userid):
-            raise forms.ValidationError('Not a correct format for this field')
-        return self.cleaned_data
     
     def get_user(self):
         return self.user_cache

@@ -16,40 +16,40 @@
 </div>
 
 
-<table>
+<table align="center">
 	<tr>
-		<td>
+		<td align="center">
 			S. No.
 		</td>
-		<td>
+		<td align="center">
 			Hostel Name
 		</td>
-		<td>
+		<td align="center">
 			Warden Name
 		</td>
-		<td>
+		<td align="center">
 			Warden Phone. No.
 		</td>
-		<td>
+		<td align="center">
 			
 		</td>
 	</tr>
 	{% for hos in all_hostels %}
 		<tr>
-			<td>
+			<td align="center">
 				{{ forloop.counter }}.
 			</td>
-			<td>
+			<td align="center">
 				{{ hos.name }}
 			</td>
-			<td>
+			<td align="center">
 				{{ hos.warden_name }}
 			</td>
-			<td>
+			<td align="center">
 				{{ hos.warden_nu }}
 			</td>
-			<td>
-				<a href="chiefwarden/delete/{{ hos.id }}">Delete</a>
+			<td align="center">
+				<a href="chiefwarden/delete/{{ hos.id }}">Delete Hostel</a>
 			</td>
 		</tr>
 	{% endfor %}
