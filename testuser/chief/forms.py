@@ -1,4 +1,4 @@
-from django import forms
+from django import forms 
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate
 from newapp.models import *
@@ -11,23 +11,7 @@ class CreateWardenForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.user_cache = None
         super(CreateWardenForm, self).__init__(*args, **kwargs)
-<<<<<<< HEAD
     def clean_userid(self):
-        userid = self.cleaned_data.get('userid')
-        if not re.match("[bg]h[0-9]*warden",userid):
-            raise forms.ValidationError('Not a correct format for this field')
-        return userid
-    def clean_retype_password(self):
-        p = self.cleaned_data.get('password')
-        q = self.cleaned_data.get('retype_password')
-        if not q==p:
-            raise forms.ValidationError('Passwords do not match')
-        return q
-    def clean(self):
-=======
-    
-    def clean_userid(self):
->>>>>>> 651a8add2ef489d38cfe5d9830b4664b569cc26c
         userid = self.cleaned_data.get('userid')
         userid = userid.lower()
         if not re.match("[bg]h[0-9]*warden",userid):
@@ -40,22 +24,14 @@ class CreateWardenForm(forms.Form):
         except ObjectDoesNotExist:
             pass
         if h is not None or m is not None:
-<<<<<<< HEAD
-            raise forms.ValidationError('User Alredy Exists')
-        return self.cleaned_data
-    
-    
-=======
         	raise forms.ValidationError('User Alredy Exists')
         return userid
-    
     def clean_retype_password(self):
         p = self.cleaned_data.get('password')
         q = self.cleaned_data.get('retype_password')
         if not q==p:
             raise forms.ValidationError('Passwords do not match')
         return q
->>>>>>> 651a8add2ef489d38cfe5d9830b4664b569cc26c
     def get_user(self):
         return self.user_cache
 
