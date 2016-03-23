@@ -24,12 +24,13 @@ def base(request):
     data = { 'next' : next_url, 'form': f,'hostels':hos,'len':len(hos)}
     return render(request, 'newapp/base.html', data);
 
-@require_POST
+@require_http_methods(['GET', 'POST'])
 def handleLogin(request):
     if request.user.is_authenticated():
         return redirect('home')
-    f = LoginForm(request.POST)
-    nexturl = request.POST.get('next')
+    f = LoginForm(request.POST or None)
+    if request.method=='POST':
+        nexturl = request.POST.get('next')
     if f.is_valid():
         user = f.get_user();
         login(request, user);
@@ -47,11 +48,13 @@ def handleLogin(request):
             return redirect('student-home')
         else:
             return redirect('logout')
-    else:
-#<<<<<<< HEAD
-		
-        return redirect('base')
-#>>>>>>> 6f7c0af2dc6fb34ebfe38da446ca9d81fec8e224
+    a=Hostels.objects.all();
+    b=[]
+    for i in a:
+        d={'name':i.hostel_name,'id':i.username}
+        b.append(d)
+    data = {'all_hostels': b,'form':f}
+    return render(request,'newapp/login.html',data)
 
 @require_GET    
 @login_required

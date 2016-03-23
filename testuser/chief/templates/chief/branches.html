@@ -22,16 +22,16 @@
 		<h3>Hostels</h3>
 			<ul class="collapsible" data-collapsible="accordion">
 		    <li>
-		      <div class="collapsible-header">Add Hostel</div>
+		      <div class="collapsible-header">Add Branch</div>
 		      <div class="collapsible-body">
-				<form method="post" action="{% url 'chiefwarden-home' %}">
+				<form method="post" action="{% url 'chief_branch' %}">
 					{% csrf_token %}
 					<input type="hidden" name="next" value="{{ next }}" />
 					{% form form=form %}
 					{% endform %}
 					<div class="row">
 						<div class="col s12"> 
-							<button type="submit" name="add-room" class="btn waves-effect waves-light left">Add Hostel</button>
+							<button type="submit" name="add-room" class="btn waves-effect waves-light left">Add Branch</button>
 						</div>
 					</div>
 				</form>
@@ -42,41 +42,30 @@
 				<thead>
 					<tr>
 						<th data-field="id">S. No.</th>
-						<th data-field="name">Hostel Name</th>
-						<th data-field="name">Warden Name</th>
-						<th data-field="name">Warden Phone. No.</th>
-						<th data-field="name"></th>
+						<th data-field="name">Branch Code</th>
+						<th data-field="name">Branch Name</th>
+						<th data-field="name">Roll Code</th>
 					</tr>
 				</thead>
 				<tbody>
-					{% for hos in all_hostels %}
+					{% for hos in all_branch %}
 					<tr>
 						<td align="center">
 							{{ forloop.counter }}.
 						</td>
 						<td align="center">
+							{{ hos.title }}
+						</td>
+						<td align="center">
 							{{ hos.name }}
 						</td>
 						<td align="center">
-							{{ hos.warden_name }}
-						</td>
-						<td align="center">
-							{{ hos.warden_nu }}
-						</td>
-						<td align="center">
-							<a href="#!" onclick="myFunction('{{ hos.id }}')">Delete Hostel</a>
+							{{ hos.roll_code }}
 						</td>
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
-			<script type='text/javascript' >
-		function myFunction(hosid) {
-			if (confirm("Delete Hostel ?") == true) {
-				window.location = "/chiefwarden/delete/"+hosid
-			}
-		}
-	</script>
 		</div>
 	</div>
 </div>

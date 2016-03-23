@@ -2,84 +2,84 @@ from django.db import models
 from datetime import *
 from django.utils import timezone
 from django.contrib.auth.models import (
-    BaseUserManager, AbstractBaseUser
+	BaseUserManager, AbstractBaseUser
 )
 from django.conf import settings
 
 class MyUserManager(BaseUserManager):
-    def create_user(self, userid, date_of_birth, password=None):
-        """
-        Creates and saves a User with the given email, date of
-        birth and password.
-        """
-        if not userid:
-            raise ValueError('Users must have an email address')
+	def create_user(self, userid, date_of_birth, password=None):
+		"""
+		Creates and saves a User with the given email, date of
+		birth and password.
+		"""
+		if not userid:
+			raise ValueError('Users must have an email address')
 
-        user = self.model(
-            userid=userid,
-            date_of_birth=date_of_birth,
-        )
+		user = self.model(
+			userid=userid,
+			date_of_birth=date_of_birth,
+		)
 
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+		user.set_password(password)
+		user.save(using=self._db)
+		return user
 
-    def create_superuser(self, userid, date_of_birth, password):
-        """
-        Creates and saves a superuser with the given email, date of
-        birth and password.
-        """
-        user = self.create_user(userid,
-            password=password,
-            date_of_birth=date_of_birth
-        )
-        user.is_admin = True
-        user.save(using=self._db)
-        return user
+	def create_superuser(self, userid, date_of_birth, password):
+		"""
+		Creates and saves a superuser with the given email, date of
+		birth and password.
+		"""
+		user = self.create_user(userid,
+			password=password,
+			date_of_birth=date_of_birth
+		)
+		user.is_admin = True
+		user.save(using=self._db)
+		return user
 
 
 class MyUser(AbstractBaseUser):
-    userid = models.CharField(
-        verbose_name='user_id',
-        max_length=255,
-        unique=True,
-    )
-    date_of_birth = models.DateField(default = timezone.now())
-    is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
+	userid = models.CharField(
+		verbose_name='user_id',
+		max_length=255,
+		unique=True,
+	)
+	date_of_birth = models.DateField(default = timezone.now())
+	is_active = models.BooleanField(default=True)
+	is_admin = models.BooleanField(default=False)
 
-    objects = MyUserManager()
+	objects = MyUserManager()
 
-    USERNAME_FIELD = 'userid'
-    REQUIRED_FIELDS = ['date_of_birth']
+	USERNAME_FIELD = 'userid'
+	REQUIRED_FIELDS = ['date_of_birth']
 
-    def get_full_name(self):
-        # The user is identified by their email address
-        return self.userid
+	def get_full_name(self):
+		# The user is identified by their email address
+		return self.userid
 
-    def get_short_name(self):
-        # The user is identified by their email address
-        return self.userid
+	def get_short_name(self):
+		# The user is identified by their email address
+		return self.userid
 
-    def __str__(self):              # __unicode__ on Python 2
-        return self.userid
+	def __str__(self):              # __unicode__ on Python 2
+		return self.userid
 
-    def has_perm(self, perm, obj=None):
-        "Does the user have a specific permission?"
-        # Simplest possible answer: Yes, always
-        return True
+	def has_perm(self, perm, obj=None):
+		"Does the user have a specific permission?"
+		# Simplest possible answer: Yes, always
+		return True
 
-    def has_module_perms(self, app_label):
-        "Does the user have permissions to view the app `app_label`?"
-        # Simplest possible answer: Yes, always
-        return True
+	def has_module_perms(self, app_label):
+		"Does the user have permissions to view the app `app_label`?"
+		# Simplest possible answer: Yes, always
+		return True
 
-    @property
-    def is_staff(self):
-        "Is the user a member of staff?"
-        # Simplest possible answer: All admins are staff
-        return self.is_admin
-        
+	@property
+	def is_staff(self):
+		"Is the user a member of staff?"
+		# Simplest possible answer: All admins are staff
+		return self.is_admin
+		
 GENDER_CHOICES = (('M', 'Male'), ('F', 'Female'))
 DEPT_CHOICES = (('COE', 'Computer Science Engineering'), ('ECE', 'Electoincs Engineering'))
 COLLEGE_CAT = (('DGEN','Delhi General'), ('DOBC','Delhi OBC'),('DSC','Delhi SC'),('DST','Delhi ST'))
@@ -117,11 +117,11 @@ class Hostels(models.Model):
 	def __str__(self):              # __unicode__ on Python 2
 		return self.username
 
-
 class Branch(models.Model):
-	title = models.CharField(max_length=5, null=False)
-	name = models.CharField(max_length = 100, null=False)
-	def __str__(self):              # __unicode__ on Python 2
+	title = models.CharField(max_length = 20, primary_key = True, default='')
+	name = models.CharField(max_length = 100, null=False,default = 'COMPUTER SCIENCE AND ENGINEERING')
+	roll_code = models.CharField(max_length = 5,null = False, default='')
+	def __str__(self):
 		return "%s" % (self.title)
 
 class Rooms(models.Model):
@@ -131,7 +131,7 @@ class Rooms(models.Model):
 	student_no1 = models.CharField(null = True, blank = True, max_length = 300)
 	student_no2 = models.CharField(null = True, blank = True, max_length = 300)
 	student_no3 = models.CharField(null = True, blank = True, max_length = 300)
-	capacity_remaining = models.IntegerField(null = True, blank = True)     #calculate
+	capacity_remaining = models.IntegerField(null = True, blank = True)
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.room_no)
 class Students(models.Model):

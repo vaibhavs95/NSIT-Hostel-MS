@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 {% load staticfiles %}
+{% load material_form %}
  <html>
  <head>
  	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -36,7 +37,7 @@
                     </ul>
                         
                     {% else %}
-                    <li class="login-button"><a class="modal-trigger waves-effect waves-light btn" href="#login-modal">
+                    <li class="login-button"><a class="modal-trigger waves-effect waves-light btn" href="{% url 'login' %}">
                         Login
                     </a></li>
                     {% endif %}
@@ -374,14 +375,15 @@
  		<!-- Modals -->
 
  		<!--login-->
- 		<div id="login-modal" class="modal">
+ 		<!--<div id="login-modal" class="modal">
         <div class="modal-content">
             <h4>Log In</h4>
             <hr>
             <form method="post" action="{% url 'login' %}">
                 {% csrf_token %}
                 <input type="hidden" name="next" value="{{ next }}" />
-                {{ form }}
+                {% form form=form %}
+                {% endform %}
                 <div class="row">
                     <button class="btn waves-effect waves-light col s6" type="submit" name="login">Log In</button>
                     <a id="forgot-button" data-target="forgot-password" class="modal-trigger col s6" href="#!">Forgot Password</a>
@@ -391,33 +393,33 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div>-->
 
  		<!-- forgot password -->
 
- 		<div id="forgot-password" class="modal">
- 			<div class="modal-content">
- 				<h4> Forgot Password</h4>
- 				<hr>
- 				<div class="row">
- 					<div class="input-field col s12">
- 						<input id="username" type="text" class="validate">
- 						<label for="username">Username/Roll No.</label>
- 					</div>
- 				</div>
- 				<div class="row">
- 					<div class="input-field col s12">
- 						<input type="date" class="datepicker">
- 						<label for="password">Date of Birth</label>
- 					</div>
- 				</div>
- 				<div class="row">
- 					<button class="btn waves-effect waves-light col s6 offset-s3" type="submit" name="action">Reset Password</button><br>
- 				</div>
- 				<div class="modal-footer">
- 					<a href="#!" class="modal-action modal-close waves-effect btn-flat ">Cancel</a>
- 				</div>
- 			</div>
+ 		<!--<div id="forgot-password" class="modal">-->
+ 		<!--	<div class="modal-content">-->
+ 		<!--		<h4> Forgot Password</h4>-->
+ 		<!--		<hr>-->
+ 		<!--		<div class="row">-->
+ 		<!--			<div class="input-field col s12">-->
+ 		<!--				<input id="username" type="text" class="validate">-->
+ 		<!--				<label for="username">Username/Roll No.</label>-->
+ 		<!--			</div>-->
+ 		<!--		</div>-->
+ 		<!--		<div class="row">-->
+ 		<!--			<div class="input-field col s12">-->
+ 		<!--				<input type="date" class="datepicker">-->
+ 		<!--				<label for="password">Date of Birth</label>-->
+ 		<!--			</div>-->
+ 		<!--		</div>-->
+ 		<!--		<div class="row">-->
+ 		<!--			<button class="btn waves-effect waves-light col s6 offset-s3" type="submit" name="action">Reset Password</button><br>-->
+ 		<!--		</div>-->
+ 		<!--		<div class="modal-footer">-->
+ 		<!--			<a href="#!" class="modal-action modal-close waves-effect btn-flat ">Cancel</a>-->
+ 		<!--		</div>-->
+ 		<!--	</div>-->
 			
 
  			<!--Scripts -->

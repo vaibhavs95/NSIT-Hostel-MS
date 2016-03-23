@@ -35,7 +35,7 @@
                     </ul>
                         
                     {% else %}
-                    <li class="login-button"><a class="modal-trigger waves-effect waves-light btn" href="#login-modal">
+                    <li class="login-button"><a class="modal-trigger waves-effect waves-light btn" href="{% url 'login' %}">
                         Login
                     </a></li>
                     {% endif %}
@@ -176,7 +176,8 @@
             <form method="post" action="{% url 'login' %}">
                 {% csrf_token %}
                 <input type="hidden" name="next" value="{{ next }}" />
-                {{ form }}
+                {% form form=form %}
+                {% endform %}
                 <div class="row">
                     <button class="btn waves-effect waves-light col s6" type="submit" name="login">Log In</button>
                     <a id="forgot-button" data-target="forgot-password" class="modal-trigger col s6" href="#!">Forgot Password</a>
