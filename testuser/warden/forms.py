@@ -8,7 +8,7 @@ import re
 class EditWardenProfileForm(forms.ModelForm):
     class Meta:
         model = Hostels
-        fields = ['name','phone','email','landline','department','portfolio']
+        fields = ['name','phone','email','landline','department','portfolio','warden_photo']
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(EditWardenProfileForm, self).__init__(*args, **kwargs)
@@ -16,15 +16,12 @@ class EditWardenProfileForm(forms.ModelForm):
         name = self.cleaned_data.get('name')
         phone = self.cleaned_data.get('phone')
         landline = self.cleaned_data.get('landline')
-        email = self.cleaned_data.get('email')
-        department = self.cleaned_data.get('department')
-        portfolio = self.cleaned_data.get('portfolio')
-        if name and phone and landline and email and department and portfolio:
+        if name and phone and landline:
             name = name.title()
-            if len(phone) > 13:
-                raise forms.ValidationError('Enter Correct Phone Number')
-            if len(landline) > 11:
-                raise forms.ValidationError('Enter Correct Landline Number')
+            if len(phone) > 10:
+                raise forms.ValidationError('Enter Correct Phone Number without std code')
+            if len(landline) > 8:
+                raise forms.ValidationError('Enter Correct Landline Number without std code')
         return self.cleaned_data
 class AddRoomForm(forms.Form):
     room_no = forms.CharField(max_length=10)
@@ -62,6 +59,44 @@ class AddRoomForm(forms.Form):
             if(len(r) > 0):
                 raise forms.ValidationError('This Room already Exists.')
         return self.cleaned_data'''
+class AddFacilityForm(forms.ModelForm):
+    class Meta:
+        model = Facilities
+        fields = ['title','description','photo']
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user',None)
+        super(AddFacilityForm, self).__init__(*args, **kwargs)
+    def clean(self):
+        title = self.cleaned_data.get('title')
+        userid = Hostels.objects.get(username=self.user)
+        e = Facilities.objects.filter(hostel=userid)
+        for i in e:
+            if i.title.lower() == title.lower():
+                raise forms.ValidationError('Facility with same title is already there')
+        return self.cleaned_data
+
+class EditFacilityForm(forms.ModelForm):
+    class Meta:
+        model = Facilities
+        fields = ['title','description','photo']
+    def __init__(self, *args, **kwargs):
+        self.pk = kwargs.pop('pk', None)
+        self.user = kwargs.pop('user',None)
+        super(EditFacilityForm, self).__init__(*args, **kwargs)
+    def clean(self):
+        hostel = Facilities.objects.get(pk=self.pk).hostel
+        if str(hostel) != str(self.user):
+            raise forms.ValidationError('Invalid Request')
+        else:
+            title = self.cleaned_data.get('title')
+            userid = Hostels.objects.get(username=self.user)
+            e = Facilities.objects.filter(hostel=userid)
+            for i in e:
+                if int(i.pk) != int(self.pk):
+                    if i.title.lower() == title.lower():
+                        raise forms.ValidationError('Facility with same title is already there')
+            return self.cleaned_data
+
 
 class AddStudentForm(forms.ModelForm):
     class Meta:
@@ -77,7 +112,6 @@ class AddStudentForm(forms.ModelForm):
         room_number = self.cleaned_data.get('room_number')
         if username and branch and student_email and room_number:
             if re.match("[0-9]*-[A-Z]*-[0-9]*",str(username)) != None:
-                print('inside if')
                 s = None
                 u = None
                 try:
@@ -88,8 +122,6 @@ class AddStudentForm(forms.ModelForm):
                     u = MyUser.objects.get(userid=username)
                 except ObjectDoesNotExist:
                     pass
-                print (s)
-                print(u)
                 if s is not None or u is not None:
                     raise forms.ValidationError('Student Alredy Exists')
                 e = Students.objects.all()

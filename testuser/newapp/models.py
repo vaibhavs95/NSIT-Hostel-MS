@@ -96,6 +96,10 @@ class ChiefWarden(models.Model):
 	def __str__(self):
 		return self.name
 
+def warden_photo_name(instance, filename):
+	ext = filename.split('.')[-1]
+	return 'warden/images/hostel/'+instance.username+'.'+ext
+
 class Hostels(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True, default='')
 	name = models.CharField(max_length = 20, default='',null=True)
@@ -108,7 +112,7 @@ class Hostels(models.Model):
 	portfolio = models.CharField(null = True,max_length = 40, blank=True)
 	department = models.CharField(null = True,max_length = 20, blank=True)
 	chief_warden = models.ForeignKey(ChiefWarden)
-	#warden_photo = models.nowField()	
+	warden_photo = models.ImageField(upload_to = warden_photo_name, null = True, blank = True)	
 	#admission_form = models.FileField(upload_to = get_upload_file_name)
 	def __str__(self):              # __unicode__ on Python 2
 		return self.username
@@ -215,13 +219,33 @@ class Caretaker(models.Model):
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s %s" % (self.name_of_caretaker, self.caretaker_phone_num)
 		
+'''class Committee(models.Model):
+	title = models.CharField(null=False,max_length=50)
+	members = models.ManyToManyField(Students)
+	def __str__(self):
+		return self.title
+	    '''
+'''class MessDetail(models.Model):
+	hostel = models.ForeignKey(Hostels)
+	breakfast_day = models.DateTimeField(null=False)
+	lunch_day = models.DateTimeField(null=False)
+	snacks_day = models.DateTimeField(null=False)
+	dinner_day = models.DateTimeField(null=False)
+	breakfast_end = models.DateTimeField(null=False)
+	lunch_end = models.DateTimeField(null=False)
+	snacks_end = models.DateTimeField(null=False)
+	dinner_end = models.DateTimeField(null=False)
+	menu = models.FileField(null=False)'''
 
 # Create your models here.
+def facility_photo_name(instance, filename):
+	ext = filename.split('.')[-1]
+	return 'warden/images/facilities/'+instance.hostel.username+'/'+instance.title+'.'+ext
 class Facilities(models.Model):
-	hostel = models.ManyToManyField(Hostels)
-	title = models.CharField(null=False,max_length=100)
-	description = models.TextField(null=False)
-	#photo = models.nowField(upload_to="documents/%Y/%m/%d",null=False)
+	hostel = models.ForeignKey(Hostels)
+	title = models.CharField(null=False, unique=True, max_length=100,default='Facility Name')
+	description = models.TextField(null=False, default='Facility Description')
+	photo = models.ImageField(upload_to=facility_photo_name,null=True, blank=True)
 	def __str__(self):
 		return self.title
 
