@@ -205,7 +205,17 @@ def editfacility(request,pk):
 	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
 		facilitybasic(request.user)
 		data['pk'] = pk
-		fac = Facilities.objects.get(pk=pk)
+		fac = None
+		try:
+			fac = Facilities.objects.get(pk=pk)
+		except ObjectDoesNotExist:
+			pass
+		if fac:
+			hostel = fac.hostel
+			if str(hostel) != str(request.user):
+				return redirect('logout')
+		else:
+			return redirect('logout')
 		if request.method == 'POST':
 			a = None
 			a = request.FILES.__contains__('photo')
@@ -232,7 +242,17 @@ def editfacility(request,pk):
 def deletefacility(request,pk):
 	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
 		data['pk'] = pk
-		fac = Facilities.objects.get(pk=pk)
+		fac = None
+		try:
+			fac = Facilities.objects.get(pk=pk)
+		except ObjectDoesNotExist:
+			pass
+		if fac:
+			hostel = fac.hostel
+			if str(hostel) != str(request.user):
+				return redirect('logout')
+		else:
+			return redirect('logout')
 		try:
 			fc=Facilities.objects.filter(pk = pk)
 		except ObjectDoesNotExist:
@@ -244,6 +264,365 @@ def deletefacility(request,pk):
 	else:
 		return redirect('logout')
 
+#######
+
+'''Council'''
+
+#######
+
+def councilbasic(user):
+	basic()
+	h = Hostels.objects.get(username = user)
+	a = HostelCouncil.objects.filter(hostel=h)
+	council = []
+	for i in a:
+		if i.photo:
+			d = {'coun':i,'photo':'yes'}
+		else:
+			d = {'coun':i,'photo':None}
+		council.append(d)
+	data['council'] = council
+	data['editformvisible'] = None
+	f = AddCouncilForm()
+	data['addcouncilform'] = f
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def council(request):
+	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+		councilbasic(request.user)
+		return render(request,'warden/council.html',data)
+	else:
+		return redirect('logout')
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def addcouncil(request):
+	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+		councilbasic(request.user)
+		if request.method == 'POST':
+			f = AddCouncilForm(request.POST, request.FILES, user = request.user)
+			if f.is_valid():
+				if request.FILES.__contains__('photo'):
+					coun = HostelCouncil(name=f.cleaned_data.get('name'),email=f.cleaned_data.get('email'),phone=f.cleaned_data.get('phone'),position=f.cleaned_data.get('position'),committee=f.cleaned_data.get('committee'),dept_or_room=f.cleaned_data.get('dept_or_room'),hostel=Hostels.objects.get(username=request.user),photo=request.FILES.__getitem__('photo'))
+				else:
+					coun = HostelCouncil(name=f.cleaned_data.get('name'),email=f.cleaned_data.get('email'),phone=f.cleaned_data.get('phone'),position=f.cleaned_data.get('position'),committee=f.cleaned_data.get('committee'),dept_or_room=f.cleaned_data.get('dept_or_room'),hostel=Hostels.objects.get(username=request.user))
+				coun.save()
+				councilbasic(request.user)
+			data['addcouncilform'] = f
+			return render(request,'warden/council.html',data)
+		else:
+			return redirect('warden-council')
+	else:
+		return redirect('logout')
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def editcouncil(request,pk):
+	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+		councilbasic(request.user)
+		data['pk'] = pk
+		coun = None
+		try:
+			coun = HostelCouncil.objects.get(pk=pk)
+		except ObjectDoesNotExist:
+			pass
+		if coun:
+			hostel = coun.hostel
+			if str(hostel) != str(request.user):
+				return redirect('logout')
+		else:
+			return redirect('logout')
+		if request.method == 'POST':
+			a = None
+			a = request.FILES.__contains__('photo')
+			print(request.FILES)
+			print(a)
+			if a:
+				coun.photo.delete(True)
+			f = EditCouncilForm(request.POST, request.FILES, user = request.user, pk = pk ,instance=coun)
+			if f.is_valid():
+				f.save()
+				return redirect('warden-council')
+			else:
+				data['editcouncilform'] = f
+				data['editformvisible'] = 'yes'
+		else:
+			g = EditCouncilForm(instance=coun)
+			data['editformvisible'] = 'yes'
+			data['editcouncilform'] = g
+		return render(request,'warden/council.html',data)
+	else:
+		return redirect('logout')
+@login_required
+@require_http_methods(['GET', 'POST'])
+def deletecouncil(request,pk):
+	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+		data['pk'] = pk
+		coun = None
+		try:
+			coun = HostelCouncil.objects.get(pk=pk)
+		except ObjectDoesNotExist:
+			pass
+		if coun:
+			hostel = coun.hostel
+			if str(hostel) != str(request.user):
+				return redirect('logout')
+		else:
+			return redirect('logout')
+		try:
+			co=HostelCouncil.objects.filter(pk = pk)
+		except ObjectDoesNotExist:
+			pass
+		if coun.photo:
+			coun.photo.delete(True)
+		coun.delete()
+		return redirect('warden-council')
+	else:
+		return redirect('logout')
+
+
+#######
+
+'''Forms'''
+
+#######
+
+def hosformbasic(user):
+	basic()
+	h = Hostels.objects.get(username = user)
+	a = (Form.objects.filter(hostel=h)).order_by('time')
+	hosform = []
+	for i in a:
+		d = {'hosf':i}
+		hosform.append(d)
+	data['hosform'] = hosform
+	data['editformvisible'] = None
+	f = AddHosformForm()
+	data['addhosformform'] = f
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def hosform(request):
+	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+		hosformbasic(request.user)
+		return render(request,'warden/hosform.html',data)
+	else:
+		return redirect('logout')
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def addhosform(request):
+	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+		hosformbasic(request.user)
+		if request.method == 'POST':
+			f = AddHosformForm(request.POST, request.FILES, user = request.user)
+			if f.is_valid():
+				#if request.FILES.__contains__('file'):
+				hosf = Form(title=f.cleaned_data.get('title'),hostel=Hostels.objects.get(username=request.user),file=request.FILES.__getitem__('file'))
+				#else:
+				#	hosf = Form(title=f.cleaned_data.get('title'),hostel=Hostels.objects.get(username=request.user),file=request.FILES.__getitem__('file'))
+				hosf.save()
+				hosformbasic(request.user)
+			data['addhosformform'] = f
+			return render(request,'warden/hosform.html',data)
+		else:
+			return redirect('warden-hosform')
+	else:
+		return redirect('logout')
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def edithosform(request,pk):
+	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+		hosformbasic(request.user)
+		data['pk'] = pk
+		hosf = None
+		try:
+			hosf = Form.objects.get(pk=pk)
+		except ObjectDoesNotExist:
+			pass
+		if hosf:
+			hostel = hosf.hostel
+			if str(hostel) != str(request.user):
+				return redirect('logout')
+		else:
+			return redirect('logout')
+		if request.method == 'POST':
+			a = None
+			a = request.FILES.__contains__('file')
+			#print(request.FILES)
+			#print(a)
+			if a:
+				hosf.file.delete(True)
+			f = EditHosformForm(request.POST, request.FILES, user = request.user, pk = pk ,instance=hosf)
+			if f.is_valid():
+				f.save()
+				return redirect('warden-hosform')
+			else:
+				data['edithosformform'] = f
+				data['editformvisible'] = 'yes'
+		else:
+			g = EditHosformForm(instance=hosf)
+			data['editformvisible'] = 'yes'
+			data['edithosformform'] = g
+		return render(request,'warden/hosform.html',data)
+	else:
+		return redirect('logout')
+@login_required
+@require_http_methods(['GET', 'POST'])
+def deletehosform(request,pk):
+	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+		data['pk'] = pk
+		hosf = None
+		try:
+			hosf = Form.objects.get(pk=pk)
+		except ObjectDoesNotExist:
+			pass
+		if hosf:
+			hostel = hosf.hostel
+			if str(hostel) != str(request.user):
+				return redirect('logout')
+		else:
+			return redirect('logout')
+		try:
+			ho=Form.objects.filter(pk = pk)
+		except ObjectDoesNotExist:
+			pass
+		if hosf.file:
+			hosf.file.delete(True)
+		hosf.delete()
+		return redirect('warden-hosform')
+	else:
+		return redirect('logout')
+
+
+#############
+
+'''
+Mess Details
+'''
+
+#############
+
+def messbasic(user):
+	basic()
+	h = Hostels.objects.get(username = user)
+	a = MessDetail.objects.filter(hostel=h)
+	if a:
+		data['mess'] = a[0]
+	else:
+		data['mess'] = None
+	data['editformvisible'] = None
+	f = AddMessForm()
+	data['addmessform'] = f
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def mess(request):
+	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+		messbasic(request.user)
+		return render(request,'warden/mess.html',data)
+	else:
+		return redirect('logout')
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def addmess(request):
+	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+		messbasic(request.user)
+		if data['mess'] == None:
+			if request.method == 'POST':
+				print(request.user)
+				f = AddMessForm(request.POST, request.FILES)
+				if f.is_valid():
+					a = f.save(commit=False)
+					a.hostel = Hostels.objects.get(username=request.user)
+					a.save()
+					return mess(request)
+				else:
+					data['addmessform'] = f
+					return render(request,'warden/mess.html',data)
+			else:
+				return redirect('warden-mess')
+		else:
+			return redirect('warden-mess')
+	else:
+		return redirect('logout')
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def editmess(request,pk):
+	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+		messbasic(request.user)
+		mess = None
+		try:
+			mess = MessDetail.objects.get(pk=pk)
+		except ObjectDoesNotExist:
+			pass
+		if mess:
+			hostel = mess.hostel
+			if str(hostel) != str(request.user):
+				return redirect('logout')
+		else:
+			return redirect('logout')
+		if data['mess'] != None:
+			data['pk'] = pk
+			if request.method == 'POST':
+				a = None
+				a = request.FILES.__contains__('menu')
+				if a:
+					print('deleted')
+					mess.menu.delete(True)
+				f = AddMessForm(request.POST, request.FILES,instance=mess)
+				if f.is_valid():
+					f.save()
+					print(request.FILES)
+					return redirect('warden-mess')
+				else:
+					data['editmessform'] = f
+					data['editformvisible'] = 'yes'
+			else:
+				g = AddMessForm(instance=mess)
+				data['editformvisible'] = 'yes'
+				data['editmessform'] = g
+			return render(request,'warden/mess.html',data)
+		else:
+			return redirect('warden-mess')
+	else:
+		return redirect('logout')
+'''@login_required
+@require_http_methods(['GET', 'POST'])
+def deletehosform(request,pk):
+	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+		data['pk'] = pk
+		hosf = Form.objects.get(pk=pk)
+		hostel = hosf.hostel
+		if str(hostel) != str(request.user):
+			return redirect('logout')
+		try:
+			ho=Form.objects.filter(pk = pk)
+		except ObjectDoesNotExist:
+			pass
+		if hosf.file:
+			hosf.file.delete(True)
+		hosf.delete()
+		return redirect('warden-hosform')
+	else:
+		return redirect('logout')
+
+@login_required
+@require_http_methods(['GET','POST'])
+def mess(request):
+	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+		basic()
+		if request.method == 'POST' or request.method == 'GET':
+			f = AddMessForm()
+			data['messform'] = f
+		return render(request,'warden/mess.html',data)
+	else:
+		return redirect('logout')
+'''
 #### 
 
 '''Student'''

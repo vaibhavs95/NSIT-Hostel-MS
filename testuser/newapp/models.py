@@ -81,7 +81,8 @@ class MyUser(AbstractBaseUser):
 		return self.is_admin
 		
 GENDER_CHOICES = (('M', 'Male'), ('F', 'Female'))
-DEPT_CHOICES = (('COE', 'Computer Science Engineering'), ('ECE', 'Electoincs Engineering'))
+MEMBER_CHOICES = (('F', 'Faculty'), ('S', 'Student'))
+#DEPT_CHOICES = (('COE', 'Computer Science Engineering'), ('ECE', 'Electoincs Engineering'))
 COLLEGE_CAT = (('DGEN','Delhi General'), ('DOBC','Delhi OBC'),('DSC','Delhi SC'),('DST','Delhi ST'))
 #HOSTEL_CAT = ((''))
 BLOOD_GROUP = (('B+','B Positive'),('A+','A Positive'),('AB+','AB Positive'),
@@ -219,24 +220,62 @@ class Caretaker(models.Model):
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s %s" % (self.name_of_caretaker, self.caretaker_phone_num)
 		
-'''class Committee(models.Model):
-	title = models.CharField(null=False,max_length=50)
-	members = models.ManyToManyField(Students)
-	def __str__(self):
-		return self.title
-	    '''
-'''class MessDetail(models.Model):
+#this table holds details of caretakers, mess/hostel secretary, sports/mess/library/cultural/etc. committee and its members
+def council_photo_name(instance, filename):
+	ext = filename.split('.')[-1]
+	return 'warden/images/council/'+instance.hostel.username+'/'+instance.position+'.'+ext
+class HostelCouncil(models.Model):
 	hostel = models.ForeignKey(Hostels)
-	breakfast_day = models.DateTimeField(null=False)
-	lunch_day = models.DateTimeField(null=False)
-	snacks_day = models.DateTimeField(null=False)
-	dinner_day = models.DateTimeField(null=False)
-	breakfast_end = models.DateTimeField(null=False)
-	lunch_end = models.DateTimeField(null=False)
-	snacks_end = models.DateTimeField(null=False)
-	dinner_end = models.DateTimeField(null=False)
-	menu = models.FileField(null=False)'''
-
+	name = models.CharField(null=True,blank=True,max_length=100,default='')
+	email = models.EmailField(null=False)
+	phone = models.CharField(max_length=15,default='',null=False,blank=False)
+	position = models.CharField(max_length=100, default='')
+	committee = models.CharField(max_length=100, default='', null=True,blank=True)
+	dept_or_room = models.CharField(max_length=100, default='', null=True, blank=True)
+	photo = models.ImageField(upload_to = council_photo_name, null = True, blank = True)
+	#member = models.CharField(max_length = 15,  blank = False, choices = MEMBER_CHOICES, default = MEMBER_CHOICES[0][0])
+	#room_no = models.CharField(max_length=100, default='', null=True, blank=True)
+	#to do: to check if student/fsculty and accordingly assign room_no(from all room list) or dept_name.
+	def __str__(self):
+		return self.name
+def messmenu_file_name(instance, filename):
+	ext = filename.split('.')[-1]
+	return 'warden/files/messmenu/'+instance.hostel.username+'.'+ext
+class MessDetail(models.Model):
+	hostel = models.ForeignKey(Hostels)
+	weekday_breakfast_from = models.TimeField(null=False)
+	weekday_breakfast_to = models.TimeField(null=False)
+	weekday_lunch_from = models.TimeField(null=False)
+	weekday_lunch_to = models.TimeField(null=False)
+	weekday_snack_from = models.TimeField(null=False)
+	weekday_snack_to = models.TimeField(null=False)
+	weekday_dinner_from = models.TimeField(null=False)
+	weekday_dinner_to = models.TimeField(null=False)
+	weekend_breakfast_from = models.TimeField(null=False)
+	weekend_breakfast_to = models.TimeField(null=False)
+	weekend_lunch_from = models.TimeField(null=False)
+	weekend_lunch_to = models.TimeField(null=False)
+	weekend_snack_from = models.TimeField(null=False)
+	weekend_snack_to = models.TimeField(null=False)
+	weekend_dinner_from = models.TimeField(null=False)
+	weekend_dinner_to = models.TimeField(null=False)
+	weekday_breakfast_charge = models.IntegerField(null=False)
+	weekday_lunch_charge = models.IntegerField(null=False)
+	weekday_snack_charge = models.IntegerField(null=False)
+	weekday_dinner_charge = models.IntegerField(null=False)
+	weekend_breakfast_charge = models.IntegerField(null=False)
+	weekend_lunch_charge = models.IntegerField(null=False)
+	weekend_snack_charge = models.IntegerField(null=False)
+	weekend_dinner_charge = models.IntegerField(null=False)
+	menu = models.FileField(upload_to=messmenu_file_name,null=False)
+def form_file_name(instance, filename):
+	ext = filename.split('.')[-1]
+	return 'warden/files/forms/'+instance.hostel.username+'/'+instance.title+'.'+ext
+class Form(models.Model):
+	hostel = models.ForeignKey(Hostels)
+	title = models.CharField(max_length=200,default='')
+	time = models.DateTimeField(auto_now_add=True)
+	file = models.FileField(upload_to = form_file_name)
 # Create your models here.
 def facility_photo_name(instance, filename):
 	ext = filename.split('.')[-1]

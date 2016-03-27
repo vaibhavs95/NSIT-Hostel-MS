@@ -85,17 +85,108 @@ class EditFacilityForm(forms.ModelForm):
         super(EditFacilityForm, self).__init__(*args, **kwargs)
     def clean(self):
         hostel = Facilities.objects.get(pk=self.pk).hostel
+        title = self.cleaned_data.get('title')
+        userid = Hostels.objects.get(username=self.user)
+        e = Facilities.objects.filter(hostel=userid)
+        for i in e:
+            if int(i.pk) != int(self.pk):
+                if i.title.lower() == title.lower():
+                    raise forms.ValidationError('Facility with same title is already there')
+        return self.cleaned_data
+
+
+class AddCouncilForm(forms.ModelForm):
+    class Meta:
+        model = HostelCouncil
+        fields = ['committee','position','name','phone','email','dept_or_room','photo']
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user',None)
+        super(AddCouncilForm, self).__init__(*args, **kwargs)
+    def clean(self):
+        committee = self.cleaned_data.get('committee')
+        position = self.cleaned_data.get('position')
+        phone = self.cleaned_data.get('phone')
+        name = self.cleaned_data.get('name')
+        userid = Hostels.objects.get(username=self.user)
+        e = HostelCouncil.objects.filter(hostel=userid)
+        for i in e:
+            if i.position.lower() == position.lower() and i.name.lower() == name.lower():
+                raise forms.ValidationError('Council Member with same name and position is already there')
+            if committee == '' or committee == None:
+                self.cleaned_data['committee'] = position
+            if len(phone) > 10:
+                raise forms.ValidationError('Enter Correct Phone Number without std code')
+        return self.cleaned_data
+
+class EditCouncilForm(forms.ModelForm):
+    class Meta:
+        model = HostelCouncil
+        fields = ['committee','position','name','phone','email','dept_or_room','photo']
+    def __init__(self, *args, **kwargs):
+        self.pk = kwargs.pop('pk', None)
+        self.user = kwargs.pop('user',None)
+        super(EditCouncilForm, self).__init__(*args, **kwargs)
+    def clean(self):
+        hostel = HostelCouncil.objects.get(pk=self.pk).hostel
         if str(hostel) != str(self.user):
             raise forms.ValidationError('Invalid Request')
         else:
-            title = self.cleaned_data.get('title')
+            committee = self.cleaned_data.get('committee')
+            position = self.cleaned_data.get('position')
+            phone = self.cleaned_data.get('phone')
+            name = self.cleaned_data.get('name')
             userid = Hostels.objects.get(username=self.user)
-            e = Facilities.objects.filter(hostel=userid)
+            e = HostelCouncil.objects.filter(hostel=userid)
             for i in e:
-                if int(i.pk) != int(self.pk):
-                    if i.title.lower() == title.lower():
-                        raise forms.ValidationError('Facility with same title is already there')
+                if i.position.lower() == position.lower() and i.name.lower() == name.lower() and int(i.pk) != int(self.pk):
+                    raise forms.ValidationError('Council Member with same name and position is already there')
+                if len(phone) > 10:
+                    raise forms.ValidationError('Enter Correct Phone Number without std code')
             return self.cleaned_data
+
+class AddHosformForm(forms.ModelForm):
+    class Meta:
+        model = Form
+        fields = ['title','file']
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user',None)
+        super(AddHosformForm, self).__init__(*args, **kwargs)
+    def clean(self):
+        title = self.cleaned_data.get('title')
+        userid = Hostels.objects.get(username=self.user)
+        e = Form.objects.filter(hostel=userid)
+        for i in e:
+            if i.title.lower() == title.lower():
+                raise forms.ValidationError('Form with same title is already there')
+        return self.cleaned_data
+
+class EditHosformForm(forms.ModelForm):
+    class Meta:
+        model = Form
+        fields = ['title','file']
+    def __init__(self, *args, **kwargs):
+        self.pk = kwargs.pop('pk', None)
+        self.user = kwargs.pop('user',None)
+        super(EditHosformForm, self).__init__(*args, **kwargs)
+    def clean(self):
+        #hostel = Form.objects.get(pk=self.pk).hostel
+        title = self.cleaned_data.get('title')
+        userid = Hostels.objects.get(username=self.user)
+        e = Form.objects.filter(hostel=userid)
+        for i in e:
+            if int(i.pk) != int(self.pk):
+                if i.title.lower() == title.lower():
+                    raise forms.ValidationError('Form with same title is already there')
+        return self.cleaned_data
+
+class AddMessForm(forms.ModelForm):
+    class Meta:
+        model = MessDetail
+        exclude = ['hostel']
+    def __init__(self,*args, **kwargs):
+        super(AddMessForm, self).__init__(*args, **kwargs)
+    def clean(self):
+        return self.cleaned_data
 
 
 class AddStudentForm(forms.ModelForm):

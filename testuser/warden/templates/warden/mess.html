@@ -1,0 +1,153 @@
+{% extends "newapp/home.html" %}
+{% load staticfiles %}
+{% load material_form %}
+{% block title %} HMS-Warden-Mess {% endblock %}
+
+{% block extrahead %}
+{% endblock %}
+
+{% block extrastyle %}
+{% endblock %}
+
+{% block sidelist %}
+<li><a class="waves-effect" href="{% url 'warden-room' %}">Room</a></li>
+<li><a class="waves-effect" href="{% url 'warden-student' %}">Student</a></li>
+<li><a class="waves-effect" href="{% url 'warden-facilities' %}">Facilities</a></li>
+<li><a class="waves-effect" href="{% url 'warden-council' %}">Council</a></li>
+<li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
+<li><a class="waves-effect" href="{% url 'warden-mess' %}">Mess</a></li>
+{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col s12 m12 l12">
+		<div class="card-panel">
+			<h3>Mess</h3>
+			{% if mess %}
+			{% if editformvisible %}
+			<ul class="collapsible" data-collapsible="accordion">
+				<li>
+					<div class="collapsible-header active">Edit Mess Details</div>
+					<div class="collapsible-body">
+					<form method="post" action="{% url 'warden-edit-mess' pk %}" enctype="multipart/form-data">
+							{% csrf_token %}
+							<input type="hidden" name="next" value="{{ next }}" />
+							{% form form=editmessform %}
+							{% endform %}
+							<div class="row">
+								<div class="col s12"> 
+									<button type="submit" name="edit-mess" class="btn waves-effect waves-light left">Edit Mess Details</button>
+									<a class="btn waves-effect waves-light right" href="{% url 'warden-mess' %}">Cancel</a>
+								</div>
+							</div>
+						</form>
+					</div>
+				</li>
+			</ul>
+			{% endif %}
+			<div class="card">
+				<div class="card-body">
+				<h4>Mess Details</h4>
+				<p>Weekdays</p>
+				<table>
+					<thead>
+						<tr>
+							<th data-field="name">Meal</th>
+							<th data-field="id">From - To</th>
+							<th data-field="name">Charges (Rs.)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Breakfast</td>
+							<td>{{ mess.weekday_breakfast_from }} - {{mess.weekday_breakfast_to}}</td>
+							<td>{{ mess.weekday_breakfast_charge }}</td>
+						</tr>
+						<tr>
+							<td>Lunch</td>
+							<td>{{ mess.weekday_lunch_from }} - {{mess.weekday_lunch_to}}</td>
+							<td>{{ mess.weekday_lunch_charge }}</td>
+						</tr>
+						<tr>
+							<td>Snack</td>
+							<td>{{ mess.weekday_snack_from }} - {{mess.weekday_snack_to}}</td>
+							<td>{{ mess.weekday_snack_charge }}</td>
+						</tr>
+						<tr>
+							<td>Dinner</td>
+							<td>{{ mess.weekday_dinner_from }} - {{mess.weekday_dinner_to}}</td>
+							<td>{{ mess.weekday_dinner_charge }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<p>Weekend</p>
+				<table>
+					<thead>
+						<tr>
+							<th data-field="name">Meal</th>
+							<th data-field="id">From - To</th>
+							<th data-field="name">Charges (Rs.)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Breakfast</td>
+							<td>{{ mess.weekend_breakfast_from }} - {{mess.weekend_breakfast_to}}</td>
+							<td>{{ mess.weekend_breakfast_charge }}</td>
+						</tr>
+						<tr>
+							<td>Lunch</td>
+							<td>{{ mess.weekend_lunch_from }} - {{mess.weekend_lunch_to}}</td>
+							<td>{{ mess.weekend_lunch_charge }}</td>
+						</tr>
+						<tr>
+							<td>Snack</td>
+							<td>{{ mess.weekend_snack_from }} - {{mess.weekend_snack_to}}</td>
+							<td>{{ mess.weekend_snack_charge }}</td>
+						</tr>
+						<tr>
+							<td>Dinner</td>
+							<td>{{ mess.weekend_dinner_from }} - {{mess.weekend_dinner_to}}</td>
+							<td>{{ mess.weekend_dinner_charge }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<a class="btn" target="__blank" href="{{ mess.menu.url }}">Mess Menu</a>
+				</div>
+				<div class="card-action">
+					<a class="blue-text" href="/warden/mess/edit-mess/{{ mess.pk }}/">Edit Mess Detail</a>
+				</div>
+			</div>
+			{% else %}
+			<ul class="collapsible" data-collapsible="accordion">
+				<li>
+					<div class="collapsible-header active">Add Mess Details</div>
+					<div class="collapsible-body">
+						<form method="post" action="{% url 'warden-add-mess' %}" enctype="multipart/form-data">
+							{% csrf_token %}
+							<input type="hidden" name="next" value="{{ next }}" />
+							{% form form=addmessform %}
+							{% endform %}
+							<div class="row">
+								<div class="col s12"> 
+									<button type="submit" name="add-mess" class="btn waves-effect waves-light left">Add Mess</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</li>
+			</ul>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+	$('.collapsible-body').css({
+		"padding": "2%"
+	});
+	$('.card-body').css({
+		"padding": "2%"
+	});
+</script>
+{% endblock %}

@@ -1,18 +1,18 @@
 {% extends "newapp/home.html" %}
 {% load staticfiles %}
 {% load material_form %}
-{% block title %} Warden - HMS {% endblock %}
+{% block title %} HMS-Warden-Council {% endblock %}
 
 {% block extrahead %}
 {% endblock %}
 
 {% block extrastyle %}
 <style>
-	.facpic{
+	.counpic{
 		width: 200px;
 		height: 200px;
 		border: 1px solid;
-		//border-radius: 50%;
+		border-radius: 50%;
 		margin-left: 20%;
 		margin-top: 10%;
 		background-repeat: no-repeat;
@@ -34,19 +34,19 @@
 <div class="row">
 	<div class="col s12 m12 l12">
 		<div class="card-panel">
-		<h3>Facilities</h3>
+		<h3>Hostel Council</h3>
 			<ul class="collapsible" data-collapsible="accordion">
 		    <li>
-		      <div class="collapsible-header">Add Facility</div>
+		      <div class="collapsible-header">Add Member</div>
 		      <div class="collapsible-body">
-				<form method="post" action="{% url 'warden-add-facility' %}" enctype="multipart/form-data">
+				<form method="post" action="{% url 'warden-add-council' %}" enctype="multipart/form-data">
 					{% csrf_token %}
 					<input type="hidden" name="next" value="{{ next }}" />
-					{% form form=addfacilityform %}
+					{% form form=addcouncilform %}
 					{% endform %}
 					<div class="row">
 						<div class="col s12"> 
-							<button type="submit" name="add-facility" class="btn waves-effect waves-light left">Add Facility</button>
+							<button type="submit" name="add-council" class="btn waves-effect waves-light left">Add Member</button>
 						</div>
 					</div>
 				</form>
@@ -54,17 +54,17 @@
 		    </li>
 		    {% if editformvisible %}
 		    <li>
-		      <div class="collapsible-header active">Edit Facility</div>
+		      <div class="collapsible-header active">Edit Member</div>
 		      <div class="collapsible-body">
-				<form method="post" action="{% url 'warden-edit-facility'  pk %}" enctype="multipart/form-data">
+				<form method="post" action="{% url 'warden-edit-council'  pk %}" enctype="multipart/form-data">
 					{% csrf_token %}
 					<input type="hidden" name="next" value="{{ next }}" />
-					{% form form=editfacilityform %}
+					{% form form=editcouncilform %}
 					{% endform %}
 					<div class="row">
 						<div class="col s12"> 
-							<button type="submit" name="edit-facility" class="btn waves-effect waves-light left">Edit Facility</button>
-							<a class="btn waves-effect waves-light right" href="{% url 'warden-facilities' %}">Cancel</a>
+							<button type="submit" name="edit-council" class="btn waves-effect waves-light left">Edit Member</button>
+							<a class="btn waves-effect waves-light right" href="{% url 'warden-council' %}">Cancel</a>
 						</div>
 					</div>
 				</form>
@@ -72,30 +72,33 @@
 		    </li>
 		    {% endif %}
 		  	</ul>
-		  	{% for f in facilities %}
+		  	{% for c in council %}
 			  	<div class="card">
 	            <div class="card-content black-text row">
 	            <div class="col s12 l6 m6">
-	              <span class="card-title deep-orange-text">{{ f.fac.title }}</span>
-	              <p class="brown-text text-darken-2">{{ f.fac.description }}</p>
+	              <span class="card-title deep-orange-text">{{ c.coun.position }} - {{ c.coun.committee }}</span>
+	              <p class="brown-text text-darken-2">Name : {{ c.coun.name }}</p>
+	              <p class="brown-text text-darken-2">Email : {{ c.coun.email }}</p>
+	              <p class="brown-text text-darken-2">Phone Number : {{ c.coun.phone }}</p>
+	              <p class="brown-text text-darken-2">Department/Room No. : {{ c.coun.dept_or_room }}</p>
 	            </div>
 	            <div class="col s12 l6 m6">
-		            {% if f.photo %}
-						<img class="facpic" src="{{ f.fac.photo.url }}">
+		            {% if c.photo %}
+						<img class="counpic" src="{{ c.coun.photo.url }}">
 					{% else %}
-						<img class="facpic" src="/media/warden/images/facilities/demo.jpg">
+						<img class="counpic" src="/media/demo.png">
 					{% endif %}
 	            </div>
 	            </div>
 	            <div class="card-action">
-	              <a class="blue-text" href="/warden/facilities/edit-facility/{{ f.fac.pk }}/">Edit Facility</a>
-	              <a class="blue-text" href="#" onclick="myFunction('{{ f.fac.title }}','{{ f.fac.pk }}')">Delete Facility</a>
+	              <a class="blue-text" href="/warden/council/edit-council/{{ c.coun.pk }}/">Edit Member</a>
+	              <a class="blue-text" href="#" onclick="myFunction('{{ c.coun.position }}','{{ c.coun.pk }}')">Delete Member</a>
 	            </div>
 	          	</div>
 			{% endfor %}
-			{% if facility_added %}
+			{% if council_added %}
 			<script type="text/javascript">
-				alert("Facility added successfully.");
+				alert("Council Memebr added successfully.");
 			</script>
 			{% endif %}
 		</div>
@@ -109,12 +112,12 @@
 	});
 </script>
 <script type='text/javascript' >
-		function myFunction(ftitle,fid) {
-			a = "Delete Facility '"+ftitle+"' ?"
+		function myFunction(cposition,cid) {
+			a = "Delete council '"+cposition+"' ?"
 			if (confirm(a) == true) {
-				console.log('url called')
-				window.location = "/warden/facilities/delete-facility/"+fid
-				console.log('url called again')
+				//console.log('url called')
+				window.location = "/warden/council/delete-council/"+cid
+				//console.log('url called again')
 			}
 		}
 	</script>

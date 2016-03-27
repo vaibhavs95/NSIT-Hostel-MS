@@ -18,6 +18,7 @@ admin.site.register(PreviousHostelDetail)
 admin.site.register(Complaints)
 admin.site.register(Caretaker)
 admin.site.register(Closures)
+admin.site.register(MessDetail)
 
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
