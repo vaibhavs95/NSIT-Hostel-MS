@@ -653,14 +653,14 @@ def addstudent(request):
 				branch = f.cleaned_data.get('branch')
 				student_email = f.cleaned_data.get('student_email')
 				room_number = f.cleaned_data.get('room_number')
-				user = MyUser.objects.create_user(f.cleaned_data.get('username'), '2016-02-02', f.cleaned_data.get('email'))
+				user = MyUser.objects.create_user(f.cleaned_data.get('username'), '2016-02-02', f.cleaned_data.get('student_email'))
 				user.save()
 				s = Students(username = username,student_email=student_email,branch = branch, room_number = room_number)
 				s.save()
 				room_number.capacity_remaining-=1
 				room_number.save()
 				#send email to fill details
-				url = "127.0.0.1:8080/student/student-details-form/" + base64.b64encode(username.encode('utf-8')).decode('utf-8')
+				url = "127.0.0.1:8080/student/" + base64.b64encode(username.encode('utf-8')).decode('utf-8')
 				message = ''' Welcome To NSIT Hostel Management System. Click <a href= '%s'>here </a> to fill your details ''' % url
 				email = EmailMessage('Welcome to NSIT-HMS', message, to=[student_email])
 				email.send()
