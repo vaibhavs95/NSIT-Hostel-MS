@@ -1,0 +1,73 @@
+{% extends "newapp/home.html" %}
+{% load staticfiles %}
+{% load material_form %}
+{% block title %} Warden - HMS {% endblock %}
+
+{% block extrahead %} 
+{% endblock %}
+
+{% block extrastyle %}
+<style>
+	.profilepic{
+		width: 180px;
+		height: 180px;
+		border: 1px solid;
+		border-radius: 50%;
+		margin-left: 20%;
+		margin-top: 10%;
+		background-repeat: no-repeat;
+		background-position: center center;
+  		background-size: cover;
+	}
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+	<div class="col s12 m12 l12">
+		<div class="card-panel row">
+			<div class="col s12 m6 l6">
+				<h4>Basic Info</h4>
+				Name : {{ name }}<br>
+				Date of Birth  : {{ date_of_birth }}<br>
+				Distance from Nsit : {{ distance_from_nsit }}<br>
+				Gender : {{ gender }}<br>
+				College category : {{ college_category }}<br>
+				Blood group : {{ blood_group }}<br>
+				Student Phone Number : {{  student_phone_num }}<br>
+				Student optional phone number : {{ student_optional_phone_num }}<br>
+				Father's name : {{ father_name }}<br>
+				Mother's name : {{ mother_name }}<br>
+				Parent email : {{ parent_email }}<br>
+				Parent phone number : {{ parent_phone_num }}<br>
+				Parent optional phone number : {{ parent_optional_phone_num }}<br>
+				Permenant address : {{ permanent_address }}<br>
+				Permenant address zip : {{ permanent_address_zipcode }}<br>
+				Local guardian name : {{ local_guardian_name }}<br>
+				Local guardian address : {{ local_guardian_address }}<br>
+				Local guardian address zipcode : {{ local_guardian_address_zipcode }}<br>
+				Local Guardian Phone Number : {{ local_guardian_phone_number }}<br>
+				Local Guardian optional phone number : {{ local_guardian_optional_phone_num }}<br>
+				Local Guardian Email : {{ local_guardian_email }}<br>
+
+			</div>
+			<!-- <div class="col s12 m6 l6">
+			{% if userid %}
+				<img class="profilepic" src="{{ userid.warden_photo.url }}">
+			{% else %}
+				<img class="profilepic" src="/media/demo.png">
+			{% endif %}
+			</div> -->
+		</div>
+		
+	</div>
+</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+	$('.collapsible-body').css({
+		"padding": "2%"
+	});
+</script>
+{% endblock %}

@@ -1,5 +1,5 @@
 import re
-
+import base64
 from django.shortcuts import render,redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
@@ -42,10 +42,11 @@ def handleLogin(request):
             a = Hostels.objects.get(username = user)
             data = {'next' : nexturl, 'name': a.username}
             return redirect('warden-home')
-        elif re.match("[0-9]*-[A-Z0-9]*",str(user))!=None:
+        elif re.match("[0-9]*-[A-Za-z0-9]*",str(user))!=None:
             a = Students.objects.get(username = user)
-            data = {'next' : nexturl, 'name': a.name}
-            return redirect('student-home')
+            alpha = str(base64.b64encode(a.username.encode('utf-8')).decode('utf-8'))
+            data = {'next' : nexturl, 'username': alpha}
+            return redirect('studentid', student_id = alpha)
         else:
             return redirect('logout')
     a=Hostels.objects.all();
@@ -67,7 +68,10 @@ def home(request):
     elif re.match("[a-zA-Z0-9_]*warden",str(a))!=None:
         return redirect('warden-home')
     else:
-        return redirect('student-home')
+        a = Students.objects.get(username = a)
+        alpha = str(base64.b64encode(a.username.encode('utf-8')).decode('utf-8'))
+        #data = {'next' : nexturl, 'username': alpha}
+        return redirect('studentid', student_id = alpha)
 
 @require_GET
 def logoutview(request):
