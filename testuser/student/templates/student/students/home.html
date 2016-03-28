@@ -1,0 +1,31 @@
+{% extends "newapp/home.html" %}
+{% load staticfiles %}
+{% load material_form %}
+{% block title %} Student {% endblock %}
+
+{% block extrahead %} 
+<link rel="stylesheet" href="{% static 'assests/main-page/css/cw-home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="row cb-auth-container">
+	<div class="col s12 m8 l6 offset-m2 offset-l3">
+		<div class="card-panel">
+		<form method="post" action="{% url 'studentid' username  %}">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ next }}" />
+				{% form form=form %}
+				{% endform %}
+				<div class="row">
+					<div class="col s12"> 
+						<button type="submit" name="login" class="btn waves-effect waves-light left">Submit Details</button>
+					</div>
+				</div>
+		</form>
+		{% if student %}
+		<p>Details successfully Submitted</p>
+				{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}
