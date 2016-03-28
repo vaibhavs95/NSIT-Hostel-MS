@@ -279,11 +279,11 @@ class Form(models.Model):
 # Create your models here.
 def facility_photo_name(instance, filename):
 	ext = filename.split('.')[-1]
-	return 'warden/images/facilities/'+instance.hostel.username+'/'+instance.title+'.'+ext
+	return 'warden/images/facilities/'+instance.hostel.username+'/'+instance.facility_name+'.'+ext
 class Facilities(models.Model):
 	hostel = models.ForeignKey(Hostels)
-	title = models.CharField(null=False, unique=True, max_length=100,default='Facility Name')
-	description = models.TextField(null=False, default='Facility Description')
+	facility_name = models.CharField(null=False, unique=True, max_length=100,default='')
+	facility_description = models.TextField(null=False, default='')
 	photo = models.ImageField(upload_to=facility_photo_name,null=True, blank=True)
 	def __str__(self):
 		return self.title
