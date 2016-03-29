@@ -22,27 +22,45 @@ def basic():
 		d = {'name':i.hostel_name,'id':i.username}
 		b.append(d)
 	data['all_hostels'] = b
-@require_http_methods(['GET', 'POST'])
-@login_required
-def home(request):
-	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
-		user = Hostels.objects.get(username=request.user)
+def capacityremaining(user):
+	user = Hostels.objects.get(username=user)
+	r = Rooms.objects.filter(hostel=user,capacity_remaining__gt = 0)
+	v = 0
+	for i in r:
+		v = v+i.capacity_remaining
+	return v
+def capacity(user):
+	h = Hostels.objects.get(username=user)
+	r = Rooms.objects.filter(hostel=h)
+	v = 0
+	for i in r:
+		v = v+i.capacity_of_room
+	return v
+def homebasic(request,h):
+		user = Hostels.objects.get(username=h)
 		data['name'] = user.name
 		data['phone'] = user.phone
 		data['landline'] = user.landline
 		data['email'] = user.email
 		data['dept'] = user.department
 		data['portfolio'] = user.portfolio
-		data['total_rooms'] = len(Rooms.objects.filter(hostel=user))
-		data['rooms_available'] = len(Rooms.objects.filter(hostel=user,capacity_remaining__gt = 0))
-		data['rooms_filled'] = len(Rooms.objects.filter(hostel=user,capacity_remaining = 0))
+		data['total_rooms'] = capacity(user.username)
+		data['rooms_available'] = capacityremaining(user.username)
 		if user.warden_photo:
+			data['wardenphoto'] = 'yes'
 			data['userid'] = user
 		else:
+			data['wardenphoto'] = None
 			data['userid'] = None
 		basic()
 		f = EditWardenProfileForm(request = request,instance = user)
 		data['editprofileform']=f
+		#return render(request,'warden/home.html',data)
+@require_http_methods(['GET', 'POST'])
+@login_required
+def home(request):
+	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+		homebasic(request,request.user)
 		return render(request,'warden/home.html',data)
 	else:
 		return redirect('logout')
@@ -51,24 +69,29 @@ def home(request):
 def profileedit(request):
 	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
 		basic()
+		data['wardenphoto'] = None
 		h = Hostels.objects.get(username=request.user)
 		if request.method == 'POST':
-			a = None
-			a = request.FILES.__contains__('warden_photo')
-			if a:
-				h.warden_photo.delete(True)
 			f = EditWardenProfileForm(request.POST, request.FILES, request=request, instance = h)
 			if f.is_valid():
 				f.save()
-				g = EditWardenProfileForm(request = request,instance = h)
-				data['editprofileform'] = g
-				data['userid'] = h
-				return redirect('warden-home')
+				homebasic(request, request.user)
+				return render(request,'warden/home.html',data)
 			else:
 				data['editprofileform'] = f
 				data['userid'] = h
+				if h.warden_photo:
+					data['userid'] = h
+					data['wardenphoto'] = 'yes'
+				else:
+					data['userid'] = None
 				return render(request,'warden/home.html',data)
 		else:
+			if h.warden_photo:
+				data['userid'] = h
+				data['wardenphoto'] = 'yes'
+			else:
+				data['userid'] = None
 			f = EditWardenProfileForm(request = request,instance = h)
 			data['userid'] = h
 			data['editprofileform']=f
@@ -187,9 +210,9 @@ def addfacility(request):
 			f = AddFacilityForm(request.POST, request.FILES, user = request.user)
 			if f.is_valid():
 				if request.FILES.__contains__('photo'):
-					fac = Facilities(title=f.cleaned_data.get('title'),description=f.cleaned_data.get('description'),hostel=Hostels.objects.get(username=request.user),photo=request.FILES.__getitem__('photo'))
+					fac = Facilities(facility_name=f.cleaned_data.get('facility_name'),facility_description=f.cleaned_data.get('facility_description'),hostel=Hostels.objects.get(username=request.user),photo=request.FILES.__getitem__('photo'))
 				else:
-					fac = Facilities(title=f.cleaned_data.get('title'),description=f.cleaned_data.get('description'),hostel=Hostels.objects.get(username=request.user))
+					fac = Facilities(facility_name=f.cleaned_data.get('facility_name'),facility_description=f.cleaned_data.get('facility_description'),hostel=Hostels.objects.get(username=request.user))
 				fac.save()
 				facilitybasic(request.user)
 			data['addfacilityform'] = f
@@ -217,13 +240,7 @@ def editfacility(request,pk):
 		else:
 			return redirect('logout')
 		if request.method == 'POST':
-			a = None
-			a = request.FILES.__contains__('photo')
-			print(request.FILES)
-			print(a)
-			if a:
-				fac.photo.delete(True)
-			f = EditFacilityForm(request.POST, request.FILES, user = request.user, pk = pk ,instance=fac)
+			f = EditFacilityForm(request.POST, request.FILES, request = request, user = request.user, pk = pk ,instance=fac)
 			if f.is_valid():
 				f.save()
 				return redirect('warden-facilities')
@@ -309,6 +326,7 @@ def addcouncil(request):
 					coun = HostelCouncil(name=f.cleaned_data.get('name'),email=f.cleaned_data.get('email'),phone=f.cleaned_data.get('phone'),position=f.cleaned_data.get('position'),committee=f.cleaned_data.get('committee'),dept_or_room=f.cleaned_data.get('dept_or_room'),hostel=Hostels.objects.get(username=request.user))
 				coun.save()
 				councilbasic(request.user)
+			f = AddCouncilForm()
 			data['addcouncilform'] = f
 			return render(request,'warden/council.html',data)
 		else:
@@ -334,13 +352,7 @@ def editcouncil(request,pk):
 		else:
 			return redirect('logout')
 		if request.method == 'POST':
-			a = None
-			a = request.FILES.__contains__('photo')
-			print(request.FILES)
-			print(a)
-			if a:
-				coun.photo.delete(True)
-			f = EditCouncilForm(request.POST, request.FILES, user = request.user, pk = pk ,instance=coun)
+			f = EditCouncilForm(request.POST, request.FILES, request = request,user=request.user, pk = pk ,instance=coun)
 			if f.is_valid():
 				f.save()
 				return redirect('warden-council')
@@ -660,6 +672,7 @@ def addstudent(request):
 				room_number.capacity_remaining-=1
 				room_number.save()
 				#send email to fill details
+				url = "http://127.0.0.1:8080/student/" + base64.b64encode(username.encode('utf-8')).decode('utf-8')
 				url = "127.0.0.1:8080/student/" + base64.b64encode(username.encode('utf-8')).decode('utf-8')
 				message = ''' Welcome To NSIT Hostel Management System. Click <a href= '%s'>here </a> to fill your details ''' % url
 				email = EmailMessage('Welcome to NSIT-HMS', message, to=[student_email])

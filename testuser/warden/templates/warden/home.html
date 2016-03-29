@@ -43,12 +43,11 @@
 				Email : {{ email }}<br>
 				Department : {{ dept }}<br>
 				Portfolio : {{ portfolio }}<br>
-				Total Rooms : {{  total_rooms }}<br>
-				Filled Rooms : {{ rooms_filled }}<br>
-				Available Rooms : {{ rooms_available }}<br>
+				Total Capacity : {{  total_rooms }}<br>
+				Available Capacity : {{ rooms_available }}<br>
 			</div>
 			<div class="col s12 m6 l6">
-			{% if userid %}
+			{% if wardenphoto %}
 				<img class="profilepic" src="{{ userid.warden_photo.url }}">
 			{% else %}
 				<img class="profilepic" src="/media/demo.png">
