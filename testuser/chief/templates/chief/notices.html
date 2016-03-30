@@ -19,19 +19,19 @@
 <div class="row">
 	<div class="col s12 m12 l12">
 		<div class="card-panel">
-		<h3>Hostels</h3>
+		<h3>Notices</h3>
 			<ul class="collapsible" data-collapsible="accordion">
 		    <li>
-		      <div class="collapsible-header">Add Branch</div>
+		      <div class="collapsible-header">Add Notice</div>
 		      <div class="collapsible-body">
-				<form method="post" action="{% url 'chief_branch' %}">
+				<form method="post" action="" enctype="multipart/form-data">
 					{% csrf_token %}
 					<input type="hidden" name="next" value="{{ next }}" />
 					{% form form=form %}
 					{% endform %}
 					<div class="row">
 						<div class="col s12"> 
-							<button type="submit" name="add-room" class="btn waves-effect waves-light left">Add Branch</button>
+							<button type="submit" name="add-room" class="btn waves-effect waves-light left">Add Notice</button>
 						</div>
 					</div>
 				</form>
@@ -42,30 +42,33 @@
 				<thead>
 					<tr>
 						<th data-field="id">S. No.</th>
-						<th data-field="name">Branch Code</th>
-						<th data-field="name">Branch Name</th>
-						<th data-field="name">Roll Code</th>
+						<th data-field="name">Title</th>						
+						<th data-field="name"></th>
 					</tr>
 				</thead>
 				<tbody>
-					{% for hos in all_branch %}
+					{% for hos in notices %}
 					<tr>
 						<td align="center">
 							{{ forloop.counter }}.
 						</td>
 						<td align="center">
-							{{ hos.title }}
+							<a href="#!">{{ hos.title }}</a>
 						</td>
 						<td align="center">
-							{{ hos.name }}
-						</td>
-						<td align="center">
-							{{ hos.roll_code }}
+							<a href="#!" onclick="myFunction('{{ hos.id }}')">Delete Notice</a>
 						</td>
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
+			<script type='text/javascript' >
+		function myFunction(hosid) {
+			if (confirm("Delete Notice ?") == true) {
+				window.location = "/chiefwarden/deletenotice/"+hosid
+			}
+		}
+	</script>
 		</div>
 	</div>
 </div>
@@ -76,5 +79,4 @@
 {% block sidelist %}
 <li><a href="/chiefwarden/branch/">Branches</a></li>
 <li><a href="/chiefwarden/notices/">Notices</a></li>
-
 {% endblock %}

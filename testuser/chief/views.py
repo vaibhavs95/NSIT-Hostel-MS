@@ -78,7 +78,7 @@ def delete_hos(request,target):
                 mes="Hostel still has some rooms alloted and thus can't be deleted."
                 j=1
                 break
-        if j==0:
+        if j==0 :
             a.delete()
             try:
                 a = Hostels.objects.filter(username = target)
@@ -112,5 +112,74 @@ def delete_hos(request,target):
             b.append(d)
         data = {'all_hostels': b,'mes':mes,'form':f}
         return render(request, 'chief/home.html',data)
+    else:
+        return redirect('logout')
+
+def SendNoticeMail(fileAddress):
+    a = Students.Objects.filter(room_number!=Null)
+    ext = str(filename.split('.')[-1])
+	f = 'chief/files/notices/'+instance.creator+'/'+instance.title+'.'+ext
+    message = 'A new announcement has been put up by the Chief Warden of NSIT for all the residents of the hostels. Please refer to the attachment for detailed notice.'
+    for i in a:
+        email = EmailMessage('New announcement made', message, to=[i.student_email])
+        
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def notices(request):
+    alpha = str(request.user)
+    if alpha =='chiefwarden':
+        mes = None
+        if request.method =='POST':
+            f=AddNoticeForm(request.POST,request.FILES)
+            if f.is_valid():
+                a = f.save(commit = False)
+                a.creator = 'chiefwarden'
+                a.file = request.FILES['file']
+                a.save();
+                SendNoticeMail(request.FILES[filename].name)
+                mes = 'Notice added successfully'
+            else:
+                f=AddNoticeForm()
+        else:
+            f=AddNoticeForm()
+        a=Hostels.objects.all();
+        b=[]
+        for i in a:
+            d={'name':i.hostel_name,'id':i.username}
+            b.append(d)
+        try:
+            a= Notice.objects.filter(creator= 'chiefwarden')
+        except ObjectDoesNotExist:
+            pass
+        data = {'all_hostels': b,'mes':mes,'form':f,'notices':a}
+        return render(request,'chief/notices.html',data)
+    else:
+        return redirect('logout')
+    
+@login_required
+@require_http_methods(['GET', 'POST'])
+def delNotice(request,target):
+    alpha = str(request.user)
+    if alpha =='chiefwarden':
+        mes  = None
+        f= AddNoticeForm()
+        try:
+            c=Notice.objects.get(pk=target)
+        except ObjectDoesNotExist:
+            pass
+        c.delete()
+        mes  = 'Notice removed succeessfully'
+        a=Hostels.objects.all();
+        b=[]
+        for i in a:
+            d={'name':i.hostel_name,'id':i.username}
+            b.append(d)
+        try:
+            a= Notice.objects.filter(creator= 'chiefwarden')
+        except ObjectDoesNotExist:
+            pass
+        data = {'all_hostels': b,'mes':mes,'form':f,'notices':a}
+        return render(request,'chief/notices.html',data)
     else:
         return redirect('logout')

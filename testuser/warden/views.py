@@ -589,7 +589,6 @@ def editmess(request,pk):
 				f = AddMessForm(request.POST, request.FILES,instance=mess)
 				if f.is_valid():
 					f.save()
-					print(request.FILES)
 					return redirect('warden-mess')
 				else:
 					data['editmessform'] = f

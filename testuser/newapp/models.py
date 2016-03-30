@@ -299,3 +299,13 @@ class Closures(models.Model):
 		closure_list.append(self.end_date)
 		closure_list.append(self.clo_or_ext)
 		return closure_list
+
+def noticePhotoForm(instance, filename):
+	ext = str(filename.split('.')[-1])
+	return 'chief/files/notices/'+instance.creator+'/'+instance.title+'.'+ext
+
+class Notice(models.Model):
+    #code
+	title = models.CharField(null=False, max_length = 200,default = None)
+	file = models.FileField(upload_to = noticePhotoForm,null = True)
+	creator = models.CharField(max_length = 30,null = False)
