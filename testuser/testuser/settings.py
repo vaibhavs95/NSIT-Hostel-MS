@@ -85,11 +85,8 @@ DATABASES = {
         'NAME': 'testuser',
         'USER' : 'root',
         'HOST' : 'localhost', 
-<<<<<<< HEAD
+
         'PASSWORD' : '12345',
-=======
-        'PASSWORD' : 'cyclekapedal',
->>>>>>> a8530307a44239c63fe4930df8b203ca0b131148
         'PORT' : 3306
     }
 }
