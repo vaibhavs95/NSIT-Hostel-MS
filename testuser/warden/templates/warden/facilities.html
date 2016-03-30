@@ -76,8 +76,8 @@
 			  	<div class="card">
 	            <div class="card-content black-text row">
 	            <div class="col s12 l6 m6">
-	              <span class="card-title deep-orange-text">{{ f.fac.title }}</span>
-	              <p class="brown-text text-darken-2">{{ f.fac.description }}</p>
+	              <span class="card-title deep-orange-text">{{ f.fac.facility_name }}</span>
+	              <p class="brown-text text-darken-2">{{ f.fac.facility_description }}</p>
 	            </div>
 	            <div class="col s12 l6 m6">
 		            {% if f.photo %}
@@ -89,7 +89,7 @@
 	            </div>
 	            <div class="card-action">
 	              <a class="blue-text" href="/warden/facilities/edit-facility/{{ f.fac.pk }}/">Edit Facility</a>
-	              <a class="blue-text" href="#" onclick="myFunction('{{ f.fac.title }}','{{ f.fac.pk }}')">Delete Facility</a>
+	              <a class="blue-text" href="#" onclick="myFunction('{{ f.fac.facility_name }}','{{ f.fac.pk }}')">Delete Facility</a>
 	            </div>
 	          	</div>
 			{% endfor %}

@@ -4,7 +4,18 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate
 from newapp.models import *
 import re
-
+def photocheck(requestfiles,field):
+    a = None
+    a = requestfiles.__contains__(field)
+    if a:
+        name = requestfiles[field].name
+        name = name.split('.')[-1]
+        name = name.lower()
+        print(name)
+        if name == 'jpeg' or name == 'png' or name == 'jpg':
+            return True
+        else:
+            return False
 class EditWardenProfileForm(forms.ModelForm):
     class Meta:
         model = Hostels
@@ -18,10 +29,15 @@ class EditWardenProfileForm(forms.ModelForm):
         landline = self.cleaned_data.get('landline')
         if name and phone and landline:
             name = name.title()
-            if len(phone) > 10:
+            if len(phone) == 10:
                 raise forms.ValidationError('Enter Correct Phone Number without std code')
-            if len(landline) > 8:
+            if len(landline) == 8:
                 raise forms.ValidationError('Enter Correct Landline Number without std code')
+            if photocheck(self.request.FILES,'warden_photo'):
+                h = Hostels.objects.get(username=self.request.user)
+                h.warden_photo.delete(True)
+                #pass
+               # raise forms.ValidationError('Add Photo of correct format - JPG,jpeg,PNG,png,jpg,JPEG')
         return self.cleaned_data
 class AddRoomForm(forms.Form):
     room_no = forms.CharField(max_length=10)
@@ -62,38 +78,41 @@ class AddRoomForm(forms.Form):
 class AddFacilityForm(forms.ModelForm):
     class Meta:
         model = Facilities
-        fields = ['title','description','photo']
+        fields = ['facility_name','facility_description','photo']
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user',None)
         super(AddFacilityForm, self).__init__(*args, **kwargs)
     def clean(self):
-        title = self.cleaned_data.get('title')
+        facility_name = self.cleaned_data.get('facility_name')
         userid = Hostels.objects.get(username=self.user)
         e = Facilities.objects.filter(hostel=userid)
         for i in e:
-            if i.title.lower() == title.lower():
+            if i.facility_name.lower() == facility_name.lower():
                 raise forms.ValidationError('Facility with same title is already there')
         return self.cleaned_data
 
 class EditFacilityForm(forms.ModelForm):
     class Meta:
         model = Facilities
-        fields = ['title','description','photo']
+        fields = ['facility_name','facility_description','photo']
     def __init__(self, *args, **kwargs):
         self.pk = kwargs.pop('pk', None)
         self.user = kwargs.pop('user',None)
+        self.request = kwargs.pop('request',None)
         super(EditFacilityForm, self).__init__(*args, **kwargs)
     def clean(self):
         hostel = Facilities.objects.get(pk=self.pk).hostel
-        title = self.cleaned_data.get('title')
+        facility_name = self.cleaned_data.get('facility_name')
         userid = Hostels.objects.get(username=self.user)
         e = Facilities.objects.filter(hostel=userid)
         for i in e:
             if int(i.pk) != int(self.pk):
-                if i.title.lower() == title.lower():
-                    raise forms.ValidationError('Facility with same title is already there')
+                if i.facility_name.lower() == facility_name.lower():
+                    raise forms.ValidationError('Facility with same facility_name is already there')
+        if photocheck(self.request.FILES,'photo'):
+            fac = Facilities.objects.get(pk=self.pk)
+            fac.photo.delete(True)
         return self.cleaned_data
-
 
 class AddCouncilForm(forms.ModelForm):
     class Meta:
@@ -125,6 +144,7 @@ class EditCouncilForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.pk = kwargs.pop('pk', None)
         self.user = kwargs.pop('user',None)
+        self.request = kwargs.pop('request',None)
         super(EditCouncilForm, self).__init__(*args, **kwargs)
     def clean(self):
         hostel = HostelCouncil.objects.get(pk=self.pk).hostel
@@ -142,6 +162,9 @@ class EditCouncilForm(forms.ModelForm):
                     raise forms.ValidationError('Council Member with same name and position is already there')
                 if len(phone) > 10:
                     raise forms.ValidationError('Enter Correct Phone Number without std code')
+            if photocheck(self.request.FILES,'photo'):
+                coun = HostelCouncil.objects.get(pk=self.pk)
+                coun.photo.delete(True)
             return self.cleaned_data
 
 class AddHosformForm(forms.ModelForm):
