@@ -21,7 +21,44 @@ Header
 nav{
 	height: 125px;
 }
-
+#sideContainer
+{
+	width: 70%;
+	float: left;
+}
+#rSideContainer
+{
+	width: 30%;
+	float: right;
+}
+table
+{
+	margin-top: 0px;
+	background-color: #E6F4F4;
+	margin-left: 0%;
+	margin-right: 0%;
+	width: 100%;
+}
+#hCards
+{
+	width: 80%;
+	margin-left: 10%;
+	margin-right: 10%;
+}
+#hDesc
+{
+	font-size: small;
+}
+td,#news
+{
+	width: 100%;
+	text-align: center;
+}
+#news
+{
+	font-size: large;
+	background-color: #f5f5f5
+}
 /****
 main
 *****/
@@ -83,6 +120,16 @@ media queries
 	}
 	nav{
 		height: 125px;
+	}
+	#rSideContainer
+	{
+		width: 100%;
+		float: left;
+	}
+	#sideContainer
+	{
+		width: 100%;
+		float: left;
 	}
 }
 @media only screen and (max-width: 480px){
