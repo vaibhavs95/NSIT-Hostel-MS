@@ -17,7 +17,7 @@ def SendNoticeMail(title,usern):
     print(a)
     n = Notice.objects.get(title=title)
     url =  n.file.url
-    url = "127.0.0.1:8000" + url
+    url = "http://127.0.0.1:8000" + url
     print(url)
     c=[]
     message = "A new announcement has been put up by the Chief Warden of NSIT for all the residents of the hostels. Click <a href= '%s'>here </a> to view the announcement" % url

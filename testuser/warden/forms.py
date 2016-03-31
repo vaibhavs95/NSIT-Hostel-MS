@@ -117,7 +117,7 @@ class EditFacilityForm(forms.ModelForm):
 class AddCouncilForm(forms.ModelForm):
     class Meta:
         model = HostelCouncil
-        fields = ['committee','position','name','phone','email','dept_or_room','photo']
+        fields = ['committee','position','name','phone','email','photo']
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user',None)
         super(AddCouncilForm, self).__init__(*args, **kwargs)
@@ -140,7 +140,7 @@ class AddCouncilForm(forms.ModelForm):
 class EditCouncilForm(forms.ModelForm):
     class Meta:
         model = HostelCouncil
-        fields = ['committee','position','name','phone','email','dept_or_room','photo']
+        fields = ['committee','position','name','phone','email','photo']
     def __init__(self, *args, **kwargs):
         self.pk = kwargs.pop('pk', None)
         self.user = kwargs.pop('user',None)

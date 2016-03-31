@@ -82,10 +82,11 @@
         </ul>
 	<!-- for mobile version -->
 	<ul class="side-nav" id="mobile-demo">
+		<li><a class="login-button" href="#!">Home</a></li>
 		<li><a class="modal-trigger waves-effect waves-light btn login-button" href="#login-modal">Login</a></li>
 		<ul class="collapsible collapsible-accordion">
 			{% for hos in all_hostels %}
-				<!--<p>{{ hos.id }}</p>-->
+				<p>{{ hos.id }}</p>
 				{% if hos.id == target_hostel.username %}
 					<li>
 					  <a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
@@ -100,7 +101,7 @@
 					</li>
 				{% else %}
 					<li>
-						<!--<p>{{ hos.id }}</p>-->
+						<p>{{ hos.id }}</p>
 					  <a class="btn collapsible-header waves-effect waves-teal">{{ hos.id }}<i class="mdi-navigation-arrow-drop-down"></i></a>
 					  <div class="collapsible-body">
 						<ul id="colBod">
@@ -114,7 +115,6 @@
 				{% endif  %}
 			{% endfor %}
 		</ul>
-		<li><a class="btn collapsible-header waves-effect waves-teal" href="#!">Home</a></li>
 	</ul>
 	
 	
@@ -136,14 +136,16 @@
 					<p id="facText" class="left">
 						{{ fac.facility_description }}
 					</p>
+					{% if fac.photo %}
 					<div>
 						<img id="facPic" src="{{fac.photo.url}}">				
-					</div>					
+					</div>
+					{% endif %}
 				  </div>
 				  
 			    </li>
 				{% endfor %}
-				
+		</main>	
 		<main id="basicInfo">
 			<h3 class="center">
 				Basic Information
@@ -163,10 +165,12 @@
 							<br>Contact : {{target_hostel.phone}}, {{target_hostel.landline}}<br>
                             email : {{target_hostel.email}}
 						</p>
+						{% if target_hostel.warden_photo %}
 						<div>
 							<img id="facPic" src='{{target_hostel.warden_photo.url}}'>				
 						</div>
-					</div>
+						{% endif %}
+					</div> 
 				</li>
 				{% for i in council %}
 				<li>
@@ -182,9 +186,11 @@
 							<br>Contact : {{i.phone}}
                             email : {{i.email}}
 						</p>
+						{% if i.photo %}
 						<div>
 							<img id="facPic" src="{{i.photo.url}}">				
 						</div>
+						{% endif %}
 					</div>
 				</li>
 				{% endfor %}
@@ -220,7 +226,9 @@
 				<li class="center">
 					<a href="#!" id="messmenu">Mess Menu</a>
 					<br>
+					{% if mess.menu %}
 					<img id="facPic" src="{{mess.menu.url}}">
+					{% endif %}
 				</li>
             </ul>
             
@@ -240,58 +248,6 @@
  				<a class="grey-text text-lighten-3" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
  			</div>
  		</footer>
-		
-
- 		<!-- Modals -->
-
- 		<!--login-->
- 		<div id="login-modal" class="modal">
-        <div class="modal-content">
-            <h4>Log In</h4>
-            <hr>
-            <form method="post" action="{% url 'login' %}">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{{ next }}" />
-                {% form form=form %}
-                {% endform %}
-                <div class="row">
-                    <button class="btn waves-effect waves-light col s6" type="submit" name="login">Log In</button>
-                    <a id="forgot-button" data-target="forgot-password" class="modal-trigger col s6" href="#!">Forgot Password</a>
-                </div>
-                <div class="modal-footer">
-                    <a href="#!" class="modal-action modal-close waves-effect btn-flat ">Cancel</a>
-                </div>
-            </form>
-        </div>
-    </div>
-
- 		<!-- forgot password -->
-
- 		<div id="forgot-password" class="modal">
- 			<div class="modal-content">
- 				<h4> Forgot Password</h4>
- 				<hr>
- 				<div class="row">
- 					<div class="input-field col s12">
- 						<input id="username" type="text" class="validate">
- 						<label for="username">Username/Roll No.</label>
- 					</div>
- 				</div>
- 				<div class="row">
- 					<div class="input-field col s12">
- 						<input type="date" class="datepicker">
- 						<label for="password">Date of Birth</label>
- 					</div>
- 				</div>
- 				<div class="row">
- 					<button class="btn waves-effect waves-light col s6 offset-s3" type="submit" name="action">Reset Password</button><br>
- 				</div>
- 				<div class="modal-footer">
- 					<a href="#!" class="modal-action modal-close waves-effect btn-flat ">Cancel</a>
- 				</div>
- 		</div>
-			
-
  			<!--Scripts -->
  			<script type="text/javascript" src='{% static "assets/main-page/js/jquery-1.11.3.min.js" %}'></script>
  			<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
