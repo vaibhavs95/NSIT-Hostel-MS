@@ -125,100 +125,25 @@
 				Facilities
 			</h3>
 			<ul id="listFac">
+				{% for fac in faci %}
 				<li>
 			      <div>
 					<h5 class="center">
-						Facility no. 1
+						{{ fac.facility_name }}
 					</h5>
 				  </div>
 			      <div id="facContent">			
 					<p id="facText" class="left">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at magna eget nisi rutrum ultrices. Duis sagittis mauris enim, quis placerat lectus hendrerit in. Maecenas consequat convallis lorem et condimentum. Suspendisse laoreet odio id purus tempus, at facilisis leo molestie. Phasellus eu sapien rutrum, rhoncus ligula id, elementum justo. Maecenas dolor ligula, suscipit sit amet velit ut, rutrum euismod enim. Sed venenatis dolor sed sollicitudin placerat. Donec efficitur augue vel risus semper, ac efficitur elit sollicitudin.
+						{{ fac.facility_description }}
 					</p>
 					<div>
-						<img id="facPic" src="assets/main-page/media/images/logo.png">				
+						<img id="facPic" src="{{fac.photo.url}}">				
 					</div>					
 				  </div>
 				  
 			    </li>
-				<li>
-					<div>
-						<h5 class="center">
-							Facility no. 2
-						</h5>
-					</div>
-					<div id="facContent">			
-						<p id="facText" class="left">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at magna eget nisi rutrum ultrices. Duis sagittis mauris enim, quis placerat lectus hendrerit in. Maecenas consequat convallis lorem et condimentum. Suspendisse laoreet odio id purus tempus, at facilisis leo molestie. Phasellus eu sapien rutrum, rhoncus ligula id, elementum justo. Maecenas dolor ligula, suscipit sit amet velit ut, rutrum euismod enim. Sed venenatis dolor sed sollicitudin placerat. Donec efficitur augue vel risus semper, ac efficitur elit sollicitudin.
-						</p>
-						<div>
-							<img id="facPic" src="assets/main-page/media/images/logo.png">				
-						</div>					
-					</div>
-			    </li>
-				<li>
-			      <div>
-					<h5 class="center">
-						Facility no. 3
-					</h5>
-				  </div>
-			      <div id="facContent">			
-					<p id="facText" class="left">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at magna eget nisi rutrum ultrices. Duis sagittis mauris enim, quis placerat lectus hendrerit in. Maecenas consequat convallis lorem et condimentum. Suspendisse laoreet odio id purus tempus, at facilisis leo molestie. Phasellus eu sapien rutrum, rhoncus ligula id, elementum justo. Maecenas dolor ligula, suscipit sit amet velit ut, rutrum euismod enim. Sed venenatis dolor sed sollicitudin placerat. Donec efficitur augue vel risus semper, ac efficitur elit sollicitudin.
-					</p>
-					<div>
-						<img id="facPic" src="assets/main-page/media/images/logo.png">				
-					</div>					
-				  </div>
-			    </li>
-				<li>
-			      <div>
-					<h5 class="center">
-						Facility no. 4
-					</h5>
-				  </div>
-			      <div id="facContent">			
-					<p id="facText" class="left">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at magna eget nisi rutrum ultrices. Duis sagittis mauris enim, quis placerat lectus hendrerit in. Maecenas consequat convallis lorem et condimentum. Suspendisse laoreet odio id purus tempus, at facilisis leo molestie. Phasellus eu sapien rutrum, rhoncus ligula id, elementum justo. Maecenas dolor ligula, suscipit sit amet velit ut, rutrum euismod enim. Sed venenatis dolor sed sollicitudin placerat. Donec efficitur augue vel risus semper, ac efficitur elit sollicitudin.
-					</p>
-					<div>
-						<img id="facPic" src="assets/main-page/media/images/logo.png">				
-					</div>					
-				  </div>
-			    </li>
-				<li>
-			      <div>
-					<h5 class="center">
-						Facility no. 5
-					</h5>
-				  </div>
-			      <div id="facContent">			
-					<p id="facText" class="left">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at magna eget nisi rutrum ultrices. Duis sagittis mauris enim, quis placerat lectus hendrerit in. Maecenas consequat convallis lorem et condimentum. Suspendisse laoreet odio id purus tempus, at facilisis leo molestie. Phasellus eu sapien rutrum, rhoncus ligula id, elementum justo. Maecenas dolor ligula, suscipit sit amet velit ut, rutrum euismod enim. Sed venenatis dolor sed sollicitudin placerat. Donec efficitur augue vel risus semper, ac efficitur elit sollicitudin.
-					</p>
-					<div>
-						<img id="facPic" src="assets/main-page/media/images/logo.png">				
-					</div>					
-				  </div>
-			    </li>
-				<li id="listFac">
-			      <div>
-					<h5 class="center">
-						Facility no. 6
-					</h5>
-				  </div>
-			     			
-					<p id="facText" class="left">
-						6 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at magna eget nisi rutrum ultrices. Duis sagittis mauris enim, quis placerat lectus hendrerit in. Maecenas consequat convallis lorem et condimentum. Suspendisse laoreet odio id purus tempus, at facilisis leo molestie. Phasellus eu sapien rutrum, rhoncus ligula id, elementum justo. Maecenas dolor ligula, suscipit sit amet velit ut, rutrum euismod enim. Sed venenatis dolor sed sollicitudin placerat. Donec efficitur augue vel risus semper, ac efficitur elit sollicitudin.
-					</p>
-					<div>
-						<img id="facPic" src="assets/main-page/media/images/logo.png">				
-					</div>					
-			    </li>
-			</ul>
-			<hr>
-		</main>
-		
+				{% endfor %}
+				
 		<main id="basicInfo">
 			<h3 class="center">
 				Basic Information
@@ -232,93 +157,37 @@
 					</div>
 					<div id="facContent">
 						<p id="facText" class="left">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							<br>Contact : 9876543210
-                            email : xyz@abc.com
+							Name : {{target_hostel.name}}
+							{{target_hostel.portfolio}}
+							{{target_hostel.department}}
+							<br>Contact : {{target_hostel.phone}}, {{target_hostel.landline}}<br>
+                            email : {{target_hostel.email}}
 						</p>
 						<div>
-							<img id="facPic" src="assets/main-page/media/images/logo.png">				
+							<img id="facPic" src='{{target_hostel.warden_photo.url}}'>				
 						</div>
 					</div>
 				</li>
+				{% for i in council %}
 				<li>
 					<div>
 						<h5 class="center">
-							Caretaker1
+							{{ i.name }}
 						</h5>
 					</div>
 					<div id="facContent">
 						<p id="facText" class="left">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							<br>Contact : 9876543210
-                            email : xyz@abc.com
+							Committee : {{i.committee}}
+							<br>Position : {{i.position}}
+							<br>Contact : {{i.phone}}
+                            email : {{i.email}}
 						</p>
 						<div>
-							<img id="facPic" src="assets/main-page/media/images/logo.png">				
+							<img id="facPic" src="{{i.photo.url}}">				
 						</div>
 					</div>
 				</li>
-				<li>
-					<div>
-						<h5 class="center">
-							Caretaker2
-						</h5>
-					</div>
-					<div id="facContent">
-						<p id="facText" class="left">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							<br>Contact : 9876543210
-                            email : xyz@abc.com
-						</p>
-						<div>
-							<img id="facPic" src="assets/main-page/media/images/logo.png">				
-						</div>
-					</div>
-				</li>
-				<li>
-					<div>
-						<h5 class="center">
-							Caretaker3
-						</h5>
-					</div>
-					<div id="facContent">
-						<p id="facText" class="left">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							<br>Contact : 9876543210
-                            email : xyz@abc.com
-						</p>
-						<div>
-							<img id="facPic" src="assets/main-page/media/images/logo.png">				
-						</div>
-					</div>
-				</li>
-				<li>
-					<div>
-						<h5 class="center">
-							Caretaker4
-						</h5>
-					</div>
-					<div id="facContent">
-						<p id="facText" class="left">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							<br>Contact : 9876543210
-                            email : xyz@abc.com
-						</p>
-						<div>
-							<img id="facPic" src="assets/main-page/media/images/logo.png">				
-						</div>
-					</div>
-				</li>
+				{% endfor %}
 				<hr>
 			</ul>
 		</main>
@@ -333,24 +202,25 @@
                 <li>
                     <p class="center">
                         <u>Weekdays</u><br>
-                        Breakfast : 8:00 AM to 9:30 AM<br>
-                        Lunch     : 12:30 PM to 2:00 PM<br>
-                        Snacks    : 5 PM to 6 PM<br>
-                        Dinner    : 8:30 PM to 10:00 PM<br>
+                        Breakfast : {{ mess.weekday_breakfast_from }} to {{ mess.weekday_breakfast_to }}<br>
+                        Lunch     : {{ mess.weekday_lunch_from }} to {{ mess.weekday_lunch_to }}<br>
+                        Snacks    : {{ mess.weekday_snack_from }} to {{ mess.weekday_snack_to }}<br>
+                        Dinner    : {{ mess.weekday_dinner_from }} to {{ mess.weekday_dinner_to }}<br>
                     </p>
                 </li>
                 <li>
                     <p class="center">
                         <u>Weekends</u><br>
-                        Breakfast : 9:00 AM to 10:00 AM<br>
-                        Lunch     : 1:00 PM to 2:00 PM<br>
-                        Snacks    : 5 PM to 6 PM<br>
-                        Dinner    : 8:30 PM to 10:00 PM<br>
+                        Breakfast : {{ mess.weekend_breakfast_from }} to {{ mess.weekend_breakfast_to }}<br>
+                        Lunch     : {{ mess.weekend_lunch_from }} to {{ mess.weekend_lunch_to }}<br>
+                        Snacks    : {{ mess.weekend_snack_from }} to {{ mess.weekend_snack_to }}<br>
+                        Dinner    : {{ mess.weekend_dinner_from }} to {{ mess.weekend_dinner_to }}<br>
                     </p>
                 </li>
 				<li class="center">
 					<a href="#!" id="messmenu">Mess Menu</a>
-					<br><br><br><br><br><br><br>
+					<br>
+					<img id="facPic" src="{{mess.menu.url}}">
 				</li>
             </ul>
             

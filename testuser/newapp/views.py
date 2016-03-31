@@ -93,5 +93,18 @@ def hostels(request,hostel_name):
         b.append(d)
         if i.username == hostel_name:
             c = i
-    data = {'all_hostels': b,'target_hostel':c,'form':f}
+    print(c.warden_photo.url)
+    try:
+        faci = Facilities.objects.filter(hostel = hostel_name)
+    except ObjectDoesNotExist:
+        pass
+    try:
+        council = HostelCouncil.objects.filter(hostel = hostel_name)
+    except ObjectDoesNotExist:
+        pass
+    try:
+        mess = MessDetail.objects.get(hostel = hostel_name)
+    except ObjectDoesNotExist:
+        pass
+    data = {'all_hostels': b,'target_hostel':c,'form':f,'faci':faci,'council':council,'mess':mess}
     return render(request,'newapp/bh1_facilities.html',data)

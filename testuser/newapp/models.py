@@ -103,7 +103,7 @@ def warden_photo_name(instance, filename):
 
 class Hostels(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True, default='')
-	name = models.CharField(max_length = 20, default='',null=True)
+	name = models.CharField(max_length = 50, default='',null=True)
 	hostel_name = models.CharField(max_length = 20, default='')
 	room_capacity = models.IntegerField(null=True, blank=True)		# calculate from 
 	room_available = models.IntegerField(null=True, blank=True)		# update with each entry
@@ -211,14 +211,6 @@ class Complaints(models.Model):
 
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s %s" % (self.complaint_id, self.description)
-
-class Caretaker(models.Model):
-	name_of_caretaker = models.CharField(null = False, max_length = 300)
-	hostel = models.ForeignKey(Hostels)
-	caretaker_phone_num = models.CharField(null = False, max_length = 300)
-	#caretaker_photo = models.nowField()
-	def __str__(self):              # __unicode__ on Python 2
-		return "%s %s" % (self.name_of_caretaker, self.caretaker_phone_num)
 		
 #this table holds details of caretakers, mess/hostel secretary, sports/mess/library/cultural/etc. committee and its members
 def council_photo_name(instance, filename):
@@ -231,11 +223,7 @@ class HostelCouncil(models.Model):
 	phone = models.CharField(max_length=15,default='',null=False,blank=False)
 	position = models.CharField(max_length=100, default='')
 	committee = models.CharField(max_length=100, default='', null=True,blank=True)
-	dept_or_room = models.CharField(max_length=100, default='', null=True, blank=True)
 	photo = models.ImageField(upload_to = council_photo_name, null = True, blank = True)
-	#member = models.CharField(max_length = 15,  blank = False, choices = MEMBER_CHOICES, default = MEMBER_CHOICES[0][0])
-	#room_no = models.CharField(max_length=100, default='', null=True, blank=True)
-	#to do: to check if student/fsculty and accordingly assign room_no(from all room list) or dept_name.
 	def __str__(self):
 		return self.name
 def messmenu_file_name(instance, filename):
