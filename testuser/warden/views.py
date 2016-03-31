@@ -672,7 +672,6 @@ def addstudent(request):
 				room_number.save()
 				#send email to fill details
 				url = "http://127.0.0.1:8080/student/" + base64.b64encode(username.encode('utf-8')).decode('utf-8')
-				url = "127.0.0.1:8080/student/" + base64.b64encode(username.encode('utf-8')).decode('utf-8')
 				message = ''' Welcome To NSIT Hostel Management System. Click <a href= '%s'>here </a> to fill your details ''' % url
 				email = EmailMessage('Welcome to NSIT-HMS', message, to=[student_email])
 				email.send()

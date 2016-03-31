@@ -245,3 +245,7 @@ class AddStudentForm(forms.ModelForm):
             else:
                 raise forms.ValidationError('Incorrect format of username.(Correct format: 111-CO-15)')
         return self.cleaned_data
+class AddNoticeForm(forms.ModelForm):
+    class Meta:
+        model = Notice
+        exclude = ['creator']

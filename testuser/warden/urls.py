@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from . import views
+from . import views,views1
 
 urlpatterns = [
     url(r'^$',views.home, name='warden-home'),
@@ -26,4 +26,6 @@ urlpatterns = [
     url(r'^mess/$',views.mess, name='warden-mess'),
     url(r'^mess/add-mess/$',views.addmess, name='warden-add-mess'),
     url(r'^mess/edit-mess/(?P<pk>[0-9]+)/$',views.editmess, name='warden-edit-mess'),
+    url(r'^deletenotice/(?P<target>[0-9a-zA-Z]*)/$', views1.delNotice , name = 'WardenDelNotice'),
+    url(r'^notices/$',views1.notices, name='warden-notices'),
 ]

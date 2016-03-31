@@ -1,5 +1,5 @@
 from django.shortcuts import render
-import re
+import re, os
 from django.shortcuts import render,redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from newapp.models import *
 from .forms import *
+from testuser import settings
+from django.core.mail.message import EmailMessage
 @login_required
 @require_http_methods(['GET', 'POST'])
 def home(request):
@@ -27,8 +29,6 @@ def home(request):
                 warden.hostel_name = "Boys Hostel "+m
             elif fo=='g':
                 warden.hostel_name= "Girls Hostel "+m
-            print(warden,'''cjkadcjhcjhcjkhcujkchvjkshbvjksdcbvkjjsvkcbvjkchbv
-                  c jcb skjcvbjscb jhbcvhjscbvhjscbvjsdbvjsdiusdvbisdvbg''')
             warden.save()
         a=Hostels.objects.all();
         b=[]
@@ -115,14 +115,21 @@ def delete_hos(request,target):
     else:
         return redirect('logout')
 
-def SendNoticeMail(fileAddress):
-    a = Students.Objects.filter(room_number!=Null)
-    ext = str(filename.split('.')[-1])
-	f = 'chief/files/notices/'+instance.creator+'/'+instance.title+'.'+ext
-    message = 'A new announcement has been put up by the Chief Warden of NSIT for all the residents of the hostels. Please refer to the attachment for detailed notice.'
+def SendNoticeMail(fileAddress,title):
+    a = Students.objects.exclude( room_number = None)
+    n = Notice.objects.get(title=title)
+    url =  n.file.url
+    url = "127.0.0.1:8000" + url
+    c=[]
+    message = "A new announcement has been put up by the Chief Warden of NSIT for all the residents of the hostels. Click <a href= '%s'>here </a> to view the announcement" % url
     for i in a:
-        email = EmailMessage('New announcement made', message, to=[i.student_email])
-        
+       c.append(i.student_email)
+    email = EmailMessage()
+    email.subject = "New announcement for hostel residents of NSIT"
+    email.body = message
+    email.to = c
+    email.send()
+    return        
 
 @login_required
 @require_http_methods(['GET', 'POST'])
@@ -137,7 +144,7 @@ def notices(request):
                 a.creator = 'chiefwarden'
                 a.file = request.FILES['file']
                 a.save();
-                SendNoticeMail(request.FILES[filename].name)
+                SendNoticeMail(request.FILES['file'].name,f.cleaned_data.get('title'))
                 mes = 'Notice added successfully'
             else:
                 f=AddNoticeForm()
@@ -168,6 +175,11 @@ def delNotice(request,target):
             c=Notice.objects.get(pk=target)
         except ObjectDoesNotExist:
             pass
+        url =  c.file.url
+        delta = settings.MEDIA_ROOT
+        delta = delta.split('media')[-2]
+        url = delta+url
+        os.remove(url)
         c.delete()
         mes  = 'Notice removed succeessfully'
         a=Hostels.objects.all();

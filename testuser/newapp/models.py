@@ -139,7 +139,7 @@ class Students(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True , default='');
 	name = models.CharField(max_length=50 , blank = True, default='');
 	date_of_birth = models.DateTimeField(null=False,default = datetime.now)
-	room_number = models.ForeignKey(Rooms);
+	room_number = models.ForeignKey(Rooms,null = True);
 	distance_from_nsit = models.IntegerField(null = False,  blank = True, default=0);
 	current_sem_join_date = models.DateTimeField(default=datetime.now, blank = True,  null=True)
 	current_hostel_join_date = models.DateTimeField(default=datetime.now, blank = True, null=True)
@@ -301,11 +301,12 @@ class Closures(models.Model):
 		return closure_list
 
 def noticePhotoForm(instance, filename):
-	ext = str(filename.split('.')[-1])
-	return 'chief/files/notices/'+instance.creator+'/'+instance.title+'.'+ext
+	ext = filename.split('.')[-1]
+	title = instance.title.replace(" ",'')
+	return 'newapp/files/notices/'+instance.creator+'/'+title+'.'+ext
 
 class Notice(models.Model):
     #code
-	title = models.CharField(null=False, max_length = 200,default = None)
+	title = models.CharField(null=False, max_length = 200,default = None,unique = True)
 	file = models.FileField(upload_to = noticePhotoForm,null = True)
 	creator = models.CharField(max_length = 30,null = False)
