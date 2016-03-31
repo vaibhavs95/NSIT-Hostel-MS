@@ -61,11 +61,34 @@
     <!-- Main Content -->
 
     <main>
-        <div class="container">
+        <div id="rSideContainer">
+            
+            <ul class="collapsible" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header" id="news">News/Announcements</div>        
+                    <table class="collapsible-body">
+                        <tr><td><a href="#">Link1</a></td></tr>
+                        <tr><td><a href="#">Link2</a></td></tr>
+                        <tr><td><a href="#">Link3</a></td></tr>
+                    </table>
+                </li>
+            </ul>
+            <!--<ul  data-collapsible="accordion">
+                <li>
+                    <div  id="news">News/Announcements</div>        
+                    <table >
+                        <tr><td><a href="#">Link1</a></td></tr>
+                        <tr><td><a href="#">Link2</a></td></tr>
+                        <tr><td><a href="#">Link3</a></td></tr>
+                    </table>
+                </li>
+            </ul>-->
+        </div>
+        <div class="container" id="sideContainer">
             {% if len|divisibleby:2 %}
                 {% for hos in hostels %}
                     {% if forloop.counter0|divisibleby:2 %}
-                        <div class="row">
+                        <div class="row" id="hCards">
                             <div class="col s12 m6 l6">
                                 <div class="card">
                                     <div class="card-image gradient">
@@ -73,7 +96,7 @@
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p>Old but Gold. The very first hostel of NSIT. A little different but better. Fill me with Pleasure.</p>
+                                        <p id="hDesc">Old but Gold. The very first hostel of NSIT. A little different but better. Fill me with Pleasure.</p>
                                     </div>
                                     <div class="card-action">
                                         <a href="/newapp/{{ hos.username }}/" >More Info.</a>
@@ -88,7 +111,7 @@
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p>I am a Hostel. Currently housing 4th year students that's why I am alone inside. Please fill me.</p>
+                                        <p id="hDesc">I am a Hostel. Currently housing 4th year students that's why I am alone inside. Please fill me.</p>
                                     </div>
                                     <div class="card-action">
                                         <a href="/newapp/{{ hos.username }}/#facilities" >More Info.</a>
@@ -101,7 +124,7 @@
             {% else %}
                 {% for hos in hostels %}
                     {% if forloop.last %}
-                        <div class="row">
+                        <div class="row" id="hCards">
                             <div class="col s6 offset-s3">
                                 <div class="card">
                                     <div class="card-image gradient">
@@ -109,7 +132,7 @@
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p>Old but Golddd. The very first hostel of NSIT. A little different but better. Fill me with Pleasure.</p>
+                                        <p id="hDesc">Old but Golddd. The very first hostel of NSIT. A little different but better. Fill me with Pleasure.</p>
                                     </div>
                                     <div class="card-action">
                                         <a href="/newapp/{{ hos.username }}/#facilities" >More Info.</a>
@@ -118,7 +141,7 @@
                             </div>
                         </div>
                     {% elif forloop.counter0|divisibleby:2 %}
-                        <div class="row">
+                        <div class="row" id="hCards">
                             <div class="col s12 m6 l6">
                                 <div class="card">
                                     <div class="card-image gradient">
@@ -126,7 +149,7 @@
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p>Old but Gold. The very first hostel of NSIT. A little different but better. Fill me with Pleasure.</p>
+                                        <p id="hDesc">Old but Gold. The very first hostel of NSIT. A little different but better. Fill me with Pleasure.</p>
                                     </div>
                                     <div class="card-action">
                                         <a href="/newapp/{{ hos.username }}/#facilities" >More Info.</a>
@@ -141,7 +164,7 @@
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p>I am a Hostel. Currently housing 4th year students that's why I am alone inside. Please fill me.</p>
+                                        <p id="hDesc">I am a Hostel. Currently housing 4th year students that's why I am alone inside. Please fill me.</p>
                                     </div>
                                     <div class="card-action">
                                         <a href="/newapp/{{ hos.username }}/#facilities" >More Info.</a>
@@ -152,15 +175,17 @@
                     {% endif %}
                 {% endfor %}
             {% endif %}
-        </main>
+        </div>
+        
+    </main>
 
     <!-- Footer --> 
 
     <footer class="page-footer grey darken-4">
         <div class="container footer">
-            <a class="grey-text text-lighten-3" href="#!">About</a>
+            <a class="grey-text text-lighten-3" href="#aboutt">About</a>
             <a class="grey-text text-lighten-3" href="#!">Contact Us</a>
-            <a class="grey-text text-lighten-3" href="#!">Locate Us</a>
+            <a class="grey-text text-lighten-3" href="#locate">Locate Us</a>
             <a class="grey-text text-lighten-3" href="#!">Feedback</a>
             <a class="grey-text text-lighten-3" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
         </div>
@@ -188,7 +213,27 @@
             </form>
         </div>
     </div>
-
+    
+    <!-- About -->
+		<div id="aboutt" class="modal">
+			<div class="modal-content">
+				<h3 class="center">
+					About us
+				</h3>
+				<hr>
+				<p>
+					wawwe ewqweq eqweweqe qewqe qewqeqw resdfdd fffdfdfd
+				</p>
+			</div>
+		</div>
+		
+		<!-- Locate Us -->
+		<div id="locate" class="modal">
+			<div class="modal-content">
+				<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.6879906005356!2d77.03287455023379!3d28.609135591804954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d053516783c9b%3A0x7e540ab22a28446!2sNetaji+Subhas+Institute+Of+Technology!5e0!3m2!1sen!2sin!4v1458988779817" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+			</div>
+		</div>
+    
     <!-- forgot password -->
 
     <div id="forgot-password" class="modal">
