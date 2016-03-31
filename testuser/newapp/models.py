@@ -135,26 +135,30 @@ class Rooms(models.Model):
 	capacity_remaining = models.IntegerField(null = True, blank = True)
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.room_no)
+
+def student_photo_name(instance, filename):
+	ext = filename.split('.')[-1]
+	return 'student/images/'+instance.username+'.'+ext
 class Students(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True , default='');
 	name = models.CharField(max_length=50 , blank = True, default='');
 	date_of_birth = models.DateTimeField(null=False,default = datetime.now)
-	room_number = models.ForeignKey(Rooms,null = True);
+	room_number = models.ForeignKey(Rooms);
 	distance_from_nsit = models.IntegerField(null = False,  blank = True, default=0);
-	current_sem_join_date = models.DateTimeField(default=datetime.now, blank = True,  null=True)
+	# current_sem_join_date = models.DateTimeField(default=datetime.now, blank = True,  null=True)
 	current_hostel_join_date = models.DateTimeField(default=datetime.now, blank = True, null=True)
 	branch = models.ForeignKey(Branch)
 	gender = models.CharField(max_length = 10,  blank = True, choices = GENDER_CHOICES, default = GENDER_CHOICES[0][0])
 	college_category = models.CharField(max_length=5,  blank = True, choices = COLLEGE_CAT, default = COLLEGE_CAT[0][0])
 	#**hostel_category = models.CharField(null=False,max_length=20)
 	blood_group = models.CharField(max_length=5,  blank = True, choices = BLOOD_GROUP, default = BLOOD_GROUP[0][0])
-	fee_last_submitted = models.DateTimeField(null=True, blank = True, default = datetime.now)
+	# fee_last_submitted = models.DateTimeField(null=True, blank = True, default = datetime.now)
 	student_phone_num = models.CharField(null = False, blank = True, max_length=20)
 	student_email = models.EmailField(null=False,unique=True)
 	student_optional_phone_num = models.CharField(null = True, blank = True, max_length=20)
 #Corpus
-	corpus_calculated_uptill = models.DateTimeField(null=True, blank = True,default = datetime.now)
-	corpus = models.IntegerField(null=False, blank = True, default =0)
+	# corpus_calculated_uptill = models.DateTimeField(null=True, blank = True,default = datetime.now)
+	# corpus = models.IntegerField(null=False, blank = True, default =0)
 # Family Details
 	father_name = models.CharField(null=False, blank = True, max_length=100)
 	mother_name = models.CharField(null=False, blank = True, max_length=100)
@@ -170,6 +174,7 @@ class Students(models.Model):
 	local_guardian_phone_num = models.CharField(null = True, blank = True, max_length=20)
 	local_guardian_optional_phone_num = models.CharField(null = True, blank = True, max_length=20)
 	local_guardian_email = models.EmailField(null=True, blank = True )
+	student_photo = models.ImageField(upload_to=student_photo_name, null = True, blank = True)
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.username)
 	
