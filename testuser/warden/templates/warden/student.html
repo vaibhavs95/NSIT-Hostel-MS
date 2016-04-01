@@ -22,9 +22,9 @@
 		<h3>Students</h3>
 			<ul class="collapsible" data-collapsible="accordion">
 		    <li>
-		      <div class="collapsible-header">Add Student</div>
+		      <div class="collapsible-header active">Add Student</div>
 		      <div class="collapsible-body">
-				<form method="post" action="{% url 'warden-add-student' %}">
+				<form method="post" action="{% url 'warden-add-student' %}" class="viewform">
 					{% csrf_token %}
 					<input type="hidden" name="next" value="{{ next }}" />
 					{% form form=addstudentform %}
@@ -38,20 +38,22 @@
 		      </div>
 		    </li>
 		  	</ul>
-			<table>
+			<table class="centered striped">
 				<thead>
 					<tr>
 						<th data-field="name">Student Roll No.</th>
 						<th data-field="id">Room Number</th>
 						<th data-field="name">Capacity of Room</th>
+						<th data-field="name">Capacity Remaining</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for r in students %}
 					<tr>
-						<td>{{ r.student_name }}</td>
-						<td>{{ r.room_number }}</td>
-						<td>{{ r.capacity }}</td>
+						<td><a href="{% url 'studentid' r.id %}">{{ r.username }}</a></td>
+						<td>{{ r.room.room_no }}</td>
+						<td>{{ r.room.capacity_of_room }}</td>
+						<td>{{ r.room.capacity_remaining }}</td>
 					</tr>
 					{% endfor %}
 				</tbody>

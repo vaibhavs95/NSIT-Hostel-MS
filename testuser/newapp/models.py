@@ -138,11 +138,11 @@ class Rooms(models.Model):
 class Students(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True , default='');
 	name = models.CharField(max_length=50 , blank = True, default='');
-	date_of_birth = models.DateTimeField(null=False,default = datetime.now)
+	date_of_birth = models.DateField(null=False,default = datetime.now)
 	room_number = models.ForeignKey(Rooms);
 	distance_from_nsit = models.IntegerField(null = False,  blank = True, default=0);
-	current_sem_join_date = models.DateTimeField(default=datetime.now, blank = True,  null=True)
-	current_hostel_join_date = models.DateTimeField(default=datetime.now, blank = True, null=True)
+	#current_sem_join_date = models.DateField(default=datetime.now, blank = True,  null=True)
+	current_hostel_join_date = models.DateField(default=datetime.now, blank = True, null=True)
 	branch = models.ForeignKey(Branch)
 	gender = models.CharField(max_length = 10,  blank = True, choices = GENDER_CHOICES, default = GENDER_CHOICES[0][0])
 	college_category = models.CharField(max_length=5,  blank = True, choices = COLLEGE_CAT, default = COLLEGE_CAT[0][0])
@@ -153,8 +153,8 @@ class Students(models.Model):
 	student_email = models.EmailField(null=False,unique=True)
 	student_optional_phone_num = models.CharField(null = True, blank = True, max_length=20)
 #Corpus
-	corpus_calculated_uptill = models.DateTimeField(null=True, blank = True,default = datetime.now)
-	corpus = models.IntegerField(null=False, blank = True, default =0)
+	#corpus_calculated_uptill = models.DateTimeField(null=True, blank = True,default = datetime.now)
+	#corpus = models.IntegerField(null=False, blank = True, default =0)
 # Family Details
 	father_name = models.CharField(null=False, blank = True, max_length=100)
 	mother_name = models.CharField(null=False, blank = True, max_length=100)

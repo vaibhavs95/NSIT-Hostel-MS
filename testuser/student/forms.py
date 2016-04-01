@@ -2,10 +2,15 @@ from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate
 from newapp.models import *
+from django.contrib.admin.widgets import AdminDateWidget
 
 class CreateStudentForm(forms.Form):
+    class Meta:
+        widgets = {
+            'date_of_birth': AdminDateWidget(),
+        }
     name = forms.CharField(max_length = 254)
-    date_of_birth = forms.DateTimeField()
+    date_of_birth = forms.DateField()
     distance_from_nsit = forms.IntegerField()
     gender = forms.ChoiceField(choices = GENDER_CHOICES, required = True)
     college_category = forms.ChoiceField(choices = COLLEGE_CAT, required = True) 

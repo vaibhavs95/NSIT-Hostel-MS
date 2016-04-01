@@ -4,6 +4,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate
 from newapp.models import *
 import re
+from django.contrib.admin.widgets import AdminDateWidget
+
 def photocheck(requestfiles,field):
     a = None
     a = requestfiles.__contains__(field)
@@ -29,9 +31,9 @@ class EditWardenProfileForm(forms.ModelForm):
         landline = self.cleaned_data.get('landline')
         if name and phone and landline:
             name = name.title()
-            if len(phone) == 10:
+            if len(phone) != 10:
                 raise forms.ValidationError('Enter Correct Phone Number without std code')
-            if len(landline) == 8:
+            if len(landline) != 8:
                 raise forms.ValidationError('Enter Correct Landline Number without std code')
             if photocheck(self.request.FILES,'warden_photo'):
                 h = Hostels.objects.get(username=self.request.user)
@@ -49,7 +51,9 @@ class AddRoomForm(forms.Form):
         room_no = self.cleaned_data.get('room_no')
         capacity_of_room = self.cleaned_data.get('capacity_of_room')
         if room_no and capacity_of_room:
-            room_no = room_no.lower()
+            room_no = room_no.upper()
+            if re.match("[A-Z]+-[0-9]+",str(room_no))==None:
+                raise forms.ValidationError('Enter Room Number in correct format: AA-111')
             if capacity_of_room > 3:
                 raise forms.ValidationError('Capacity of Room cannot be more than three')
             h = Hostels.objects.get(username = self.request.user)
@@ -57,24 +61,24 @@ class AddRoomForm(forms.Form):
             if(len(r) > 0):
                 raise forms.ValidationError('This Room already Exists.')
         return self.cleaned_data
-'''class EditRoomForm(forms.ModelForm):
-    h = Hostels.objects.get(username=request.user)
-    room_num = forms.ModelChoiceField(queryset = (Rooms.objects.filter(hostel = h)).order_by('room_no'),initial = 0)
+
+
+class SearchRoomForm(forms.Form):
+    room_no = forms.CharField(max_length=10,help_text='Search Room by Room Number, format : AA-111')
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('request', None)
-        super(AddRoomForm, self).__init__(*args, **kwargs)
+        super(SearchRoomForm, self).__init__(*args, **kwargs)
     def clean(self):
         room_no = self.cleaned_data.get('room_no')
-        capacity_of_room = self.cleaned_data.get('capacity_of_room')
-        if room_no and capacity_of_room:
-            room_no = room_no.lower()
-            if capacity_of_room > 3:
-                raise forms.ValidationError('Capacity of Room cannot be more than three')
-            h = Hostels.objects.get(username = self.request.user)
-            r = Rooms.objects.filter(room_no = room_no,hostel = h)
-            if(len(r) > 0):
-                raise forms.ValidationError('This Room already Exists.')
-        return self.cleaned_data'''
+        if room_no:
+            room_no = room_no.upper()
+            if re.match("[A-Z]+-[0-9]+",str(room_no))==None:
+                raise forms.ValidationError('Enter Room Number in correct format: AA-111')
+        else:
+            raise forms.ValidationError('Room Number cannot be empty.')
+        return self.cleaned_data
+
+
+
 class AddFacilityForm(forms.ModelForm):
     class Meta:
         model = Facilities
@@ -215,10 +219,17 @@ class AddMessForm(forms.ModelForm):
 class AddStudentForm(forms.ModelForm):
     class Meta:
         model = Students
-        fields = ['username','branch','room_number','student_email']
+        fields = ['username','branch','room_number','student_email','current_hostel_join_date']
+        widgets = {
+            'current_hostel_join_date': AdminDateWidget(),
+        }
     def __init__(self, user, *args, **kwargs):
         super(AddStudentForm, self).__init__(*args, **kwargs)
         self.fields['room_number'].queryset = Rooms.objects.filter(capacity_remaining__gt = 0, hostel = Hostels.objects.get(username=user))
+        self.fields['username'].help_text='Roll No: 111-CO-16'
+        self.fields['branch'].help_text='Select one from dropdown'
+        self.fields['room_number'].help_text='Select one from dropdown'
+        self.fields['current_hostel_join_date'].help_text='Format: yyyy-mm-dd hh:mm:ss'
     def clean(self):
         username = self.cleaned_data.get('username')
         branch = self.cleaned_data.get('branch')

@@ -6,6 +6,14 @@
 {% block extrahead %}
 {% endblock %}
 
+{% block extrastyle %}
+<style>
+	#searchcard{
+		padding: 2%;
+	}
+</style>
+{% endblock %}
+
 {% block sidelist %}
 <li><a class="waves-effect" href="{% url 'warden-room' %}">Room</a></li>
 <li><a class="waves-effect" href="{% url 'warden-student' %}">Student</a></li>
@@ -19,9 +27,50 @@
 	<div class="col s12 m12 l12">
 		<div class="card-panel">
 		<h3>Rooms</h3>
+		<div class="row card" id="searchcard">
+		<h6> Search Room </h6>
+		<hr>
+			<div class="col s6">
+			<form method="post" action="{% url 'warden-search-room' %}">
+				{% csrf_token %}
+				{% form form=searchroomform %}
+				{% endform %}
+				<button type="submit" name="search-room" class="btn waves-effect waves-light left"><i class="material-icons">search</i></button>
+			</form>
+			</div>
+			{% if searchedroom %}
+				<table class="centered bordered">
+				<thead>
+					<tr>
+						<th data-field="id">Room Number</th>
+						<th data-field="name">Capacity of Room</th>
+						<th data-field="name">Capacity Available</th>
+						<th data-field="name">Students</th>
+						<th data-field="name">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{ searchedroom.room.room_no }}</td>
+						<td>{{ searchedroom.room.capacity_of_room }}</td>
+						<td>{{ searchedroom.room.capacity_remaining }}</td>
+						<td>
+						{% for s in searchedroom.students %}
+						<a href="{% url 'studentid' s.id %}">{{ s.username }}</a></br> 
+						{% endfor %}
+						</td>
+						<td><a href="#" onclick="myFunction('{{ searchedroom.room.room_no }}','{{ searchedroom.room.pk }}')">Delete Room</a></td>
+					</tr>
+				</tbody>
+				</table>
+			{% endif %}
+			{% if searchedroomnotfound %}
+			<p>Room Not Found.</p>
+			{% endif %}
+		</div>
 			<ul class="collapsible" data-collapsible="accordion">
 		    <li>
-		      <div class="collapsible-header">Add Room</div>
+		      <div class="collapsible-header"><i class="material-icons">keyboard_arrow_down</i>Add Room</div>
 		      <div class="collapsible-body">
 				<form method="post" action="{% url 'warden-add-room' %}">
 					{% csrf_token %}
@@ -37,27 +86,77 @@
 		      </div>
 		    </li>
 		  	</ul>
-			<table>
+			{% if roomfulllist %}
+					<a class="btn" href="{% url 'warden-room' %}"> Hide All Rooms</a><br><br>
+					<a class="btn" href="#!"> Print This List</a>
+				<table class="centered striped">
 				<thead>
 					<tr>
 						<th data-field="id">Room Number</th>
 						<th data-field="name">Capacity of Room</th>
 						<th data-field="name">Capacity Available</th>
+						<th data-field="name">Students</th>
+						<th data-field="name">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for r in rooms %}
 					<tr>
-						<td>{{ r.room_no }}</td>
-						<td>{{ r.capacity }}</td>
-						<td>{{ r.capacity_remaining }}</td>
+						<td>{{ r.room.room_no }}</td>
+						<td>{{ r.room.capacity_of_room }}</td>
+						<td>{{ r.room.capacity_remaining }}</td>
+						<td>
+						{% for s in r.students %}
+						<a href="{% url 'studentid' s.id %}">{{ s.username }}</a></br> 
+						{% endfor %}
+						</td>
+						<td><a href="#" onclick="myFunction('{{ r.room.room_no }}','{{ r.room.pk }}')">Delete Room</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
+			{% else %}
+				<a class="btn" href="{% url 'warden-room-full' %}"> View All Rooms</a>
+			{% endif %}
+			<!--<table class="centered striped">
+				<thead>
+					<tr>
+						<th data-field="id">Room Number</th>
+						<th data-field="name">Capacity of Room</th>
+						<th data-field="name">Capacity Available</th>
+						<th data-field="name">Students</th>
+						<th data-field="name">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for r in rooms %}
+					<tr>
+						<td>{{ r.room.room_no }}</td>
+						<td>{{ r.room.capacity_of_room }}</td>
+						<td>{{ r.room.capacity_remaining }}</td>
+						<td>
+						{% for s in r.students %}
+						<a href="{% url 'studentid' s.id %}">{{ s.username }}</a></br> 
+						{% endfor %}
+						</td>
+						<td><a href="#" onclick="myFunction('{{ r.room.room_no }}','{{ r.room.pk }}')">Delete Room</a></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>-->
 			{% if room_created %}
 			<script type="text/javascript">
 				alert("Room created successfully.");
+			</script>
+			{% endif %}
+			{% if studentinroom %}
+			<script type="text/javascript">
+				alert("Room cannot be deleted as student is already there in that room.");
+			</script>
+			{% endif %}
+			{% if studentnotinroom %}
+			<script type="text/javascript">
+				alert("Room deleted Successfully");
 			</script>
 			{% endif %}
 		</div>
@@ -69,5 +168,15 @@
 	$('.collapsible-body').css({
 		"padding": "2%"
 	});
+</script>
+<script type='text/javascript' >
+	function myFunction(rno,rid) {
+		a = "Delete Room '"+rno+"' ?"
+		if (confirm(a) == true) {
+			console.log('url called')
+			window.location = "/warden/room/delete-room/"+rid
+			console.log('url called again')
+		}
+	}
 </script>
 {% endblock %}
