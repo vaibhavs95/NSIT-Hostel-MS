@@ -21,6 +21,7 @@
 <li><a class="waves-effect" href="{% url 'warden-council' %}">Council</a></li>
 <li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
 <li><a class="waves-effect" href="{% url 'warden-mess' %}">Mess</a></li>
+<li><a class="waves-effect" href="{% url 'warden-notices' %}">Notices</a></li>
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -115,6 +116,7 @@
 					{% endfor %}
 				</tbody>
 			</table>
+<<<<<<< HEAD
 			{% else %}
 				<a class="btn" href="{% url 'warden-room-full' %}"> View All Rooms</a>
 			{% endif %}
@@ -159,6 +161,14 @@
 				alert("Room deleted Successfully");
 			</script>
 			{% endif %}
+=======
+			
+{% if mes %}
+	<script type="text/javascript">
+		alert("{{ mes }}");
+	</script>
+{% endif %}
+>>>>>>> 3d82bb866862e75615c22b07534cd2535fec11e8
 		</div>
 	</div>
 </div>

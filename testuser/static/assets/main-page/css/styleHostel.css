@@ -31,13 +31,16 @@ Header
 	background-color: red;
 }
 #header-text-nsit{
-	margin: 10% 0% 0% 15%;
+	/*margin: 10% 0% 0% 15%;*/
 	font-size: 2rem;
-	padding-left: 200px;
+	padding-left: 250px;
+		
+	
 }
 #header-text-hms{
-	margin: 40% 0% 0% 15%;
-	padding-left: 200px;
+	/*margin: 40% 0% 0% 15%;*/
+	padding-left: 250px;
+	padding-top : 40px;
 	font-size: 1.5rem;
 }
 #login-button{
@@ -307,12 +310,16 @@ media queries
 		transform: translateX(-55%);
 		font-size: 1.6rem;
 		padding-left: 0px;
+		padding-right: 0px;
+		padding-top: 0px;
 	}
 	#header-text-hms{
 		transform: translateX(-95%);
 		margin: 40px 0% 0% 0px;
 		font-size: 1.2rem;
 		padding-left: 0px;
+		padding-right: 0px;
+		padding-top: 0px;
 	}
 	nav{
 		height: 125px;

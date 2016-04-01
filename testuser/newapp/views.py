@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods, require_GET, requ
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-
+from django.core.exceptions import ObjectDoesNotExist
 from .models import *
 from .forms import LoginForm
 
@@ -93,5 +93,20 @@ def hostels(request,hostel_name):
         b.append(d)
         if i.username == hostel_name:
             c = i
-    data = {'all_hostels': b,'target_hostel':c,'form':f}
+    faci = None
+    try:
+        faci = Facilities.objects.filter(hostel = hostel_name)
+    except ObjectDoesNotExist:
+        pass
+    council = None
+    try:
+        council = HostelCouncil.objects.filter(hostel = hostel_name)
+    except ObjectDoesNotExist:
+        pass
+    mess =None
+    try:
+        mess = MessDetail.objects.get(hostel = hostel_name)
+    except ObjectDoesNotExist:
+        pass
+    data = {'all_hostels': b,'target_hostel':c,'form':f,'faci':faci,'council':council,'mess':mess}
     return render(request,'newapp/bh1_facilities.html',data)

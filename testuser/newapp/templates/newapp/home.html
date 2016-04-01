@@ -9,7 +9,7 @@
 	<title> {% block title %} HMS {% endblock %} </title>
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	{% include 'material/includes/material_css.html' %}
-	<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+	<!--<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>-->
 	<link type="text/css" rel="stylesheet" href='{% static "assets/main-page/css/styleHostel.css" %}'/>
 	{% block extrahead %}
 	{% endblock %}
@@ -94,13 +94,36 @@
 	<!-- Footer --> 
 	<footer id="footr" class="page-footer grey darken-4">
 		<div class="container footer">
-			<a class="grey-text text-lighten-3" href="#!">About</a>
+			<a class="grey-text text-lighten-3" href="#aboutt">About</a>
 			<a class="grey-text text-lighten-3" href="#!">Contact Us</a>
-			<a class="grey-text text-lighten-3" href="#!">Locate Us</a>
+			<a class="grey-text text-lighten-3" href="#locate">Locate Us</a>
 			<a class="grey-text text-lighten-3" href="#!">Feedback</a>
 			<a class="grey-text text-lighten-3" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
 		</div>
-	</footer>    
+	</footer>
+	
+	<!-- Modals -->
+	
+	<!-- About -->
+		<div id="aboutt" class="modal">
+			<div class="modal-content">
+				<h3 class="center">
+					About us
+				</h3>
+				<hr>
+				<p>
+					wawwe ewqweq eqweweqe qewqe qewqeqw resdfdd fffdfdfd
+				</p>
+			</div>
+		</div>
+		
+		<!-- Locate Us -->
+		<div id="locate" class="modal">
+			<div class="modal-content">
+				<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.6879906005356!2d77.03287455023379!3d28.609135591804954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d053516783c9b%3A0x7e540ab22a28446!2sNetaji+Subhas+Institute+Of+Technology!5e0!3m2!1sen!2sin!4v1458988779817" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+			</div>
+		</div>
+	
 	<!--Scripts -->
 	<script type="text/javascript" src='{% static "assets/main-page/js/jquery-.11.3.min.js" %}'></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

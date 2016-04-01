@@ -1,0 +1,81 @@
+{% extends "newapp/home.html" %}
+{% load staticfiles %}
+{% load material_form %}
+{% block title %} Chief Warden {% endblock %}
+
+{% block extrahead %} 
+<!--<link rel="stylesheet" href="{% static 'assests/main-page/css/cw-home.css' %}">-->
+   <link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/styleHostel.css' %}"/>
+<!--<link rel="stylesheet" href="{% static 'assests/main-page/css/styleHostel.css' %}">-->
+{% endblock %}
+
+{% block content %}
+{% if mes %}
+	<script type="text/javascript">
+		alert("{{ mes }}");
+	</script>
+{% endif %}
+<div class="row">
+	<div class="col s12 m12 l12">
+		<div class="card-panel">
+		<h3>Notices</h3>
+			<ul class="collapsible" data-collapsible="accordion">
+		    <li>
+		      <div class="collapsible-header">Add Notice</div>
+		      <div class="collapsible-body">
+				<form method="post" action="" enctype="multipart/form-data">
+					{% csrf_token %}
+					<input type="hidden" name="next" value="{{ next }}" />
+					{% form form=form %}
+					{% endform %}
+					<div class="row">
+						<div class="col s12"> 
+							<button type="submit" name="add-room" class="btn waves-effect waves-light left">Add Notice</button>
+						</div>
+					</div>
+				</form>
+		      </div>
+		    </li>
+		  	</ul>
+			<table>
+				<thead>
+					<tr>
+						<th data-field="id">S. No.</th>
+						<th data-field="name">Title</th>						
+						<th data-field="name"></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for hos in notices %}
+					<tr>
+						<td align="center">
+							{{ forloop.counter }}.
+						</td>
+						<td align="center">
+							<a href="{{ hos.file.url }}">{{ hos.title }}</a>
+						</td>
+						<td align="center">
+							<a href="#!" onclick="myFunction('{{ hos.id }}')">Delete Notice</a>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<script type='text/javascript' >
+		function myFunction(hosid) {
+			if (confirm("Delete Notice ?") == true) {
+				window.location = "/chiefwarden/deletenotice/"+hosid
+			}
+		}
+	</script>
+		</div>
+	</div>
+</div>
+	
+
+{% endblock %}
+
+{% block sidelist %}
+<li><a href="/chiefwarden/branch/">Branches</a></li>
+<li><a href="/chiefwarden/notices/">Notices</a></li>
+{% endblock %}

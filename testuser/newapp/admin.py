@@ -16,9 +16,10 @@ admin.site.register(MedicalHistory)
 admin.site.register(CriminalRecord)
 admin.site.register(PreviousHostelDetail)
 admin.site.register(Complaints)
-admin.site.register(Caretaker)
+admin.site.register(HostelCouncil)
 admin.site.register(Closures)
 admin.site.register(MessDetail)
+admin.site.register(Notice)
 
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required

@@ -77,3 +77,8 @@ class AddBranchForm(forms.Form):
         if b is not None:
             raise forms.ValidationError('This code Already Exists')
         return Roll_Code
+
+class AddNoticeForm(forms.ModelForm):
+    class Meta:
+        model = Notice
+        exclude = ['creator']

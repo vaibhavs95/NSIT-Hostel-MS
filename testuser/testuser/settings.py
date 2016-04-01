@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'material',
+    'material.frontend',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,7 +40,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'newapp',
-    'material',
     'chief',
     'student',
     'warden',
@@ -85,7 +86,7 @@ DATABASES = {
         'NAME': 'testuser',
         'USER' : 'root',
         'HOST' : 'localhost', 
-        'PASSWORD' : 'cyclekapedal',
+        'PASSWORD' : 'howareyou',
         'PORT' : 3306
     }
 }

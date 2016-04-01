@@ -1,5 +1,4 @@
 import re, os, base64
-
 from django.shortcuts import render,redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
@@ -120,7 +119,21 @@ def roombasic():
 @require_http_methods(['GET', 'POST'])
 def room(request):
 	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+<<<<<<< HEAD
 		roombasic()
+=======
+		basic()
+		h = Hostels.objects.get(username = request.user)
+		a = (Rooms.objects.filter(hostel=h)).order_by('room_no')
+		rooms = []
+		for i in a:
+			d = {'room_no':i.room_no,'capacity':i.capacity_of_room,'capacity_remaining':i.capacity_remaining}
+			rooms.append(d)
+		data['rooms'] = rooms
+		f = AddRoomForm()
+		data['addroomform'] = f
+		data['mes'] = None
+>>>>>>> 3d82bb866862e75615c22b07534cd2535fec11e8
 		return render(request,'warden/room.html',data)
 	else:
 		return redirect('logout')
@@ -149,7 +162,11 @@ def addroom(request):
 	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
 		h = Hostels.objects.get(username = request.user)
 		a = Rooms.objects.filter(hostel=h)
+<<<<<<< HEAD
 		roombasic()
+=======
+		mes = None
+>>>>>>> 3d82bb866862e75615c22b07534cd2535fec11e8
 		if request.method == 'POST':
 			f = AddRoomForm(request.POST, request = request)
 			if f.is_valid():
@@ -157,6 +174,7 @@ def addroom(request):
 				room_no = room_no.upper()
 				a = Rooms(room_no=room_no,capacity_of_room=f.cleaned_data.get('capacity_of_room'),hostel=h,capacity_remaining=f.cleaned_data.get('capacity_of_room'))
 				a.save()
+<<<<<<< HEAD
 				roombasic()
 				data['addroomform'] = f
 				data['room_created'] = 'ok'
@@ -164,9 +182,25 @@ def addroom(request):
 			else:
 				data['addroomform'] = f
 				return render(request,'warden/room.html',data)
+=======
+				mes = 'Room added successfully'
+			basic()
+			h = Hostels.objects.get(username = request.user)
+			a = (Rooms.objects.filter(hostel=h)).order_by('room_no')
+			rooms = []
+			for i in a:
+				d = {'room_no':i.room_no,'capacity':i.capacity_of_room,'capacity_remaining':i.capacity_remaining}
+				rooms.append(d)
+			data['rooms'] = rooms
+			f = AddRoomForm()
+			data['addroomform'] = f
+			data['mes'] = mes
+			return render(request,'warden/room.html',data)
+>>>>>>> 3d82bb866862e75615c22b07534cd2535fec11e8
 		else:
 			f = AddRoomForm()
 			data['addroomform'] =  f
+			data['mes'] = mes
 			return render(request,'warden/room.html',data)
 	else:
 		return redirect('logout')
@@ -666,7 +700,6 @@ def editmess(request,pk):
 				f = AddMessForm(request.POST, request.FILES,instance=mess)
 				if f.is_valid():
 					f.save()
-					print(request.FILES)
 					return redirect('warden-mess')
 				else:
 					data['editmessform'] = f
@@ -736,8 +769,7 @@ def studentbasic(user):
 @require_http_methods(['GET', 'POST'])
 def addstudent(request):
 	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
-		basic()
-		studentbasic(request.user)
+		mes = None
 		if request.method == 'POST':
 			f = AddStudentForm(request.user,request.POST)
 			if f.is_valid():
@@ -754,10 +786,10 @@ def addstudent(request):
 				room_number.save()
 				#send email to fill details
 				url = "http://127.0.0.1:8080/student/" + base64.b64encode(username.encode('utf-8')).decode('utf-8')
-				url = "127.0.0.1:8080/student/" + base64.b64encode(username.encode('utf-8')).decode('utf-8')
 				message = ''' Welcome To NSIT Hostel Management System. Click <a href= '%s'>here </a> to fill your details ''' % url
 				email = EmailMessage('Welcome to NSIT-HMS', message, to=[student_email])
 				email.send()
+<<<<<<< HEAD
 				studentbasic(request.user)	
 				data['addstudentform'] = f
 				data['studentadded'] = 'ok'
@@ -765,9 +797,20 @@ def addstudent(request):
 			else:
 				data['addstudentform'] = f
 				return render(request,'warden/student.html',data)
+=======
+				mes = 'Student added successfully'
+			studentbasic(request.user)
+			basic()
+			data['addstudentform'] = f
+			data['mes'] = mes
+			return render(request,'warden/student.html',data)
+>>>>>>> 3d82bb866862e75615c22b07534cd2535fec11e8
 		else:
+			studentbasic(request.user)
+			basic()
 			f = AddStudentForm(request.user)
 			data['addstudentform'] = f
+			data['mes']=mes
 			return render(request,'warden/student.html',data)
 	else:
 		return redirect('logout')

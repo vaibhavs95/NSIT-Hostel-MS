@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate
 from newapp.models import *
 from django.contrib.admin.widgets import AdminDateWidget
 
+<<<<<<< HEAD
 class CreateStudentForm(forms.Form):
     class Meta:
         widgets = {
@@ -31,6 +32,35 @@ class CreateStudentForm(forms.Form):
     local_guardian_phone_num = forms.IntegerField()
     local_guardian_optional_phone_num = forms.IntegerField(required = False)
     local_guardian_email = forms.EmailField(max_length = 254)
+=======
+class CreateStudentForm(forms.ModelForm):
+    class Meta:
+        model = Students
+        exclude = ['username', 'current_sem_join_date', 'current_hostel_join_date', 'fee_last_submitted', 'corpus_calculated_uptill', 'corpus', 'room_number', 'branch']
+    # name = forms.CharField(max_length = 254) 
+    # date_of_birth = forms.DateTimeField()
+    # distance_from_nsit = forms.IntegerField()
+    # gender = forms.ChoiceField(choices = GENDER_CHOICES, required = True)
+    # college_category = forms.ChoiceField(choices = COLLEGE_CAT, required = True) 
+    # blood_group = forms.ChoiceField(choices = BLOOD_GROUP, required = True) # A+, A-, B+, B-, AB+, AB-, O-, O+
+    # student_phone_num = forms.IntegerField() # 10 digits
+    # student_email = forms.EmailField()
+    # student_optional_phone_num = forms.IntegerField(required = False)
+    # father_name = forms.CharField(max_length = 254)
+    # mother_name = forms.CharField(max_length = 254)
+    # parent_email = forms.EmailField()
+    # parent_phone_num = forms.IntegerField()
+    # parent_optional_phone_num = forms.IntegerField(required = False)
+    # permanent_address = forms.CharField(max_length = 254)
+    # permanent_address_zipcode = forms.IntegerField()
+    # local_guardian_name = forms.CharField(max_length = 254)
+    # local_guardian_address = forms.CharField(max_length = 254)
+    # local_guardian_address_zipcode = forms.IntegerField()
+    # local_guardian_phone_num = forms.IntegerField()
+    # local_guardian_optional_phone_num = forms.IntegerField(required = False)
+    # local_guardian_email = forms.EmailField(max_length = 254)
+    # student_photo = forms.ImageField(required = False)
+>>>>>>> 3d82bb866862e75615c22b07534cd2535fec11e8
     # password = forms.CharField(widget = forms.PasswordInput)
     # retype_password = forms.CharField(widget = forms.PasswordInput)
     def __init__(self, *args, **kwargs):

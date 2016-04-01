@@ -41,7 +41,7 @@
 							Name :
 						</td>
 						<td>
-							{{name}}
+							{{s.name}}
 						</td>
 					</tr>
 					<tr>
@@ -49,7 +49,7 @@
 							Date of Birth
 						</td>
 						<td>
-							{{ date_of_birth }}
+							{{ s.date_of_birth }}
 						</td>
 					</tr>
 					<tr id="tr1">
@@ -57,31 +57,15 @@
 							Distance from Nsit :
 						</td>
 						<td>
-							{{ distance_from_nsit }}
+							{{ s.distance_from_nsit }}
 						</td>
 					</tr>
 					<tr>
-						<td>
-							Date of Birth :
-						</td>
-						<td>
-							{{ date_of_birth }}
-						</td>
-					</tr>
-					<tr id="tr1">
 						<td>
 							Gender :
 						</td>
 						<td>
-							{{ gender }}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							College category :
-						</td>
-						<td>
-							{{ college_category }}
+							{{ s.gender }}
 						</td>
 					</tr>
 					<tr id="tr1">
@@ -89,7 +73,15 @@
 							Blood group : 
 						</td>
 						<td>
-							{{ blood_group }}
+							{{ s.blood_group }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							College category :
+						</td>
+						<td>
+							{{ s.college_category }}
 						</td>
 					</tr>
 					<tr>
@@ -97,7 +89,7 @@
 							Phone Number :
 						</td>
 						<td>
-							{{  student_phone_num }}
+							{{  s.student_phone_num }}
 						</td>
 					</tr>
 					<tr id="tr1">
@@ -105,7 +97,7 @@
 							Optional Phone number :
 						</td>
 						<td>
-							{{ student_optional_phone_num }}
+							{{ s.student_optional_phone_num }}
 						</td>
 					</tr>
 					<tr>
@@ -113,7 +105,7 @@
 							Father's Name :
 						</td>
 						<td>
-							{{ father_name }}
+							{{ s.father_name }}
 						</td>
 					</tr>
 					<tr id="tr1">
@@ -121,7 +113,7 @@
 							Mother's name :
 						</td>
 						<td>
-							{{ mother_name }}
+							{{ s.mother_name }}
 						</td>
 					</tr>
 					<tr>
@@ -129,7 +121,7 @@
 							Parent's email :
 						</td>
 						<td>
-							{{ parent_email }}
+							{{ s.parent_email }}
 						</td>
 					</tr>
 					<tr id="tr1">
@@ -137,7 +129,7 @@
 							Parent's phone number :
 						</td>
 						<td>
-							{{ parent_phone_num }}
+							{{ s.parent_phone_num }}
 						</td>
 					</tr>
 					<tr>
@@ -145,7 +137,7 @@
 							Parent's optional phone number :
 						</td>
 						<td>
-							{{ parent_optional_phone_num }}
+							{{ s.parent_optional_phone_num }}
 						</td>
 					</tr>
 					<tr id="tr1">
@@ -153,7 +145,7 @@
 							Permenant address :
 						</td>
 						<td>
-							{{ permanent_address }}
+							{{ s.permanent_address }}
 						</td>
 					</tr>
 					<tr>
@@ -161,7 +153,7 @@
 							Permenant address zipcode :
 						</td>
 						<td>
-							{{ permanent_address_zipcode }}
+							{{ s.permanent_address_zipcode }}
 						</td>
 					</tr>
 					<tr id="tr1">
@@ -169,7 +161,7 @@
 							Local guardian name :
 						</td>
 						<td>
-							{{ local_guardian_name }}
+							{{ s.local_guardian_name }}
 						</td>
 					</tr>
 					<tr>
@@ -177,7 +169,7 @@
 							Local guardian address :
 						</td>
 						<td>
-							{{ local_guardian_address }}
+							{{ s.local_guardian_address }}
 						</td>
 					</tr>
 					<tr id="tr1">
@@ -185,7 +177,7 @@
 							Local guardian address zipcode :
 						</td>
 						<td>
-							{{ local_guardian_address_zipcode }}
+							{{ s.local_guardian_address_zipcode }}
 						</td>
 					</tr>
 					<tr>
@@ -193,7 +185,7 @@
 							Local Guardian Phone Number :
 						</td>
 						<td>
-							{{ local_guardian_phone_number }}
+							{{ s.local_guardian_phone_number }}
 						</td>
 					</tr>
 					<tr id="tr1">
@@ -201,7 +193,7 @@
 							Local Guardian optional phone number :
 						</td>
 						<td>
-							{{ local_guardian_optional_phone_num }}
+							{{ s.local_guardian_optional_phone_num }}
 						</td>
 					</tr>
 					<tr>
@@ -209,7 +201,7 @@
 							Local Guardian Email :
 						</td>
 						<td>
-							{{ local_guardian_email }}
+							{{ s.local_guardian_email }}
 						</td>
 					</tr>
 
@@ -218,37 +210,15 @@
 				<br><br><br><br>
 				<hr>
 				
-				<li>				
-			      <div>
-					<h5 class="center">
-						Gross Corpus Details & fees
-					</h5>
-				  </div>
-				  <table>
-					<tr id="tr1">
-						<td>
-							Name :
-						</td>
-						<td>
-							qwertywryrt ewqreyt wreu
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Roll no. :
-						</td>
-						<td>
-							000/CO/00
-						</td>
-					</tr>
-
-				  </table>
-				</li>
 			</ul>
 			</div>
 			<div id="stuRight">
 				<div>
-					<img id="stuPic" src="assets/main-page/media/images/logo.png">				
+					{% if s.student_photo %}
+						<img class="profilepic" src="{{ s.student_photo.url }}">
+					{% else %}
+						<img class="profilepic" src="/media/demo.png">
+					{% endif %}				
 				</div>
 				<div>
 					<h5 class="center">
@@ -258,7 +228,19 @@
 				<table id="table1">
 					<tr>
 						<td id="td1">
-							bcnmcxz
+							#
+						</td>
+						<td id="td1">
+							Hostel
+						</td>
+						<td id="td1">
+							Room no.
+						</td>
+						<td id="td1">
+							Join Date
+						</td>
+						<td id="td1">
+							Vacant Date
 						</td>
 					</tr>
 					<tr>
@@ -297,6 +279,11 @@
 			</div>
 			
 	</main>
+	<div class="row">
+		<div class="col s12"> 
+		<a href = "{%url 'print-PDF' name username %}"><button type="submit" name="login" class="btn waves-effect waves-light left">Print Details</button></a>
+		</div>
+	</div>
 	
 	{% endblock %}
 	
