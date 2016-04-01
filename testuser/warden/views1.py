@@ -11,6 +11,7 @@ from newapp.models import *
 from .forms import *
 from testuser import settings
 from django.core.mail.message import EmailMessage
+from django.core.exceptions import ObjectDoesNotExist
 
 def SendNoticeMail(title,usern):
     a = Students.objects.filter( room_number__hostel = usern )
@@ -92,4 +93,34 @@ def delNotice(request,target):
         return render(request,'warden/notices.html',data)
     else:
         return redirect('logout')
-
+@login_required
+@require_http_methods(['GET', 'POST'])
+def remstudent(request,target):
+    # pass
+    if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+        mes  = None
+        a = None
+        b = None
+        try:
+            a = Students.objects.get(username = str(target))
+        except ObjectDoesNotExist:
+            pass
+        
+        try:
+            b = Rooms.objects.get(students__username = str(target))
+        except ObjectDoesNotExist:
+            pass
+        a.room_number = None
+        a.save()
+        b.capacity_remaining = b.capacity_remaining+1
+        b.save()
+        mes = 'Student successfully removed'
+        a=Hostels.objects.all();
+        b=[]
+        for i in a:
+            d={'name':i.hostel_name,'id':i.username}
+            b.append(d)
+        data = {'all_hostels': b,'mes':mes}
+        return render(request,'warden/home.html',data)
+    else:
+        return redirect('logout')
