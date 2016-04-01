@@ -56,11 +56,12 @@
 					{% endfor %}
 				</tbody>
 			</table>
-			{% if room_created %}
-			<script type="text/javascript">
-				alert("Room created successfully.");
-			</script>
-			{% endif %}
+			
+{% if mes %}
+	<script type="text/javascript">
+		alert("{{ mes }}");
+	</script>
+{% endif %}
 		</div>
 	</div>
 </div>

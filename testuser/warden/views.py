@@ -112,6 +112,7 @@ def room(request):
 		data['rooms'] = rooms
 		f = AddRoomForm()
 		data['addroomform'] = f
+		data['mes'] = None
 		return render(request,'warden/room.html',data)
 	else:
 		return redirect('logout')
@@ -121,6 +122,7 @@ def addroom(request):
 	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
 		h = Hostels.objects.get(username = request.user)
 		a = Rooms.objects.filter(hostel=h)
+		mes = None
 		if request.method == 'POST':
 			f = AddRoomForm(request.POST, request = request)
 			if f.is_valid():
@@ -128,15 +130,23 @@ def addroom(request):
 				room_no = room_no.lower()
 				a = Rooms(room_no=room_no,capacity_of_room=f.cleaned_data.get('capacity_of_room'),hostel=h,capacity_remaining=f.cleaned_data.get('capacity_of_room'))
 				a.save()
-				data['addroomform'] = f
-				data['room_created'] = 'ok'
-				return redirect('warden-room')
-			else:
-				data['addroomform'] = f
-				return render(request,'warden/room.html',data)
+				mes = 'Room added successfully'
+			basic()
+			h = Hostels.objects.get(username = request.user)
+			a = (Rooms.objects.filter(hostel=h)).order_by('room_no')
+			rooms = []
+			for i in a:
+				d = {'room_no':i.room_no,'capacity':i.capacity_of_room,'capacity_remaining':i.capacity_remaining}
+				rooms.append(d)
+			data['rooms'] = rooms
+			f = AddRoomForm()
+			data['addroomform'] = f
+			data['mes'] = mes
+			return render(request,'warden/room.html',data)
 		else:
 			f = AddRoomForm()
 			data['addroomform'] =  f
+			data['mes'] = mes
 			return render(request,'warden/room.html',data)
 	else:
 		return redirect('logout')
@@ -655,8 +665,7 @@ def studentbasic(user):
 @require_http_methods(['GET', 'POST'])
 def addstudent(request):
 	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
-		basic()
-		studentbasic(request.user)
+		mes = None
 		if request.method == 'POST':
 			f = AddStudentForm(request.user,request.POST)
 			if f.is_valid():
@@ -675,15 +684,18 @@ def addstudent(request):
 				message = ''' Welcome To NSIT Hostel Management System. Click <a href= '%s'>here </a> to fill your details ''' % url
 				email = EmailMessage('Welcome to NSIT-HMS', message, to=[student_email])
 				email.send()
-				data['addstudentform'] = f
-				data['studentadded'] = 'ok'
-				return render(request,'warden/student.html',data)
-			else:
-				data['addstudentform'] = f
-				return render(request,'warden/student.html',data)
+				mes = 'Student added successfully'
+			studentbasic(request.user)
+			basic()
+			data['addstudentform'] = f
+			data['mes'] = mes
+			return render(request,'warden/student.html',data)
 		else:
+			studentbasic(request.user)
+			basic()
 			f = AddStudentForm(request.user)
 			data['addstudentform'] = f
+			data['mes']=mes
 			return render(request,'warden/student.html',data)
 	else:
 		return redirect('logout')
