@@ -195,3 +195,28 @@ def delNotice(request,target):
         return render(request,'chief/notices.html',data)
     else:
         return redirect('logout')
+    
+def StudentProfile(request,student):
+    # pass
+    alpha = request.user
+    if alpha == 'chiefwarden':
+        a=Hostels.objects.all();
+        b=[]
+        for i in a:
+            d={'name':i.hostel_name,'id':i.username}
+            b.append(d)
+        u = Students.objects.get(username = student)
+        prev = None
+        crimi = None
+        try:
+            prev = PreviPreviousHostelDetail.objects.filter(student = student)
+        except ObjectDoesNotExist:
+            pass
+        try:
+            crimi = CriminalRecord.objects.filter(student = student)
+        except ObjectDoesNotExist:
+            pass
+        data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi}
+        return render(request,'chief/studentProfile.html',data)
+    else:
+        return redirect('logout')

@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^notices/$',views.notices, name='chiefwarden-notices'),
     url(r'^deletenotice/(?P<target>[0-9a-zA-Z]*)/$', views.delNotice , name = 'chiefwarden-delnotice'),
     url(r'^delete/(?P<target>[0-9a-z]*)/$',views.delete_hos,name = 'hos_delete'),
+    url(r'^student/profile/(?P<student>[0-9A-Z-]*/$)',views.StudentProfile,name='ChiefWardenViewStudentProfile'),
 ]

@@ -130,14 +130,55 @@ def remstudent(request,target):
     
 def payfine(request,primkey,stu):
     if re.match("[bg]h[0-9]warden",str(request.user))!=None:
-       delta = CriminalRecord.objects.get(pk = primkey)
-       delta.paid_or_not = True
-       delta.save()
-       return redirect('home')
+        delta = CriminalRecord.objects.get(pk = primkey)
+        delta.paid_or_not = True
+        delta.save()
+        a=Hostels.objects.all();
+        b=[]
+        for i in a:
+            d={'name':i.hostel_name,'id':i.username}
+            b.append(d)
+        u = Students.objects.get(username = alpha)
+        prev = None
+        crimi = None
+        try:
+            prev = PreviPreviousHostelDetail.objects.filter(student = stu)
+        except ObjectDoesNotExist:
+            pass
+        try:
+            crimi = CriminalRecord.objects.filter(student = stu)
+        except ObjectDoesNotExist:
+            pass
+        mes = 'Fine Payed successfully'
+        data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi,'mes':mes}
+        return render(request,'warden/studentProfile.html',data)
     else:
         return redirect('logout')
     
-    
+def StudentProfile(request,student):
+    # pass
+    if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+        a=Hostels.objects.all();
+        b=[]
+        for i in a:
+            d={'name':i.hostel_name,'id':i.username}
+            b.append(d)
+        u = Students.objects.get(username = student)
+        prev = None
+        crimi = None
+        try:
+            prev = PreviPreviousHostelDetail.objects.filter(student = student)
+        except ObjectDoesNotExist:
+            pass
+        try:
+            crimi = CriminalRecord.objects.filter(student = student)
+        except ObjectDoesNotExist:
+            pass
+        data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi}
+        return render(request,'warden/studentProfile.html',data)
+    else:
+        return redirect('logout')
+
     
     
     

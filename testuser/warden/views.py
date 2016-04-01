@@ -754,10 +754,15 @@ def addstudent(request):
 				email = EmailMessage('Welcome to NSIT-HMS', message, to=[student_email])
 				email.send()
 				mes = 'Student added successfully'
-			studentbasic(request.user)
-			data['addstudentform'] = f
-			data['mes'] = mes
-			return render(request,'warden/student.html',data)
+				studentbasic(request.user)
+				data['addstudentform'] = f
+				data['mes'] = mes
+				return render(request,'warden/student.html',data)
+			else:
+				studentbasic(request.user)
+				data['addstudentform'] = f
+				data['mes'] = mes
+				return render(request,'warden/student.html',data)
 		else:
 			studentbasic(request.user)
 			basic()
