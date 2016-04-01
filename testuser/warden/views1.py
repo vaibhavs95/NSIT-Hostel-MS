@@ -110,6 +110,9 @@ def remstudent(request,target):
             b = Rooms.objects.get(students__username = str(target))
         except ObjectDoesNotExist:
             pass
+        c = PreviousHostelDetail(hostel_name = b.hostel,room_no = b.room_no,student = a,hostel_join_date = a.current_hostel_join_date)
+        c.save()
+        a.current_hostel_join_date = None
         a.room_number = None
         a.save()
         b.capacity_remaining = b.capacity_remaining+1

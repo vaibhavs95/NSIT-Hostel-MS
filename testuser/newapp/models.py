@@ -200,7 +200,7 @@ class PreviousHostelDetail(models.Model):
 	student = models.ForeignKey(Students,null=False)
 	hostel_join_date = models.DateTimeField(null=False)
 	hostel_leave_date = models.DateTimeField(null=False,default = datetime.now)
-	corpus_paid = models.IntegerField(null=False)
+	# corpus_paid = models.IntegerField(null=False)
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.hostel_join_date)
 
