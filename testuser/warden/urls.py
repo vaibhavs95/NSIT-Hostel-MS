@@ -25,14 +25,9 @@ urlpatterns = [
     url(r'^hosform/edit/(?P<pk>[0-9]+)/$',views.edithosform, name='warden-edit-hosform'),
     url(r'^hosform/delete/(?P<pk>[0-9]+)$',views.deletehosform, name='warden-delete-hosform'),
     url(r'^mess/$',views.mess, name='warden-mess'),
-<<<<<<< HEAD
     url(r'^mess/add/$',views.addmess, name='warden-add-mess'),
     url(r'^mess/edit/(?P<pk>[0-9]+)/$',views.editmess, name='warden-edit-mess'),
-=======
-    url(r'^mess/add-mess/$',views.addmess, name='warden-add-mess'),
-    url(r'^mess/edit-mess/(?P<pk>[0-9]+)/$',views.editmess, name='warden-edit-mess'),
     url(r'^deletenotice/(?P<target>[0-9a-zA-Z]*)/$', views1.delNotice , name = 'WardenDelNotice'),
     url(r'^notices/$',views1.notices, name='warden-notices'),
     url(r'^remstudent/(?P<target>[0-9A-Z-]*)/$',views1.remstudent, name='wardenRemoveStudent'),
->>>>>>> 3d82bb866862e75615c22b07534cd2535fec11e8
 ]

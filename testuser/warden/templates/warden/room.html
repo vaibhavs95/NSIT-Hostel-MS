@@ -116,40 +116,8 @@
 					{% endfor %}
 				</tbody>
 			</table>
-<<<<<<< HEAD
 			{% else %}
 				<a class="btn" href="{% url 'warden-room-full' %}"> View All Rooms</a>
-			{% endif %}
-			<!--<table class="centered striped">
-				<thead>
-					<tr>
-						<th data-field="id">Room Number</th>
-						<th data-field="name">Capacity of Room</th>
-						<th data-field="name">Capacity Available</th>
-						<th data-field="name">Students</th>
-						<th data-field="name">Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for r in rooms %}
-					<tr>
-						<td>{{ r.room.room_no }}</td>
-						<td>{{ r.room.capacity_of_room }}</td>
-						<td>{{ r.room.capacity_remaining }}</td>
-						<td>
-						{% for s in r.students %}
-						<a href="{% url 'studentid' s.id %}">{{ s.username }}</a></br> 
-						{% endfor %}
-						</td>
-						<td><a href="#" onclick="myFunction('{{ r.room.room_no }}','{{ r.room.pk }}')">Delete Room</a></td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>-->
-			{% if room_created %}
-			<script type="text/javascript">
-				alert("Room created successfully.");
-			</script>
 			{% endif %}
 			{% if studentinroom %}
 			<script type="text/javascript">
@@ -161,14 +129,12 @@
 				alert("Room deleted Successfully");
 			</script>
 			{% endif %}
-=======
 			
 {% if mes %}
 	<script type="text/javascript">
 		alert("{{ mes }}");
 	</script>
 {% endif %}
->>>>>>> 3d82bb866862e75615c22b07534cd2535fec11e8
 		</div>
 	</div>
 </div>
