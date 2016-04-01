@@ -97,47 +97,68 @@ def profileedit(request):
 			return render(request,'warden/home.html',data)
 	else:
 		return redirect('logout')
+
+###########
+
+''' Rooms '''
+
+###########
+def roombasic():
+	basic()
+	data['studentnotinroom'] = None
+	data['studentinroom'] = None
+	data['roomfulllist'] = None
+	data['searchedroom'] = None
+	data['searchedroomnotfound'] = None
+	f = AddRoomForm()
+	g = SearchRoomForm()
+	data['searchroomform'] = g
+	data['addroomform'] = f
+	return
 @login_required
 @require_http_methods(['GET', 'POST'])
 def room(request):
 	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
-		basic()
-		h = Hostels.objects.get(username = request.user)
-		a = (Rooms.objects.filter(hostel=h)).order_by('room_no')
-		rooms = []
-		for i in a:
-			d = {'room_no':i.room_no,'capacity':i.capacity_of_room,'capacity_remaining':i.capacity_remaining}
-			rooms.append(d)
-		data['rooms'] = rooms
-		f = AddRoomForm()
-		data['addroomform'] = f
-		data['mes'] = None
+		roombasic()
 		return render(request,'warden/room.html',data)
 	else:
 		return redirect('logout')
+@login_required
+@require_http_methods(['GET','POST'])
+def roomall(request):
+	roombasic()
+	h = Hostels.objects.get(username = request.user)
+	a = (Rooms.objects.filter(hostel=h)).order_by('room_no')
+	rooms = []
+	for i in a:
+		s = Students.objects.filter(room_number = i)
+		student = []
+		for j in s:
+			p = {'username':j.username, 'id':base64.b64encode(j.username.encode('utf-8'))}
+			student.append(p)
+		d = {'room':i,'students' : student}
+		rooms.append(d)
+	data['rooms'] = rooms
+	data['roomfulllist'] = 'yes'
+	return render(request,'warden/room.html',data)
+
 @login_required
 @require_http_methods(['GET', 'POST'])
 def addroom(request):
 	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
 		h = Hostels.objects.get(username = request.user)
 		a = Rooms.objects.filter(hostel=h)
+		roombasic()
 		mes = None
 		if request.method == 'POST':
 			f = AddRoomForm(request.POST, request = request)
 			if f.is_valid():
 				room_no = f.cleaned_data.get('room_no')
-				room_no = room_no.lower()
+				room_no = room_no.upper()
 				a = Rooms(room_no=room_no,capacity_of_room=f.cleaned_data.get('capacity_of_room'),hostel=h,capacity_remaining=f.cleaned_data.get('capacity_of_room'))
 				a.save()
+				roombasic()
 				mes = 'Room added successfully'
-			basic()
-			h = Hostels.objects.get(username = request.user)
-			a = (Rooms.objects.filter(hostel=h)).order_by('room_no')
-			rooms = []
-			for i in a:
-				d = {'room_no':i.room_no,'capacity':i.capacity_of_room,'capacity_remaining':i.capacity_remaining}
-				rooms.append(d)
-			data['rooms'] = rooms
 			f = AddRoomForm()
 			data['addroomform'] = f
 			data['mes'] = mes
@@ -149,35 +170,82 @@ def addroom(request):
 			return render(request,'warden/room.html',data)
 	else:
 		return redirect('logout')
-'''@login_required
+
+@login_required
 @require_http_methods(['GET', 'POST'])
-def editroom(request):
-	h = Hostels.objects.get(username = request.user)
-	a = Rooms.objects.filter(hostel=h)
-	if request.method == 'POST':
-		f = AddRoomForm(request.POST, request = request)
-		if f.is_valid():
-			room_no = f.cleaned_data.get('room_no')
-			room_no = room_no.lower()
-			a = Rooms(room_no=room_no,capacity_of_room=f.cleaned_data.get('capacity_of_room'),hostel=h,capacity_remaining=f.cleaned_data.get('capacity_of_room'))
-			a.save()
-			#g = AddStudentForm()
-			#data['addstudentform']=g
-			data['addroomform'] = f
-			data['room_created'] = 'ok'
-			return redirect('warden-room')
+def deleteroom(request,pk):
+	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+		roombasic()
+		#data['pk'] = pk
+		room = None
+		try:
+			room = Rooms.objects.get(pk = pk)
+		except ObjectDoesNotExist:
+			pass
+		if room:
+			hostel = room.hostel
+			if str(hostel) != str(request.user):
+				return redirect('logout')
 		else:
-			#g = AddStudentForm()
-			#data['addstudentform']=g
-			data['addroomform'] = f
+			return redirect('logout')
+		try:
+			room = Rooms.objects.get(pk = pk)
+		except ObjectDoesNotExist:
+			pass
+		if room.capacity_of_room == room.capacity_remaining:
+			room.delete()
+			data['studentnotinroom'] = 'yes'
+			roombasic()
+			return render(request,'warden/room.html',data)
+		else:
+			data['studentinroom'] = 'yes'
+			return render(request,'warden/room.html', data)
+	else:
+		return redirect('logout')
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def searchroom(request):
+	if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+		h = Hostels.objects.get(username = request.user)
+		roombasic()
+		if request.method == 'POST':
+			f = SearchRoomForm(request.POST)
+			if f.is_valid():
+				room_no = f.cleaned_data.get('room_no')
+				print(room_no)
+				room_no = room_no.upper()
+				a = None
+				try:
+					a = Rooms.objects.get(hostel=h, room_no=room_no)
+				except ObjectDoesNotExist:
+					data['searchedroomnotfound'] = 'yes'
+				if not data['searchedroomnotfound']:
+					s = None
+					try:
+						s = Students.objects.filter(room_number = a)
+					except ObjectDoesNotExist:
+						pass
+					student = []
+					for j in s:
+						p = {'username':j.username, 'id':base64.b64encode(j.username.encode('utf-8'))}
+						student.append(p)
+					d = {'room':a,'students' : student}
+					data['searchedroom'] = d
+				data['searchroomform'] = f
+				return render(request,'warden/room.html',data)
+			else:
+				data['searchroomform'] = f
+				return render(request,'warden/room.html',data)
+		else:
+			f = SearchRoomForm()
+			data['searchroomform'] =  f
 			return render(request,'warden/room.html',data)
 	else:
-		f = AddRoomForm()
-		#g = AddStudentForm()
-		#data['addstudentform']=g
-		data['addroomform'] =  f
+		return redirect('logout')
 
-		return render(request,'warden/room.html',data)'''
+
+
 
 #######
 
@@ -650,15 +718,16 @@ def mess(request):
 #######
 
 def studentbasic(user):
-	r = Rooms.objects.filter(hostel = Hostels.objects.get(username=user))
-	s = Students.objects.all()
-	students = []
+	basic()
+	h = Hostels.objects.get(username = user)
+	r = Rooms.objects.filter(hostel = h)
+	student = []
 	for i in r:
+		s = Students.objects.filter(room_number = i)
 		for j in s:
-			if str(i.room_no) == str(j.room_number):
-				d = {'student_name':j.username, 'room_number':i.room_no, 'capacity':i.capacity_of_room}
-				students.append(d)
-	data['students'] = students
+			p = {'room': i,'username':j.username, 'id':base64.b64encode(j.username.encode('utf-8'))}
+			student.append(p)
+	data['students'] = student
 	return
 @login_required
 @require_http_methods(['GET', 'POST'])
@@ -672,9 +741,10 @@ def addstudent(request):
 				branch = f.cleaned_data.get('branch')
 				student_email = f.cleaned_data.get('student_email')
 				room_number = f.cleaned_data.get('room_number')
+				current_hostel_join_date = f.cleaned_data.get('current_hostel_join_date')
 				user = MyUser.objects.create_user(f.cleaned_data.get('username'), '2016-02-02', f.cleaned_data.get('student_email'))
 				user.save()
-				s = Students(username = username,student_email=student_email,branch = branch, room_number = room_number)
+				s = Students(username = username,student_email=student_email,branch = branch, room_number = room_number, current_hostel_join_date = current_hostel_join_date)
 				s.save()
 				room_number.capacity_remaining-=1
 				room_number.save()
@@ -685,7 +755,6 @@ def addstudent(request):
 				email.send()
 				mes = 'Student added successfully'
 			studentbasic(request.user)
-			basic()
 			data['addstudentform'] = f
 			data['mes'] = mes
 			return render(request,'warden/student.html',data)

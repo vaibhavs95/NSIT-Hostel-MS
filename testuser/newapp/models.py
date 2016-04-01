@@ -140,9 +140,15 @@ class Students(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True , default='');
 	name = models.CharField(max_length=50 , blank = True, default='');
 	date_of_birth = models.DateField(null=False,default = datetime.now)
+<<<<<<< HEAD
 	room_number = models.ForeignKey(Rooms,null = True);
 	distance_from_nsit = models.IntegerField(null = False,  blank = True, default=0);
 	# current_sem_join_date = models.DateField(default=datetime.now, blank = True,  null=True)
+=======
+	room_number = models.ForeignKey(Rooms);
+	distance_from_nsit = models.IntegerField(null = False,  blank = True, default=0);
+	#current_sem_join_date = models.DateField(default=datetime.now, blank = True,  null=True)
+>>>>>>> 9d36ce62a11ac735aa2e4e45826dca87ba4b57c3
 	current_hostel_join_date = models.DateField(default=datetime.now, blank = True, null=True)
 	branch = models.ForeignKey(Branch)
 	gender = models.CharField(max_length = 10,  blank = True, choices = GENDER_CHOICES, default = GENDER_CHOICES[0][0])
