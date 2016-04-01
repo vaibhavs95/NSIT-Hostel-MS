@@ -139,22 +139,22 @@ def student_photo_name(instance, filename):
 class Students(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True , default='');
 	name = models.CharField(max_length=50 , blank = True, default='');
-	date_of_birth = models.DateTimeField(null=False,default = datetime.now)
+	date_of_birth = models.DateField(null=False,default = datetime.now)
 	room_number = models.ForeignKey(Rooms,null = True);
 	distance_from_nsit = models.IntegerField(null = False,  blank = True, default=0);
-	# current_sem_join_date = models.DateTimeField(default=datetime.now, blank = True,  null=True)
-	current_hostel_join_date = models.DateTimeField(default=datetime.now, blank = True, null=True)
+	# current_sem_join_date = models.DateField(default=datetime.now, blank = True,  null=True)
+	current_hostel_join_date = models.DateField(default=datetime.now, blank = True, null=True)
 	branch = models.ForeignKey(Branch)
 	gender = models.CharField(max_length = 10,  blank = True, choices = GENDER_CHOICES, default = GENDER_CHOICES[0][0])
 	college_category = models.CharField(max_length=5,  blank = True, choices = COLLEGE_CAT, default = COLLEGE_CAT[0][0])
 	#**hostel_category = models.CharField(null=False,max_length=20)
 	blood_group = models.CharField(max_length=5,  blank = True, choices = BLOOD_GROUP, default = BLOOD_GROUP[0][0])
-	# fee_last_submitted = models.DateTimeField(null=True, blank = True, default = datetime.now)
+	# fee_last_submitted = models.DateField(null=True, blank = True, default = datetime.now)
 	student_phone_num = models.CharField(null = False, blank = True, max_length=20)
 	student_email = models.EmailField(null=False,unique=True)
 	student_optional_phone_num = models.CharField(null = True, blank = True, max_length=20)
 #Corpus
-	# corpus_calculated_uptill = models.DateTimeField(null=True, blank = True,default = datetime.now)
+	# corpus_calculated_uptill = models.DateField(null=True, blank = True,default = datetime.now)
 	# corpus = models.IntegerField(null=False, blank = True, default =0)
 # Family Details
 	father_name = models.CharField(null=False, blank = True, max_length=100)
@@ -182,24 +182,29 @@ class MedicalHistory(models.Model):
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.description)
 
+def CriminalRecordFile(instance, filename):
+	ext = filename.split('.')[-1]
+	return 'newapp/files/notices/'+str(instance.student)+'/'+str(instance.date_of_action)+'.'+ext
+
 class CriminalRecord(models.Model):
 	#code
 	description = models.CharField(null=False,max_length = 250)
 	fine_amount = models.IntegerField(null=False)
 	paid_or_not = models.BooleanField(null=False)
-	date_of_action = models.DateTimeField(null=False,default = datetime.now)
+	date_of_action = models.DateField(null=False,default = datetime.now)
 	student = models.ForeignKey(Students)
+	file = models.FileField(upload_to = CriminalRecordFile,null = True)
 	
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.description)
 	
 class PreviousHostelDetail(models.Model):
 	#code
-	hostel_name = models.ForeignKey(Hostels,null=False)
+	hostel_name = models.CharField(null=False,max_length = 40)
 	room_no = models.CharField(max_length = 10, null=False)
 	student = models.ForeignKey(Students,null=False)
-	hostel_join_date = models.DateTimeField(null=False)
-	hostel_leave_date = models.DateTimeField(null=False,default = datetime.now)
+	hostel_join_date = models.DateField(null=False)
+	hostel_leave_date = models.DateField(null=False,default = datetime.now)
 	# corpus_paid = models.IntegerField(null=False)
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.hostel_join_date)
@@ -209,7 +214,7 @@ class Complaints(models.Model):
 	lodgers_roll_no = models.CharField(null = False, max_length = 300)
 	description = models.CharField(null = False, max_length = 300)
 	hostel = models.ForeignKey(Hostels)
-	date_of_complaint = models.DateTimeField()
+	date_of_complaint = models.DateField()
 
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s %s" % (self.complaint_id, self.description)
@@ -280,8 +285,8 @@ class Facilities(models.Model):
 
 class Closures(models.Model):
 	hostel = models.ManyToManyField(Hostels)
-	start_date = models.DateTimeField(null=False)
-	end_date = models.DateTimeField(null=False)
+	start_date = models.DateField(null=False)
+	end_date = models.DateField(null=False)
 	clo_or_ext = models.BooleanField(null=False)
 	def __str__(self):
 		closure_list = []

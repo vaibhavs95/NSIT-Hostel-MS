@@ -18,14 +18,12 @@ from .forms import *
 def completeStudent(request, student_id):
     alpha =  str(base64.b64decode(student_id))
     alpha = alpha[2:11]
-    print (alpha)
     a=Hostels.objects.all();
     b=[]
     for i in a:
         d={'name':i.hostel_name,'id':i.username}
         b.append(d)
     if re.match("[0-9]+-[a-zA-Z0-9]*",alpha)!=None:
-        print (request)
         if request.method == 'POST':
             u = Students.objects.get(username = alpha)
             f = CreateStudentForm(request.POST or None, request.FILES, instance = u)
@@ -39,8 +37,10 @@ def completeStudent(request, student_id):
                     except FileNotFoundError:   
                         pass
                     f.student_photo = request.FILES['student_photo']
-                f.save()
-                data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u}
+                    f.save()
+                prev = PreviPreviousHostelDetail.objects.filter(student = alpha)
+                crimi = CriminalRecord.objects.filter(student = alpha)
+                data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi}
                 return render(request,'student/students/studentProfile.html',data)
             else:
                 data = {'form': f, 'all_hostels': b,'student':None, 'username': student_id}
@@ -48,7 +48,9 @@ def completeStudent(request, student_id):
 
         else:
             u = Students.objects.get(username=alpha)
-            data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u}
+            prev = PreviousHostelDetail.objects.filter(student = alpha)
+            crimi = CriminalRecord.objects.filter(student = alpha)
+            data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi}
             if (u.distance_from_nsit != 0):
                 return render(request,'student/students/studentProfile.html',data)    
             f = CreateStudentForm(instance = u)

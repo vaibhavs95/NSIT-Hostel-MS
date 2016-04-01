@@ -282,6 +282,9 @@
 						<td id="td1">
 							Paid
 						</td>
+                        <td>
+                            
+                        </td>
 					</tr>
 					{% for i in crim %}
 						<tr>
@@ -301,10 +304,23 @@
 								No
 								{% endif %}
 							</td>
+                            <td>
+                                {% if i.paid_or_not %}
+								{% else %}
+								<a href="#!" onclick="myFunction('{{i.pk}}','{{ i.student }}')">Pay</a>
+								{% endif %}
+                            </td>
 						</tr>
 						<tr><td colspan="5" class="center">{{ i.description }}</td></tr>
 				    {% endfor %}
 				</table>
+                <script type='text/javascript' >
+		function myFunction(pk,stu) {
+			if (confirm("Are you sure to pay the Fine ?") == true) {
+				window.location = '/warden/payfine/'+pk+'/'+stu+'/'
+			}
+		}
+	</script>
 			</div>
 			
 	</main>

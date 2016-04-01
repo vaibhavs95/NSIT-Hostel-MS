@@ -110,7 +110,7 @@ def remstudent(request,target):
             b = Rooms.objects.get(students__username = str(target))
         except ObjectDoesNotExist:
             pass
-        c = PreviousHostelDetail(hostel_name = b.hostel,room_no = b.room_no,student = a,hostel_join_date = a.current_hostel_join_date)
+        c = PreviousHostelDetail(hostel_name = b.hostel.hostel_name,room_no = b.room_no,student = a,hostel_join_date = a.current_hostel_join_date)
         c.save()
         a.current_hostel_join_date = None
         a.room_number = None
@@ -127,3 +127,33 @@ def remstudent(request,target):
         return render(request,'warden/home.html',data)
     else:
         return redirect('logout')
+    
+def payfine(request,primkey,stu):
+    if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+       delta = CriminalRecord.objects.get(pk = primkey)
+       delta.paid_or_not = True
+       delta.save()
+       return redirect('home')
+    else:
+        return redirect('logout')
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
