@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from datetime import date
 from reportlab.pdfgen import canvas
 import re
 from django.conf import settings
@@ -13,9 +14,12 @@ from django.utils import timezone
 from newapp.models import *
 # Create your views here.
 from .forms import *
+
+
 @login_required
 @require_http_methods(['GET', 'POST'])
 def completeStudent(request, student_id):
+    
     alpha =  str(base64.b64decode(student_id))
     alpha = alpha[2:11]
     a=Hostels.objects.all();
@@ -136,6 +140,7 @@ def printPDF(request, student_id, student_name):
     p.showPage()
     p.save()
     return response
+
 
 def save_file(file, username, path=''):
     ''' Little helper to save a file

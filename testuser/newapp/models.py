@@ -139,7 +139,7 @@ def student_photo_name(instance, filename):
 class Students(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True , default='');
 	name = models.CharField(max_length=50 , blank = True, default='');
-	date_of_birth = models.DateField(null=False,default = datetime.now)
+	date_of_birth = models.DateField(null=False)
 	room_number = models.ForeignKey(Rooms,null = True);
 	distance_from_nsit = models.IntegerField(null = False,  blank = True, default=0);
 	# current_sem_join_date = models.DateField(default=datetime.now, blank = True,  null=True)
@@ -212,9 +212,10 @@ class PreviousHostelDetail(models.Model):
 
 class Complaints(models.Model):
 	lodgers_roll_no = models.CharField(null = False, max_length = 300)
-	description = models.CharField(null = False, max_length = 300)
+	description = models.CharField(null = False, max_length = 300,default = '')
 	hostel = models.ForeignKey(Hostels)
-	date_of_complaint = models.DateField()
+	date_of_complaint = models.DateField(auto_now=True)
+	closed = models.BooleanField(default = False)
 
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s %s" % (self.complaint_id, self.description)

@@ -149,11 +149,11 @@ def payfine(request,primkey,stu):
         for i in a:
             d={'name':i.hostel_name,'id':i.username}
             b.append(d)
-        u = Students.objects.get(username = alpha)
+        u = Students.objects.get(username = stu)
         prev = None
         crimi = None
         try:
-            prev = PreviPreviousHostelDetail.objects.filter(student = stu)
+            prev = PreviousHostelDetail.objects.filter(student = stu)
         except ObjectDoesNotExist:
             pass
         try:
@@ -161,7 +161,7 @@ def payfine(request,primkey,stu):
         except ObjectDoesNotExist:
             pass
         mes = 'Fine Payed successfully'
-        data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi,'mes':mes}
+        data = {'all_hostels': b,'student':'yes', 'username': base64.b64encode(u.username.encode('utf-8')), 's': u,'prev':prev,'crim':crimi,'mes':mes}
         return render(request,'warden/studentProfile.html',data)
     else:
         return redirect('logout')

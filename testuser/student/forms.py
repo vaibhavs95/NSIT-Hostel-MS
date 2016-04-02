@@ -23,3 +23,10 @@ class CreateStudentForm(forms.ModelForm):
     	return self.cleaned_data
     def get_user(self):
         return self.user_cache
+    
+class MakeComplaintForm(forms.ModelForm):
+    #code
+    class Meta:
+        model = Complaints
+        exclude = ['lodgers_roll_no','hostel','date_of_complaint','closed']
+    
