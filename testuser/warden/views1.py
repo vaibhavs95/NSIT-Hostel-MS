@@ -1,5 +1,5 @@
 from django.shortcuts import render
-import re, os
+import re, os,base64
 from django.shortcuts import render,redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
@@ -123,8 +123,19 @@ def remstudent(request,target):
         for i in a:
             d={'name':i.hostel_name,'id':i.username}
             b.append(d)
-        data = {'all_hostels': b,'mes':mes}
-        return render(request,'warden/home.html',data)
+        u = Students.objects.get(username = target)
+        prev = None
+        crimi = None
+        try:
+            prev = PreviousHostelDetail.objects.filter(student = target)
+        except ObjectDoesNotExist:
+            pass
+        try:
+            crimi = CriminalRecord.objects.filter(student = target)
+        except ObjectDoesNotExist:
+            pass
+        data = {'all_hostels': b,'student':'yes', 'username': base64.b64encode(u.username.encode('utf-8')), 's': u,'prev':prev,'crim':crimi}
+        return render(request,'warden/studentProfile.html',data)
     else:
         return redirect('logout')
     
@@ -163,18 +174,19 @@ def StudentProfile(request,student):
         for i in a:
             d={'name':i.hostel_name,'id':i.username}
             b.append(d)
+        print(student)
         u = Students.objects.get(username = student)
         prev = None
         crimi = None
         try:
-            prev = PreviPreviousHostelDetail.objects.filter(student = student)
+            prev = PreviousHostelDetail.objects.filter(student = student)
         except ObjectDoesNotExist:
             pass
         try:
             crimi = CriminalRecord.objects.filter(student = student)
         except ObjectDoesNotExist:
             pass
-        data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi}
+        data = {'all_hostels': b,'student':'yes', 'username': base64.b64encode(u.username.encode('utf-8')), 's': u,'prev':prev,'crim':crimi}
         return render(request,'warden/studentProfile.html',data)
     else:
         return redirect('logout')

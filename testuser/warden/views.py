@@ -159,7 +159,6 @@ def addroom(request):
 				a.save()
 				roombasic()
 				mes = 'Room added successfully'
-			f = AddRoomForm()
 			data['addroomform'] = f
 			data['mes'] = mes
 			return render(request,'warden/room.html',data)
@@ -213,7 +212,6 @@ def searchroom(request):
 			f = SearchRoomForm(request.POST)
 			if f.is_valid():
 				room_no = f.cleaned_data.get('room_no')
-				print(room_no)
 				room_no = room_no.upper()
 				a = None
 				try:

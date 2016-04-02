@@ -24,10 +24,21 @@
  -->
 {% block content %}
 
+	
 	<main id="studentInfo">
 			<h3 class="center">
 				Student Profile Page
 			</h3>
+			<div class="row"></div>
+			<div class="row">
+		<div class="col s12"> 
+		<a href = "{%url 'print-PDF' name username %}"><button type="submit" name="login" class="btn waves-effect waves-light left">Print Details</button></a>
+		{% if s.room_number != None %}
+		<a href = "{% url 'wardenRemoveStudent' s.username %}"><button type="submit" name="login" class="btn waves-effect waves-light left">Detach from hostel</button></a>
+		{% endif %}
+		</div>
+	</div>
+			<div class="row"></div>
 			<div id="stuLeft">
 				<ul id="listFac">
 				<li>
@@ -325,11 +336,7 @@
 			</div>
 			
 	</main>
-	<div class="row">
-		<div class="col s12"> 
-		<a href = "{%url 'print-PDF' name username %}"><button type="submit" name="login" class="btn waves-effect waves-light left">Print Details</button></a>
-		</div>
-	</div>
+	
 	{% if mes %}
 			<script type="text/javascript">
 				alert("{{ mes }}");
@@ -347,7 +354,7 @@
 	{% endblock %}
 {% block sidelist %}
 <li><a class="waves-effect" href="{% url 'warden-room' %}">Room</a></li>
-<li><a class="waves-effect" href="{% url 'warden-student' %}">Add Student</a></li>
+<li><a class="waves-effect" href="{% url 'warden-student' %}">Student</a></li>
 <li><a class="waves-effect" href="{% url 'warden-facilities' %}">Facilities</a></li>
 <li><a class="waves-effect" href="{% url 'warden-council' %}">Council</a></li>
 <li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>

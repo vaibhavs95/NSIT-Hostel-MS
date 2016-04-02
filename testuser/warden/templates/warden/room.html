@@ -57,7 +57,7 @@
 						<td>{{ searchedroom.room.capacity_remaining }}</td>
 						<td>
 						{% for s in searchedroom.students %}
-						<a href="{% url 'studentid' s.id %}">{{ s.username }}</a></br> 
+						<a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></br> 
 						{% endfor %}
 						</td>
 						<td><a href="#" onclick="myFunction('{{ searchedroom.room.room_no }}','{{ searchedroom.room.pk }}')">Delete Room</a></td>
