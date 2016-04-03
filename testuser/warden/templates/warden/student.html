@@ -4,7 +4,14 @@
 {% block title %} Warden - HMS {% endblock %}
 
 {% block extrahead %}
+{% endblock %}
 
+{% block extrastyle %}
+<style>
+	#searchcard{
+		padding: 2%;
+	}
+</style>
 {% endblock %}
 
 {% block sidelist %}
@@ -21,9 +28,64 @@
 	<div class="col s12 m12 l12">
 		<div class="card-panel">
 		<h3>Students</h3>
+		<div class="row card" id="searchcard">
+		<h5> Search Student </h5>
+		<hr>
+			<div class="col s12 m6 l6">
+			<blockquote>Search By Roll Number of Student.<br>.</blockquote>
+			<form method="post" action="{% url 'warden-search-student-rollno' %}">
+				{% csrf_token %}
+				{% form form=searchstudentrollnoform %}
+				{% endform %}
+				<button type="submit" name="search-student" class="btn waves-effect waves-light left"><i class="material-icons">search</i></button>
+			</form>
+			</div>
+			<div class="col s12 m6 l6">
+			<blockquote>Search By Name or Date of Birth of Student.</blockquote>
+			<form method="post" action="{% url 'warden-search-student-other' %}">
+				{% csrf_token %}
+				{% form form=searchstudentotherform %}
+				{% endform %}
+				<button type="submit" name="search-student" class="btn waves-effect waves-light left"><i class="material-icons">search</i></button>
+			</form>
+			</div>
+			{% if searchedstudentnotfound %}
+			<p>Student Not Found.</p>
+			{% endif %}
+			{% if searchedstudent %}
+				<table class="centered bordered">
+				<thead>
+					<tr>
+						<th data-field="id">Roll Number</th>
+						<th data-field="name">Action</th>
+						<th data-field="name">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for s in searchedstudent %}
+					<tr>
+						{% if s.mystudent %}
+							<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
+							<td><a href="{% url 'warden-edit-student' s.id %}">Edit Student Details</a></td>
+							<td><a href="{% url 'wardenRemoveStudent' s.id %}">Detach Student</a></td>
+						{% elif s.freestudent %}
+							<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
+							<td>NA</td>
+							<td><a href="{% url 'warden-attach-student' s.username %}">Attach Student</a></td>
+						{% else %}
+							<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
+							<td>NA</td>
+							<td>NA</td>
+						{% endif %}
+					</tr>
+					{% endfor %}
+				</tbody>
+				</table>
+			{% endif %}
+		</div>
 			<ul class="collapsible" data-collapsible="accordion">
 		    <li>
-		      <div class="collapsible-header active">Add Student</div>
+		      <div class="collapsible-header ">Add Student</div>
 		      <div class="collapsible-body">
 				<form method="post" action="{% url 'warden-add-student' %}" class="viewform">
 					{% csrf_token %}
@@ -39,26 +101,38 @@
 		      </div>
 		    </li>
 		  	</ul>
-			<table class="centered striped">
+		  	{% if studentfulllist %}
+					<a class="btn" href="{% url 'warden-student' %}"> Hide All Students</a><br><br>
+					<a class="btn" href="#!"> Print This List</a>
+				<table class="centered striped">
 				<thead>
 					<tr>
 						<th data-field="name">Student Roll No.</th>
 						<th data-field="id">Room Number</th>
 						<th data-field="name">Capacity of Room</th>
 						<th data-field="name">Capacity Remaining</th>
+						<th data-field="name">Action</th>
+						<th data-field="name">Action</th>
 					</tr>
 				</thead>
 				<tbody>
-					{% for r in students %}
+					{% for s in students %}
 					<tr>
-						<td><a href="{% url 'studentid' r.id %}">{{ r.username }}</a></td>
-						<td>{{ r.room.room_no }}</td>
-						<td>{{ r.room.capacity_of_room }}</td>
-						<td>{{ r.room.capacity_remaining }}</td>
+						<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
+						<td>{{ s.room.room_no }}</td>
+						<td>{{ s.room.capacity_of_room }}</td>
+						<td>{{ s.room.capacity_remaining }}</td>
+						<td><a href="{% url 'warden-edit-student' s.id %}">Edit Student Details</a></td>
+						<td><a href="{% url 'wardenRemoveStudent' s.id %}">Delete Student</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
+			{% else %}
+				<a class="btn" href="{% url 'warden-student-full' %}"> View All Students</a>
+			{% endif %}
+
+			
 			{% if mes %}
 			<script type="text/javascript">
 				alert("{{ mes }}");

@@ -256,6 +256,77 @@ class AddStudentForm(forms.ModelForm):
             else:
                 raise forms.ValidationError('Incorrect format of username.(Correct format: 111-CO-15)')
         return self.cleaned_data
+class EditStudentForm(forms.ModelForm):
+    class Meta:
+        model = Students
+        exclude = ['username','room_number']
+#        fields = '__all__'
+        widgets = {
+            'current_hostel_join_date': AdminDateWidget(),
+            'date_of_birth' : AdminDateWidget(),
+        }
+    def __init__(self, *args, **kwargs):
+        self.username = kwargs.pop('username', None)
+        self.user = kwargs.pop('user',None)
+        super(EditStudentForm, self).__init__(*args, **kwargs)
+        #self.fields['room_number'].queryset = Rooms.objects.filter(capacity_remaining__gt = 0, hostel = Hostels.objects.get(username=self.user))
+ #       self.fields['username'].help_text='Roll No: 111-CO-16'
+        self.fields['branch'].help_text='Select one from dropdown'
+        #self.fields['room_number'].help_text='Select one from dropdown'
+        self.fields['current_hostel_join_date'].help_text='Format: yyyy-mm-dd hh:mm:ss'
+    def clean(self):
+        student_phone_num = self.cleaned_data.get('student_phone_num')
+        parent_phone_num = self.cleaned_data.get('parent_phone_num')
+        local_guardian_phone_num = self.cleaned_data.get('local_guardian_phone_num')
+        student_email = self.cleaned_data.get('student_email')
+        if len(str(student_phone_num)) == 10 and len(str(parent_phone_num)) == 10 and len(str(local_guardian_phone_num)) == 10:
+            pass
+        else:
+            raise forms.ValidationError('Enter a valid 10 digit phone number')
+        e = Students.objects.all()
+        for i in e:
+            if i.student_email == student_email and i.username != self.username:
+                raise forms.ValidationError('Email is already registered')
+        return self.cleaned_data
+class SearchStudentRollNoForm(forms.Form):
+    roll_no = forms.CharField(max_length=10,help_text='Search Student by Roll Number, format : 111-AA-11')
+    def __init__(self, *args, **kwargs):
+        super(SearchStudentRollNoForm, self).__init__(*args, **kwargs)
+    def clean(self):
+        roll_no = self.cleaned_data.get('roll_no')
+        if re.match("[0-9]+-[A-Z]+-[0-9]",str(roll_no)) == None:
+            raise forms.ValidationError('Enter Roll Number in correct format: 111-AA-11')
+        return self.cleaned_data
+class SearchStudentOtherForm(forms.Form):
+    name = forms.CharField(max_length=100, required = False)
+    date_of_birth = forms.DateField(widget = AdminDateWidget(), required = False)
+    def __init__(self, *args, **kwargs):
+        super(SearchStudentOtherForm, self).__init__(*args, **kwargs)
+    def clean(self):
+        name = self.cleaned_data.get('name')
+        date_of_birth = self.cleaned_data.get('date_of_birth')
+        if name or date_of_birth:
+            pass
+        else:
+            raise forms.ValidationError('Search Fields Cannot be empty')
+        #if re.match("[0-9]+-[A-Z]+-[0-9]",str(roll_no)) == None:
+        #    raise forms.ValidationError('Enter Roll Number in correct format: 111-AA-11')
+        return self.cleaned_data
+class AttachStudentForm(forms.ModelForm):
+    class Meta:
+        model = Students
+        fields = ['username', 'room_number','current_hostel_join_date']
+        widgets = {
+            'current_hostel_join_date': AdminDateWidget(),
+        }
+    def __init__(self, user, *args, **kwargs):
+        #self.user = kwargs.pop('user')
+        super(AttachStudentForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['readonly'] = True
+        self.fields['room_number'].queryset = Rooms.objects.filter(capacity_remaining__gt = 0, hostel = Hostels.objects.get(username=user))
+    def clean(self):
+        return self.cleaned_data
+
 class AddNoticeForm(forms.ModelForm):
     class Meta:
         model = Notice

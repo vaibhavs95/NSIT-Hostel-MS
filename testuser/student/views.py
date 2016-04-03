@@ -19,7 +19,6 @@ from .forms import *
 @login_required
 @require_http_methods(['GET', 'POST'])
 def completeStudent(request, student_id):
-    
     alpha =  str(base64.b64decode(student_id))
     alpha = alpha[2:11]
     a=Hostels.objects.all();
@@ -41,8 +40,8 @@ def completeStudent(request, student_id):
                     except FileNotFoundError:   
                         pass
                     f.student_photo = request.FILES['student_photo']
-                    f.save()
-                prev = PreviPreviousHostelDetail.objects.filter(student = alpha)
+                f.save()
+                prev = PreviousHostelDetail.objects.filter(student = alpha)
                 crimi = CriminalRecord.objects.filter(student = alpha)
                 data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi}
                 return render(request,'student/students/studentProfile.html',data)
