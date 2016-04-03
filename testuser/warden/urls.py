@@ -32,4 +32,6 @@ urlpatterns = [
     url(r'^remstudent/(?P<target>[0-9A-Z-]*)/$',views1.remstudent, name='wardenRemoveStudent'),
     url(r'^payfine/(?P<primkey>[0-9a-zA-Z]*)/(?P<stu>[0-9A-Za-z-]*)/$',views1.payfine,name='WardenPayFine'),
     url(r'^student/profile/(?P<student>[0-9A-Z-]*)/$',views1.StudentProfile,name='WardenViewStudentProfile'),
+    url(r'^complaint/$',views1.ViewComplaint, name='wardenViewComplaint'),
+    url(r'^complaint/(?P<target>[0-9]*)/$',views1.CloseComplaint, name='wardenCloseComplaint'),
 ]

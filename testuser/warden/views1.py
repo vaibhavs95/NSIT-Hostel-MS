@@ -10,25 +10,27 @@ from django.utils import timezone
 from newapp.models import *
 from .forms import *
 from testuser import settings
-from django.core.mail.message import EmailMessage
+from django.core.mail import send_mass_mail
 from django.core.exceptions import ObjectDoesNotExist
 
 def SendNoticeMail(title,usern):
     a = Students.objects.filter( room_number__hostel = usern )
-    print(a)
     n = Notice.objects.get(title=title)
     url =  n.file.url
     url = "http://127.0.0.1:8000" + url
     print(url)
     c=[]
-    message = "A new announcement has been put up by the Chief Warden of NSIT for all the residents of the hostels. Click <a href= '%s'>here </a> to view the announcement" % url
+    message = "A new announcement has been put up by the Warden for all the residents of the hostel. Click <a href= '%s '>here </a> to view the announcement" % url
+    print (message)
     for i in a:
        c.append(i.student_email)
-    email = EmailMessage()
-    email.subject = "New announcement for hostel residents of NSIT"
-    email.body = message
-    email.to = c
-    email.send()
+    # email = EmailMessage()
+    # email.subject = "New announcement for hostel residents of NSIT"
+    # email.body = message
+    # email.to = c
+    # email.send()
+    see = ("New announcement for hostel residents of NSIT",message,settings.EMAIL_HOST_USER,c)
+    send_mass_mail((see,),fail_silently = False)
     return
 
 @login_required
@@ -79,18 +81,7 @@ def delNotice(request,target):
         url = delta+url
         os.remove(url)
         c.delete()
-        mes  = 'Notice removed succeessfully'
-        a=Hostels.objects.all();
-        b=[]
-        for i in a:
-            d={'name':i.hostel_name,'id':i.username}
-            b.append(d)
-        try:
-            a= Notice.objects.filter(creator= request.user)
-        except ObjectDoesNotExist:
-            pass
-        data = {'all_hostels': b,'mes':mes,'form':f,'notices':a}
-        return render(request,'warden/notices.html',data)
+        return redirect('warden-notices')
     else:
         return redirect('logout')
 @login_required
@@ -135,7 +126,8 @@ def remstudent(request,target):
         except ObjectDoesNotExist:
             pass
         data = {'all_hostels': b,'student':'yes', 'username': base64.b64encode(u.username.encode('utf-8')), 's': u,'prev':prev,'crim':crimi}
-        return render(request,'warden/studentProfile.html',data)
+        # return render(request,'warden/studentProfile.html',data)
+        return redirect("{% url 'WardenViewStudentProfile' u.username %}")
     else:
         return redirect('logout')
     
@@ -191,8 +183,40 @@ def StudentProfile(request,student):
     else:
         return redirect('logout')
 
-    
-    
+def ViewComplaint(request):
+    if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+        a=Hostels.objects.all();
+        b=[]
+        for i in a:
+            d={'name':i.hostel_name,'id':i.username}
+            b.append(d)
+        alpha = str(request.user)
+        warden=Hostels.objects.get(username = alpha)
+        comp = None
+        try:
+            comp = Complaints.objects.filter(hostel = warden,closed = False)
+        except ObjectDoesNotExist:
+            pass
+        data = {'all_hostels': b,'comp':comp}
+        return render(request,'warden/complaints.html',data)
+    else:
+        return redirect('logout')
+
+def CloseComplaint(request,target):
+    if re.match("[bg]h[0-9]warden",str(request.user))!=None:
+        a=Hostels.objects.all();
+        b=[]
+        for i in a:
+            d={'name':i.hostel_name,'id':i.username}
+            b.append(d)
+        alpha = str(request.user)
+        target=int(target)
+        warden=Hostels.objects.get(username = alpha)
+        comp = None
+        comp1 = Complaints.objects.filter(pk = target).update(closed=True)
+        return redirect('wardenViewComplaint')
+    else:
+        return redirect('logout')
     
     
     

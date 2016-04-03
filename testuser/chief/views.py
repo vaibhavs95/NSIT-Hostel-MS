@@ -10,7 +10,7 @@ from django.utils import timezone
 from newapp.models import *
 from .forms import *
 from testuser import settings
-from django.core.mail.message import EmailMessage
+from django.core.mail import send_mass_mail
 @login_required
 @require_http_methods(['GET', 'POST'])
 def home(request):
@@ -91,6 +91,7 @@ def delete_hos(request,target):
                 pass
             a.delete()
             mes="Hostel deleted successfully."
+            return redirect('chiefwarden-home')
         f=CreateWardenForm(request.POST or None)
         if f.is_valid():
             user = MyUser.objects.create_user(f.cleaned_data.get('userid'), '2016-02-02', f.cleaned_data.get('password'))
@@ -121,14 +122,16 @@ def SendNoticeMail(fileAddress,title):
     url =  n.file.url
     url = "http://127.0.0.1:8000" + url
     c=[]
-    message = "A new announcement has been put up by the Chief Warden of NSIT for all the residents of the hostels. Click <a href= '%s'>here </a> to view the announcement" % url
+    message = "A new announcement has been put up by the Chief Warden of NSIT for all the residents of the hostels. Click <a href= '%s '>here </a> to view the announcement" % url
     for i in a:
        c.append(i.student_email)
-    email = EmailMessage()
-    email.subject = "New announcement for hostel residents of NSIT"
-    email.body = message
-    email.to = c
-    email.send()
+    # email = EmailMessage()
+    # email.subject = "New announcement for hostel residents of NSIT"
+    # email.body = message
+    # email.to = c
+    # email.send()
+    see = ("New announcement for hostel residents of NSIT",message,settings.EMAIL_HOST_USER,c)
+    send_mass_mail((see,),fail_silently = False)
     return        
 
 @login_required
@@ -181,18 +184,7 @@ def delNotice(request,target):
         url = delta+url
         os.remove(url)
         c.delete()
-        mes  = 'Notice removed succeessfully'
-        a=Hostels.objects.all();
-        b=[]
-        for i in a:
-            d={'name':i.hostel_name,'id':i.username}
-            b.append(d)
-        try:
-            a= Notice.objects.filter(creator= 'chiefwarden')
-        except ObjectDoesNotExist:
-            pass
-        data = {'all_hostels': b,'mes':mes,'form':f,'notices':a}
-        return render(request,'chief/notices.html',data)
+        return redirect('chiefwarden-notices')
     else:
         return redirect('logout')
     

@@ -325,5 +325,7 @@
 	{% endblock %}
 	
 {% block sidelist %}
-<li><a href="{% url 'StudentMakeComplaint' %}">Complaints</a></li>
+{% if s.room_number != None %}
+<li><a class="waves-effect" href="{% url 'StudentMakeComplaint' %}">Complaints</a></li>
+{% endif %}
 {% endblock %}

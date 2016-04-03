@@ -19,7 +19,6 @@ from .forms import *
 @login_required
 @require_http_methods(['GET', 'POST'])
 def completeStudent(request, student_id):
-    
     alpha =  str(base64.b64decode(student_id))
     alpha = alpha[2:11]
     a=Hostels.objects.all();

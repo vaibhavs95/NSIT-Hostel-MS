@@ -139,7 +139,7 @@ def student_photo_name(instance, filename):
 class Students(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True , default='');
 	name = models.CharField(max_length=50 , blank = True, default='');
-	date_of_birth = models.DateField(null=False)
+	date_of_birth = models.DateField(null=True)
 	room_number = models.ForeignKey(Rooms,null = True);
 	distance_from_nsit = models.IntegerField(null = False,  blank = True, default=0);
 	# current_sem_join_date = models.DateField(default=datetime.now, blank = True,  null=True)
@@ -218,7 +218,7 @@ class Complaints(models.Model):
 	closed = models.BooleanField(default = False)
 
 	def __str__(self):              # __unicode__ on Python 2
-		return "%s %s" % (self.complaint_id, self.description)
+		return "%s" % (self.description)
 		
 #this table holds details of caretakers, mess/hostel secretary, sports/mess/library/cultural/etc. committee and its members
 def council_photo_name(instance, filename):
@@ -282,7 +282,7 @@ class Facilities(models.Model):
 	facility_description = models.TextField(null=False, default='')
 	photo = models.ImageField(upload_to=facility_photo_name,null=True, blank=True)
 	def __str__(self):
-		return self.title
+		return self.facility_name
 
 class Closures(models.Model):
 	hostel = models.ManyToManyField(Hostels)
