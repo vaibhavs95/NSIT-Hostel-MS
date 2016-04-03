@@ -32,3 +32,17 @@ class LoginForm(forms.Form):
         return self.user_cache
     
     
+class ForgetForm(forms.Form):
+    UserId = forms.CharField(max_length = 50,required = False)
+
+class ResetPasswordForm(forms.Form):
+    #code
+    newPassword = forms.CharField(widget = forms.PasswordInput,required=True)
+    retypePassword = forms.CharField(widget = forms.PasswordInput,required=True)
+    
+    def clean(self):
+        pas = self.cleaned_data.get('newPassword')
+        repas = self.cleaned_data.get('retypePassword')
+        if pas!=repas:
+            raise ValidationError('Password did not match')
+        return self.cleaned_data

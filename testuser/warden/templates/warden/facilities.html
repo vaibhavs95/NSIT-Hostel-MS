@@ -30,6 +30,7 @@
 <li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
 <li><a class="waves-effect" href="{% url 'warden-mess' %}">Mess</a></li>
 <li><a class="waves-effect" href="{% url 'warden-notices' %}">Notices</a></li>
+<li><a class="waves-effect" href="{% url 'wardenViewComplaint' %}">Complaints</a></li>
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -89,7 +90,7 @@
 	            </div>
 	            </div>
 	            <div class="card-action">
-	              <a class="blue-text" href="/warden/facilities/edit-facility/{{ f.fac.pk }}/">Edit Facility</a>
+	              <a class="blue-text" href="/warden/facilities/edit/{{ f.fac.pk }}/">Edit Facility</a>
 	              <a class="blue-text" href="#" onclick="myFunction('{{ f.fac.facility_name }}','{{ f.fac.pk }}')">Delete Facility</a>
 	            </div>
 	          	</div>
@@ -114,7 +115,7 @@
 			a = "Delete Facility '"+ftitle+"' ?"
 			if (confirm(a) == true) {
 				console.log('url called')
-				window.location = "/warden/facilities/delete-facility/"+fid
+				window.location = "/warden/facilities/delete/"+fid
 				console.log('url called again')
 			}
 		}

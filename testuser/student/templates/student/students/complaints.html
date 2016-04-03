@@ -69,13 +69,6 @@
 					{% endfor %}
 				</tbody>
 			</table>
-			<script type='text/javascript' >
-		function myFunction(hosid) {
-			if (confirm("Delete Notice ?") == true) {
-				window.location = "/chiefwarden/deletenotice/"+hosid
-			}
-		}
-	</script>
 		</div>
 	</div>
 </div>
@@ -84,5 +77,7 @@
 {% endblock %}
 
 {% block sidelist %}
-<li><a href="{% url 'StudentMakeComplaint' %}">Complaints</a></li>
+{% if stu.room_number != None %}
+<li><a class="waves-effect" href="{% url 'StudentMakeComplaint' %}">Complaints</a></li>
+{% endif %}
 {% endblock %}

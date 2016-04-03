@@ -10,6 +10,11 @@
 {% endblock %}
 
 {% block content %}
+{% if mes %}
+	<script type="text/javascript">
+		alert("{{ mes }}");
+	</script>
+{% endif %}
 <div class="modal-content">
     <h4>Log In</h4>
     <hr>
@@ -20,32 +25,29 @@
         {% endform %}
         <div class="row">
             <button class="btn waves-effect waves-light col s6" type="submit" name="login">Log In</button>
-            <a id="forgot-button" data-target="forgot-password" class="modal-trigger col s6" href="#!">Forgot Password</a>
+            <a id="forgot-button" data-target="forgot-password" class="modal-trigger col s6" href="#forgot-password">Forgot Password</a>
         </div>
+	</form>
 </div>
 <!--forgot password-->
 <div id="forgot-password" class="modal">
  			<div class="modal-content">
  				<h4> Forgot Password</h4>
  				<hr>
- 				<div class="row">
- 					<div class="input-field col s12">
- 						<input id="username" type="text" class="validate">
- 						<label for="username">Username/Roll No.</label>
- 					</div>
- 				</div>
- 				<div class="row">
- 					<div class="input-field col s12">
- 						<input type="date" class="datepicker">
- 						<label for="password">Date of Birth</label>
- 					</div>
- 				</div>
- 				<div class="row">
- 					<button class="btn waves-effect waves-light col s6 offset-s3" type="submit" name="action">Reset Password</button><br>
- 				</div>
+ 				<form method="post" action="">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}" />
+        {% form form=forgetform %}
+        {% endform %}
+        <div class="row">
+            <button class="btn waves-effect waves-light col s6" type="submit" name="login">Reset Password</button>
+        </div>
+	
  				<div class="modal-footer">
  					<a href="#!" class="modal-action modal-close waves-effect btn-flat ">Cancel</a>
  				</div>
  			</div>
-
+</div>
+				</form>
+</div>
 {% endblock %}

@@ -22,6 +22,7 @@
 <li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
 <li><a class="waves-effect" href="{% url 'warden-mess' %}">Mess</a></li>
 <li><a class="waves-effect" href="{% url 'warden-notices' %}">Notices</a></li>
+<li><a class="waves-effect" href="{% url 'wardenViewComplaint' %}">Complaints</a></li>
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -118,12 +119,19 @@
 				<tbody>
 					{% for s in students %}
 					<tr>
+<<<<<<< HEAD
 						<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
 						<td>{{ s.room.room_no }}</td>
 						<td>{{ s.room.capacity_of_room }}</td>
 						<td>{{ s.room.capacity_remaining }}</td>
 						<td><a href="{% url 'warden-edit-student' s.id %}">Edit Student Details</a></td>
 						<td><a href="{% url 'wardenRemoveStudent' s.id %}">Delete Student</a></td>
+=======
+						<td><a href="{% url 'WardenViewStudentProfile' r.username %}">{{ r.username }}</a></td>
+						<td>{{ r.room.room_no }}</td>
+						<td>{{ r.room.capacity_of_room }}</td>
+						<td>{{ r.room.capacity_remaining }}</td>
+>>>>>>> 8701f0086e07f1e416a9c61a2eecf63795eede27
 					</tr>
 					{% endfor %}
 				</tbody>

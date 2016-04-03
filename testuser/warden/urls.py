@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^deletenotice/(?P<target>[0-9a-zA-Z]*)/$', views1.delNotice , name = 'WardenDelNotice'),
     url(r'^notices/$',views1.notices, name='warden-notices'),
     url(r'^payfine/(?P<primkey>[0-9a-zA-Z]*)/(?P<stu>[0-9A-Za-z-]*)/$',views1.payfine,name='WardenPayFine'),
+<<<<<<< HEAD
     url(r'^student$',views.student, name='warden-student'),
     url(r'^student/all/$',views.studentall, name='warden-student-full'),
     url(r'^student/add/$',views.addstudent, name='warden-add-student'),
@@ -37,4 +38,9 @@ urlpatterns = [
     url(r'^student/attach/(?P<student>[0-9]+-[A-Z]+-[0-9]+)/$',views.attachstudent, name='warden-attach-student'),
     url(r'^student/delete/(?P<target>[a-z0-9A-Z-=]*)/$',views1.remstudent, name='wardenRemoveStudent'),
     url(r'^student/profile/(?P<student>[a-z0-9A-Z-=]*)/$',views1.StudentProfile,name='WardenViewStudentProfile'),
+=======
+    url(r'^student/profile/(?P<student>[0-9A-Z-]*)/$',views1.StudentProfile,name='WardenViewStudentProfile'),
+    url(r'^complaint/$',views1.ViewComplaint, name='wardenViewComplaint'),
+    url(r'^complaint/(?P<target>[0-9]*)/$',views1.CloseComplaint, name='wardenCloseComplaint'),
+>>>>>>> 8701f0086e07f1e416a9c61a2eecf63795eede27
 ]

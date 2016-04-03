@@ -19,8 +19,8 @@ from .forms import *
 @login_required
 @require_http_methods(['GET', 'POST'])    
 def MakeComplaint(request):
-    alpha = request.user
-    if re.match('[0-9]*-[A-Z]*-[0-9]*',alpha)!=None:
+    alpha = str(request.user)
+    if re.match('[0-9]*-[A-Z]*-[0-9]*',alpha) is not None:
         a=Hostels.objects.all();
         b=[]
         delta = Rooms.objects.get(students__username = alpha)
@@ -36,8 +36,13 @@ def MakeComplaint(request):
             a.lodgers_roll_no = alpha
             a.save()
             mes = 'Complaint successfully lodged'
-        comp = Complaints.objects.filter(hostel = delt,lodgers_roll_no = alpha)
-        data = {'form': f,'all_hostels': b,'comp':comp,'mes':mes}        
+        s = Students.objects.get(username = alpha)
+        comp = None
+        try:
+            comp = Complaints.objects.filter(hostel = delt,lodgers_roll_no = alpha)
+        except ObjectDoesNotExist:
+            pass
+        data = {'form': f,'all_hostels': b,'comp':comp,'mes':mes,'stu':s}        
         return render(request, 'student/students/complaints.html',data)
     else:
         return redirect('logout')
