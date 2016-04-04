@@ -132,6 +132,15 @@ media queries
 		float: left;
 	}
 }
+@media only screen and (max-width: 624px)
+{
+	#hCards
+	{
+		width: 100%;
+		margin-left: 0%;
+		margin-right: 0%;
+	}
+}
 @media only screen and (max-width: 480px){
 	#logo{
 		display: none;
@@ -148,5 +157,12 @@ media queries
 	}
 	nav{
 		height: 100px;
+	}
+	#sideContainer
+	{
+		width: 120%;
+		float: left;
+		margin-left: -5%;
+		margin-right: 0%;
 	}
 }

@@ -33,16 +33,20 @@ class LoginForm(forms.Form):
     
     
 class ForgetForm(forms.Form):
-    UserId = forms.CharField(max_length = 50,required = False)
+    UserId = forms.CharField(max_length = 50,required = True)
 
 class ResetPasswordForm(forms.Form):
     #code
-    newPassword = forms.CharField(widget = forms.PasswordInput,required=True)
-    retypePassword = forms.CharField(widget = forms.PasswordInput,required=True)
+    new_Password = forms.CharField(widget = forms.PasswordInput,required=True)
+    retype_Password = forms.CharField(widget = forms.PasswordInput,required=True)
     
+    def __init__(self, *args, **kwargs):
+        self.user_cache = None
+        super(ResetPasswordForm, self).__init__(*args, **kwargs)
+        
     def clean(self):
-        pas = self.cleaned_data.get('newPassword')
-        repas = self.cleaned_data.get('retypePassword')
-        if pas!=repas:
-            raise ValidationError('Password did not match')
+        pas = self.cleaned_data.get('new_Password')
+        repas = self.cleaned_data.get('retype_Password')
+        if pas != repas:
+            raise ValidationError('Passwords did not match')
         return self.cleaned_data

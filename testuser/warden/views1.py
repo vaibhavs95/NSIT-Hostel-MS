@@ -134,27 +134,9 @@ def remstudent(request,target):
 def payfine(request,primkey,stu):
     if re.match("[bg]h[0-9]warden",str(request.user))!=None:
         delta = CriminalRecord.objects.get(pk = primkey)
-        delta.paid_or_not = True
+        delta.paid = True
         delta.save()
-        a=Hostels.objects.all();
-        b=[]
-        for i in a:
-            d={'name':i.hostel_name,'id':i.username}
-            b.append(d)
-        u = Students.objects.get(username = stu)
-        prev = None
-        crimi = None
-        try:
-            prev = PreviousHostelDetail.objects.filter(student = stu)
-        except ObjectDoesNotExist:
-            pass
-        try:
-            crimi = CriminalRecord.objects.filter(student = stu)
-        except ObjectDoesNotExist:
-            pass
-        mes = 'Fine Payed successfully'
-        data = {'all_hostels': b,'student':'yes', 'username': base64.b64encode(u.username.encode('utf-8')), 's': u,'prev':prev,'crim':crimi,'mes':mes}
-        return render(request,'warden/studentProfile.html',data)
+        return redirect('WardenViewStudentProfile',student = stu)
     else:
         return redirect('logout')
     
@@ -204,11 +186,6 @@ def ViewComplaint(request):
 
 def CloseComplaint(request,target):
     if re.match("[bg]h[0-9]warden",str(request.user))!=None:
-        a=Hostels.objects.all();
-        b=[]
-        for i in a:
-            d={'name':i.hostel_name,'id':i.username}
-            b.append(d)
         alpha = str(request.user)
         target=int(target)
         warden=Hostels.objects.get(username = alpha)
@@ -218,9 +195,113 @@ def CloseComplaint(request,target):
     else:
         return redirect('logout')
     
-    
-    
-    
+@login_required
+@require_http_methods(['GET', 'POST'])
+def detachStudent(request,target):
+    h = Hostels.objects.get(username=request.user)
+    try:
+        rom = Rooms.objects.get(students__username = target)
+    except ObjectDoesNotExist:
+        return redirect('warden-student')
+    s = Students.objects.get(username=target)
+    a=Hostels.objects.all();
+    b=[]
+    for i in a:
+        d={'name':i.hostel_name,'id':i.username}
+        b.append(d)
+    data = {}
+    data['all_hostels'] = b
+    crimi = None
+    try:
+        crimi = CriminalRecord.objects.filter(student = target)
+        data['crimi'] = crimi
+    except ObjectDoesNotExist:
+        pass
+    if re.match("[bg]h[0-9]+warden",str(request.user))!=None:
+        if request.method == 'POST':
+            f = DetachStudentForm(request.user, request.POST, instance = s)
+            #searchedstudent = []
+            if f.is_valid():
+                rom.capacity_remaining+=1;
+                s.room_number=None
+                s.save()
+                delta = PreviousHostelDetail(hostel_name = h.hostel_name,room_no = rom.room_no,student = s,hostel_join_date = s.current_hostel_join_date,
+                    hostel_leave_date = f.cleaned_data.get('hostel_leave_date'))
+                delta.save()
+                rom.save()
+                return redirect('warden-student')
+            else:
+                data['form'] = f
+                return render(request,'warden/detachStudent.html',data)
+        else:
+            f = DetachStudentForm(request.user, instance = s)
+            data['form'] = f
+            return render(request, 'warden/detachStudent.html',data)
+    else:
+        return redirect('logout')
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def addCriminalRecord(request,target):
+    s = Students.objects.get(username = target)
+    a=Hostels.objects.all();
+    b=[]
+    for i in a:
+        d={'name':i.hostel_name,'id':i.username}
+        b.append(d)
+    data = {}
+    data['all_hostels'] = b
+    crimi = None
+    if re.match("[bg]h[0-9]+warden",str(request.user))!=None:
+        if request.method == 'POST':
+            print(request.FILES)
+            f = AddCriminalForm(request.POST,request.FILES)
+            if f.is_valid():
+                delta = f.save(commit = False)
+                delta.student = s
+                delta.file = request.FILES['file']
+                url = delta.file.url
+                subject_pa = 'NSIT-HMS Disciplinary action against your ward'
+                message_pa = '''Disciplinary actions have been taken against your ward for not following the code of conduct of the hostels properly.
+                    Refer to this <a href = '%s '> link </a> for more details.'''%(url)
+                subject = 'NSIT-HMS, Disciplinary action taken against you'
+                message = '''Disciplinary actions have been taken against you for not following the code of conduct of the hostels properly.
+                    Refer to this <a href = '%s '> link </a> for more details.'''%(url)
+                m1 = (subject_pa,message_pa,settings.EMAIL_HOST_USER,[s.parent_email,])
+                m2 = (subject,message,settings.EMAIL_HOST_USER,[s.student_email,])
+                send_mass_mail((m1,m2,),fail_silently = False)
+                delta.save()
+                try:
+                    crimi = CriminalRecord.objects.filter(student = target)
+                    data['crimi'] = crimi
+                except ObjectDoesNotExist:
+                    pass
+                data['stu'] = s.username
+                data['form']=f
+                return redirect('WardenViewStudentProfile', student=s.username)
+            else:
+                try:
+                    crimi = CriminalRecord.objects.filter(student = target)
+                    data['crimi'] = crimi
+                except ObjectDoesNotExist:
+                    pass
+                data['stu'] = s.username
+                data['form']=f
+                return render(request,'warden/addDiscipline.html',data)
+        else:
+            f = AddCriminalForm()
+            try:
+                crimi = CriminalRecord.objects.filter(student = target)
+                data['crimi'] = crimi
+            except ObjectDoesNotExist:
+                pass
+            data['stu'] = s.username
+            data['form']=f
+            return render(request,'warden/addDiscipline.html',data)
+    else:
+        return redirect('logout')
+
+
     
     
     

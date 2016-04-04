@@ -139,7 +139,11 @@ def student_photo_name(instance, filename):
 class Students(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True , default='');
 	name = models.CharField(max_length=50 , blank = True, default='');
+<<<<<<< HEAD
 	date_of_birth = models.DateField(null=False,default=timezone.now())
+=======
+	date_of_birth = models.DateField(null=True)
+>>>>>>> c22d2f7106f5695dea2eb345e0d4aa766dce753f
 	room_number = models.ForeignKey(Rooms,null = True);
 	distance_from_nsit = models.IntegerField(null = False,  blank = True, default=0);
 	# current_sem_join_date = models.DateField(default=datetime.now, blank = True,  null=True)
@@ -184,16 +188,16 @@ class MedicalHistory(models.Model):
 
 def CriminalRecordFile(instance, filename):
 	ext = filename.split('.')[-1]
-	return 'newapp/files/notices/'+str(instance.student)+'/'+str(instance.date_of_action)+'.'+ext
+	return 'newapp/files/notices/'+str(instance.student)+'/'+str(instance.pk)+'.'+ext
 
 class CriminalRecord(models.Model):
 	#code
-	description = models.CharField(null=False,max_length = 250)
-	fine_amount = models.IntegerField(null=False)
-	paid_or_not = models.BooleanField(null=False)
-	date_of_action = models.DateField(null=False,default = datetime.now)
 	student = models.ForeignKey(Students)
-	file = models.FileField(upload_to = CriminalRecordFile,null = True)
+	description = models.CharField(null=False,max_length = 400)
+	fine_amount = models.IntegerField(null=False)
+	paid = models.BooleanField(null=False,default = False)
+	date_of_action = models.DateField(null=False)
+	file = models.FileField(upload_to = CriminalRecordFile,blank = False)
 	
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.description)

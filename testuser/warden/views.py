@@ -87,7 +87,7 @@ def profileedit(request):
 		h = Hostels.objects.get(username=request.user)
 		if request.method == 'POST':
 			f = EditWardenProfileForm(
-			    request.POST, request.FILES, request=request, instance=h)
+				request.POST, request.FILES, request=request, instance=h)
 			if f.is_valid():
 				f.save()
 				homebasic(request, request.user)
@@ -158,7 +158,7 @@ def roomall(request):
 		student = []
 		for j in s:
 			p = {'username': j.username, 'id': base64.b64encode(
-			    j.username.encode('utf-8'))}
+				j.username.encode('utf-8'))}
 			student.append(p)
 		d = {'room': i, 'students': student}
 		rooms.append(d)
@@ -181,7 +181,7 @@ def addroom(request):
 				room_no = f.cleaned_data.get('room_no')
 				room_no = room_no.upper()
 				a = Rooms(room_no=room_no, capacity_of_room=f.cleaned_data.get(
-				    'capacity_of_room'), hostel=h, capacity_remaining=f.cleaned_data.get('capacity_of_room'))
+					'capacity_of_room'), hostel=h, capacity_remaining=f.cleaned_data.get('capacity_of_room'))
 				a.save()
 				roombasic()
 				mes = 'Room added successfully'
@@ -255,7 +255,7 @@ def searchroom(request):
 					student = []
 					for j in s:
 						p = {'username': j.username, 'id': base64.b64encode(
-						    j.username.encode('utf-8'))}
+							j.username.encode('utf-8'))}
 						student.append(p)
 					d = {'room': a, 'students': student}
 					data['searchedroom'] = d
@@ -361,10 +361,10 @@ def addfacility(request):
 			if f.is_valid():
 				if request.FILES.__contains__('photo'):
 					fac = Facilities(facility_name=f.cleaned_data.get('facility_name'), facility_description=f.cleaned_data.get(
-					    'facility_description'), hostel=Hostels.objects.get(username=request.user), photo=request.FILES.__getitem__('photo'))
+						'facility_description'), hostel=Hostels.objects.get(username=request.user), photo=request.FILES.__getitem__('photo'))
 				else:
 					fac = Facilities(facility_name=f.cleaned_data.get('facility_name'), facility_description=f.cleaned_data.get(
-					    'facility_description'), hostel=Hostels.objects.get(username=request.user))
+						'facility_description'), hostel=Hostels.objects.get(username=request.user))
 				fac.save()
 				facilitybasic(request.user)
 			data['addfacilityform'] = f
@@ -394,7 +394,7 @@ def editfacility(request, pk):
 			return redirect('logout')
 		if request.method == 'POST':
 			f = EditFacilityForm(request.POST, request.FILES,
-			                     request=request, user=request.user, pk=pk, instance=fac)
+								 request=request, user=request.user, pk=pk, instance=fac)
 			if f.is_valid():
 				f.save()
 				return redirect('warden-facilities')
@@ -481,10 +481,17 @@ def addcouncil(request):
 			if f.is_valid():
 				if request.FILES.__contains__('photo'):
 					coun = HostelCouncil(name=f.cleaned_data.get('name'), email=f.cleaned_data.get('email'), phone=f.cleaned_data.get('phone'), position=f.cleaned_data.get('position'), committee=f.cleaned_data.get(
+<<<<<<< HEAD
 					    'committee'), hostel=Hostels.objects.get(username=request.user), photo=request.FILES.__getitem__('photo'))
 				else:
 					coun = HostelCouncil(name=f.cleaned_data.get('name'), email=f.cleaned_data.get('email'), phone=f.cleaned_data.get('phone'), position=f.cleaned_data.get(
 					    'position'), committee=f.cleaned_data.get('committee'), hostel=Hostels.objects.get(username=request.user))
+=======
+						'committee'), dept_or_room=f.cleaned_data.get('dept_or_room'), hostel=Hostels.objects.get(username=request.user), photo=request.FILES.__getitem__('photo'))
+				else:
+					coun = HostelCouncil(name=f.cleaned_data.get('name'), email=f.cleaned_data.get('email'), phone=f.cleaned_data.get('phone'), position=f.cleaned_data.get(
+						'position'), committee=f.cleaned_data.get('committee'), dept_or_room=f.cleaned_data.get('dept_or_room'), hostel=Hostels.objects.get(username=request.user))
+>>>>>>> c22d2f7106f5695dea2eb345e0d4aa766dce753f
 				coun.save()
 				councilbasic(request.user)
 			f = AddCouncilForm()
@@ -515,7 +522,7 @@ def editcouncil(request, pk):
 			return redirect('logout')
 		if request.method == 'POST':
 			f = EditCouncilForm(request.POST, request.FILES,
-			                    request=request, user=request.user, pk=pk, instance=coun)
+								request=request, user=request.user, pk=pk, instance=coun)
 			if f.is_valid():
 				f.save()
 				return redirect('warden-council')
@@ -600,7 +607,7 @@ def addhosform(request):
 			if f.is_valid():
 				# if request.FILES.__contains__('file'):
 				hosf = Form(title=f.cleaned_data.get('title'), hostel=Hostels.objects.get(
-				    username=request.user), file=request.FILES.__getitem__('file'))
+					username=request.user), file=request.FILES.__getitem__('file'))
 				# else:
 				# hosf =
 				# Form(title=f.cleaned_data.get('title'),hostel=Hostels.objects.get(username=request.user),file=request.FILES.__getitem__('file'))
@@ -639,7 +646,7 @@ def edithosform(request, pk):
 			if a:
 				hosf.file.delete(True)
 			f = EditHosformForm(
-			    request.POST, request.FILES, user=request.user, pk=pk, instance=hosf)
+				request.POST, request.FILES, user=request.user, pk=pk, instance=hosf)
 			if f.is_valid():
 				f.save()
 				return redirect('warden-hosform')
@@ -815,7 +822,7 @@ def studentall(request):
 		s = Students.objects.filter(room_number=i)
 		for j in s:
 			p = {'room': i, 'username': j.username,
-			    'id': base64.b64encode(j.username.encode('utf-8'))}
+				'id': base64.b64encode(j.username.encode('utf-8'))}
 			student.append(p)
 	data['students'] = student
 	data['studentfulllist'] = 'yes'
@@ -847,19 +854,23 @@ def addstudent(request):
 				room_number = f.cleaned_data.get('room_number')
 				current_hostel_join_date = f.cleaned_data.get('current_hostel_join_date')
 				s = Students(username=username, student_email=student_email, branch=branch,
-				             room_number=room_number, current_hostel_join_date=current_hostel_join_date)
+							 room_number=room_number, current_hostel_join_date=current_hostel_join_date)
 				user = MyUser.objects.create_user(f.cleaned_data.get(
-				    'username'), '2016-02-02', f.cleaned_data.get('student_email'))
+					'username'), '2016-02-02', f.cleaned_data.get('student_email'))
+				print('''acnjancjkancncjkcd
+					  cdcdcjdcsdcsdvsdv
+					  sddvsdvsv scvsssdvsdvsdv
+					  sdsvsdvsdvsvsdvsdvsdvv''')
+				# send email to fill details
+				url = "http://127.0.0.1:8080/student/" + \
+					base64.b64encode(username.encode('utf-8')).decode('utf-8')
+				message = ''' Welcome To NSIT Hostel Management System. Click <a href= '%s'>here </a> to fill your details ''' % url
+				email = EmailMessage('Welcome to NSIT-HMS', message, to=[student_email])
+				email.send()
 				s.save()
 				user.save()
 				room_number.capacity_remaining -= 1
 				room_number.save()
-				# send email to fill details
-				url = "http://127.0.0.1:8080/student/" + \
-				    base64.b64encode(username.encode('utf-8')).decode('utf-8')
-				message = ''' Welcome To NSIT Hostel Management System. Click <a href= '%s'>here </a> to fill your details ''' % url
-				email = EmailMessage('Welcome to NSIT-HMS', message, to=[student_email])
-				email.send()
 				mes = 'Student added successfully'
 				studentbasic(request.user)
 				data['addstudentform'] = f
@@ -884,180 +895,188 @@ def addstudent(request):
 @login_required
 @require_http_methods(['GET', 'POST'])
 def editstudent(request, student):
-    alpha = str(base64.b64decode(student))
-    alpha = alpha[2:11]
-    basic()
-    h = Hostels.objects.get(username=request.user)
-    u = Students.objects.get(username=alpha)
-    if u.room_number:
-        if u.room_number.hostel == h:
-            pass
-        else:
-            return redirect('logout')
-    else:
-        return redirect('logout')
-    user = request.user
-    if re.match("[bg]h[0-9]+warden", str(user)) != None:
-        if request.method == 'POST':
-            f = EditStudentForm(
-                request.POST or None, request.FILES, user=request.user, username=alpha, instance=u)
-            if f.is_valid():
-                if request.FILES.__contains__('student_photo'):
-                    ext = request.FILES['student_photo'].name.split('.')[-1]
-                    filename = alpha
-                    path = settings.MEDIA_ROOT + "/student/images/" + \
-                        str(filename) + "." + str(ext)
-                    try:
-                        os.remove(path)
-                    except FileNotFoundError:
-                        pass
-                    f.student_photo = request.FILES['student_photo']
-                f.save()
-                prev = PreviousHostelDetail.objects.filter(student=alpha)
-                crimi = CriminalRecord.objects.filter(student=alpha)
-                data['student'] = 'yes'
-                data['username'] = student
-                data['s'] = u
-                data['prev'] = prev
-                data['crim'] = crimi
-                return render(request, 'student/students/studentProfile.html', data)
-            else:
-                data['form'] = f
-                data['student'] = None
-                data['username'] = student
-                return render(request, 'student/students/home.html', data)
-        else:
-            f = EditStudentForm(user=request.user, username=alpha, instance=u)
-            data['student'] = 'yes'
-            data['username'] = student
-            data['s'] = u
-            data['form'] = f
-            data['username'] = student
-            return render(request, 'student/students/home.html', data)
-    else:
-        return redirect('logout')
+	alpha = str(base64.b64decode(student))
+	alpha = alpha[2:11]
+	basic()
+	h = Hostels.objects.get(username=request.user)
+	u = Students.objects.get(username=alpha)
+	if u.room_number:
+		if u.room_number.hostel == h:
+			pass
+		else:
+			return redirect('logout')
+	else:
+		return redirect('logout')
+	user = request.user
+	if re.match("[bg]h[0-9]+warden", str(user)) != None:
+		if request.method == 'POST':
+			f = EditStudentForm(
+				request.POST or None, request.FILES, user=request.user, username=alpha, instance=u)
+			if f.is_valid():
+				if request.FILES.__contains__('student_photo'):
+					ext = request.FILES['student_photo'].name.split('.')[-1]
+					filename = alpha
+					path = settings.MEDIA_ROOT + "/student/images/" + \
+						str(filename) + "." + str(ext)
+					try:
+						os.remove(path)
+					except FileNotFoundError:
+						pass
+					f.student_photo = request.FILES['student_photo']
+				f.save()
+				prev = None
+				crimi = None
+				try:
+					prev = PreviousHostelDetail.objects.filter(student=alpha)
+				except ObjectDoesNotExist:
+					pass
+				try:
+					i = CriminalRecord.objects.filter(student=alpha)
+				except ObjectDoesNotExist:
+					pass
+				data['student'] = 'yes'
+				data['username'] = student
+				data['s'] = u
+				data['prev'] = prev
+				data['crim'] = crimi
+				return render(request, 'student/students/studentProfile.html', data)
+			else:
+				data['form'] = f
+				data['student'] = None
+				data['username'] = student
+				return render(request, 'student/students/home.html', data)
+		else:
+			f = EditStudentForm(user=request.user, username=alpha, instance=u)
+			data['student'] = 'yes'
+			data['username'] = student
+			data['s'] = u
+			data['form'] = f
+			data['username'] = student
+			return render(request, 'student/students/home.html', data)
+	else:
+		return redirect('logout')
 
 
 @login_required
 @require_http_methods(['GET', 'POST'])
 def searchstudentrollno(request):
-    basic()
-    studentbasic(str(request.user))
-    searchedstudent = []
-    h = Hostels.objects.get(username=request.user)
-    if re.match("[bg]h[0-9]+warden", str(request.user)) != None:
-        if request.method == 'POST':
-            f = SearchStudentRollNoForm(request.POST or None)
-            if f.is_valid():
-                roll_no = f.cleaned_data.get('roll_no')
-                try:
-                   sx = Students.objects.get(username=roll_no)
-                except ObjectDoesNotExist:
-                    data['searchedstudentnotfound'] = 'yes'
-                if not data['searchedstudentnotfound']:
-                    if sx.room_number:
-                        if sx.room_number.hostel == h:
-                            p = {'username':sx.username, 'id':base64.b64encode(sx.username.encode('utf-8')),'mystudent':'yes'}
-                        else:
-                            p = {'username':sx.username, 'id':base64.b64encode(sx.username.encode('utf-8'))}
-                    else:
-                    	p = {'username':sx.username, 'id':base64.b64encode(sx.username.encode('utf-8')),'freestudent':'yes'}
-                    searchedstudent.append(p)
-                    #else:
-                    #    data['searchedstudentnotfound'] = 'yes'
-                data['searchedstudent'] = searchedstudent
-                print(data)
-                return render(request,'warden/student.html',data)
-            else:
-                data['searchstudentrollnoform'] = f
-                print(data)
-                return render(request,'warden/student.html',data)
-        else:
+	basic()
+	studentbasic(str(request.user))
+	searchedstudent = []
+	h = Hostels.objects.get(username=request.user)
+	if re.match("[bg]h[0-9]+warden", str(request.user)) != None:
+		if request.method == 'POST':
+			f = SearchStudentRollNoForm(request.POST or None)
+			if f.is_valid():
+				roll_no = f.cleaned_data.get('roll_no')
+				try:
+				   sx = Students.objects.get(username=roll_no)
+				except ObjectDoesNotExist:
+					data['searchedstudentnotfound'] = 'yes'
+				if not data['searchedstudentnotfound']:
+					if sx.room_number:
+						if sx.room_number.hostel == h:
+							p = {'username':sx.username, 'id':base64.b64encode(sx.username.encode('utf-8')),'mystudent':'yes'}
+						else:
+							p = {'username':sx.username, 'id':base64.b64encode(sx.username.encode('utf-8'))}
+					else:
+						p = {'username':sx.username, 'id':base64.b64encode(sx.username.encode('utf-8')),'freestudent':'yes'}
+					searchedstudent.append(p)
+					#else:
+					#    data['searchedstudentnotfound'] = 'yes'
+				data['searchedstudent'] = searchedstudent
+				print(data)
+				return render(request,'warden/student.html',data)
+			else:
+				data['searchstudentrollnoform'] = f
+				print(data)
+				return render(request,'warden/student.html',data)
+		else:
 
-            f = SearchStudentRollNoForm()
-            data['searchstudentrollnoform'] = f
-            print(data)
-            return render(request, 'student/students/home.html',data)
-    else:
-        return redirect('logout')
+			f = SearchStudentRollNoForm()
+			data['searchstudentrollnoform'] = f
+			print(data)
+			return render(request, 'student/students/home.html',data)
+	else:
+		return redirect('logout')
 @login_required
 @require_http_methods(['GET', 'POST'])
 def searchstudentother(request):
-    basic()
-    studentbasic(str(request.user))
-    h = Hostels.objects.get(username=request.user)
-    if re.match("[bg]h[0-9]+warden",str(request.user))!=None:
-        if request.method == 'POST':
-            f = SearchStudentOtherForm(request.POST or None)
-            searchedstudent = []
-            if f.is_valid():
-                name = None
-                date_of_birth = None
-                sx = []
-                name = f.cleaned_data.get('name')
-                date_of_birth = f.cleaned_data.get('date_of_birth')
-                if name and date_of_birth:
-                    try:
-                        sx = Students.objects.filter(name__icontains = name, date_of_birth = date_of_birth)
-                    except ObjectDoesNotExist:
-                        data['searchedstudentnotfound'] = 'yes'
-                elif name and not date_of_birth:
-                    try:
-                        sx = Students.objects.filter(name__icontains = name)
-                    except ObjectDoesNotExist:
-                        data['searchedstudentnotfound'] = 'yes'
-                elif not name and date_of_birth:
-                    try:
-                        sx = Students.objects.filter(date_of_birth = date_of_birth)
-                    except ObjectDoesNotExist:
-                        data['searchedstudentnotfound'] = 'yes'
-                if(len(sx) < 1):
-                    data['searchedstudentnotfound'] = 'yes'
-                if not data['searchedstudentnotfound'] and sx:
-                    for i in sx:
-                        if i.room_number:
-                            if i.room_number.hostel == h:
-                                p = {'username':i.username, 'id':base64.b64encode(i.username.encode('utf-8')),'mystudent':'yes'}
-                            else:
-                                p = {'username':i.username, 'id':base64.b64encode(i.username.encode('utf-8'))}
-                            searchedstudent.append(p)
-                data['searchedstudent'] = searchedstudent
-                return render(request,'warden/student.html',data)
-            else:
-                data['searchstudentotherform'] = f
-                return render(request,'warden/student.html',data)
-        else:
-            f = SearchStudentOtherForm()
-            data['searchstudentotherform'] = f
-            return render(request, 'warden/student.html',data)
-    else:
-        return redirect('logout')
+	basic()
+	studentbasic(str(request.user))
+	h = Hostels.objects.get(username=request.user)
+	if re.match("[bg]h[0-9]+warden",str(request.user))!=None:
+		if request.method == 'POST':
+			f = SearchStudentOtherForm(request.POST or None)
+			searchedstudent = []
+			if f.is_valid():
+				name = None
+				date_of_birth = None
+				sx = []
+				name = f.cleaned_data.get('name')
+				date_of_birth = f.cleaned_data.get('date_of_birth')
+				if name and date_of_birth:
+					try:
+						sx = Students.objects.filter(name__icontains = name, date_of_birth = date_of_birth)
+					except ObjectDoesNotExist:
+						data['searchedstudentnotfound'] = 'yes'
+				elif name and not date_of_birth:
+					try:
+						sx = Students.objects.filter(name__icontains = name)
+					except ObjectDoesNotExist:
+						data['searchedstudentnotfound'] = 'yes'
+				elif not name and date_of_birth:
+					try:
+						sx = Students.objects.filter(date_of_birth = date_of_birth)
+					except ObjectDoesNotExist:
+						data['searchedstudentnotfound'] = 'yes'
+				if(len(sx) < 1):
+					data['searchedstudentnotfound'] = 'yes'
+				if not data['searchedstudentnotfound'] and sx:
+					for i in sx:
+						if i.room_number:
+							if i.room_number.hostel == h:
+								p = {'username':i.username, 'id':base64.b64encode(i.username.encode('utf-8')),'mystudent':'yes'}
+							else:
+								p = {'username':i.username, 'id':base64.b64encode(i.username.encode('utf-8'))}
+							searchedstudent.append(p)
+				data['searchedstudent'] = searchedstudent
+				return render(request,'warden/student.html',data)
+			else:
+				data['searchstudentotherform'] = f
+				return render(request,'warden/student.html',data)
+		else:
+			f = SearchStudentOtherForm()
+			data['searchstudentotherform'] = f
+			return render(request, 'warden/student.html',data)
+	else:
+		return redirect('logout')
 @login_required
 @require_http_methods(['GET', 'POST'])
 def attachstudent(request,student):
-    basic()
-    studentbasic(str(request.user))
-    h = Hostels.objects.get(username=request.user)
-    s = Students.objects.get(username=student)
-    if re.match("[bg]h[0-9]+warden",str(request.user))!=None:
-        if request.method == 'POST':
-            f = AttachStudentForm(request.user, request.POST, instance = s)
-            #searchedstudent = []
-            if f.is_valid():
-                room_number = f.cleaned_data.get('room_number')
-                f.room_number = room_number
-                f.save()
-                room_number.capacity_remaining -= 1
-                room_number.save()
-                return redirect('warden-student')
-            else:
-                data['student'] = s.username
-                data['attachstudentform'] = f
-                return render(request,'warden/attachstudent.html',data)
-        else:
-            f = AttachStudentForm(request.user, instance = s)
-            data['student'] = s.username
-            data['attachstudentform'] = f
-            return render(request, 'warden/attachstudent.html',data)
-    else:
-        return redirect('logout')
+	basic()
+	studentbasic(str(request.user))
+	h = Hostels.objects.get(username=request.user)
+	s = Students.objects.get(username=student)
+	if re.match("[bg]h[0-9]+warden",str(request.user))!=None:
+		if request.method == 'POST':
+			f = AttachStudentForm(request.user, request.POST, instance = s)
+			#searchedstudent = []
+			if f.is_valid():
+				room_number = f.cleaned_data.get('room_number')
+				f.room_number = room_number
+				f.save()
+				room_number.capacity_remaining -= 1
+				room_number.save()
+				return redirect('warden-student')
+			else:
+				data['student'] = s.username
+				data['attachstudentform'] = f
+				return render(request,'warden/attachstudent.html',data)
+		else:
+			f = AttachStudentForm(request.user, instance = s)
+			data['student'] = s.username
+			data['attachstudentform'] = f
+			return render(request, 'warden/attachstudent.html',data)
+	else:
+		return redirect('logout')

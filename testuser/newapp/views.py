@@ -15,7 +15,6 @@ from testuser import settings
 
 @require_http_methods(['GET', 'POST'])
 def base(request):
-    
     f = LoginForm(request.POST or None)
     if f.is_valid():
         return redirect('login')
@@ -66,21 +65,24 @@ def handleLogin(request):
         if re.match("chief[a-zA-Z0-9_]*",str(userid))!=None:
             try:
                 a = ChiefWarden.objects.get(username = userid)
-            except ObjectDoesNotExist:
-                m1 = (subject,message,settings.EMAIL_HOST_USER,a.email)
+                m1 = (subject,message,settings.EMAIL_HOST_USER,[a.email])
                 send_mass_mail((m1,),fail_silently = False)
+            except ObjectDoesNotExist:
+                pass
         elif re.match("[a-zA-Z0-9_]*warden",str(userid))!=None:
             try:
                 a = Hostels.objects.get(username = userid)
-            except ObjectDoesNotExist:
-                m1 = (subject,message,settings.EMAIL_HOST_USER,a.email)
+                m1 = (subject,message,settings.EMAIL_HOST_USER,[a.email])
                 send_mass_mail((m1,),fail_silently = False)
+            except ObjectDoesNotExist:
+                pass
         elif re.match("[0-9]*-[A-Za-z0-9]*",str(userid))!=None:
             try:
                 a = Students.objects.get(username = userid)
-            except ObjectDoesNotExist:
-                m1 = (subject,message,settings.EMAIL_HOST_USER,a.email)
+                m1 = (subject,message,settings.EMAIL_HOST_USER,[a.student_email])
                 send_mass_mail((m1,),fail_silently = False)
+            except ObjectDoesNotExist:
+                pass
         mes = 'A verification mail has been sent to your registered mail, if userid was valid'
     a=Hostels.objects.all();
     b=[]
@@ -194,29 +196,23 @@ def hostels(request,hostel_name):
 @require_http_methods(['GET', 'POST'])
 def resetPassword(request,target):
     alpha = str(base64.b64decode(target))
+    alpha = alpha[2:-1]
     f = ResetPasswordForm(request.POST or None)
+    mes = None
     if f.is_valid():
-        pas = self.cleaned_data.get('newPassword')
-        repas = self.cleaned_data.get('retypePassword')
-        if re.match("chief[a-zA-Z0-9_]*",str(alpha))!=None:
-            try:
-                a = ChiefWarden.objects.get(username = alpha)
-                b = MyUser.objects.get(userid = alpha)
-            except ObjectDoesNotExist:
-                send_mass_mail((m1,),fail_silently = False)
-        elif re.match("[a-zA-Z0-9_]*warden",str(alpha))!=None:
-            try:
-                a = Hostels.objects.get(username = alpha)
-                b = MyUser.objects.get(userid = alpha)
-            except ObjectDoesNotExist:
-                m1 = (subject,message,settings.EMAIL_HOST_USER,a.email)
-                send_mass_mail((m1,),fail_silently = False)
-        elif re.match("[0-9]*-[A-Za-z0-9]*",str(alpha))!=None:
-            try:
-                a = Students.objects.get(username = alpha)
-                b = MyUser.objects.get(userid = alpha)
-            except ObjectDoesNotExist:
-                m1 = (subject,message,settings.EMAIL_HOST_USER,a.email)
-                send_mass_mail((m1,),fail_silently = False)
-        mes = 'A verification mail has been sent to your registered mail, if userid was valid'
+        pas = f.cleaned_data.get('new_Password')
+        try:
+            b = MyUser.objects.get(userid = alpha)
+            b.set_password(pas)
+            b.save()
+            mes = 'Password reset successful'
+        except ObjectDoesNotExist:
+            pass
+    a=Hostels.objects.all();
+    b=[]
+    for i in a:
+        d={'name':i.hostel_name,'id':i.username}
+        b.append(d)
+    data = {'all_hostels': b,'form':f,'mes':mes}
+    return render(request,'newapp/resetPassword.html',data)
     

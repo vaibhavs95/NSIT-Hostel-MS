@@ -37,7 +37,15 @@ urlpatterns = [
     url(r'^student/search/other/$',views.searchstudentother, name='warden-search-student-other'),
     url(r'^student/attach/(?P<student>[0-9]+-[A-Z]+-[0-9]+)/$',views.attachstudent, name='warden-attach-student'),
     url(r'^student/delete/(?P<target>[a-z0-9A-Z-=]*)/$',views1.remstudent, name='wardenRemoveStudent'),
+<<<<<<< HEAD
     url(r'^student/profile/(?P<student>[0-9]+-[A-Z]+-[0-9]+)/$',views1.StudentProfile,name='WardenViewStudentProfile'),
     url(r'^complaint/$',views1.ViewComplaint, name='wardenViewComplaint'),
     url(r'^complaint/(?P<target>[0-9]*)/$',views1.CloseComplaint, name='wardenCloseComplaint'),
+=======
+    url(r'^student/profile/(?P<student>[a-z0-9A-Z-=]*)/$',views1.StudentProfile,name='WardenViewStudentProfile'),
+    url(r'^complaint/$',views1.ViewComplaint, name='wardenViewComplaint'),
+    url(r'^complaint/(?P<target>[0-9]*)/$',views1.CloseComplaint, name='wardenCloseComplaint'),
+    url(r'^detach/(?P<target>[0-9A-Z-]*)/$',views1.detachStudent,name = 'wardenDetachStudent'),
+    url(r'^disciplineadd/(?P<target>[0-9A-Z-]*)/$',views1.addCriminalRecord,name = 'wardenAddCriminal'),
+>>>>>>> c22d2f7106f5695dea2eb345e0d4aa766dce753f
 ]
