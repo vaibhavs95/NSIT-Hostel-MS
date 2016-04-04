@@ -1,6 +1,28 @@
 /******
 Header
 ******/
+.squarepic{
+	width: 200px;
+	height: 200px;
+	border: 1px solid;
+	//border-radius: 50%;
+	margin-left: 20%;
+	margin-top: 10%;
+	background-repeat: no-repeat;
+	background-position: center center;
+		background-size: cover;
+}
+.profilepic{
+		width: 180px;
+		height: 180px;
+		border: 1px solid;
+		border-radius: 50%;
+		margin-left: 20%;
+		margin-top: 10%;
+		background-repeat: no-repeat;
+		background-position: center center;
+  		background-size: cover;
+	}
 #logo1{
 	margin: 5% 0% 0% 5%;
 	width: 110px;
@@ -17,12 +39,6 @@ Header
 	padding-left: 10%;
 	padding-right: 10%;
 }
-/*
-#login-modal
-{
-	height: 1000px;
-}
-*/
 #logo{
 	margin: 5% 0% 0% 5%;
 	width: 110px;

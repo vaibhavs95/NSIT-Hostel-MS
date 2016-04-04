@@ -19,6 +19,7 @@ data = {}
 
 
 def basic():
+	data.clear()
 	a = Hostels.objects.all();
 	b = []
 	for i in a:
@@ -126,6 +127,7 @@ def roombasic():
 	data['studentinroom'] = None
 	data['roomfulllist'] = None
 	data['searchedroom'] = None
+	data['searchedroomhistory'] = None
 	data['searchedroomnotfound'] = None
 	f = AddRoomForm()
 	g = SearchRoomForm()
@@ -268,7 +270,52 @@ def searchroom(request):
 			return render(request, 'warden/room.html', data)
 	else:
 		return redirect('logout')
-
+'''@login_required
+@require_http_methods(['GET', 'POST'])
+def searchroomhistory(request):
+	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		h = Hostels.objects.get(username=request.user)
+		roombasic()
+		searchedroomhistory = []
+		if request.method == 'POST':
+			f = SearchRoomForm(request.POST)
+			if f.is_valid():
+				room_no = f.cleaned_data.get('room_no')
+				room_no = room_no.upper()
+				his = []
+				try:
+					his = PreviousHostelDetail.objects.filter(hostel_name = h.hostel_name, room_no = room_no)
+				except:
+					pass
+				if(len(his) < 1):
+					data['searchedroomnotfound'] = 'yes'
+				if not data['searchedstudentnotfound']:
+					for k in his:
+						a = Rooms.objects.get(hostel=h, room_no=k.room_no)
+						s = Students.objects.filter(room_number=a)
+						student = []
+						for j in s:
+							p = {'username': j.username, 'id': base64.b64encode(
+							    j.username.encode('utf-8'))}
+							student.append(p)
+						d = {'room': a, 'students': student}
+						searchedroomhistory.append(d)
+				if len(searchedroomhistory) > 1:
+					data['searchedroomhistory'] = searchedroomhistory
+				else:
+					data['searchedroomhistory'] = None
+				data['searchroomhistoryform'] = f
+				return render(request, 'warden/room.html', data)
+			else:
+				data['searchroomhistoryform'] = f
+				return render(request, 'warden/room.html', data)
+		else:
+			f = SearchRoomForm()
+			data['searchroomhistoryform'] = f
+			return render(request, 'warden/room.html', data)
+	else:
+		return redirect('logout')
+'''
 
 #######
 
@@ -434,10 +481,10 @@ def addcouncil(request):
 			if f.is_valid():
 				if request.FILES.__contains__('photo'):
 					coun = HostelCouncil(name=f.cleaned_data.get('name'), email=f.cleaned_data.get('email'), phone=f.cleaned_data.get('phone'), position=f.cleaned_data.get('position'), committee=f.cleaned_data.get(
-					    'committee'), dept_or_room=f.cleaned_data.get('dept_or_room'), hostel=Hostels.objects.get(username=request.user), photo=request.FILES.__getitem__('photo'))
+					    'committee'), hostel=Hostels.objects.get(username=request.user), photo=request.FILES.__getitem__('photo'))
 				else:
 					coun = HostelCouncil(name=f.cleaned_data.get('name'), email=f.cleaned_data.get('email'), phone=f.cleaned_data.get('phone'), position=f.cleaned_data.get(
-					    'position'), committee=f.cleaned_data.get('committee'), dept_or_room=f.cleaned_data.get('dept_or_room'), hostel=Hostels.objects.get(username=request.user))
+					    'position'), committee=f.cleaned_data.get('committee'), hostel=Hostels.objects.get(username=request.user))
 				coun.save()
 				councilbasic(request.user)
 			f = AddCouncilForm()

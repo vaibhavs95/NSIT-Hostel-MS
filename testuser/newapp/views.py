@@ -111,6 +111,23 @@ def logoutview(request):
     logout(request)
     return redirect('base')
 
+def capacityremaining(user):
+    user = Hostels.objects.get(username=user)
+    r = Rooms.objects.filter(hostel=user, capacity_remaining__gt=0)
+    v = 0
+    for i in r:
+        v = v + i.capacity_remaining
+    return v
+
+
+def capacity(user):
+    h = Hostels.objects.get(username=user)
+    r = Rooms.objects.filter(hostel=h)
+    v = 0
+    for i in r:
+        v = v + i.capacity_of_room
+    return v
+
 @require_http_methods(['GET', 'POST'])
 def hostels(request,hostel_name):
     if request.method=='POST':
@@ -126,22 +143,52 @@ def hostels(request,hostel_name):
         b.append(d)
         if i.username == hostel_name:
             c = i
-    faci = None
-    try:
-        faci = Facilities.objects.filter(hostel = hostel_name)
-    except ObjectDoesNotExist:
-        pass
-    council = None
-    try:
-        council = HostelCouncil.objects.filter(hostel = hostel_name)
-    except ObjectDoesNotExist:
-        pass
-    mess =None
-    try:
-        mess = MessDetail.objects.get(hostel = hostel_name)
-    except ObjectDoesNotExist:
-        pass
-    data = {'all_hostels': b,'target_hostel':c,'form':f,'faci':faci,'council':council,'mess':mess}
+    data = {'all_hostels': b,'target_hostel':c,'form':f}
+    
+    h = Hostels.objects.get(username = hostel_name)
+    a = Facilities.objects.filter(hostel = h)
+    facilities = []
+    for i in a:
+        if i.photo:
+            d = {'fac': i, 'photo': 'yes'}
+        else:
+            d = {'fac': i, 'photo': None}
+        facilities.append(d)
+    data['facilities'] = facilities
+        #data['name'] = user.name
+        #data['phone'] = user.phone
+        #data['landline'] = user.landline
+        #data['email'] = user.email
+        #data['dept'] = user.department
+        #data['portfolio'] = user.portfolio
+    data['total_rooms'] = capacity(h.username)
+    data['rooms_available'] = capacityremaining(h.username)
+    if h.warden_photo:
+        data['wardenphoto'] = 'yes'
+        data['userid'] = h
+    else:
+        data['wardenphoto'] = None
+        data['userid'] = None
+    hc = HostelCouncil.objects.filter(hostel=h)
+    council = []
+    for i in hc:
+        if i.photo:
+            d = {'coun': i, 'photo': 'yes'}
+        else:
+            d = {'coun': i, 'photo': None}
+        council.append(d)
+    data['council'] = council
+    hf = (Form.objects.filter(hostel=h)).order_by('time')
+    hosform = []
+    for i in hf:
+        d = {'hosf': i}
+        hosform.append(d)
+    data['hosform'] = hosform
+    messdetail = MessDetail.objects.filter(hostel=h)
+    if messdetail:
+        data['mess'] = messdetail[0]
+    else:
+        data['mess'] = None
     return render(request,'newapp/bh1_facilities.html',data)
 
 @require_http_methods(['GET', 'POST'])
