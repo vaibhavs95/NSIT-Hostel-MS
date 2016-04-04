@@ -314,7 +314,7 @@
 								{% endif %}
 							</td>
                             <td>
-                                {% if i.paid_or_not %}
+                                {% if i.paid == True %}
 								{% else %}
 								<a href="#!" onclick="myFunction('{{i.pk}}','{{ i.student }}')">Pay</a>
 								{% endif %}

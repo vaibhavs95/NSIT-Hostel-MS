@@ -184,7 +184,7 @@ class MedicalHistory(models.Model):
 
 def CriminalRecordFile(instance, filename):
 	ext = filename.split('.')[-1]
-	return 'newapp/files/notices/'+str(instance.student)+'/'+str(instance.date_of_action)+'.'+ext
+	return 'newapp/files/notices/'+str(instance.student)+'/'+str(instance.pk)+'.'+ext
 
 class CriminalRecord(models.Model):
 	#code
@@ -193,7 +193,7 @@ class CriminalRecord(models.Model):
 	fine_amount = models.IntegerField(null=False)
 	paid = models.BooleanField(null=False,default = False)
 	date_of_action = models.DateField(null=False)
-	file = models.FileField(upload_to = CriminalRecordFile,blank = True)
+	file = models.FileField(upload_to = CriminalRecordFile,blank = False)
 	
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.description)

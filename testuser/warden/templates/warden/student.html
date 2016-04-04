@@ -60,6 +60,7 @@
 						<th data-field="id">Roll Number</th>
 						<th data-field="name">Action</th>
 						<th data-field="name">Action</th>
+						<th data-field="name">Action</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -68,13 +69,16 @@
 						{% if s.mystudent %}
 							<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
 							<td><a href="{% url 'warden-edit-student' s.id %}">Edit Student Details</a></td>
-							<td><a href="{% url 'wardenRemoveStudent' s.id %}">Detach Student</a></td>
+							<td><a href="{% url 'wardenDetachStudent' s.username %}">Detach Student</a></td>
+							<td><a href="{% url 'wardenAddCriminal' s.username %}">Add Disciplinary Action</a></td>
 						{% elif s.freestudent %}
 							<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
 							<td>NA</td>
 							<td><a href="{% url 'warden-attach-student' s.username %}">Attach Student</a></td>
+							<td>NA</td>
 						{% else %}
 							<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
+							<td>NA</td>
 							<td>NA</td>
 							<td>NA</td>
 						{% endif %}
@@ -114,6 +118,7 @@
 						<th data-field="name">Capacity Remaining</th>
 						<th data-field="name">Action</th>
 						<th data-field="name">Action</th>
+						<th data-field="name">Action</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -124,7 +129,8 @@
 						<td>{{ s.room.capacity_of_room }}</td>
 						<td>{{ s.room.capacity_remaining }}</td>
 						<td><a href="{% url 'warden-edit-student' s.id %}">Edit Student Details</a></td>
-						<td><a href="{% url 'wardenRemoveStudent' s.id %}">Delete Student</a></td>
+						<td><a href="{% url 'wardenDetachStudent' s.username %}">Detach Student</a></td>
+						<td><a href="{% url 'wardenAddCriminal' s.username %}">Add Disciplinary Action</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>
