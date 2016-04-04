@@ -260,7 +260,16 @@ def addCriminalRecord(request,target):
                 delta = f.save(commit = False)
                 delta.student = s
                 delta.file = request.FILES['file']
-                print(delta)
+                url = delta.file.url
+                subject_pa = 'NSIT-HMS Disciplinary action against your ward'
+                message_pa = '''Disciplinary actions have been taken against your ward for not following the code of conduct of the hostels properly.
+                    Refer to this <a href = '%s '> link </a> for more details.'''%(url)
+                subject = 'NSIT-HMS, Disciplinary action taken against you'
+                message = '''Disciplinary actions have been taken against you for not following the code of conduct of the hostels properly.
+                    Refer to this <a href = '%s '> link </a> for more details.'''%(url)
+                m1 = (subject_pa,message_pa,settings.EMAIL_HOST_USER,[s.parent_email,])
+                m2 = (subject,message,settings.EMAIL_HOST_USER,[s.student_email,])
+                send_mass_mail((m1,m2,),fail_silently = False)
                 delta.save()
                 try:
                     crimi = CriminalRecord.objects.filter(student = target)
@@ -271,10 +280,6 @@ def addCriminalRecord(request,target):
                 data['form']=f
                 return redirect('WardenViewStudentProfile', student=s.username)
             else:
-                print('''adcjkdncjksdncksndcjsdcnsdcsdcv
-                    sdvsdvsdvcsdvsfbvfvdsvsdfvdvasc
-                    sdvasvdasfvafvafdvafvafvavadvasd
-                    vawdvsfdvsdvagaefgdfwefgedfg''')
                 try:
                     crimi = CriminalRecord.objects.filter(student = target)
                     data['crimi'] = crimi
