@@ -134,27 +134,9 @@ def remstudent(request,target):
 def payfine(request,primkey,stu):
     if re.match("[bg]h[0-9]warden",str(request.user))!=None:
         delta = CriminalRecord.objects.get(pk = primkey)
-        delta.paid_or_not = True
+        delta.paid = True
         delta.save()
-        a=Hostels.objects.all();
-        b=[]
-        for i in a:
-            d={'name':i.hostel_name,'id':i.username}
-            b.append(d)
-        u = Students.objects.get(username = stu)
-        prev = None
-        crimi = None
-        try:
-            prev = PreviousHostelDetail.objects.filter(student = stu)
-        except ObjectDoesNotExist:
-            pass
-        try:
-            crimi = CriminalRecord.objects.filter(student = stu)
-        except ObjectDoesNotExist:
-            pass
-        mes = 'Fine Payed successfully'
-        data = {'all_hostels': b,'student':'yes', 'username': base64.b64encode(u.username.encode('utf-8')), 's': u,'prev':prev,'crim':crimi,'mes':mes}
-        return render(request,'warden/studentProfile.html',data)
+        return redirect('WardenViewStudentProfile',student = stu)
     else:
         return redirect('logout')
     
@@ -272,12 +254,13 @@ def addCriminalRecord(request,target):
     crimi = None
     if re.match("[bg]h[0-9]+warden",str(request.user))!=None:
         if request.method == 'POST':
+            print(request.FILES)
             f = AddCriminalForm(request.POST,request.FILES)
             if f.is_valid():
                 delta = f.save(commit = False)
-                print(delta)
                 delta.student = s
                 delta.file = request.FILES['file']
+                print(delta)
                 delta.save()
                 try:
                     crimi = CriminalRecord.objects.filter(student = target)
@@ -286,8 +269,12 @@ def addCriminalRecord(request,target):
                     pass
                 data['stu'] = s.username
                 data['form']=f
-                return render(request,'warden/addDiscipline.html',data)
+                return redirect('WardenViewStudentProfile', student=s.username)
             else:
+                print('''adcjkdncjksdncksndcjsdcnsdcsdcv
+                    sdvsdvsdvcsdvsfbvfvdsvsdfvdvasc
+                    sdvasvdasfvafvafdvafvafvavadvasd
+                    vawdvsfdvsdvagaefgdfwefgedfg''')
                 try:
                     crimi = CriminalRecord.objects.filter(student = target)
                     data['crimi'] = crimi

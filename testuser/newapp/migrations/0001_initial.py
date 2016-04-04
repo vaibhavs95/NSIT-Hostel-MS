@@ -16,11 +16,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MyUser',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
-                ('password', models.CharField(verbose_name='password', max_length=128)),
-                ('last_login', models.DateTimeField(verbose_name='last login', blank=True, null=True)),
-                ('userid', models.CharField(verbose_name='user_id', max_length=255, unique=True)),
-                ('date_of_birth', models.DateField(default=datetime.datetime(2016, 4, 4, 11, 40, 7, 418661, tzinfo=utc))),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('password', models.CharField(max_length=128, verbose_name='password')),
+                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
+                ('userid', models.CharField(max_length=255, verbose_name='user_id', unique=True)),
+                ('date_of_birth', models.DateField(default=datetime.datetime(2016, 4, 4, 17, 15, 45, 141848, tzinfo=utc))),
                 ('is_active', models.BooleanField(default=True)),
                 ('is_admin', models.BooleanField(default=False)),
             ],
@@ -31,16 +31,16 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Branch',
             fields=[
-                ('title', models.CharField(default='', serialize=False, primary_key=True, max_length=20)),
-                ('name', models.CharField(default='COMPUTER SCIENCE AND ENGINEERING', max_length=100)),
-                ('roll_code', models.CharField(default='', max_length=5)),
+                ('title', models.CharField(max_length=20, primary_key=True, default='', serialize=False)),
+                ('name', models.CharField(max_length=100, default='COMPUTER SCIENCE AND ENGINEERING')),
+                ('roll_code', models.CharField(max_length=5, default='')),
             ],
         ),
         migrations.CreateModel(
             name='ChiefWarden',
             fields=[
-                ('username', models.CharField(default='', serialize=False, primary_key=True, max_length=20)),
-                ('name', models.CharField(default='', max_length=20)),
+                ('username', models.CharField(max_length=20, primary_key=True, default='', serialize=False)),
+                ('name', models.CharField(max_length=20, default='')),
                 ('email', models.EmailField(max_length=254)),
                 ('mobno', models.CharField(max_length=15)),
                 ('phoneno', models.CharField(max_length=20)),
@@ -49,7 +49,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Closures',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('start_date', models.DateField()),
                 ('end_date', models.DateField()),
                 ('clo_or_ext', models.BooleanField()),
@@ -58,9 +58,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Complaints',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('lodgers_roll_no', models.CharField(max_length=300)),
-                ('description', models.CharField(default='', max_length=300)),
+                ('description', models.CharField(max_length=300, default='')),
                 ('date_of_complaint', models.DateField(auto_now=True)),
                 ('closed', models.BooleanField(default=False)),
             ],
@@ -68,19 +68,19 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='CriminalRecord',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
-                ('description', models.CharField(max_length=250)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('description', models.CharField(max_length=400)),
                 ('fine_amount', models.IntegerField()),
-                ('paid_or_not', models.BooleanField()),
-                ('date_of_action', models.DateField(default=datetime.datetime.now)),
-                ('file', models.FileField(upload_to=newapp.models.CriminalRecordFile, null=True)),
+                ('paid', models.BooleanField(default=False)),
+                ('date_of_action', models.DateField()),
+                ('file', models.FileField(blank=True, upload_to=newapp.models.CriminalRecordFile)),
             ],
         ),
         migrations.CreateModel(
             name='Facilities',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
-                ('facility_name', models.CharField(default='', unique=True, max_length=100)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('facility_name', models.CharField(max_length=100, default='', unique=True)),
                 ('facility_description', models.TextField(default='')),
                 ('photo', models.ImageField(blank=True, upload_to=newapp.models.facility_photo_name, null=True)),
             ],
@@ -88,8 +88,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Form',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
-                ('title', models.CharField(default='', max_length=200)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('title', models.CharField(max_length=200, default='')),
                 ('time', models.DateTimeField(auto_now_add=True)),
                 ('file', models.FileField(upload_to=newapp.models.form_file_name)),
             ],
@@ -97,21 +97,21 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='HostelCouncil',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
-                ('name', models.CharField(default='', max_length=100, blank=True, null=True)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('name', models.CharField(max_length=100, blank=True, default='', null=True)),
                 ('email', models.EmailField(max_length=254)),
-                ('phone', models.CharField(default='', max_length=15)),
-                ('position', models.CharField(default='', max_length=100)),
-                ('committee', models.CharField(default='', max_length=100, blank=True, null=True)),
+                ('phone', models.CharField(max_length=15, default='')),
+                ('position', models.CharField(max_length=100, default='')),
+                ('committee', models.CharField(max_length=100, blank=True, default='', null=True)),
                 ('photo', models.ImageField(blank=True, upload_to=newapp.models.council_photo_name, null=True)),
             ],
         ),
         migrations.CreateModel(
             name='Hostels',
             fields=[
-                ('username', models.CharField(default='', serialize=False, primary_key=True, max_length=20)),
-                ('name', models.CharField(default='', max_length=50, null=True)),
-                ('hostel_name', models.CharField(default='', max_length=20)),
+                ('username', models.CharField(max_length=20, primary_key=True, default='', serialize=False)),
+                ('name', models.CharField(max_length=50, default='', null=True)),
+                ('hostel_name', models.CharField(max_length=20, default='')),
                 ('room_capacity', models.IntegerField(blank=True, null=True)),
                 ('room_available', models.IntegerField(blank=True, null=True)),
                 ('phone', models.CharField(max_length=20, blank=True, null=True)),
@@ -126,14 +126,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MedicalHistory',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('description', models.CharField(max_length=250)),
             ],
         ),
         migrations.CreateModel(
             name='MessDetail',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('weekday_breakfast_from', models.TimeField()),
                 ('weekday_breakfast_to', models.TimeField()),
                 ('weekday_lunch_from', models.TimeField()),
@@ -165,8 +165,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Notice',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
-                ('title', models.CharField(default=None, unique=True, max_length=200)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('title', models.CharField(max_length=200, default=None, unique=True)),
                 ('file', models.FileField(upload_to=newapp.models.noticePhotoForm, null=True)),
                 ('creator', models.CharField(max_length=30)),
             ],
@@ -174,7 +174,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PreviousHostelDetail',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('hostel_name', models.CharField(max_length=40)),
                 ('room_no', models.CharField(max_length=10)),
                 ('hostel_join_date', models.DateField()),
@@ -184,7 +184,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Rooms',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('room_no', models.CharField(max_length=10)),
                 ('capacity_of_room', models.IntegerField()),
                 ('capacity_remaining', models.IntegerField(blank=True, null=True)),
@@ -194,16 +194,16 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Students',
             fields=[
-                ('username', models.CharField(default='', serialize=False, primary_key=True, max_length=20)),
-                ('name', models.CharField(default='', max_length=50, blank=True)),
+                ('username', models.CharField(max_length=20, primary_key=True, default='', serialize=False)),
+                ('name', models.CharField(max_length=50, blank=True, default='')),
                 ('date_of_birth', models.DateField(null=True)),
-                ('distance_from_nsit', models.IntegerField(default=0, blank=True)),
-                ('current_hostel_join_date', models.DateField(default=datetime.datetime.now, blank=True, null=True)),
-                ('gender', models.CharField(default='M', max_length=10, blank=True, choices=[('M', 'Male'), ('F', 'Female')])),
-                ('college_category', models.CharField(default='DGEN', max_length=5, blank=True, choices=[('DGEN', 'Delhi General'), ('DOBC', 'Delhi OBC'), ('DSC', 'Delhi SC'), ('DST', 'Delhi ST')])),
-                ('blood_group', models.CharField(default='B+', max_length=5, blank=True, choices=[('B+', 'B Positive'), ('A+', 'A Positive'), ('AB+', 'AB Positive'), ('A-', 'A Neagtive'), ('B-', 'B Negative'), ('AB-', 'AB Negative'), ('O+', 'O Positive'), ('O-', 'O Negative')])),
+                ('distance_from_nsit', models.IntegerField(blank=True, default=0)),
+                ('current_hostel_join_date', models.DateField(blank=True, default=datetime.datetime.now, null=True)),
+                ('gender', models.CharField(max_length=10, blank=True, default='M', choices=[('M', 'Male'), ('F', 'Female')])),
+                ('college_category', models.CharField(max_length=5, blank=True, default='DGEN', choices=[('DGEN', 'Delhi General'), ('DOBC', 'Delhi OBC'), ('DSC', 'Delhi SC'), ('DST', 'Delhi ST')])),
+                ('blood_group', models.CharField(max_length=5, blank=True, default='B+', choices=[('B+', 'B Positive'), ('A+', 'A Positive'), ('AB+', 'AB Positive'), ('A-', 'A Neagtive'), ('B-', 'B Negative'), ('AB-', 'AB Negative'), ('O+', 'O Positive'), ('O-', 'O Negative')])),
                 ('student_phone_num', models.CharField(max_length=20, blank=True)),
-                ('student_email', models.EmailField(unique=True, max_length=254)),
+                ('student_email', models.EmailField(max_length=254, unique=True)),
                 ('student_optional_phone_num', models.CharField(max_length=20, blank=True, null=True)),
                 ('father_name', models.CharField(max_length=100, blank=True)),
                 ('mother_name', models.CharField(max_length=100, blank=True)),

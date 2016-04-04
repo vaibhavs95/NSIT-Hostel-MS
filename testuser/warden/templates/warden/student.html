@@ -68,7 +68,7 @@
 						{% if s.mystudent %}
 							<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
 							<td><a href="{% url 'warden-edit-student' s.id %}">Edit Student Details</a></td>
-							<td><a href="{% url 'wardenRemoveStudent' s.id %}">Detach Student</a></td>
+							<td><a href="{% url 'wardenDetachStudent' s.username %}">Detach Student</a></td>
 						{% elif s.freestudent %}
 							<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
 							<td>NA</td>
@@ -124,7 +124,7 @@
 						<td>{{ s.room.capacity_of_room }}</td>
 						<td>{{ s.room.capacity_remaining }}</td>
 						<td><a href="{% url 'warden-edit-student' s.id %}">Edit Student Details</a></td>
-						<td><a href="{% url 'wardenRemoveStudent' s.id %}">Delete Student</a></td>
+						<td><a href="{% url 'wardenDetachStudent' s.username %}">Detach Student</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>
