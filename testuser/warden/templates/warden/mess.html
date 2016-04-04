@@ -17,6 +17,7 @@
 <li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
 <li><a class="waves-effect" href="{% url 'warden-mess' %}">Mess</a></li>
 <li><a class="waves-effect" href="{% url 'warden-notices' %}">Notices</a></li>
+<li><a class="waves-effect" href="{% url 'wardenViewComplaint' %}">Complaints</a></li>
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -115,7 +116,7 @@
 				<a class="btn" target="__blank" href="{{ mess.menu.url }}">Mess Menu</a>
 				</div>
 				<div class="card-action">
-					<a class="blue-text" href="/warden/mess/edit-mess/{{ mess.pk }}/">Edit Mess Detail</a>
+					<a class="blue-text" href="/warden/mess/edit/{{ mess.pk }}/">Edit Mess Detail</a>
 				</div>
 			</div>
 			{% else %}

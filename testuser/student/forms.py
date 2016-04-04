@@ -2,36 +2,12 @@ from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate
 from newapp.models import *
+from django.contrib.admin.widgets import AdminDateWidget
 
 class CreateStudentForm(forms.ModelForm):
     class Meta:
         model = Students
         exclude = ['username', 'current_sem_join_date', 'current_hostel_join_date', 'fee_last_submitted', 'corpus_calculated_uptill', 'corpus', 'room_number', 'branch']
-    # name = forms.CharField(max_length = 254) 
-    # date_of_birth = forms.DateTimeField()
-    # distance_from_nsit = forms.IntegerField()
-    # gender = forms.ChoiceField(choices = GENDER_CHOICES, required = True)
-    # college_category = forms.ChoiceField(choices = COLLEGE_CAT, required = True) 
-    # blood_group = forms.ChoiceField(choices = BLOOD_GROUP, required = True) # A+, A-, B+, B-, AB+, AB-, O-, O+
-    # student_phone_num = forms.IntegerField() # 10 digits
-    # student_email = forms.EmailField()
-    # student_optional_phone_num = forms.IntegerField(required = False)
-    # father_name = forms.CharField(max_length = 254)
-    # mother_name = forms.CharField(max_length = 254)
-    # parent_email = forms.EmailField()
-    # parent_phone_num = forms.IntegerField()
-    # parent_optional_phone_num = forms.IntegerField(required = False)
-    # permanent_address = forms.CharField(max_length = 254)
-    # permanent_address_zipcode = forms.IntegerField()
-    # local_guardian_name = forms.CharField(max_length = 254)
-    # local_guardian_address = forms.CharField(max_length = 254)
-    # local_guardian_address_zipcode = forms.IntegerField()
-    # local_guardian_phone_num = forms.IntegerField()
-    # local_guardian_optional_phone_num = forms.IntegerField(required = False)
-    # local_guardian_email = forms.EmailField(max_length = 254)
-    # student_photo = forms.ImageField(required = False)
-    # password = forms.CharField(widget = forms.PasswordInput)
-    # retype_password = forms.CharField(widget = forms.PasswordInput)
     def __init__(self, *args, **kwargs):
                     self.user_cache = None
                     super(CreateStudentForm, self).__init__(*args, **kwargs)
@@ -45,6 +21,12 @@ class CreateStudentForm(forms.ModelForm):
     		raise forms.ValidationError('Enter a valid 10 digit phone number')
     	blood_group = self.cleaned_data.get('blood_group')
     	return self.cleaned_data
-
     def get_user(self):
         return self.user_cache
+    
+class MakeComplaintForm(forms.ModelForm):
+    #code
+    class Meta:
+        model = Complaints
+        exclude = ['lodgers_roll_no','hostel','date_of_complaint','closed']
+    

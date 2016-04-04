@@ -103,7 +103,7 @@ def warden_photo_name(instance, filename):
 
 class Hostels(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True, default='')
-	name = models.CharField(max_length = 20, default='',null=True)
+	name = models.CharField(max_length = 50, default='',null=True)
 	hostel_name = models.CharField(max_length = 20, default='')
 	room_capacity = models.IntegerField(null=True, blank=True)		# calculate from 
 	room_available = models.IntegerField(null=True, blank=True)		# update with each entry
@@ -129,9 +129,6 @@ class Rooms(models.Model):
 	room_no = models.CharField(null = False,max_length=10)
 	capacity_of_room = models.IntegerField(null = False)
 	hostel = models.ForeignKey(Hostels)
-	student_no1 = models.CharField(null = True, blank = True, max_length = 300)
-	student_no2 = models.CharField(null = True, blank = True, max_length = 300)
-	student_no3 = models.CharField(null = True, blank = True, max_length = 300)
 	capacity_remaining = models.IntegerField(null = True, blank = True)
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.room_no)
@@ -142,22 +139,22 @@ def student_photo_name(instance, filename):
 class Students(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True , default='');
 	name = models.CharField(max_length=50 , blank = True, default='');
-	date_of_birth = models.DateTimeField(null=False,default = datetime.now)
-	room_number = models.ForeignKey(Rooms);
+	date_of_birth = models.DateField(null=True)
+	room_number = models.ForeignKey(Rooms,null = True);
 	distance_from_nsit = models.IntegerField(null = False,  blank = True, default=0);
-	# current_sem_join_date = models.DateTimeField(default=datetime.now, blank = True,  null=True)
-	current_hostel_join_date = models.DateTimeField(default=datetime.now, blank = True, null=True)
+	# current_sem_join_date = models.DateField(default=datetime.now, blank = True,  null=True)
+	current_hostel_join_date = models.DateField(default=datetime.now, blank = True, null=True)
 	branch = models.ForeignKey(Branch)
 	gender = models.CharField(max_length = 10,  blank = True, choices = GENDER_CHOICES, default = GENDER_CHOICES[0][0])
 	college_category = models.CharField(max_length=5,  blank = True, choices = COLLEGE_CAT, default = COLLEGE_CAT[0][0])
 	#**hostel_category = models.CharField(null=False,max_length=20)
 	blood_group = models.CharField(max_length=5,  blank = True, choices = BLOOD_GROUP, default = BLOOD_GROUP[0][0])
-	# fee_last_submitted = models.DateTimeField(null=True, blank = True, default = datetime.now)
+	# fee_last_submitted = models.DateField(null=True, blank = True, default = datetime.now)
 	student_phone_num = models.CharField(null = False, blank = True, max_length=20)
 	student_email = models.EmailField(null=False,unique=True)
 	student_optional_phone_num = models.CharField(null = True, blank = True, max_length=20)
 #Corpus
-	# corpus_calculated_uptill = models.DateTimeField(null=True, blank = True,default = datetime.now)
+	# corpus_calculated_uptill = models.DateField(null=True, blank = True,default = datetime.now)
 	# corpus = models.IntegerField(null=False, blank = True, default =0)
 # Family Details
 	father_name = models.CharField(null=False, blank = True, max_length=100)
@@ -185,45 +182,43 @@ class MedicalHistory(models.Model):
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.description)
 
+def CriminalRecordFile(instance, filename):
+	ext = filename.split('.')[-1]
+	return 'newapp/files/notices/'+str(instance.student)+'/'+str(instance.date_of_action)+'.'+ext
+
 class CriminalRecord(models.Model):
 	#code
-	description = models.CharField(null=False,max_length = 250)
-	fine_amount = models.IntegerField(null=False)
-	paid_or_not = models.BooleanField(null=False)
-	date_of_action = models.DateTimeField(null=False,default = datetime.now)
 	student = models.ForeignKey(Students)
+	description = models.CharField(null=False,max_length = 400)
+	fine_amount = models.IntegerField(null=False)
+	paid = models.BooleanField(null=False,default = False)
+	date_of_action = models.DateField(null=False)
+	file = models.FileField(upload_to = CriminalRecordFile,blank = True)
 	
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.description)
 	
 class PreviousHostelDetail(models.Model):
 	#code
-	hostel_name = models.ForeignKey(Hostels,null=False)
+	hostel_name = models.CharField(null=False,max_length = 40)
 	room_no = models.CharField(max_length = 10, null=False)
 	student = models.ForeignKey(Students,null=False)
-	hostel_join_date = models.DateTimeField(null=False)
-	hostel_leave_date = models.DateTimeField(null=False,default = datetime.now)
-	corpus_paid = models.IntegerField(null=False)
+	hostel_join_date = models.DateField(null=False)
+	hostel_leave_date = models.DateField(null=False,default = datetime.now)
+	# corpus_paid = models.IntegerField(null=False)
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.hostel_join_date)
 
 
 class Complaints(models.Model):
 	lodgers_roll_no = models.CharField(null = False, max_length = 300)
-	description = models.CharField(null = False, max_length = 300)
+	description = models.CharField(null = False, max_length = 300,default = '')
 	hostel = models.ForeignKey(Hostels)
-	date_of_complaint = models.DateTimeField()
+	date_of_complaint = models.DateField(auto_now=True)
+	closed = models.BooleanField(default = False)
 
 	def __str__(self):              # __unicode__ on Python 2
-		return "%s %s" % (self.complaint_id, self.description)
-
-class Caretaker(models.Model):
-	name_of_caretaker = models.CharField(null = False, max_length = 300)
-	hostel = models.ForeignKey(Hostels)
-	caretaker_phone_num = models.CharField(null = False, max_length = 300)
-	#caretaker_photo = models.nowField()
-	def __str__(self):              # __unicode__ on Python 2
-		return "%s %s" % (self.name_of_caretaker, self.caretaker_phone_num)
+		return "%s" % (self.description)
 		
 #this table holds details of caretakers, mess/hostel secretary, sports/mess/library/cultural/etc. committee and its members
 def council_photo_name(instance, filename):
@@ -236,11 +231,7 @@ class HostelCouncil(models.Model):
 	phone = models.CharField(max_length=15,default='',null=False,blank=False)
 	position = models.CharField(max_length=100, default='')
 	committee = models.CharField(max_length=100, default='', null=True,blank=True)
-	dept_or_room = models.CharField(max_length=100, default='', null=True, blank=True)
 	photo = models.ImageField(upload_to = council_photo_name, null = True, blank = True)
-	#member = models.CharField(max_length = 15,  blank = False, choices = MEMBER_CHOICES, default = MEMBER_CHOICES[0][0])
-	#room_no = models.CharField(max_length=100, default='', null=True, blank=True)
-	#to do: to check if student/fsculty and accordingly assign room_no(from all room list) or dept_name.
 	def __str__(self):
 		return self.name
 def messmenu_file_name(instance, filename):
@@ -291,12 +282,12 @@ class Facilities(models.Model):
 	facility_description = models.TextField(null=False, default='')
 	photo = models.ImageField(upload_to=facility_photo_name,null=True, blank=True)
 	def __str__(self):
-		return self.title
+		return self.facility_name
 
 class Closures(models.Model):
 	hostel = models.ManyToManyField(Hostels)
-	start_date = models.DateTimeField(null=False)
-	end_date = models.DateTimeField(null=False)
+	start_date = models.DateField(null=False)
+	end_date = models.DateField(null=False)
 	clo_or_ext = models.BooleanField(null=False)
 	def __str__(self):
 		closure_list = []

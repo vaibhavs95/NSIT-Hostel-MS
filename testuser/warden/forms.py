@@ -4,6 +4,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate
 from newapp.models import *
 import re
+from django.contrib.admin.widgets import AdminDateWidget
+from datetime import date,datetime
+
 def photocheck(requestfiles,field):
     a = None
     a = requestfiles.__contains__(field)
@@ -29,9 +32,9 @@ class EditWardenProfileForm(forms.ModelForm):
         landline = self.cleaned_data.get('landline')
         if name and phone and landline:
             name = name.title()
-            if len(phone) == 10:
+            if len(phone) != 10:
                 raise forms.ValidationError('Enter Correct Phone Number without std code')
-            if len(landline) == 8:
+            if len(landline) != 8:
                 raise forms.ValidationError('Enter Correct Landline Number without std code')
             if photocheck(self.request.FILES,'warden_photo'):
                 h = Hostels.objects.get(username=self.request.user)
@@ -49,7 +52,9 @@ class AddRoomForm(forms.Form):
         room_no = self.cleaned_data.get('room_no')
         capacity_of_room = self.cleaned_data.get('capacity_of_room')
         if room_no and capacity_of_room:
-            room_no = room_no.lower()
+            room_no = room_no.upper()
+            if re.match("[A-Z]+-[0-9]+",str(room_no))==None:
+                raise forms.ValidationError('Enter Room Number in correct format: AA-111')
             if capacity_of_room > 3:
                 raise forms.ValidationError('Capacity of Room cannot be more than three')
             h = Hostels.objects.get(username = self.request.user)
@@ -57,24 +62,24 @@ class AddRoomForm(forms.Form):
             if(len(r) > 0):
                 raise forms.ValidationError('This Room already Exists.')
         return self.cleaned_data
-'''class EditRoomForm(forms.ModelForm):
-    h = Hostels.objects.get(username=request.user)
-    room_num = forms.ModelChoiceField(queryset = (Rooms.objects.filter(hostel = h)).order_by('room_no'),initial = 0)
+
+
+class SearchRoomForm(forms.Form):
+    room_no = forms.CharField(max_length=10,help_text='Search Room by Room Number, format : AA-111')
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('request', None)
-        super(AddRoomForm, self).__init__(*args, **kwargs)
+        super(SearchRoomForm, self).__init__(*args, **kwargs)
     def clean(self):
         room_no = self.cleaned_data.get('room_no')
-        capacity_of_room = self.cleaned_data.get('capacity_of_room')
-        if room_no and capacity_of_room:
-            room_no = room_no.lower()
-            if capacity_of_room > 3:
-                raise forms.ValidationError('Capacity of Room cannot be more than three')
-            h = Hostels.objects.get(username = self.request.user)
-            r = Rooms.objects.filter(room_no = room_no,hostel = h)
-            if(len(r) > 0):
-                raise forms.ValidationError('This Room already Exists.')
-        return self.cleaned_data'''
+        if room_no:
+            room_no = room_no.upper()
+            if re.match("[A-Z]+-[0-9]+",str(room_no))==None:
+                raise forms.ValidationError('Enter Room Number in correct format: AA-111')
+        else:
+            raise forms.ValidationError('Room Number cannot be empty.')
+        return self.cleaned_data
+
+
+
 class AddFacilityForm(forms.ModelForm):
     class Meta:
         model = Facilities
@@ -117,7 +122,7 @@ class EditFacilityForm(forms.ModelForm):
 class AddCouncilForm(forms.ModelForm):
     class Meta:
         model = HostelCouncil
-        fields = ['committee','position','name','phone','email','dept_or_room','photo']
+        fields = ['committee','position','name','phone','email','photo']
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user',None)
         super(AddCouncilForm, self).__init__(*args, **kwargs)
@@ -140,7 +145,7 @@ class AddCouncilForm(forms.ModelForm):
 class EditCouncilForm(forms.ModelForm):
     class Meta:
         model = HostelCouncil
-        fields = ['committee','position','name','phone','email','dept_or_room','photo']
+        fields = ['committee','position','name','phone','email','photo']
     def __init__(self, *args, **kwargs):
         self.pk = kwargs.pop('pk', None)
         self.user = kwargs.pop('user',None)
@@ -215,10 +220,17 @@ class AddMessForm(forms.ModelForm):
 class AddStudentForm(forms.ModelForm):
     class Meta:
         model = Students
-        fields = ['username','branch','room_number','student_email']
+        fields = ['username','branch','room_number','student_email','current_hostel_join_date']
+        widgets = {
+            'current_hostel_join_date': AdminDateWidget(),
+        }
     def __init__(self, user, *args, **kwargs):
         super(AddStudentForm, self).__init__(*args, **kwargs)
         self.fields['room_number'].queryset = Rooms.objects.filter(capacity_remaining__gt = 0, hostel = Hostels.objects.get(username=user))
+        self.fields['username'].help_text='Roll No: 111-CO-16'
+        self.fields['branch'].help_text='Select one from dropdown'
+        self.fields['room_number'].help_text='Select one from dropdown'
+        self.fields['current_hostel_join_date'].help_text='Format: yyyy-mm-dd hh:mm:ss'
     def clean(self):
         username = self.cleaned_data.get('username')
         branch = self.cleaned_data.get('branch')
@@ -245,7 +257,101 @@ class AddStudentForm(forms.ModelForm):
             else:
                 raise forms.ValidationError('Incorrect format of username.(Correct format: 111-CO-15)')
         return self.cleaned_data
+class EditStudentForm(forms.ModelForm):
+    class Meta:
+        model = Students
+        exclude = ['username','room_number']
+#        fields = '__all__'
+        widgets = {
+            'current_hostel_join_date': AdminDateWidget(),
+            'date_of_birth' : AdminDateWidget(),
+        }
+    def __init__(self, *args, **kwargs):
+        self.username = kwargs.pop('username', None)
+        self.user = kwargs.pop('user',None)
+        super(EditStudentForm, self).__init__(*args, **kwargs)
+        #self.fields['room_number'].queryset = Rooms.objects.filter(capacity_remaining__gt = 0, hostel = Hostels.objects.get(username=self.user))
+ #       self.fields['username'].help_text='Roll No: 111-CO-16'
+        self.fields['branch'].help_text='Select one from dropdown'
+        #self.fields['room_number'].help_text='Select one from dropdown'
+        self.fields['current_hostel_join_date'].help_text='Format: yyyy-mm-dd hh:mm:ss'
+    def clean(self):
+        student_phone_num = self.cleaned_data.get('student_phone_num')
+        parent_phone_num = self.cleaned_data.get('parent_phone_num')
+        local_guardian_phone_num = self.cleaned_data.get('local_guardian_phone_num')
+        student_email = self.cleaned_data.get('student_email')
+        if len(str(student_phone_num)) == 10 and len(str(parent_phone_num)) == 10 and len(str(local_guardian_phone_num)) == 10:
+            pass
+        else:
+            raise forms.ValidationError('Enter a valid 10 digit phone number')
+        e = Students.objects.all()
+        for i in e:
+            if i.student_email == student_email and i.username != self.username:
+                raise forms.ValidationError('Email is already registered')
+        return self.cleaned_data
+class SearchStudentRollNoForm(forms.Form):
+    roll_no = forms.CharField(max_length=10,help_text='Search Student by Roll Number, format : 111-AA-11')
+    def __init__(self, *args, **kwargs):
+        super(SearchStudentRollNoForm, self).__init__(*args, **kwargs)
+    def clean(self):
+        roll_no = self.cleaned_data.get('roll_no')
+        if re.match("[0-9]+-[A-Z]+-[0-9]",str(roll_no)) == None:
+            raise forms.ValidationError('Enter Roll Number in correct format: 111-AA-11')
+        return self.cleaned_data
+class SearchStudentOtherForm(forms.Form):
+    name = forms.CharField(max_length=100, required = False)
+    date_of_birth = forms.DateField(widget = AdminDateWidget(), required = False)
+    def __init__(self, *args, **kwargs):
+        super(SearchStudentOtherForm, self).__init__(*args, **kwargs)
+    def clean(self):
+        name = self.cleaned_data.get('name')
+        date_of_birth = self.cleaned_data.get('date_of_birth')
+        if name or date_of_birth:
+            pass
+        else:
+            raise forms.ValidationError('Search Fields Cannot be empty')
+        #if re.match("[0-9]+-[A-Z]+-[0-9]",str(roll_no)) == None:
+        #    raise forms.ValidationError('Enter Roll Number in correct format: 111-AA-11')
+        return self.cleaned_data
+class AttachStudentForm(forms.ModelForm):
+    class Meta:
+        model = Students
+        fields = ['username', 'room_number','current_hostel_join_date']
+        widgets = {
+            'current_hostel_join_date': AdminDateWidget(),
+        }
+    def __init__(self, user, *args, **kwargs):
+        #self.user = kwargs.pop('user')
+        super(AttachStudentForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['readonly'] = True
+        self.fields['room_number'].queryset = Rooms.objects.filter(capacity_remaining__gt = 0, hostel = Hostels.objects.get(username=user))
+    def clean(self):
+        return self.cleaned_data
+
 class AddNoticeForm(forms.ModelForm):
     class Meta:
         model = Notice
         exclude = ['creator']
+
+class DetachStudentForm(forms.ModelForm):
+    hostel_leave_date = forms.DateField(required = True)
+    class Meta:
+        model = Students
+        fields = ['username']+['hostel_leave_date']
+        widgets = {
+            'hostel_leave_date':AdminDateWidget(),
+        }
+    def __init__(self, user, *args, **kwargs):
+        #self.user = kwargs.pop('user')
+        super(DetachStudentForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['readonly'] = True
+        # self.fields['room_number'].widget.attrs['disabled'] = 'disabled'
+
+class AddCriminalForm(forms.ModelForm):
+    class Meta:
+        model = CriminalRecord
+        exclude = ['student']
+        widgets = {
+            'date_of_action':AdminDateWidget(),
+        }
+        

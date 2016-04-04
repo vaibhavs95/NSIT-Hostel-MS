@@ -1,7 +1,7 @@
 {% extends "newapp/home.html" %}
 {% load staticfiles %}
 {% load material_form %}
-{% block title %} Warden - HMS {% endblock %}
+{% block title %} Warden - HMS- student profile{% endblock %}
 
 {% block extrahead %} 
 {% endblock %}
@@ -210,43 +210,84 @@
 					</h5>
 				</div>
 				<table id="table1">
-					<tr>
+					<tr id="td1">
 						<td id="td1">
-							bcnmcxz
+							#
+						</td>
+						<td id="td1">
+							Hostel
+						</td>
+						<td id="td1">
+							Room no.
+						</td>
+						<td id="td1">
+							Join Date
+						</td>
+						<td id="td1">
+							Left on
 						</td>
 					</tr>
-					<tr>
-						<td id="td1">
-							bcnmcxz
-						</td>
-					</tr>
-					<tr>
-						<td id="td1">
-							bcnmcxz
-						</td>
-					</tr>
+					{% for i in prev %}
+						<tr>
+							<td id="td1">
+								{{forloop.counter}}
+							</td>
+							<td id="td1">
+								{{ i.hostel_name }}
+							</td>
+							<td id="td1">
+								{{ i.room_no }}
+							</td>
+							<td id="td1">
+								{{ i.hostel_join_date }}
+							</td>
+							<td id="td1">
+								{{ i.hostel_leave_date }}
+							</td>
+						</tr>
+				    {% endfor %}
 				</table>
 				<div>
 					<h5 class="center">
-						Criminal Record/Fines
+						Disciplinary actions & fines
 					</h5>
 				</div>
 				<table id="table1">
-					<tr>
+					<tr id="td1">
 						<td id="td1">
-							bcnmcxz
+							#
+						</td>
+						<td id="td1">
+							Date
+						</td>
+						<td id="td1">
+							Fine amount
+						</td>
+						<td id="td1">
+							Paid
 						</td>
 					</tr>
-					<tr>
-						<td id="td1">
-							bcnmcxz
-						</td>
-					</tr>
-					<tr>
-						<td id="td1">
-							bcnmcxz
-						</td>
-					</tr>
+					{% for i in crim %}
+						<tr>
+							<td id="td1">
+								{{forloop.counter}}
+							</td>
+							<td id="td1">
+								{{ i.date_of_action }}
+							</td>
+							<td id="td1">
+								{{ i.fine_amount }}
+							</td>
+							<td id="td1">
+								{% if i.paid_or_not %}
+								Yes
+								{% else %}
+								No
+								{% endif %}
+							</td>
+						</tr>
+						<tr><td colspan="5" class="center">{{ i.description }}</td></tr>
+				    {% endfor %}
 				</table>
 			</div>
 			
@@ -266,3 +307,9 @@
 		});
 	</script>
 	{% endblock %}
+	
+{% block sidelist %}
+{% if s.room_number != None %}
+<li><a class="waves-effect" href="{% url 'StudentMakeComplaint' %}">Complaints</a></li>
+{% endif %}
+{% endblock %}
