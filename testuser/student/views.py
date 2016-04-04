@@ -58,6 +58,7 @@ def completeStudent(request, student_id):
                 return render(request,'student/students/home.html',data)
 
         else:
+            u = Students.objects.get(username = alpha)
             prev = None
             crimi = None
             try:
