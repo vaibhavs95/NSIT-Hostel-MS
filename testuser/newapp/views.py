@@ -65,14 +65,14 @@ def handleLogin(request):
         if re.match("chief[a-zA-Z0-9_]*",str(userid))!=None:
             try:
                 a = ChiefWarden.objects.get(username = userid)
-                m1 = (subject,message,settings.EMAIL_HOST_USER,a.email)
+                m1 = (subject,message,settings.EMAIL_HOST_USER,[a.email])
                 send_mass_mail((m1,),fail_silently = False)
             except ObjectDoesNotExist:
                 pass
         elif re.match("[a-zA-Z0-9_]*warden",str(userid))!=None:
             try:
                 a = Hostels.objects.get(username = userid)
-                m1 = (subject,message,settings.EMAIL_HOST_USER,a.email)
+                m1 = (subject,message,settings.EMAIL_HOST_USER,[a.email])
                 send_mass_mail((m1,),fail_silently = False)
             except ObjectDoesNotExist:
                 pass

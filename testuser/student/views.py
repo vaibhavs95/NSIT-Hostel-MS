@@ -41,8 +41,16 @@ def completeStudent(request, student_id):
                         pass
                     f.student_photo = request.FILES['student_photo']
                 f.save()
-                prev = PreviousHostelDetail.objects.filter(student = alpha)
-                crimi = CriminalRecord.objects.filter(student = alpha)
+                prev = None
+                crimi = None
+                try:
+                    prev = PreviousHostelDetail.objects.filter(student = alpha)
+                except ObjectDoesNotExist:
+                    pass
+                try:
+                    crimi = CriminalRecord.objects.filter(student = alpha)
+                except ObjectDoesNotExist:
+                    pass
                 data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi}
                 return render(request,'student/students/studentProfile.html',data)
             else:
@@ -50,9 +58,16 @@ def completeStudent(request, student_id):
                 return render(request,'student/students/home.html',data)
 
         else:
-            u = Students.objects.get(username=alpha)
-            prev = PreviousHostelDetail.objects.filter(student = alpha)
-            crimi = CriminalRecord.objects.filter(student = alpha)
+            prev = None
+            crimi = None
+            try:
+                prev = PreviousHostelDetail.objects.filter(student = alpha)
+            except ObjectDoesNotExist:
+                pass
+            try:
+                crimi = CriminalRecord.objects.filter(student = alpha)
+            except ObjectDoesNotExist:
+                pass
             data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi}
             if (u.distance_from_nsit != 0):
                 return render(request,'student/students/studentProfile.html',data)    
