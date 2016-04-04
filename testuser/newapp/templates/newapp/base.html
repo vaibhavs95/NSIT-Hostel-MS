@@ -68,9 +68,15 @@
                 <li>
                     <div class="collapsible-header active" id="news"><i class="fa fa-sort-desc"></i>News/Announcements</div>        
                     <table class="collapsible-body">
+                        {% if noti %}
                         {% for i in noti %}
                         <tr><td><a href="http://127.0.0.1:8000{{i.file.url}}" target="_blank">{{ i.title }}</a></td></tr>
                         {% endfor %}
+                        {% else %}
+                        <tr><td>No notifications</td></tr>
+                        {% endif %}
+                        
+                        
                     </table>
                 </li>
             </ul>
@@ -184,9 +190,9 @@
 
     <footer class="page-footer grey darken-4">
         <div class="container footer">
-            <a class="grey-text text-lighten-3" href="#aboutt">About</a>
+            <a class="grey-text text-lighten-3 modal-trigger" href="#aboutt">About</a>
             <a class="grey-text text-lighten-3" href="#!">Contact Us</a>
-            <a class="grey-text text-lighten-3" href="#locate">Locate Us</a>
+            <a class="grey-text text-lighten-3 modal-trigger" href="#locate">Locate Us</a>
             <a class="grey-text text-lighten-3" href="#!">Feedback</a>
             <a class="grey-text text-lighten-3" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
         </div>
