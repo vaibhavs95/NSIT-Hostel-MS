@@ -58,9 +58,11 @@ nav{
 {
     margin: 0 2% 0 2%;
 }
-#dropdown
+#dropdown2
 {
-    margin: 90px 0px 0px -3%;
+    margin-left: 4%;
+	margin-top: 3%;
+	/*background-color: red;*/
 }
 /*
 #leftSideMenu
