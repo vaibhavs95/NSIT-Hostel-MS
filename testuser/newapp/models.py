@@ -188,12 +188,12 @@ def CriminalRecordFile(instance, filename):
 
 class CriminalRecord(models.Model):
 	#code
-	description = models.CharField(null=False,max_length = 250)
-	fine_amount = models.IntegerField(null=False)
-	paid_or_not = models.BooleanField(null=False)
-	date_of_action = models.DateField(null=False,default = datetime.now)
 	student = models.ForeignKey(Students)
-	file = models.FileField(upload_to = CriminalRecordFile,null = True)
+	description = models.CharField(null=False,max_length = 400)
+	fine_amount = models.IntegerField(null=False)
+	paid = models.BooleanField(null=False,default = False)
+	date_of_action = models.DateField(null=False)
+	file = models.FileField(upload_to = CriminalRecordFile,blank = True)
 	
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.description)

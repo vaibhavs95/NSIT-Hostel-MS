@@ -204,11 +204,6 @@ def ViewComplaint(request):
 
 def CloseComplaint(request,target):
     if re.match("[bg]h[0-9]warden",str(request.user))!=None:
-        a=Hostels.objects.all();
-        b=[]
-        for i in a:
-            d={'name':i.hostel_name,'id':i.username}
-            b.append(d)
         alpha = str(request.user)
         target=int(target)
         warden=Hostels.objects.get(username = alpha)
@@ -218,9 +213,103 @@ def CloseComplaint(request,target):
     else:
         return redirect('logout')
     
-    
-    
-    
+@login_required
+@require_http_methods(['GET', 'POST'])
+def detachStudent(request,target):
+    h = Hostels.objects.get(username=request.user)
+    try:
+        rom = Rooms.objects.get(students__username = target)
+    except ObjectDoesNotExist:
+        return redirect('warden-student')
+    s = Students.objects.get(username=target)
+    a=Hostels.objects.all();
+    b=[]
+    for i in a:
+        d={'name':i.hostel_name,'id':i.username}
+        b.append(d)
+    data = {}
+    data['all_hostels'] = b
+    crimi = None
+    try:
+        crimi = CriminalRecord.objects.filter(student = target)
+        data['crimi'] = crimi
+    except ObjectDoesNotExist:
+        pass
+    if re.match("[bg]h[0-9]+warden",str(request.user))!=None:
+        if request.method == 'POST':
+            f = DetachStudentForm(request.user, request.POST, instance = s)
+            #searchedstudent = []
+            if f.is_valid():
+                rom.capacity_remaining+=1;
+                s.room_number=None
+                s.save()
+                delta = PreviousHostelDetail(hostel_name = h.hostel_name,room_no = rom.room_no,student = s,hostel_join_date = s.current_hostel_join_date,
+                    hostel_leave_date = f.cleaned_data.get('hostel_leave_date'))
+                delta.save()
+                rom.save()
+                return redirect('warden-student')
+            else:
+                data['form'] = f
+                return render(request,'warden/detachStudent.html',data)
+        else:
+            f = DetachStudentForm(request.user, instance = s)
+            data['form'] = f
+            return render(request, 'warden/detachStudent.html',data)
+    else:
+        return redirect('logout')
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def addCriminalRecord(request,target):
+    s = Students.objects.get(username = target)
+    a=Hostels.objects.all();
+    b=[]
+    for i in a:
+        d={'name':i.hostel_name,'id':i.username}
+        b.append(d)
+    data = {}
+    data['all_hostels'] = b
+    crimi = None
+    if re.match("[bg]h[0-9]+warden",str(request.user))!=None:
+        if request.method == 'POST':
+            f = AddCriminalForm(request.POST,request.FILES)
+            if f.is_valid():
+                delta = f.save(commit = False)
+                print(delta)
+                delta.student = s
+                delta.file = request.FILES['file']
+                delta.save()
+                try:
+                    crimi = CriminalRecord.objects.filter(student = target)
+                    data['crimi'] = crimi
+                except ObjectDoesNotExist:
+                    pass
+                data['stu'] = s.username
+                data['form']=f
+                return render(request,'warden/addDiscipline.html',data)
+            else:
+                try:
+                    crimi = CriminalRecord.objects.filter(student = target)
+                    data['crimi'] = crimi
+                except ObjectDoesNotExist:
+                    pass
+                data['stu'] = s.username
+                data['form']=f
+                return render(request,'warden/addDiscipline.html',data)
+        else:
+            f = AddCriminalForm()
+            try:
+                crimi = CriminalRecord.objects.filter(student = target)
+                data['crimi'] = crimi
+            except ObjectDoesNotExist:
+                pass
+            data['stu'] = s.username
+            data['form']=f
+            return render(request,'warden/addDiscipline.html',data)
+    else:
+        return redirect('logout')
+
+
     
     
     

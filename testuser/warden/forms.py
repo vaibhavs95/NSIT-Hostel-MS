@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate
 from newapp.models import *
 import re
 from django.contrib.admin.widgets import AdminDateWidget
+from datetime import date,datetime
 
 def photocheck(requestfiles,field):
     a = None
@@ -331,3 +332,26 @@ class AddNoticeForm(forms.ModelForm):
     class Meta:
         model = Notice
         exclude = ['creator']
+
+class DetachStudentForm(forms.ModelForm):
+    hostel_leave_date = forms.DateField(required = True)
+    class Meta:
+        model = Students
+        fields = ['username']+['hostel_leave_date']
+        widgets = {
+            'hostel_leave_date':AdminDateWidget(),
+        }
+    def __init__(self, user, *args, **kwargs):
+        #self.user = kwargs.pop('user')
+        super(DetachStudentForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['readonly'] = True
+        # self.fields['room_number'].widget.attrs['disabled'] = 'disabled'
+
+class AddCriminalForm(forms.ModelForm):
+    class Meta:
+        model = CriminalRecord
+        exclude = ['student']
+        widgets = {
+            'date_of_action':AdminDateWidget(),
+        }
+        

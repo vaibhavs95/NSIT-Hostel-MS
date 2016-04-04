@@ -14,11 +14,16 @@
 <li><a class="waves-effect" href="{% url 'wardenViewComplaint' %}">Complaints</a></li>
 {% endblock %}
 {% block content %}
-	<form method="post" action="{% url 'warden-attach-student' student %}">
+<main id="studentInfo">
+			<h3 class="center">
+				{{stu}}
+			</h3>
+			</main>
+	<form method="post" action="">
 		{% csrf_token %}
-		{% form form=attachstudentform %}
+		{% form form=form %}
 		{% endform %}
-		<button type="submit" name="attach-student" class="btn waves-effect waves-light left">Attach Student</button>
+		<button type="submit" name="attach-student" class="btn waves-effect waves-light left">Add Disciplinary Action</button>
 	</form>
 {% endblock %}
 {% block script %}
