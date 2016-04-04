@@ -14,6 +14,12 @@ from newapp.models import *
 from newapp.forms import *
 from .forms import *
 
+from io import StringIO, BytesIO
+from reportlab.lib.enums import TA_JUSTIFY
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.pagesizes import letter, inch
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 
 data = {}
 
@@ -1026,3 +1032,77 @@ def attachstudent(request,student):
 			return render(request, 'warden/attachstudent.html',data)
 	else:
 		return redirect('logout')
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def printStudentList(request):
+	response = HttpResponse(content_type='application/pdf')
+	response['Content-Disposition'] = 'attachment; filename="studentlist.pdf"'
+	buff = BytesIO()
+	doc = SimpleDocTemplate(buff, pagesize=letter)
+	# container for the 'Flowable' objects
+	elements = []
+	styles=getSampleStyleSheet()
+	styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
+	ptext = '<font size=20><b>STUDENT LIST</b></font>'
+	elements.append(Paragraph(ptext, styles["Normal"]))
+	elements.append(Spacer(1, 50))
+	u = Students.objects.filter(room_number__hostel__username = request.user)
+	data = []
+	lst = ['Roll Number', 'Name', 'Room Number']
+	data.append(lst)
+	for i in u:
+		lst = []
+		lst.append(i.username)
+		if i.name != '':
+			lst.append(i.name)
+		else:
+			lst.append('NA')
+		lst.append(i.room_number)
+		data.append(lst)
+	t=Table(data, colWidths=[1.9*inch] * 5, hAlign='LEFT')
+	t.setStyle(TableStyle([('GRID', (0,0), (-1,-1), 0.25, colors.black),]))
+	elements.append(t)
+	# write the document to disk
+	doc.build(elements)
+	response.write(buff.getvalue())
+	buff.close()
+	return response
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def printRoomList(request):
+	response = HttpResponse(content_type='application/pdf')
+	response['Content-Disposition'] = 'attachment; filename="roomlist.pdf"'
+	buff = BytesIO()
+	doc = SimpleDocTemplate(buff, pagesize=letter)
+	# container for the 'Flowable' objects
+	elements = []
+	styles=getSampleStyleSheet()
+	styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
+	ptext = '<font size=20><b>ROOM LIST</b></font>'
+	elements.append(Paragraph(ptext, styles["Normal"]))
+	elements.append(Spacer(1, 50))
+	u = Rooms.objects.filter(hostel__username = request.user)
+	data = []
+	lst = ['Room Number', 'Student No. 1', 'Student No. 2', 'Student No. 3']
+	data.append(lst)
+	for i in u:
+		b = Students.objects.filter(room_number__room_no = i.room_no)
+		lst = []
+		lst.append(i.room_no)
+		for a in b:
+			if a.name != '':
+				lst.append(a.name)
+			else:
+				lst.append('NA')
+		data.append(lst)
+	t=Table(data, colWidths=[1.6*inch] * 4, hAlign='LEFT')
+	t.setStyle(TableStyle([('GRID', (0,0), (-1,-1), 0.25, colors.black),]))
+	elements.append(t)
+	# write the document to disk
+	doc.build(elements)
+	response.write(buff.getvalue())
+	buff.close()
+	return response
