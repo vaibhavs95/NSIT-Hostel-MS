@@ -12,6 +12,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from newapp.models import *
+from reportlab.lib.utils import ImageReader
 # Create your views here.
 from .forms import *
 
@@ -52,7 +53,7 @@ def completeStudent(request, student_id):
                     crimi = CriminalRecord.objects.filter(student = alpha)
                 except ObjectDoesNotExist:
                     pass
-                data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi, 'hostel': u.room_number.hostel.hostel_name}
+                data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi}
                 return render(request,'student/students/studentProfile.html',data)
             else:
                 data = {'form': f, 'all_hostels': b,'student':None, 'username': student_id}
@@ -70,7 +71,7 @@ def completeStudent(request, student_id):
                 crimi = CriminalRecord.objects.filter(student = alpha)
             except ObjectDoesNotExist:
                 pass
-            data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi, 'hostel': u.room_number.hostel.hostel_name}
+            data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi}
             if (u.distance_from_nsit != 0):
                 return render(request,'student/students/studentProfile.html',data)    
             f = CreateStudentForm(instance = u)
@@ -95,25 +96,14 @@ def printPDF(request, student_id, student_name):
     p.drawImage(path, 40, 760, 1*inch, 1 * inch)
 
 
-    filename = alpha    # Adding Student image
-    ext = "png"
-    path = settings.MEDIA_ROOT + "/student/images/" + str(filename) + "." + str(ext)
-    try:
-        p.drawImage(path, 400, 630, 2*inch, 2 * inch)
-    except OSError:
-        ext = "jpeg"
-        path = settings.MEDIA_ROOT + "/student/images/" + str(filename) + "." + str(ext)   
-        try:
-            p.drawImage(path, 400, 630, 2*inch, 2 * inch)
-        except OSError:
-            ext = "jpg"
-            path = settings.MEDIA_ROOT + "/student/images/" + str(filename) + "." + str(ext)   
-            try:
-                p.drawImage(path, 400, 630, 2*inch, 2 * inch)
-            except OSError:
-                filename = "demo.png"
-                path = settings.MEDIA_ROOT + "/" + str(filename)
-                p.drawImage(path, 400, 630, 2*inch, 2 * inch)
+    if u.student_photo:
+        path = settings.MEDIA_ROOT
+        path = path[:-6]
+        path = path + u.student_photo.url
+    else:
+        path = settings.MEDIA_ROOT+"/"+"demo.png"
+    p.drawImage(path, 400, 630, 2*inch, 2 * inch)
+
     p.setFont('Helvetica-Bold', 20)
     p.drawString(180, 800, "STUDENT INFO")
 
@@ -126,11 +116,18 @@ def printPDF(request, student_id, student_name):
     p.drawString(50, 730, "Name:")
     p.drawString(270, 730, "%s" %u.name)
 
-    p.drawString(50, 710, "Hostel:")
-    p.drawString(270, 710, "%s" %u.room_number.hostel.hostel_name)
+    if u.room_number:
+        p.drawString(50, 710, "Hostel:")
+        p.drawString(270, 710, "%s" %u.room_number.hostel.hostel_name)
 
-    p.drawString(50, 690, "Room Number:")
-    p.drawString(270, 690, "%s" %u.room_number)    
+        p.drawString(50, 690, "Room Number:")
+        p.drawString(270, 690, "%s" %u.room_number)    
+    else:
+        p.drawString(50, 710, "Hostel:")
+        p.drawString(270, 710, "None")
+
+        p.drawString(50, 690, "Room Number:")
+        p.drawString(270, 690, "None")
 
     p.drawString(50, 670, "Date of Birth:")
     p.drawString(270, 670, "%s" %u.date_of_birth)
