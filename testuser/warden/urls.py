@@ -41,4 +41,6 @@ urlpatterns = [
     url(r'^complaint/(?P<target>[0-9]*)/$',views1.CloseComplaint, name='wardenCloseComplaint'),
     url(r'^detach/(?P<target>[0-9A-Z-]*)/$',views1.detachStudent,name = 'wardenDetachStudent'),
     url(r'^disciplineadd/(?P<target>[0-9A-Z-]*)/$',views1.addCriminalRecord,name = 'wardenAddCriminal'),
+    url(r'^student/studentlist$',views.printStudentList, name='print-stu-list'),
+    url(r'^student/roomlist$',views.printRoomList, name='print-room-list'),
 ]
