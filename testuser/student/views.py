@@ -20,7 +20,8 @@ from .forms import *
 @require_http_methods(['GET', 'POST'])
 def completeStudent(request, student_id):
     alpha =  str(base64.b64decode(student_id))
-    alpha = alpha[2:11]
+    alpha = alpha[2:-1]
+    u = Students.objects.get(username= alpha)
     a=Hostels.objects.all();
     b=[]
     for i in a:

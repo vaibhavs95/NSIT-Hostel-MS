@@ -139,11 +139,7 @@ def student_photo_name(instance, filename):
 class Students(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True , default='');
 	name = models.CharField(max_length=50 , blank = True, default='');
-<<<<<<< HEAD
 	date_of_birth = models.DateField(null=False,default=timezone.now())
-=======
-	date_of_birth = models.DateField(null=True)
->>>>>>> c22d2f7106f5695dea2eb345e0d4aa766dce753f
 	room_number = models.ForeignKey(Rooms,null = True);
 	distance_from_nsit = models.IntegerField(null = False,  blank = True, default=0);
 	# current_sem_join_date = models.DateField(default=datetime.now, blank = True,  null=True)

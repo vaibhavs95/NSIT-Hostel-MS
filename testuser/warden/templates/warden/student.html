@@ -129,12 +129,8 @@
 						<td>{{ s.room.capacity_of_room }}</td>
 						<td>{{ s.room.capacity_remaining }}</td>
 						<td><a href="{% url 'warden-edit-student' s.id %}">Edit Student Details</a></td>
-<<<<<<< HEAD
-						<td><a href="{% url 'wardenRemoveStudent' s.id %}">Delete Student</a></td>
-=======
 						<td><a href="{% url 'wardenDetachStudent' s.username %}">Detach Student</a></td>
 						<td><a href="{% url 'wardenAddCriminal' s.username %}">Add Disciplinary Action</a></td>
->>>>>>> c22d2f7106f5695dea2eb345e0d4aa766dce753f
 					</tr>
 					{% endfor %}
 				</tbody>

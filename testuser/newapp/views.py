@@ -195,6 +195,8 @@ def hostels(request,hostel_name):
 
 @require_http_methods(['GET', 'POST'])
 def resetPassword(request,target):
+    if request.user.is_authenticated():
+        return redirect('logout')
     alpha = str(base64.b64decode(target))
     alpha = alpha[2:-1]
     f = ResetPasswordForm(request.POST or None)
