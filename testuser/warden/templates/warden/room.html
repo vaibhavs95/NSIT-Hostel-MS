@@ -28,11 +28,16 @@
 <div class="row">
 	<div class="col s12 m12 l12">
 		<div class="card-panel">
+		{% if mes %}
+			<p>
+				{{ mes }}
+			</p>
+		{% endif %}
 		<h3>Rooms</h3>
 		<div class="row card" id="searchcard">
-		<h6> Search Room </h6>
+		<h5> Search Room </h5>
 		<hr>
-			<div class="col s6">
+			<div class="col s12 m6 l6">
 			<form method="post" action="{% url 'warden-search-room' %}">
 				{% csrf_token %}
 				{% form form=searchroomform %}
@@ -66,13 +71,39 @@
 				</tbody>
 				</table>
 			{% endif %}
+<!--			{% if searchedroomhistory %}
+				<table class="centered bordered">
+				<thead>
+					<tr>
+						<th data-field="id">Room Number</th>
+						<th data-field="name">Capacity of Room</th>
+						<th data-field="name">Capacity Available</th>
+						<th data-field="name">Students</th>
+						<th data-field="name">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{ searchedroom.room.room_no }}</td>
+						<td>{{ searchedroom.room.capacity_of_room }}</td>
+						<td>{{ searchedroom.room.capacity_remaining }}</td>
+						<td>
+						{% for s in searchedroom.students %}
+						<a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></br> 
+						{% endfor %}
+						</td>
+						<td><a href="#!" onclick="myFunction('{{ searchedroom.room.room_no }}','{{ searchedroom.room.pk }}')">Delete Room</a></td>
+					</tr>
+				</tbody>
+				</table>
+			{% endif %}-->
 			{% if searchedroomnotfound %}
 			<p>Room Not Found.</p>
 			{% endif %}
 		</div>
 			<ul class="collapsible" data-collapsible="accordion">
 		    <li>
-		      <div class="collapsible-header"><i class="material-icons">keyboard_arrow_down</i>Add Room</div>
+		      <div class="collapsible-header active"><i class="material-icons">keyboard_arrow_down</i>Add Room</div>
 		      <div class="collapsible-body">
 				<form method="post" action="{% url 'warden-add-room' %}">
 					{% csrf_token %}
@@ -90,7 +121,7 @@
 		  	</ul>
 			{% if roomfulllist %}
 					<a class="btn" href="{% url 'warden-room' %}"> Hide All Rooms</a><br><br>
-					<a class="btn" href="#!"> Print This List</a>
+					<a class="btn" href = "{%url 'print-room-list' %}"> Print This List</a>
 				<table class="centered striped">
 				<thead>
 					<tr>
@@ -131,11 +162,6 @@
 			</script>
 			{% endif %}
 			
-{% if mes %}
-	<script type="text/javascript">
-		alert("{{ mes }}");
-	</script>
-{% endif %}
 		</div>
 	</div>
 </div>

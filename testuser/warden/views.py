@@ -14,11 +14,18 @@ from newapp.models import *
 from newapp.forms import *
 from .forms import *
 
+from io import StringIO, BytesIO
+from reportlab.lib.enums import TA_JUSTIFY
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.pagesizes import letter, inch
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 
 data = {}
 
 
 def basic():
+	data.clear()
 	a = Hostels.objects.all();
 	b = []
 	for i in a:
@@ -46,6 +53,7 @@ def capacity(user):
 
 
 def homebasic(request, h):
+		#basic()
 		user = Hostels.objects.get(username=h)
 		data['name'] = user.name
 		data['phone'] = user.phone
@@ -61,7 +69,6 @@ def homebasic(request, h):
 		else:
 			data['wardenphoto'] = None
 			data['userid'] = None
-		basic()
 		f = EditWardenProfileForm(request=request, instance=user)
 		data['editprofileform'] = f
 		# return render(request,'warden/home.html',data)
@@ -71,6 +78,7 @@ def homebasic(request, h):
 @login_required
 def home(request):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
 		homebasic(request, request.user)
 		return render(request, 'warden/home.html', data)
 	else:
@@ -85,11 +93,11 @@ def profileedit(request):
 		data['wardenphoto'] = None
 		h = Hostels.objects.get(username=request.user)
 		if request.method == 'POST':
-			f = EditWardenProfileForm(
-				request.POST, request.FILES, request=request, instance=h)
+			f = EditWardenProfileForm(request.POST, request.FILES, request=request, instance=h)
 			if f.is_valid():
 				f.save()
 				homebasic(request, request.user)
+				print(data)
 				return render(request, 'warden/home.html', data)
 			else:
 				data['editprofileform'] = f
@@ -99,6 +107,7 @@ def profileedit(request):
 					data['wardenphoto'] = 'yes'
 				else:
 					data['userid'] = None
+				print(data)
 				return render(request, 'warden/home.html', data)
 		else:
 			if h.warden_photo:
@@ -121,11 +130,12 @@ def profileedit(request):
 
 
 def roombasic():
-	basic()
+	#basic()
 	data['studentnotinroom'] = None
 	data['studentinroom'] = None
 	data['roomfulllist'] = None
 	data['searchedroom'] = None
+	data['searchedroomhistory'] = None
 	data['searchedroomnotfound'] = None
 	f = AddRoomForm()
 	g = SearchRoomForm()
@@ -138,6 +148,7 @@ def roombasic():
 @require_http_methods(['GET', 'POST'])
 def room(request):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
 		roombasic()
 		return render(request, 'warden/room.html', data)
 	else:
@@ -147,6 +158,7 @@ def room(request):
 @login_required
 @require_http_methods(['GET', 'POST'])
 def roomall(request):
+	basic()
 	roombasic()
 	h = Hostels.objects.get(username=request.user)
 	a = (Rooms.objects.filter(hostel=h)).order_by('room_no')
@@ -171,6 +183,7 @@ def addroom(request):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
 		h = Hostels.objects.get(username=request.user)
 		a = Rooms.objects.filter(hostel=h)
+		basic()
 		roombasic()
 		mes = None
 		if request.method == 'POST':
@@ -199,6 +212,7 @@ def addroom(request):
 @require_http_methods(['GET', 'POST'])
 def deleteroom(request, pk):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
 		roombasic()
 		# data['pk'] = pk
 		room = None
@@ -233,6 +247,7 @@ def deleteroom(request, pk):
 def searchroom(request):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
 		h = Hostels.objects.get(username=request.user)
+		basic()
 		roombasic()
 		if request.method == 'POST':
 			f = SearchRoomForm(request.POST)
@@ -268,7 +283,52 @@ def searchroom(request):
 			return render(request, 'warden/room.html', data)
 	else:
 		return redirect('logout')
-
+'''@login_required
+@require_http_methods(['GET', 'POST'])
+def searchroomhistory(request):
+	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		h = Hostels.objects.get(username=request.user)
+		roombasic()
+		searchedroomhistory = []
+		if request.method == 'POST':
+			f = SearchRoomForm(request.POST)
+			if f.is_valid():
+				room_no = f.cleaned_data.get('room_no')
+				room_no = room_no.upper()
+				his = []
+				try:
+					his = PreviousHostelDetail.objects.filter(hostel_name = h.hostel_name, room_no = room_no)
+				except:
+					pass
+				if(len(his) < 1):
+					data['searchedroomnotfound'] = 'yes'
+				if not data['searchedstudentnotfound']:
+					for k in his:
+						a = Rooms.objects.get(hostel=h, room_no=k.room_no)
+						s = Students.objects.filter(room_number=a)
+						student = []
+						for j in s:
+							p = {'username': j.username, 'id': base64.b64encode(
+							    j.username.encode('utf-8'))}
+							student.append(p)
+						d = {'room': a, 'students': student}
+						searchedroomhistory.append(d)
+				if len(searchedroomhistory) > 1:
+					data['searchedroomhistory'] = searchedroomhistory
+				else:
+					data['searchedroomhistory'] = None
+				data['searchroomhistoryform'] = f
+				return render(request, 'warden/room.html', data)
+			else:
+				data['searchroomhistoryform'] = f
+				return render(request, 'warden/room.html', data)
+		else:
+			f = SearchRoomForm()
+			data['searchroomhistoryform'] = f
+			return render(request, 'warden/room.html', data)
+	else:
+		return redirect('logout')
+'''
 
 #######
 
@@ -278,7 +338,7 @@ def searchroom(request):
 
 
 def facilitybasic(user):
-	basic()
+	#basic()
 	h = Hostels.objects.get(username=user)
 	a = Facilities.objects.filter(hostel=h)
 	facilities = []
@@ -298,6 +358,7 @@ def facilitybasic(user):
 @require_http_methods(['GET', 'POST'])
 def facilities(request):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
 		facilitybasic(request.user)
 		return render(request, 'warden/facilities.html', data)
 	else:
@@ -308,6 +369,7 @@ def facilities(request):
 @require_http_methods(['GET', 'POST'])
 def addfacility(request):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
 		facilitybasic(request.user)
 		if request.method == 'POST':
 			f = AddFacilityForm(request.POST, request.FILES, user=request.user)
@@ -332,6 +394,7 @@ def addfacility(request):
 @require_http_methods(['GET', 'POST'])
 def editfacility(request, pk):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
 		facilitybasic(request.user)
 		data['pk'] = pk
 		fac = None
@@ -398,7 +461,7 @@ def deletefacility(request, pk):
 
 
 def councilbasic(user):
-	basic()
+	#basic()
 	h = Hostels.objects.get(username=user)
 	a = HostelCouncil.objects.filter(hostel=h)
 	council = []
@@ -418,6 +481,7 @@ def councilbasic(user):
 @require_http_methods(['GET', 'POST'])
 def council(request):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
 		councilbasic(request.user)
 		return render(request, 'warden/council.html', data)
 	else:
@@ -428,16 +492,17 @@ def council(request):
 @require_http_methods(['GET', 'POST'])
 def addcouncil(request):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
 		councilbasic(request.user)
 		if request.method == 'POST':
 			f = AddCouncilForm(request.POST, request.FILES, user=request.user)
 			if f.is_valid():
 				if request.FILES.__contains__('photo'):
 					coun = HostelCouncil(name=f.cleaned_data.get('name'), email=f.cleaned_data.get('email'), phone=f.cleaned_data.get('phone'), position=f.cleaned_data.get('position'), committee=f.cleaned_data.get(
-						'committee'), dept_or_room=f.cleaned_data.get('dept_or_room'), hostel=Hostels.objects.get(username=request.user), photo=request.FILES.__getitem__('photo'))
+					    'committee'), hostel=Hostels.objects.get(username=request.user), photo=request.FILES.__getitem__('photo'))
 				else:
 					coun = HostelCouncil(name=f.cleaned_data.get('name'), email=f.cleaned_data.get('email'), phone=f.cleaned_data.get('phone'), position=f.cleaned_data.get(
-						'position'), committee=f.cleaned_data.get('committee'), dept_or_room=f.cleaned_data.get('dept_or_room'), hostel=Hostels.objects.get(username=request.user))
+					    'position'), committee=f.cleaned_data.get('committee'), hostel=Hostels.objects.get(username=request.user))
 				coun.save()
 				councilbasic(request.user)
 			f = AddCouncilForm()
@@ -453,6 +518,7 @@ def addcouncil(request):
 @require_http_methods(['GET', 'POST'])
 def editcouncil(request, pk):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
 		councilbasic(request.user)
 		data['pk'] = pk
 		coun = None
@@ -520,7 +586,7 @@ def deletecouncil(request, pk):
 
 
 def hosformbasic(user):
-	basic()
+	#basic()
 	h = Hostels.objects.get(username=user)
 	a = (Form.objects.filter(hostel=h)).order_by('time')
 	hosform = []
@@ -537,6 +603,7 @@ def hosformbasic(user):
 @require_http_methods(['GET', 'POST'])
 def hosform(request):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
 		hosformbasic(request.user)
 		return render(request, 'warden/hosform.html', data)
 	else:
@@ -547,6 +614,7 @@ def hosform(request):
 @require_http_methods(['GET', 'POST'])
 def addhosform(request):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
 		hosformbasic(request.user)
 		if request.method == 'POST':
 			f = AddHosformForm(request.POST, request.FILES, user=request.user)
@@ -571,6 +639,7 @@ def addhosform(request):
 @require_http_methods(['GET', 'POST'])
 def edithosform(request, pk):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
 		hosformbasic(request.user)
 		data['pk'] = pk
 		hosf = None
@@ -646,7 +715,7 @@ Mess Details
 
 
 def messbasic(user):
-	basic()
+	#basic()
 	h = Hostels.objects.get(username=user)
 	a = MessDetail.objects.filter(hostel=h)
 	if a:
@@ -662,6 +731,7 @@ def messbasic(user):
 @require_http_methods(['GET', 'POST'])
 def mess(request):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
 		messbasic(request.user)
 		return render(request, 'warden/mess.html', data)
 	else:
@@ -672,6 +742,7 @@ def mess(request):
 @require_http_methods(['GET', 'POST'])
 def addmess(request):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
 		messbasic(request.user)
 		if data['mess'] == None:
 			if request.method == 'POST':
@@ -697,6 +768,7 @@ def addmess(request):
 @require_http_methods(['GET', 'POST'])
 def editmess(request, pk):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
 		messbasic(request.user)
 		mess = None
 		try:
@@ -743,7 +815,7 @@ def editmess(request, pk):
 
 
 def studentbasic(user):
-	basic()
+	#basic()
 	f = AddStudentForm(user)
 	data['addstudentform'] = f
 	g = SearchStudentRollNoForm()
@@ -759,6 +831,7 @@ def studentbasic(user):
 @login_required
 @require_http_methods(['GET', 'POST'])
 def studentall(request):
+	basic()
 	studentbasic(request.user)
 	user = request.user
 	h = Hostels.objects.get(username=user)
@@ -790,6 +863,7 @@ def student(request):
 @require_http_methods(['GET', 'POST'])
 def addstudent(request):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
 		mes = None
 		if request.method == 'POST':
 			f = AddStudentForm(request.user, request.POST)
@@ -803,10 +877,6 @@ def addstudent(request):
 							 room_number=room_number, current_hostel_join_date=current_hostel_join_date)
 				user = MyUser.objects.create_user(f.cleaned_data.get(
 					'username'), '2016-02-02', f.cleaned_data.get('student_email'))
-				print('''acnjancjkancncjkcd
-					  cdcdcjdcsdcsdvsdv
-					  sddvsdvsv scvsssdvsdvsdv
-					  sdsvsdvsdvsvsdvsdvsdvv''')
 				# send email to fill details
 				url = "http://127.0.0.1:8080/student/" + \
 					base64.b64encode(username.encode('utf-8')).decode('utf-8')
@@ -829,7 +899,7 @@ def addstudent(request):
 				return render(request, 'warden/student.html', data)
 		else:
 			studentbasic(request.user)
-			basic()
+			#basic()
 			f = AddStudentForm(request.user)
 			data['addstudentform'] = f
 			data['mes'] = mes
@@ -844,6 +914,7 @@ def editstudent(request, student):
 	alpha = str(base64.b64decode(student))
 	alpha = alpha[2:11]
 	basic()
+	#studentbasic()
 	h = Hostels.objects.get(username=request.user)
 	u = Students.objects.get(username=alpha)
 	if u.room_number:
@@ -1026,3 +1097,77 @@ def attachstudent(request,student):
 			return render(request, 'warden/attachstudent.html',data)
 	else:
 		return redirect('logout')
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def printStudentList(request):
+	response = HttpResponse(content_type='application/pdf')
+	response['Content-Disposition'] = 'attachment; filename="studentlist.pdf"'
+	buff = BytesIO()
+	doc = SimpleDocTemplate(buff, pagesize=letter)
+	# container for the 'Flowable' objects
+	elements = []
+	styles=getSampleStyleSheet()
+	styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
+	ptext = '<font size=20><b>STUDENT LIST</b></font>'
+	elements.append(Paragraph(ptext, styles["Normal"]))
+	elements.append(Spacer(1, 50))
+	u = Students.objects.filter(room_number__hostel__username = request.user)
+	data = []
+	lst = ['Roll Number', 'Name', 'Room Number']
+	data.append(lst)
+	for i in u:
+		lst = []
+		lst.append(i.username)
+		if i.name != '':
+			lst.append(i.name)
+		else:
+			lst.append('NA')
+		lst.append(i.room_number)
+		data.append(lst)
+	t=Table(data, colWidths=[1.9*inch] * 5, hAlign='LEFT')
+	t.setStyle(TableStyle([('GRID', (0,0), (-1,-1), 0.25, colors.black),]))
+	elements.append(t)
+	# write the document to disk
+	doc.build(elements)
+	response.write(buff.getvalue())
+	buff.close()
+	return response
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def printRoomList(request):
+	response = HttpResponse(content_type='application/pdf')
+	response['Content-Disposition'] = 'attachment; filename="roomlist.pdf"'
+	buff = BytesIO()
+	doc = SimpleDocTemplate(buff, pagesize=letter)
+	# container for the 'Flowable' objects
+	elements = []
+	styles=getSampleStyleSheet()
+	styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
+	ptext = '<font size=20><b>ROOM LIST</b></font>'
+	elements.append(Paragraph(ptext, styles["Normal"]))
+	elements.append(Spacer(1, 50))
+	u = Rooms.objects.filter(hostel__username = request.user)
+	data = []
+	lst = ['Room Number', 'Student No. 1', 'Student No. 2', 'Student No. 3']
+	data.append(lst)
+	for i in u:
+		b = Students.objects.filter(room_number__room_no = i.room_no)
+		lst = []
+		lst.append(i.room_no)
+		for a in b:
+			if a.name != '':
+				lst.append(a.name)
+			else:
+				lst.append('NA')
+		data.append(lst)
+	t=Table(data, colWidths=[1.6*inch] * 4, hAlign='LEFT')
+	t.setStyle(TableStyle([('GRID', (0,0), (-1,-1), 0.25, colors.black),]))
+	elements.append(t)
+	# write the document to disk
+	doc.build(elements)
+	response.write(buff.getvalue())
+	buff.close()
+	return response

@@ -54,7 +54,7 @@
 			<p>Student Not Found.</p>
 			{% endif %}
 			{% if searchedstudent %}
-				<table class="centered bordered">
+				<table class="centered bordered striped">
 				<thead>
 					<tr>
 						<th data-field="id">Roll Number</th>
@@ -90,7 +90,7 @@
 		</div>
 			<ul class="collapsible" data-collapsible="accordion">
 		    <li>
-		      <div class="collapsible-header ">Add Student</div>
+		      <div class="collapsible-header active">Add Student</div>
 		      <div class="collapsible-body">
 				<form method="post" action="{% url 'warden-add-student' %}" class="viewform">
 					{% csrf_token %}
@@ -108,7 +108,7 @@
 		  	</ul>
 		  	{% if studentfulllist %}
 					<a class="btn" href="{% url 'warden-student' %}"> Hide All Students</a><br><br>
-					<a class="btn" href="#!"> Print This List</a>
+					<a class="btn" href = "{%url 'print-stu-list' %}"> Print This List</a>
 				<table class="centered striped">
 				<thead>
 					<tr>
