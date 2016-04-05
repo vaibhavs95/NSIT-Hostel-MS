@@ -24,7 +24,7 @@ def base(request):
     next_url = request.GET.get('next')
     noti = None
     try:
-        noti = Notice.objects.filter(creator = 'chiefwarden')
+        noti = Notice.objects.filter(creator = 'chiefwarden').order_by('-pk')
     except ObjectDoesNotExist:
         pass
     data = { 'next' : next_url, 'form': f,'hostels':hos,'len':len(hos),'noti':noti}
