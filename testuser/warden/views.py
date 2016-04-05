@@ -19,6 +19,7 @@ data = {}
 
 
 def basic():
+	
 	a = Hostels.objects.all();
 	b = []
 	for i in a:
@@ -47,6 +48,7 @@ def capacity(user):
 
 def homebasic(request, h):
 		user = Hostels.objects.get(username=h)
+		
 		data['name'] = user.name
 		data['phone'] = user.phone
 		data['landline'] = user.landline
@@ -72,6 +74,7 @@ def homebasic(request, h):
 def home(request):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
 		homebasic(request, request.user)
+		data['mes']=None
 		return render(request, 'warden/home.html', data)
 	else:
 		return redirect('logout')
@@ -82,6 +85,7 @@ def home(request):
 def profileedit(request):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
 		basic()
+		data['mes']=None
 		data['wardenphoto'] = None
 		h = Hostels.objects.get(username=request.user)
 		if request.method == 'POST':
@@ -131,6 +135,7 @@ def roombasic():
 	g = SearchRoomForm()
 	data['searchroomform'] = g
 	data['addroomform'] = f
+	
 	return
 
 
@@ -160,6 +165,7 @@ def roomall(request):
 			student.append(p)
 		d = {'room': i, 'students': student}
 		rooms.append(d)
+	
 	data['rooms'] = rooms
 	data['roomfulllist'] = 'yes'
 	return render(request, 'warden/room.html', data)
@@ -183,9 +189,13 @@ def addroom(request):
 				a.save()
 				roombasic()
 				mes = 'Room added successfully'
-			data['addroomform'] = f
-			data['mes'] = mes
-			return render(request, 'warden/room.html', data)
+				data['addroomform'] = f
+				data['mes'] = mes
+				return render(request, 'warden/room.html', data)
+			else:
+				data['addroomform'] = f
+				data['mes'] = mes
+				return render(request, 'warden/room.html', data)
 		else:
 			f = AddRoomForm()
 			data['addroomform'] = f
@@ -201,6 +211,7 @@ def deleteroom(request, pk):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
 		roombasic()
 		# data['pk'] = pk
+		data['mes']=None
 		room = None
 		try:
 			room = Rooms.objects.get(pk=pk)
@@ -279,6 +290,7 @@ def searchroom(request):
 
 def facilitybasic(user):
 	basic()
+	
 	h = Hostels.objects.get(username=user)
 	a = Facilities.objects.filter(hostel=h)
 	facilities = []
@@ -399,6 +411,7 @@ def deletefacility(request, pk):
 
 def councilbasic(user):
 	basic()
+	
 	h = Hostels.objects.get(username=user)
 	a = HostelCouncil.objects.filter(hostel=h)
 	council = []
@@ -521,6 +534,7 @@ def deletecouncil(request, pk):
 
 def hosformbasic(user):
 	basic()
+	
 	h = Hostels.objects.get(username=user)
 	a = (Form.objects.filter(hostel=h)).order_by('time')
 	hosform = []
@@ -647,6 +661,7 @@ Mess Details
 
 def messbasic(user):
 	basic()
+	
 	h = Hostels.objects.get(username=user)
 	a = MessDetail.objects.filter(hostel=h)
 	if a:
@@ -744,6 +759,7 @@ def editmess(request, pk):
 
 def studentbasic(user):
 	basic()
+	
 	f = AddStudentForm(user)
 	data['addstudentform'] = f
 	g = SearchStudentRollNoForm()
