@@ -260,7 +260,7 @@ def addCriminalRecord(request,target):
                 delta = f.save(commit = False)
                 delta.student = s
                 delta.file = request.FILES['file']
-                url = delta.file.url
+                url = 'http://127.0.0.1:8000'+delta.file.url
                 subject_pa = 'NSIT-HMS Disciplinary action against your ward'
                 message_pa = '''Disciplinary actions have been taken against your ward for not following the code of conduct of the hostels properly.
                     Refer to this <a href = '%s '> link </a> for more details.'''%(url)

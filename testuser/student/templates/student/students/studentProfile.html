@@ -48,17 +48,27 @@
 						<td>
 							Hostel :
 						</td>
+						{% if s.room_number %}
 						<td>
-							{{ hostel }}
+							{{ s.room_number.hostel.hostel_name }}
 						</td>
+						{% else %}
+						<td>
+							None
+						</td>
+						{% endif %}
 					</tr>
 					<tr>
 						<td>
 							Room Number :
 						</td>
+						{% if s.room_number %}
 						<td>
 							{{ s.room_number }}
 						</td>
+						{% else %}
+						<td>None</td>
+						{% endif %}
 					</tr>
 					<tr id="tr1">
 						<td>
