@@ -83,7 +83,8 @@ class MyUser(AbstractBaseUser):
 GENDER_CHOICES = (('M', 'Male'), ('F', 'Female'))
 MEMBER_CHOICES = (('F', 'Faculty'), ('S', 'Student'))
 #DEPT_CHOICES = (('COE', 'Computer Science Engineering'), ('ECE', 'Electoincs Engineering'))
-COLLEGE_CAT = (('DGEN','Delhi General'), ('DOBC','Delhi OBC'),('DSC','Delhi SC'),('DST','Delhi ST'))
+COLLEGE_CAT = (('DGEN','Delhi General'), ('DOB','Delhi OBC'),('DSC','Delhi SC'), ('DST','Delhi ST'), ('DKM','Delhi Kashmiri Migrant'), ('DDC','Delhi Defense Category'), ('DPH','Delhi Physically Handicapped'), ('DOP','Delhi OP'), 
+			   ('OGEN','Outside Delhi General'), ('OOB','Outside Delhi OBC'),('OSC','Outside Delhi SC'), ('OST','Outside Delhi ST'), ('OKM','Outside Delhi Kashmiri Migrant'), ('ODC','Outside Delhi Defense Category'), ('OPH','Outside Delhi Physically Handicapped'), ('OOP','Outside Delhi OP'))
 #HOSTEL_CAT = ((''))
 BLOOD_GROUP = (('B+','B Positive'),('A+','A Positive'),('AB+','AB Positive'),
 	('A-','A Neagtive'),('B-','B Negative'),('AB-','AB Negative'),('O+','O Positive'),('O-','O Negative'))
@@ -136,7 +137,6 @@ class Rooms(models.Model):
 def student_photo_name(instance, filename):
 	ext = filename.split('.')[-1]
 	return 'student/images/'+instance.username+'.'+ext
-	
 class Students(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True , default='');
 	name = models.CharField(max_length=50 , null = False, default='');
