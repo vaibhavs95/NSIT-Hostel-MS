@@ -33,7 +33,7 @@
 	<div class="col s12" id="personal">
 			<div class="card row addcard">
 				<div class="details">Personal Details</div>
-					<a href = "{% url 'print-PDF' name username %}"><i class="material-icons">print</i></a>
+					<a href = "{% url 'print-stu-details' username %}"><i class="material-icons">print</i></a>
 				<hr>
 				<div class="col s12 m8 l8">
 					<table class="striped">
@@ -312,7 +312,7 @@
 					{{ i.fine_amount }}
 				</td>
 				<td >
-					{% if i.paid_or_not %}
+					{% if i.paid %}
 					Yes
 					{% else %}
 					No
