@@ -1,7 +1,7 @@
 {% extends "newapp/home.html" %}
 {% load staticfiles %}
 {% load material_form %}
-{% block title %} Warden - HMS {% endblock %}
+{% block title %} ChiefWarden - HMS {% endblock %}
 
 {% block extrahead %}
 {% endblock %}
@@ -18,34 +18,27 @@
 {% endblock %}
 
 {% block sidelist %}
-<li><a class="waves-effect" href="{% url 'warden-room' %}">Room</a></li>
-<li><a class="waves-effect" href="{% url 'warden-student' %}">Student</a></li>
-<li><a class="waves-effect" href="{% url 'warden-facilities' %}">Facilities</a></li>
-<li><a class="waves-effect" href="{% url 'warden-council' %}">Council</a></li>
-<li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
-<li><a class="waves-effect" href="{% url 'warden-mess' %}">Mess</a></li>
-<li><a class="waves-effect" href="{% url 'warden-notices' %}">Notices</a></li>
-<li><a class="waves-effect" href="{% url 'wardenViewComplaint' %}">Complaints</a></li>
+<li><a href="/chiefwarden/branch/">Branches</a></li>
+<li><a href="/chiefwarden/notices/">Notices</a></li>
+<li><a href="/chiefwarden/room/">Room</a></li>
+<li><a href="/chiefwarden/student/">Student</a></li>
 {% endblock %}
+
 {% block content %}
 <div class="row">
 	<h3>Students</h3>
 	<div class="col s12">
 		<ul class="tabs">
 			<li class="tab col s4"><a class="active" href="#search">Search Student</a></li>
-			<li class="tab col s4"><a class="" href="#add">Add Student</a></li>
-			<li class="tab col s4"><a class="" href="#view">View Student</a></li>
 		</ul>
 	</div>
-
-	<!-- <div class="card-panel"> -->
 	<div class="col s12" id="search">
 		<div class="row card" id="searchcard">
 			<h5> Search Student </h5>
 			<hr>
 			<div class="col s12 m6 l6">
 				<blockquote>Search By Roll Number of Student.</blockquote>
-				<form method="post" action="{% url 'warden-search-student-rollno' %}">
+				<form method="post" action="{% url 'chiefwarden-search-student-rollno' %}">
 					{% csrf_token %}
 					{% form form=searchstudentrollnoform %}
 					{% endform %}
@@ -54,7 +47,7 @@
 			</div>
 			<div class="col s12 m6 l6">
 				<blockquote>Search By Name or Date of Birth of Student.</blockquote>
-				<form method="post" action="{% url 'warden-search-student-other' %}">
+				<form method="post" action="{% url 'chiefwarden-search-student-other' %}">
 					{% csrf_token %}
 					{% form form=searchstudentotherform %}
 					{% endform %}
@@ -62,7 +55,7 @@
 				</form>
 			</div>
 			{% if searchedstudentnotfound %}
-			<p>Student Not Found.</p>
+				<p>Student Not Found.</p>
 			{% endif %}
 			{% if searchedstudent %}
 			<table class="centered bordered striped">
@@ -70,54 +63,28 @@
 					<tr>
 						<th data-field="id">Roll Number</th>
 						<th data-field="name">Action</th>
-						<th data-field="name">Action</th>
-						<th data-field="name">Action</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for s in searchedstudent %}
 					<tr>
-						{% if s.mystudent %}
+						{% if s.freestudent %}
 						<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
-						<td><a href="{% url 'warden-edit-student' s.id %}">Edit Student Details</a></td>
-						<td><a href="{% url 'wardenDetachStudent' s.username %}">Detach Student</a></td>
 						<td><a href="{% url 'wardenAddCriminal' s.username %}">Add Disciplinary Action</a></td>
-						{% elif s.freestudent %}
-						<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
-						<td>NA</td>
-						<td><a href="{% url 'warden-attach-student' s.username %}">Attach Student</a></td>
-						<td>NA</td>
 						{% else %}
 						<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
-						<td>NA</td>
-						<td>NA</td>
 						<td>NA</td>
 						{% endif %}
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
+			{% else %}
+			
 			{% endif %}
 		</div>
 	</div>
-	<div id="add" class="col s12">
-		<div class="card addcard">
-			<h5>Add Student</h5>
-			<hr>
-			<form method="post" action="/warden/student/add/#add" class="viewform">
-				{% csrf_token %}
-				<input type="hidden" name="next" value="{{ next }}" />
-				{% form form=addstudentform %}
-				{% endform %}
-				<div class="row">
-					<div class="col s12"> 
-						<button type="submit" name="add-student" class="btn waves-effect waves-light left">Add Student</button>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
-	<div id="view" class="col s12">
+<!--	<div id="view" class="col s12">
 		<div class="card addcard">
 			<h5>View Student</h5>
 			<hr>
@@ -154,7 +121,7 @@
 			<a class="btn" href="/warden/student/all/#view"> View All Students</a>
 			{% endif %}
 		</div>
-	</div>
+	</div>-->
 
 	{% if mes %}
 	<script type="text/javascript">
