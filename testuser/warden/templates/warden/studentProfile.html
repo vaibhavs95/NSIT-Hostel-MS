@@ -331,20 +331,20 @@
 								{{ i.fine_amount }}
 							</td>
 							<td id="td1">
-								{% if i.paid_or_not %}
+								{% if i.paid %}
 								Yes
 								{% else %}
 								No
 								{% endif %}
 							</td>
                             <td>
-                                {% if i.paid == True %}
+                                {% if i.paid %}
 								{% else %}
 								<a href="#!" onclick="myFunction('{{i.pk}}','{{ i.student }}')">Pay</a>
 								{% endif %}
                             </td>
 						</tr>
-						<tr><td colspan="5" class="center">{{ i.description }}</td></tr>
+						<tr><td colspan="5" class="center"><a href='{{i.file.url}}' action>{{ i.description }}</a></td></tr>
 				    {% endfor %}
 				</table>
                 <script type='text/javascript' >

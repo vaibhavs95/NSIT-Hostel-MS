@@ -140,6 +140,7 @@ def hostels(request,hostel_name):
         f=LoginForm()
     a=Hostels.objects.all();
     b=[]
+    c=None
     for i in a:
         d={'name':i.hostel_name,'id':i.username}
         b.append(d)

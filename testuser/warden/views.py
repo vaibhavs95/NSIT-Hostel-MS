@@ -25,11 +25,7 @@ data = {}
 
 
 def basic():
-<<<<<<< HEAD
-	
-=======
 	data.clear()
->>>>>>> 4f91ba830051053798c1cb6aa818d7dc267395cb
 	a = Hostels.objects.all();
 	b = []
 	for i in a:
@@ -104,7 +100,6 @@ def profileedit(request):
 			if f.is_valid():
 				f.save()
 				homebasic(request, request.user)
-				print(data)
 				return render(request, 'warden/home.html', data)
 			else:
 				data['editprofileform'] = f
@@ -114,7 +109,6 @@ def profileedit(request):
 					data['wardenphoto'] = 'yes'
 				else:
 					data['userid'] = None
-				print(data)
 				return render(request, 'warden/home.html', data)
 		else:
 			if h.warden_photo:
@@ -352,12 +346,7 @@ def searchroomhistory(request):
 
 
 def facilitybasic(user):
-<<<<<<< HEAD
-	basic()
-	
-=======
 	#basic()
->>>>>>> 4f91ba830051053798c1cb6aa818d7dc267395cb
 	h = Hostels.objects.get(username=user)
 	a = Facilities.objects.filter(hostel=h)
 	facilities = []
@@ -480,12 +469,7 @@ def deletefacility(request, pk):
 
 
 def councilbasic(user):
-<<<<<<< HEAD
-	basic()
-	
-=======
 	#basic()
->>>>>>> 4f91ba830051053798c1cb6aa818d7dc267395cb
 	h = Hostels.objects.get(username=user)
 	a = HostelCouncil.objects.filter(hostel=h)
 	council = []
@@ -610,12 +594,7 @@ def deletecouncil(request, pk):
 
 
 def hosformbasic(user):
-<<<<<<< HEAD
-	basic()
-	
-=======
 	#basic()
->>>>>>> 4f91ba830051053798c1cb6aa818d7dc267395cb
 	h = Hostels.objects.get(username=user)
 	a = (Form.objects.filter(hostel=h)).order_by('time')
 	hosform = []
@@ -744,12 +723,7 @@ Mess Details
 
 
 def messbasic(user):
-<<<<<<< HEAD
-	basic()
-	
-=======
 	#basic()
->>>>>>> 4f91ba830051053798c1cb6aa818d7dc267395cb
 	h = Hostels.objects.get(username=user)
 	a = MessDetail.objects.filter(hostel=h)
 	if a:
@@ -780,7 +754,6 @@ def addmess(request):
 		messbasic(request.user)
 		if data['mess'] == None:
 			if request.method == 'POST':
-				print(request.user)
 				f = AddMessForm(request.POST, request.FILES)
 				if f.is_valid():
 					a = f.save(commit=False)
@@ -821,7 +794,6 @@ def editmess(request, pk):
 				a = None
 				a = request.FILES.__contains__('menu')
 				if a:
-					print('deleted')
 					mess.menu.delete(True)
 				f = AddMessForm(request.POST, request.FILES, instance=mess)
 				if f.is_valid():
@@ -849,12 +821,7 @@ def editmess(request, pk):
 
 
 def studentbasic(user):
-<<<<<<< HEAD
-	basic()
-	
-=======
 	#basic()
->>>>>>> 4f91ba830051053798c1cb6aa818d7dc267395cb
 	f = AddStudentForm(user)
 	data['addstudentform'] = f
 	g = SearchStudentRollNoForm()
@@ -1041,17 +1008,14 @@ def searchstudentrollno(request):
 					#else:
 					#    data['searchedstudentnotfound'] = 'yes'
 				data['searchedstudent'] = searchedstudent
-				print(data)
 				return render(request,'warden/student.html',data)
 			else:
 				data['searchstudentrollnoform'] = f
-				print(data)
 				return render(request,'warden/student.html',data)
 		else:
 
 			f = SearchStudentRollNoForm()
 			data['searchstudentrollnoform'] = f
-			print(data)
 			return render(request, 'student/students/home.html',data)
 	else:
 		return redirect('logout')

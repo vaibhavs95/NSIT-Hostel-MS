@@ -184,7 +184,9 @@ class MedicalHistory(models.Model):
 
 def CriminalRecordFile(instance, filename):
 	ext = filename.split('.')[-1]
-	return 'newapp/files/notices/'+str(instance.student)+'/'+str(instance.pk)+'.'+ext
+	desc = instance.description.replace(' ','')
+	da = str(instance.date_of_action).replace(' ','')
+	return 'newapp/files/notices/'+str(instance.student)+'/'+desc+da+'.'+ext
 
 class CriminalRecord(models.Model):
 	#code
