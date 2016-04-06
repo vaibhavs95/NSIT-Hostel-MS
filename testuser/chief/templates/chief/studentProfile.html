@@ -21,305 +21,311 @@
 	}
 </style>
 {% endblock %}
- -->
-{% block content %}	
-	<main id="studentInfo">
-			<h3 class="center">
-				Student Profile Page
-			</h3>
-			<div id="stuLeft">
-				<ul id="listFac">
-				<li>
-			      <div>
-					<h5 class="center">
-						Personal details
-					</h5>
-				  </div>
-				  <table>
-					<tr id="tr1">
-						<td>
-							Name :
-						</td>
-						<td>
-							{{s.name}}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Date of Birth
-						</td>
-						<td>
-							{{ s.date_of_birth }}
-						</td>
-					</tr>
-					<tr id="tr1">
-						<td>
-							Distance from Nsit :
-						</td>
-						<td>
-							{{ s.distance_from_nsit }}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Gender :
-						</td>
-						<td>
-							{{ s.gender }}
-						</td>
-					</tr>
-					<tr id="tr1">
-						<td>
-							Blood group : 
-						</td>
-						<td>
-							{{ s.blood_group }}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							College category :
-						</td>
-						<td>
-							{{ s.college_category }}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Phone Number :
-						</td>
-						<td>
-							{{  s.student_phone_num }}
-						</td>
-					</tr>
-					<tr id="tr1">
-						<td>
-							Optional Phone number :
-						</td>
-						<td>
-							{{ s.student_optional_phone_num }}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Father's Name :
-						</td>
-						<td>
-							{{ s.father_name }}
-						</td>
-					</tr>
-					<tr id="tr1">
-						<td>
-							Mother's name :
-						</td>
-						<td>
-							{{ s.mother_name }}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Parent's email :
-						</td>
-						<td>
-							{{ s.parent_email }}
-						</td>
-					</tr>
-					<tr id="tr1">
-						<td>
-							Parent's phone number :
-						</td>
-						<td>
-							{{ s.parent_phone_num }}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Parent's optional phone number :
-						</td>
-						<td>
-							{{ s.parent_optional_phone_num }}
-						</td>
-					</tr>
-					<tr id="tr1">
-						<td>
-							Permenant address :
-						</td>
-						<td>
-							{{ s.permanent_address }}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Permenant address zipcode :
-						</td>
-						<td>
-							{{ s.permanent_address_zipcode }}
-						</td>
-					</tr>
-					<tr id="tr1">
-						<td>
-							Local guardian name :
-						</td>
-						<td>
-							{{ s.local_guardian_name }}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Local guardian address :
-						</td>
-						<td>
-							{{ s.local_guardian_address }}
-						</td>
-					</tr>
-					<tr id="tr1">
-						<td>
-							Local guardian address zipcode :
-						</td>
-						<td>
-							{{ s.local_guardian_address_zipcode }}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Local Guardian Phone Number :
-						</td>
-						<td>
-							{{ s.local_guardian_phone_number }}
-						</td>
-					</tr>
-					<tr id="tr1">
-						<td>
-							Local Guardian optional phone number :
-						</td>
-						<td>
-							{{ s.local_guardian_optional_phone_num }}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Local Guardian Email :
-						</td>
-						<td>
-							{{ s.local_guardian_email }}
-						</td>
-					</tr>
+-->
+{% block content %}
 
-				  </table>
-			    </li>
-				<br><br><br><br>
+<div class="row" id="studennfo">
+	<h3 class="center">Student Profile Page</h3>
+	<div class="col s12">
+		<ul class="tabs">
+			<li class="tab col s4"><a class="active" href="#personal">Personal Details</a></li>
+			<li class="tab col s4"><a class="" href="#previous">Previous Hostel Details</a></li>
+			<li class="tab col s4"><a class="" href="#fines">Fines</a></li>
+		</ul>
+	</div>
+	<div class="col s12" id="personal">
+		{# <ul id="listFac">
+		<li> #}
+			<div class="card row">
+				<h5 class="center">Personal details</h5>
 				<hr>
-				
-			</ul>
-			</div>
-			<div id="stuRight">
-				<div>
+				<div class="col s12 m4 l4">
 					{% if s.student_photo %}
-						<img class="profilepic" src="{{ s.student_photo.url }}">
+					<img class="profilepic" src="{{ s.student_photo.url }}">
 					{% else %}
-						<img class="profilepic" src="/media/demo.png">
+					<img class="profilepic" src="/media/demo.png">
 					{% endif %}				
 				</div>
-				<div>
-					<h5 class="center">
-						Previous Hostel history
-					</h5>
-				</div>
-				<table id="table1">
-					<tr id="td1">
-						<td id="td1">
-							#
-						</td>
-						<td id="td1">
-							Hostel
-						</td>
-						<td id="td1">
-							Room no.
-						</td>
-						<td id="td1">
-							Join Date
-						</td>
-						<td id="td1">
-							Left on
-						</td>
-					</tr>
-					{% for i in prev %}
-						<tr>
-							<td id="td1">
-								{{forloop.counter}}
+				<div class="col s12 m8 l8">
+					<table class="bordered striped centered">
+						<tr  >
+							<td>
+								Name :
 							</td>
-							<td id="td1">
-								{{ i.hostel_name }}
-							</td>
-							<td id="td1">
-								{{ i.room_no }}
-							</td>
-							<td id="td1">
-								{{ i.hostel_join_date }}
-							</td>
-							<td id="td1">
-								{{ i.hostel_leave_date }}
+							<td>
+								{{s.name}}
 							</td>
 						</tr>
-				    {% endfor %}
-				</table>
-				<div>
-					<h5 class="center">
-						Disciplinary actions & fines
-					</h5>
-				</div>
-				<table id="table1">
-					<tr id="td1">
-						<td id="td1">
-							#
-						</td>
-						<td id="td1">
-							Date
-						</td>
-						<td id="td1">
-							Fine amount
-						</td>
-						<td id="td1">
-							Paid
-						</td>
-					</tr>
-					{% for i in crim %}
 						<tr>
-							<td id="td1">
-								{{forloop.counter}}
+							<td>
+								Date of Birth
 							</td>
-							<td id="td1">
-								{{ i.date_of_action }}
-							</td>
-							<td id="td1">
-								{{ i.fine_amount }}
-							</td>
-							<td id="td1">
-								{% if i.paid_or_not %}
-								Yes
-								{% else %}
-								No
-								{% endif %}
+							<td>
+								{{ s.date_of_birth }}
 							</td>
 						</tr>
-						<tr><td colspan="5" class="center">{{ i.description }}</td></tr>
-				    {% endfor %}
-				</table>
+						<tr>
+							<td>
+								Distance from Nsit :
+							</td>
+							<td>
+								{{ s.distance_from_nsit }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Gender :
+							</td>
+							<td>
+								{{ s.gender }}
+							</td>
+						</tr>
+						<tr  >
+							<td>
+								Blood group : 
+							</td>
+							<td>
+								{{ s.blood_group }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								College category :
+							</td>
+							<td>
+								{{ s.college_category }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Phone Number :
+							</td>
+							<td>
+								{{  s.student_phone_num }}
+							</td>
+						</tr>
+						<tr  >
+							<td>
+								Optional Phone number :
+							</td>
+							<td>
+								{{ s.student_optional_phone_num }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Father's Name :
+							</td>
+							<td>
+								{{ s.father_name }}
+							</td>
+						</tr>
+						<tr  >
+							<td>
+								Mother's name :
+							</td>
+							<td>
+								{{ s.mother_name }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Parent's email :
+							</td>
+							<td>
+								{{ s.parent_email }}
+							</td>
+						</tr>
+						<tr  >
+							<td>
+								Parent's phone number :
+							</td>
+							<td>
+								{{ s.parent_phone_num }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Parent's optional phone number :
+							</td>
+							<td>
+								{{ s.parent_optional_phone_num }}
+							</td>
+						</tr>
+						<tr  >
+							<td>
+								Permenant address :
+							</td>
+							<td>
+								{{ s.permanent_address }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Permenant address zipcode :
+							</td>
+							<td>
+								{{ s.permanent_address_zipcode }}
+							</td>
+						</tr>
+						<tr  >
+							<td>
+								Local guardian name :
+							</td>
+							<td>
+								{{ s.local_guardian_name }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Local guardian address :
+							</td>
+							<td>
+								{{ s.local_guardian_address }}
+							</td>
+						</tr>
+						<tr  >
+							<td>
+								Local guardian address zipcode :
+							</td>
+							<td>
+								{{ s.local_guardian_address_zipcode }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Local Guardian Phone Number :
+							</td>
+							<td>
+								{{ s.local_guardian_phone_number }}
+							</td>
+						</tr>
+						<tr  >
+							<td>
+								Local Guardian optional phone number :
+							</td>
+							<td>
+								{{ s.local_guardian_optional_phone_num }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Local Guardian Email :
+							</td>
+							<td>
+								{{ s.local_guardian_email }}
+							</td>
+						</tr>
+
+					</table>
+				</div>
+				<a href = "{%url 'print-PDF' name username %}"><button type="submit" name="login" class="btn waves-effect waves-light left">Print Details</button></a>
 			</div>
-			
-	</main>
-	<div class="row">
-		<div class="col s12"> 
-		<a href = "{%url 'print-PDF' name username %}"><button type="submit" name="login" class="btn waves-effect waves-light left">Print Details</button></a>
+			{# </li> #}
+			<br><br><br><br>
+			<hr>
+			{# 
+		</ul> #}
+	</div>
+
+	<div class="col s12" id="previous">
+		<div class="card">
+			<h5>Previous Hostel history</h5>
+			<hr>
+			<table class="bordered centered striped">
+				<tr >
+					<td >
+						S.No.
+					</td>
+					<td >
+						Hostel
+					</td>
+					<td >
+						Room no.
+					</td>
+					<td >
+						Join Date
+					</td>
+					<td >
+						Left on
+					</td>
+				</tr>
+				{% for i in prev %}
+				<tr>
+					<td >
+						{{forloop.counter}}
+					</td>
+					<td >
+						{{ i.hostel_name }}
+					</td>
+					<td >
+						{{ i.room_no }}
+					</td>
+					<td >
+						{{ i.hostel_join_date }}
+					</td>
+					<td >
+						{{ i.hostel_leave_date }}
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
 		</div>
 	</div>
-	
-	{% endblock %}
-	
-	{% block script %}
-	<script type="text/javascript">
-		$('.collapsible-body').css({
-			"padding": "2%"
-		});
-	</script>
-	{% endblock %}
+	<div class="col s12" id="fines">
+		<div class="card">
+			<h5>Disciplinary Actions and Fines</h5>
+		<table class="striped centered bordered">
+			<tr >
+				<td >
+					S.No.
+				</td>
+				<td >
+					Date
+				</td>
+				<td >
+					Fine amount
+				</td>
+				<td >
+					Paid
+				</td>
+			</tr>
+			{% for i in crim %}
+			<tr>
+				<td >
+					{{forloop.counter}}
+				</td>
+				<td >
+					{{ i.date_of_action }}
+				</td>
+				<td >
+					{{ i.fine_amount }}
+				</td>
+				<td >
+					{% if i.paid_or_not %}
+					Yes
+					{% else %}
+					No
+					{% endif %}
+				</td>
+			</tr>
+			<tr><td colspan="5" class="center">{{ i.description }}</td></tr>
+			{% endfor %}
+		</table>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col s12"> 
+	</div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+	$('.collapsible-body').css({
+		"padding": "2%"
+	});
+</script>
+{% endblock %}

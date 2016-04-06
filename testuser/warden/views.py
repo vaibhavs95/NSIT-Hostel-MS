@@ -32,6 +32,7 @@ def basic():
 		d = {'name': i.hostel_name, 'id': i.username}
 		b.append(d)
 	data['all_hostels'] = b
+	data['mes'] = None
 
 
 def capacityremaining(user):
@@ -889,13 +890,14 @@ def addstudent(request):
 				room_number.save()
 				mes = 'Student added successfully'
 				studentbasic(request.user)
-				data['addstudentform'] = f
+#				data['addstudentform'] = f
 				data['mes'] = mes
 				return render(request, 'warden/student.html', data)
 			else:
 				studentbasic(request.user)
 				data['addstudentform'] = f
 				data['mes'] = mes
+				#return redirect('127.0.0.1:8000/warden/student#add')
 				return render(request, 'warden/student.html', data)
 		else:
 			studentbasic(request.user)
@@ -1002,6 +1004,7 @@ def searchstudentrollno(request):
 					#else:
 					#    data['searchedstudentnotfound'] = 'yes'
 				data['searchedstudent'] = searchedstudent
+				data['searchstudentrollnoform'] = f
 				print(data)
 				return render(request,'warden/student.html',data)
 			else:
@@ -1013,7 +1016,7 @@ def searchstudentrollno(request):
 			f = SearchStudentRollNoForm()
 			data['searchstudentrollnoform'] = f
 			print(data)
-			return render(request, 'student/students/home.html',data)
+			return render(request, 'warden/student.html',data)
 	else:
 		return redirect('logout')
 @login_required
@@ -1021,11 +1024,11 @@ def searchstudentrollno(request):
 def searchstudentother(request):
 	basic()
 	studentbasic(str(request.user))
+	searchedstudent = []
 	h = Hostels.objects.get(username=request.user)
 	if re.match("[bg]h[0-9]+warden",str(request.user))!=None:
 		if request.method == 'POST':
 			f = SearchStudentOtherForm(request.POST or None)
-			searchedstudent = []
 			if f.is_valid():
 				name = None
 				date_of_birth = None
@@ -1049,15 +1052,18 @@ def searchstudentother(request):
 						data['searchedstudentnotfound'] = 'yes'
 				if(len(sx) < 1):
 					data['searchedstudentnotfound'] = 'yes'
-				if not data['searchedstudentnotfound'] and sx:
+				if not data['searchedstudentnotfound']:
 					for i in sx:
 						if i.room_number:
 							if i.room_number.hostel == h:
 								p = {'username':i.username, 'id':base64.b64encode(i.username.encode('utf-8')),'mystudent':'yes'}
 							else:
 								p = {'username':i.username, 'id':base64.b64encode(i.username.encode('utf-8'))}
-							searchedstudent.append(p)
+						else:
+							p = {'username':i.username, 'id':base64.b64encode(i.username.encode('utf-8')),'freestudent':'yes'}
+						searchedstudent.append(p)
 				data['searchedstudent'] = searchedstudent
+				data['searchstudentotherform'] = f
 				return render(request,'warden/student.html',data)
 			else:
 				data['searchstudentotherform'] = f

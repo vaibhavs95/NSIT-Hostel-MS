@@ -1,0 +1,77 @@
+{% extends "newapp/home.html" %}
+{% load staticfiles %}
+{% load material_form %}
+{% block title %} ChiefWarden - HMS {% endblock %}
+
+{% block extrahead %}
+{% endblock %}
+
+{% block extrastyle %}
+<style>
+	#searchcard{
+		padding: 2%;
+	}
+</style>
+{% endblock %}
+
+{% block sidelist %}
+<li><a href="/chiefwarden/branch/">Branches</a></li>
+<li><a href="/chiefwarden/notices/">Notices</a></li>
+<li><a href="/chiefwarden/room/">Room</a></li>
+<li><a href="/chiefwarden/student/">Student</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col s12 m12 l12">
+		<div class="card-panel">
+			{% if mes %}
+			<p>
+				{{ mes }}
+			</p>
+			{% endif %}
+			<h3>Rooms</h3>
+			<div class="row card" id="searchcard">
+				<h5> Search Room </h5>
+				<hr>
+				<div class="col s12 m6 l6">
+					<form method="post" action="{% url 'chiefwarden-search-room' %}">
+						{% csrf_token %}
+						{% form form=searchroomform %}
+						{% endform %}
+						<button type="submit" name="search-room" class="btn waves-effect waves-light left"><i class="material-icons">search</i></button>
+					</form>
+				</div>
+				{% if searchedroom %}
+				<table class="centered bordered">
+					<thead>
+						<tr>
+							<th data-field="id">Room Number</th>
+							<th data-field="name">Capacity of Room</th>
+							<th data-field="name">Capacity Available</th>
+							<th data-field="name">Students</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{ searchedroom.room.room_no }}</td>
+							<td>{{ searchedroom.room.capacity_of_room }}</td>
+							<td>{{ searchedroom.room.capacity_remaining }}</td>
+							<td>
+								{% for s in searchedroom.students %}
+								<a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></br> 
+								{% endfor %}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				{% endif %}
+				{% if searchedroomnotfound %}
+				<p>Room Not Found.</p>
+				{% endif %}
+			</div>
+			
+		</div>
+	</div>
+</div>
+{% endblock %}
