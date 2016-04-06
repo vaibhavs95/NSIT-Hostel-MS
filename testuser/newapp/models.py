@@ -166,12 +166,12 @@ class Students(models.Model):
 	permanent_address = models.CharField(null=False, max_length=200)
 	permanent_address_zipcode = models.IntegerField(null=True,  blank = True )
 # Local Guradian
-	local_guardian_name = models.CharField(null=True, blank = True, max_length=100)
-	local_guardian_address = models.CharField(null= True, blank = True, max_length=200)
-	local_guardian_address_zipcode = models.IntegerField(null=True, blank = True )
-	local_guardian_phone_num = models.CharField(null = True, blank = True, max_length=20)
-	local_guardian_optional_phone_num = models.CharField(null = True, blank = True, max_length=20)
-	local_guardian_email = models.EmailField(null=True, blank = True )
+	local_guardian_name = models.CharField(null=False, blank = True, max_length=100)
+	local_guardian_address = models.CharField(null= False, blank = True, max_length=200)
+	local_guardian_address_zipcode = models.IntegerField(null=False, blank = True )
+	local_guardian_phone_num = models.CharField(null = False, blank = True, max_length=20)
+	local_guardian_optional_phone_num = models.CharField(null = False, blank = True, max_length=20)
+	local_guardian_email = models.EmailField(null=False, blank = True )
 	student_photo = models.ImageField(upload_to=student_photo_name, null = True, blank = True)
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.username)
