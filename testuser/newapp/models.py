@@ -136,33 +136,34 @@ class Rooms(models.Model):
 def student_photo_name(instance, filename):
 	ext = filename.split('.')[-1]
 	return 'student/images/'+instance.username+'.'+ext
+	
 class Students(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True , default='');
-	name = models.CharField(max_length=50 , blank = True, default='');
+	name = models.CharField(max_length=50 , null = False, default='');
 	date_of_birth = models.DateField(null=False,default=timezone.now())
 	room_number = models.ForeignKey(Rooms,null = True);
-	distance_from_nsit = models.IntegerField(null = False,  blank = True, default=0);
+	distance_from_nsit = models.IntegerField(null = False, default=0);
 	# current_sem_join_date = models.DateField(default=datetime.now, blank = True,  null=True)
 	current_hostel_join_date = models.DateField(default=datetime.now, blank = True, null=True)
 	branch = models.ForeignKey(Branch)
-	gender = models.CharField(max_length = 10,  blank = True, choices = GENDER_CHOICES, default = GENDER_CHOICES[0][0])
-	college_category = models.CharField(max_length=5,  blank = True, choices = COLLEGE_CAT, default = COLLEGE_CAT[0][0])
+	gender = models.CharField(max_length = 10, choices = GENDER_CHOICES, default = GENDER_CHOICES[0][0])
+	college_category = models.CharField(max_length=5, choices = COLLEGE_CAT, default = COLLEGE_CAT[0][0])
 	#**hostel_category = models.CharField(null=False,max_length=20)
-	blood_group = models.CharField(max_length=5,  blank = True, choices = BLOOD_GROUP, default = BLOOD_GROUP[0][0])
+	blood_group = models.CharField(max_length=5, choices = BLOOD_GROUP, default = BLOOD_GROUP[0][0])
 	# fee_last_submitted = models.DateField(null=True, blank = True, default = datetime.now)
-	student_phone_num = models.CharField(null = False, blank = True, max_length=20)
+	student_phone_num = models.CharField(null = False, max_length=20)
 	student_email = models.EmailField(null=False,unique=True)
 	student_optional_phone_num = models.CharField(null = True, blank = True, max_length=20)
 #Corpus
 	# corpus_calculated_uptill = models.DateField(null=True, blank = True,default = datetime.now)
 	# corpus = models.IntegerField(null=False, blank = True, default =0)
 # Family Details
-	father_name = models.CharField(null=False, blank = True, max_length=100)
-	mother_name = models.CharField(null=False, blank = True, max_length=100)
-	parent_email = models.EmailField(null=False, blank = True)
-	parent_phone_num = models.CharField(null = False, blank = True, max_length=20)
+	father_name = models.CharField(null=False, max_length=100)
+	mother_name = models.CharField(null=False, max_length=100)
+	parent_email = models.EmailField(null=False)
+	parent_phone_num = models.CharField(null = False, max_length=20)
 	parent_optional_phone_num = models.CharField(null = True, blank = True, max_length=20)
-	permanent_address = models.CharField(null=False, blank = True, max_length=200)
+	permanent_address = models.CharField(null=False, max_length=200)
 	permanent_address_zipcode = models.IntegerField(null=True,  blank = True )
 # Local Guradian
 	local_guardian_name = models.CharField(null=True, blank = True, max_length=100)
