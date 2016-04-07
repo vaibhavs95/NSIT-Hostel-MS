@@ -1124,7 +1124,7 @@ def printStudentList(request):
 	elements.append(Spacer(1, 50))
 	u = Students.objects.filter(room_number__hostel__username = request.user)
 	data = []
-	lst = ['Roll Number', 'Name', 'Room Number']
+	lst = ['Roll Number', 'Name', 'Room Number', 'Remarks']
 	data.append(lst)
 	for i in u:
 		lst = []
@@ -1134,8 +1134,9 @@ def printStudentList(request):
 		else:
 			lst.append('NA')
 		lst.append(i.room_number)
+		lst.append('')
 		data.append(lst)
-	t=Table(data, colWidths=[1.9*inch] * 5, hAlign='LEFT')
+	t=Table(data, colWidths=[1.7*inch] * 5, hAlign='LEFT')
 	t.setStyle(TableStyle([('GRID', (0,0), (-1,-1), 0.25, colors.black),]))
 	elements.append(t)
 	# write the document to disk
@@ -1169,9 +1170,10 @@ def printRoomList(request):
 		lst.append(i.room_no)
 		for a in b:
 			if a.name != '':
-				lst.append(a.name)
+				s = a.name + "\n" + a.username
+				lst.append(s)
 			else:
-				lst.append('NA')
+				lst.append('NA' + "\n" + 'NA')
 		data.append(lst)
 	t=Table(data, colWidths=[1.6*inch] * 4, hAlign='LEFT')
 	t.setStyle(TableStyle([('GRID', (0,0), (-1,-1), 0.25, colors.black),]))
