@@ -18,55 +18,47 @@
 <div class="row">
 	<div class="col s12 m12 l12">
 		<div class="card-panel">
-		<h3>Complaints</h3>
+		<h3>Personal data defaulters list</h3>
+		{% if count == 0 %}
+		There are entries to be shown
+		{% else %}
 			<table>
 				<thead>
 					<tr>
 						<th data-field="id">S. No.</th>
-						<th data-field="name">Description</th>						
-						<th data-field="name">Dated</th>
-						<th data-field="name">Submitted by</th>
-						<th data-field="name"></th>
+						<th data-field="name">Student</th>
+						<th data-field="name">Last date of submission</th>
 					</tr>
 				</thead>
 				<tbody>
-					{% for hos in comp %}
+					{% for hos in list %}
 					<tr>
 						<td align="center">
 							{{ forloop.counter }}.
 						</td>
 						<td align="center">
-							{{ hos.description }}
+							{{ hos.student }}
 						</td>
 						<td align="center">
-							{{ hos.date_of_complaint }}
-						</td>
-						<td align="center">
-							<a href="{% url 'WardenViewStudentProfile' hos.lodgers_roll_no %}">{{ hos.lodgers_roll_no }}</a>
-						</td>
-						<td align="center">
-							<a href="#!" onclick="myFunction('{{ hos.pk }}')">Close complaint</a>                            
+							{{ hos.hostel_last_date }}
 						</td>
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
-            <script type='text/javascript' >
+		{% endif %}
+			<script type='text/javascript' >
+		}
 		function myFunction(hosid) {
-			if (confirm("Close complaint ? ") == true) {
-				console.log('url called')
-				window.location = "/warden/complaint/"+hosid+'/'
-				console.log('url called again')
+			if (confirm("Delete Notice ?") == true) {
+				window.location = "/warden/deletenotice/"+hosid
 			}
 		}
 	</script>
 		</div>
 	</div>
 </div>
-	
-
 {% endblock %}
-
 {% block sidelist %}
 <li><a class="waves-effect" href="{% url 'warden-room' %}">Room</a></li>
 <li><a class="waves-effect" href="{% url 'warden-student' %}">Student</a></li>

@@ -128,7 +128,8 @@ def remstudent(request,target):
         return redirect("{% url 'WardenViewStudentProfile' u.username %}")
     else:
         return redirect('logout')
-    
+
+@login_required
 def payfine(request,primkey,stu):
     if re.match("[bg]h[0-9]warden",str(request.user))!=None:
         delta = CriminalRecord.objects.get(pk = primkey)
@@ -137,7 +138,8 @@ def payfine(request,primkey,stu):
         return redirect('WardenViewStudentProfile',student = stu)
     else:
         return redirect('logout')
-    
+
+@login_required
 def StudentProfile(request,student):
     # pass
     if re.match("[bg]h[0-9]warden",str(request.user))!=None:
@@ -162,6 +164,7 @@ def StudentProfile(request,student):
     else:
         return redirect('logout')
 
+@login_required
 def ViewComplaint(request):
     if re.match("[bg]h[0-9]warden",str(request.user))!=None:
         a=Hostels.objects.all();
@@ -181,6 +184,7 @@ def ViewComplaint(request):
     else:
         return redirect('logout')
 
+@login_required
 def CloseComplaint(request,target):
     if re.match("[bg]h[0-9]warden",str(request.user))!=None:
         alpha = str(request.user)
@@ -294,5 +298,24 @@ def addCriminalRecord(request,target):
             data['stu'] = s.username
             data['form']=f
             return render(request,'warden/addDiscipline.html',data)
+    else:
+        return redirect('logout')
+
+@login_required
+def viewDefaulters(request):
+    alpha = str(request.user)
+    if re.match("[bg]h[0-9]+warden",str(request.user))!=None:
+        lis = HostelAttachDates.objects.filter(student__room_number__hostel__username=alpha,hostel_last_date__lt = date.today())
+        count = len(lis)
+        a=Hostels.objects.all();
+        b=[]
+        for i in a:
+            d={'name':i.hostel_name,'id':i.username}
+            b.append(d)
+        data = {}
+        data['all_hostels'] = b
+        data['list'] = lis
+        data['count'] = count
+        return render(request,'warden/defaulterslist.html',data)
     else:
         return redirect('logout')

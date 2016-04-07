@@ -179,7 +179,6 @@ class Students(models.Model):
 
 	
 class HostelAttachDates(models.Model):
-	room = models.ForeignKey(Rooms)
 	hostel_last_date = models.DateField(blank=False,default=datetime.now)
 	student = models.ForeignKey(Students,null=False)
 	def __str__(self):

@@ -412,6 +412,12 @@ class DetachStudentForm(forms.ModelForm):
         self.fields['username'].widget.attrs['readonly'] = True
         # self.fields['room_number'].widget.attrs['disabled'] = 'disabled'
 
+    def clean_hostel_leave_date(self):
+        date = self.cleaned_data.get('hostel_leave_date')
+        if date>date.today():
+            raise forms.ValidationError('This field can\'t be in future')
+        return date
+
 class AddCriminalForm(forms.ModelForm):
     class Meta:
         model = CriminalRecord

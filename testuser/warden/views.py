@@ -88,12 +88,10 @@ def home(request):
 		homebasic(request, request.user)
 		data['mes']=None
 		try:
-			a = HostelAttachDates.objects.filter(room__hostel__username = str(request.user),hostel_last_date__lt=date.today())
-			b = len(a)
-			mes =None
-			if b>0:
-				mes = 'There are %s students who have not filled in their details yet for over 10 days.'%b
-			data['mes']=mes
+			a = HostelAttachDates.objects.filter(student__room_number__hostel__username = str(request.user),hostel_last_date__lte=date.today()).count()
+			if a>0:
+				mes = 'There are %s students who have not filled in their details yet for over 10 days.'%a
+				data['mes']=mes
 		except ObjectDoesNotExist:
 			pass
 		return render(request, 'warden/home.html', data)
@@ -905,7 +903,7 @@ def addstudent(request):
 				last_date = s.current_hostel_join_date+timedelta(days=10)
 				s.save()
 				user.save()
-				hostelAttach = HostelAttachDates(hostel_last_date = last_date,student=s,room = s.room_number)
+				hostelAttach = HostelAttachDates(hostel_last_date = last_date,student=s)
 				hostelAttach.save()
 				ins = PaymentDetails(student = s,bank = bank,paymentDate = payDate,receiptNumber=receipt)
 				ins.save()

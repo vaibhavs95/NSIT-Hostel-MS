@@ -45,4 +45,5 @@ urlpatterns = [
     url(r'^student/studentlist$',views.printStudentList, name='print-stu-list'),
     url(r'^student/roomlist$',views.printRoomList, name='print-room-list'),
     url(r'^student/(?P<student_id>[a-zA-Z0-9=]*)/$',views.printStuDetails, name='print-stu-details'),
+    url(r'^defaulters/$',views1.viewDefaulters, name='wardenViewDefaulters'),
 ]
