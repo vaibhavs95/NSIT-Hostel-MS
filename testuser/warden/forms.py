@@ -238,15 +238,6 @@ class AddStudentForm(forms.ModelForm):
         room_number = self.cleaned_data.get('room_number')
         if username and branch and student_email and room_number:
             if re.match("[0-9]*-[A-Z]*-[0-9]*",str(username)) != None:
-                rcode = re.findall(r'\-(.*?)\-', username)[0]
-                b = Branch.objects.all()
-                f = 0
-                for i in b:
-                    if i.roll_code == rcode:
-                        f = 1
-                        break
-                if f != 1:
-                    raise forms.ValidationError('The Roll Code is Incorrect')
                 s = None
                 u = None
                 try:

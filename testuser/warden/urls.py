@@ -44,4 +44,5 @@ urlpatterns = [
     url(r'^disciplineadd/(?P<target>[0-9A-Z-]*)/$',views1.addCriminalRecord,name = 'wardenAddCriminal'),
     url(r'^student/studentlist$',views.printStudentList, name='print-stu-list'),
     url(r'^student/roomlist$',views.printRoomList, name='print-room-list'),
+    url(r'^student/(?P<student_id>[a-zA-Z0-9=]*)/$',views.printStuDetails, name='print-stu-details'),
 ]
