@@ -13,7 +13,7 @@ from django.conf import settings
 from newapp.models import *
 from newapp.forms import *
 from .forms import *
-
+from datetime import datetime,timedelta
 from io import StringIO, BytesIO
 from reportlab.lib.enums import TA_JUSTIFY
 from reportlab.lib import colors
@@ -877,6 +877,7 @@ def addstudent(request):
 		basic()
 		mes = None
 		if request.method == 'POST':
+			print(request.user)
 			f = AddStudentForm(request.user, request.POST)
 			if f.is_valid():
 				username = f.cleaned_data.get('username')
@@ -888,9 +889,17 @@ def addstudent(request):
 				s = Students(username=username, student_email=student_email, branch=branch,
 							 room_number=room_number, current_hostel_join_date=current_hostel_join_date)
 				user = MyUser.objects.create_user(f.cleaned_data.get(
-					'username'), '2016-02-02', pas)
+					'username'), datetime.now(), pas)
+				bank = f.cleaned_data.get('bank')
+				payDate = f.cleaned_data.get('paymentDate')
+				receipt = f.cleaned_data.get('receiptNumber')
+				last_date = s.current_hostel_join_date+timedelta(days=10)
 				s.save()
 				user.save()
+				hostelAttach = HostelAttachDates(hostel_last_date = last_date,student=s,room = s.room_number)
+				hostelAttach.save()
+				ins = PaymentDetails(student = s,bank = bank,paymentDate = payDate,receiptNumber=receipt)
+				ins.save()
 				room_number.capacity_remaining -= 1
 				room_number.save()
 				# send email to fill details
@@ -1098,9 +1107,13 @@ def attachstudent(request,student):
 			f = AttachStudentForm(request.user, request.POST, instance = s)
 			#searchedstudent = []
 			if f.is_valid():
+				bank = f.cleaned_data.get('bank')
+				payDate = f.cleaned_data.get('paymentDate')
+				receipt = f.cleaned_data.get('receiptNumber')
 				room_number = f.cleaned_data.get('room_number')
-				f.room_number = room_number
 				f.save()
+				ins = PaymentDetails(student = s,bank = bank,paymentDate = payDate,receiptNumber=receipt)
+				ins.save()
 				room_number.capacity_remaining -= 1
 				room_number.save()
 				return redirect('warden-student')

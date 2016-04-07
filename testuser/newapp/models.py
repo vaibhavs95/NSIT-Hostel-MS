@@ -106,6 +106,7 @@ class Hostels(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True, default='')
 	name = models.CharField(max_length = 50, default='',null=True)
 	hostel_name = models.CharField(max_length = 20, default='')
+	semEndDate = models.DateField(null = False,default = timezone.now())
 	room_capacity = models.IntegerField(null=True, blank=True)		# calculate from 
 	room_available = models.IntegerField(null=True, blank=True)		# update with each entry
 	phone = models.CharField(null = True,max_length=20, blank=True)        #Check if it has 10 digits
@@ -145,7 +146,6 @@ class Students(models.Model):
 	distance_from_nsit = models.IntegerField(null = False, default=0);
 	# current_sem_join_date = models.DateField(default=datetime.now, blank = True,  null=True)
 	current_hostel_join_date = models.DateField(default=datetime.now, blank = True)
-	valid_upto = models.DateField(blank = True,default=datetime.now)
 	branch = models.ForeignKey(Branch)
 	gender = models.CharField(max_length = 10, choices = GENDER_CHOICES, default = GENDER_CHOICES[0][0])
 	college_category = models.CharField(max_length=5, choices = COLLEGE_CAT, default = COLLEGE_CAT[0][0])
@@ -167,22 +167,23 @@ class Students(models.Model):
 	permanent_address = models.CharField(null=False, max_length=200)
 	permanent_address_zipcode = models.IntegerField(null=True,  blank = True )
 # Local Guradian
-	local_guardian_name = models.CharField(null=False, max_length=100)
-	local_guardian_address = models.CharField(null= False, max_length=200)
-	local_guardian_address_zipcode = models.IntegerField(null=False)
-	local_guardian_phone_num = models.CharField(null = False, max_length=20)
-	local_guardian_optional_phone_num = models.CharField(null = False, blank = True, max_length=20)
-	local_guardian_email = models.EmailField(null=False)
+	local_guardian_name = models.CharField(null=False, max_length=100,default='')
+	local_guardian_address = models.CharField(null= False, max_length=200,default='')
+	local_guardian_address_zipcode = models.IntegerField(null=False,default=0)
+	local_guardian_phone_num = models.CharField(null = False, max_length=20,default='')
+	local_guardian_optional_phone_num = models.CharField(null = False, blank = True, max_length=20,default='')
+	local_guardian_email = models.EmailField(null=False,default='')
 	student_photo = models.ImageField(upload_to=student_photo_name, null = True, blank = True)
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.username)
 
 	
 class HostelAttachDates(models.Model):
-	hostel_join_date = models.DateField(blank=False,default=datetime.now)
+	room = models.ForeignKey(Rooms)
+	hostel_last_date = models.DateField(blank=False,default=datetime.now)
 	student = models.ForeignKey(Students,null=False)
 	def __str__(self):
-		return '%s, %s'%(self.hostel_join_date,self.student)
+		return '%s, %s'%(self.hostel_last_date,self.student)
 
 class Banks(models.Model):
 	"""docstring for Banks"models.Model
