@@ -4,41 +4,50 @@
 {% block title %} Chief Warden {% endblock %}
 
 {% block extrahead %} 
-<!--<link rel="stylesheet" href="{% static 'assests/main-page/css/cw-home.css' %}">-->
-   <link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/styleHostel.css' %}"/>
-<!--<link rel="stylesheet" href="{% static 'assests/main-page/css/styleHostel.css' %}">-->
+<link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/styleHostel.css' %}"/>
+{% endblock %}
+
+{% block sidelist %}
+<li><a class="waves-effect" href="{% url 'warden-room' %}">Room</a></li>
+<li><a class="waves-effect" href="{% url 'warden-student' %}">Student</a></li>
+<li><a class="waves-effect" href="{% url 'warden-facilities' %}">Facilities</a></li>
+<li><a class="waves-effect" href="{% url 'warden-council' %}">Council</a></li>
+<li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
+<li><a class="waves-effect" href="{% url 'warden-mess' %}">Mess</a></li>
+<li><a class="waves-effect" href="{% url 'warden-notices' %}">Notices</a></li>
+<li><a class="waves-effect" href="{% url 'wardenViewComplaint' %}">Complaints</a></li>
 {% endblock %}
 
 {% block content %}
-</div>
 {% if mes %}
-	<script type="text/javascript">
-		alert("{{ mes }}");
-	</script>
+<script type="text/javascript">
+	alert("{{ mes }}");
+</script>
 {% endif %}
 <div class="row">
 	<div class="col s12 m12 l12">
-		<div class="card-panel">
-		<h3>Notices</h3>
-			<ul class="collapsible" data-collapsible="accordion">
-		    <li>
-		      <div class="collapsible-header active">Add Notice</div>
-		      <div class="collapsible-body">
-				<form method="post" action="" enctype="multipart/form-data">
-					{% csrf_token %}
-					<input type="hidden" name="next" value="{{ next }}" />
-					{% form form=form %}
-					{% endform %}
-					<div class="row">
-						<div class="col s12"> 
-							<button type="submit" name="add-room" class="btn waves-effect waves-light left">Add Notice</button>
-						</div>
+	<h3>Notices</h3>
+	<hr>
+		<div class="card addcard">
+			<h5>Add Notice</h5>
+			<hr>
+			<form method="post" action="" enctype="multipart/form-data">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ next }}" />
+				{% form form=form %}
+				{% endform %}
+				<div class="row">
+					<div class="col s12"> 
+						<button type="submit" name="add-room" class="btn waves-effect waves-light left">Add Notice</button>
 					</div>
-				</form>
-		      </div>
-		    </li>
-		  	</ul>
-			<table>
+				</div>
+			</form>
+		</div>
+		{% if notices|length > 0 %}
+		<div class="card addcard">
+			<h5>All Notices</h5>
+			<hr> 
+			<table class="bordered striped centered">
 				<thead>
 					<tr>
 						<th data-field="id">S. No.</th>
@@ -62,26 +71,15 @@
 					{% endfor %}
 				</tbody>
 			</table>
-			<script type='text/javascript' >
-		function myFunction(hosid) {
-			if (confirm("Delete Notice ?") == true) {
-				window.location = "/warden/deletenotice/"+hosid
-			}
-		}
-	</script>
 		</div>
+		{% endif %}
 	</div>
 </div>
-	
-
-{% endblock %}
-{% block sidelist %}
-<li><a class="waves-effect" href="{% url 'warden-room' %}">Room</a></li>
-<li><a class="waves-effect" href="{% url 'warden-student' %}">Student</a></li>
-<li><a class="waves-effect" href="{% url 'warden-facilities' %}">Facilities</a></li>
-<li><a class="waves-effect" href="{% url 'warden-council' %}">Council</a></li>
-<li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
-<li><a class="waves-effect" href="{% url 'warden-mess' %}">Mess</a></li>
-<li><a class="waves-effect" href="{% url 'warden-notices' %}">Notices</a></li>
-<li><a class="waves-effect" href="{% url 'wardenViewComplaint' %}">Complaints</a></li>
+<script type='text/javascript' >
+	function myFunction(hosid) {
+		if (confirm("Delete Notice ?") == true) {
+			window.location = "/warden/deletenotice/"+hosid
+		}
+	}
+</script>
 {% endblock %}

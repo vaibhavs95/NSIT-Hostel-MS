@@ -18,10 +18,8 @@ def SendNoticeMail(title,usern):
     n = Notice.objects.get(title=title)
     url =  n.file.url
     url = "http://127.0.0.1:8000" + url
-    print(url)
     c=[]
     message = "A new announcement has been put up by the Warden for all the residents of the hostel. Click <a href= '%s '>here </a> to view the announcement" % url
-    print (message)
     for i in a:
        c.append(i.student_email)
     # email = EmailMessage()
@@ -130,7 +128,8 @@ def remstudent(request,target):
         return redirect("{% url 'WardenViewStudentProfile' u.username %}")
     else:
         return redirect('logout')
-    
+
+@login_required
 def payfine(request,primkey,stu):
     if re.match("[bg]h[0-9]warden",str(request.user))!=None:
         delta = CriminalRecord.objects.get(pk = primkey)
@@ -139,7 +138,8 @@ def payfine(request,primkey,stu):
         return redirect('WardenViewStudentProfile',student = stu)
     else:
         return redirect('logout')
-    
+
+@login_required
 def StudentProfile(request,student):
     # pass
     if re.match("[bg]h[0-9]warden",str(request.user))!=None:
@@ -148,7 +148,6 @@ def StudentProfile(request,student):
         for i in a:
             d={'name':i.hostel_name,'id':i.username}
             b.append(d)
-        print(student)
         u = Students.objects.get(username = student)
         prev = None
         crimi = None
@@ -157,7 +156,7 @@ def StudentProfile(request,student):
         except ObjectDoesNotExist:
             pass
         try:
-            crimi = CriminalRecord.objects.filter(student = student)
+            crimi = CriminalRecord.objects.filter(student = student).order_by('date_of_action')
         except ObjectDoesNotExist:
             pass
         data = {'all_hostels': b,'student':'yes', 'username': base64.b64encode(u.username.encode('utf-8')), 's': u,'prev':prev,'crim':crimi}
@@ -165,6 +164,7 @@ def StudentProfile(request,student):
     else:
         return redirect('logout')
 
+@login_required
 def ViewComplaint(request):
     if re.match("[bg]h[0-9]warden",str(request.user))!=None:
         a=Hostels.objects.all();
@@ -184,6 +184,7 @@ def ViewComplaint(request):
     else:
         return redirect('logout')
 
+@login_required
 def CloseComplaint(request,target):
     if re.match("[bg]h[0-9]warden",str(request.user))!=None:
         alpha = str(request.user)
@@ -254,23 +255,22 @@ def addCriminalRecord(request,target):
     crimi = None
     if re.match("[bg]h[0-9]+warden",str(request.user))!=None:
         if request.method == 'POST':
-            print(request.FILES)
             f = AddCriminalForm(request.POST,request.FILES)
             if f.is_valid():
                 delta = f.save(commit = False)
                 delta.student = s
                 delta.file = request.FILES['file']
-                url = 'http://127.0.0.1:8000'+delta.file.url
-                subject_pa = 'NSIT-HMS Disciplinary action against your ward'
-                message_pa = '''Disciplinary actions have been taken against your ward for not following the code of conduct of the hostels properly.
-                    Refer to this <a href = '%s '> link </a> for more details.'''%(url)
-                subject = 'NSIT-HMS, Disciplinary action taken against you'
-                message = '''Disciplinary actions have been taken against you for not following the code of conduct of the hostels properly.
-                    Refer to this <a href = '%s '> link </a> for more details.'''%(url)
-                m1 = (subject_pa,message_pa,settings.EMAIL_HOST_USER,[s.parent_email,])
-                m2 = (subject,message,settings.EMAIL_HOST_USER,[s.student_email,])
-                send_mass_mail((m1,m2,),fail_silently = False)
                 delta.save()
+                url = 'http://127.0.0.1:8000'+delta.file.url
+                # subject_pa = 'NSIT-HMS Disciplinary action against your ward'
+                # message_pa = '''Disciplinary actions have been taken against your ward for not following the code of conduct of the hostels properly.
+                #     Refer to this <a href = '%s '> link </a> for more details.'''%(url)
+                # subject = 'NSIT-HMS, Disciplinary action taken against you'
+                # message = '''Disciplinary actions have been taken against you for not following the code of conduct of the hostels properly.
+                #     Refer to this <a href = '%s '> link </a> for more details.'''%(url)
+                # m1 = (subject_pa,message_pa,settings.EMAIL_HOST_USER,[s.parent_email,])
+                # m2 = (subject,message,settings.EMAIL_HOST_USER,[s.student_email,])
+                # send_mass_mail((m1,m2,),fail_silently = True)
                 try:
                     crimi = CriminalRecord.objects.filter(student = target)
                     data['crimi'] = crimi
@@ -301,17 +301,21 @@ def addCriminalRecord(request,target):
     else:
         return redirect('logout')
 
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+@login_required
+def viewDefaulters(request):
+    alpha = str(request.user)
+    if re.match("[bg]h[0-9]+warden",str(request.user))!=None:
+        lis = HostelAttachDates.objects.filter(student__room_number__hostel__username=alpha,hostel_last_date__lt = date.today())
+        count = len(lis)
+        a=Hostels.objects.all();
+        b=[]
+        for i in a:
+            d={'name':i.hostel_name,'id':i.username}
+            b.append(d)
+        data = {}
+        data['all_hostels'] = b
+        data['list'] = lis
+        data['count'] = count
+        return render(request,'warden/defaulterslist.html',data)
+    else:
+        return redirect('logout')

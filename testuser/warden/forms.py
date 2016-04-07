@@ -22,10 +22,14 @@ def photocheck(requestfiles,field):
 class EditWardenProfileForm(forms.ModelForm):
     class Meta:
         model = Hostels
-        fields = ['name','phone','email','landline','department','portfolio','warden_photo']
+        fields = ['name','phone','email','landline','department','portfolio','semEndDate','warden_photo']
+        widgets = {
+        'semEndDate':AdminDateWidget,
+        }
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(EditWardenProfileForm, self).__init__(*args, **kwargs)
+        self.fields['semEndDate'].required = True
     def clean(self):
         name = self.cleaned_data.get('name')
         phone = self.cleaned_data.get('phone')
@@ -42,6 +46,14 @@ class EditWardenProfileForm(forms.ModelForm):
                 #pass
                # raise forms.ValidationError('Add Photo of correct format - JPG,jpeg,PNG,png,jpg,JPEG')
         return self.cleaned_data
+
+    def clean_semEndDate(self):
+        semEndDate = self.cleaned_data.get('semEndDate')
+        if semEndDate<=date.today():
+            raise forms.ValidationError('This date has to be in future')
+        else:
+            return semEndDate
+
 class AddRoomForm(forms.Form):
     room_no = forms.CharField(max_length=10)
     capacity_of_room = forms.IntegerField()
@@ -218,11 +230,15 @@ class AddMessForm(forms.ModelForm):
 
 
 class AddStudentForm(forms.ModelForm):
+    paymentDate = forms.DateField(required=True)
+    receiptNumber = forms.IntegerField(required = True)
+    bank = forms.ModelChoiceField(required = True,queryset = Banks.objects.all())
     class Meta:
         model = Students
-        fields = ['username','branch','room_number','student_email','current_hostel_join_date']
+        fields = ['username','branch','room_number','student_email','current_hostel_join_date']+['bank','receiptNumber','paymentDate']
         widgets = {
             'current_hostel_join_date': AdminDateWidget(),
+            'paymentDate':AdminDateWidget(),
         }
     def __init__(self, user, *args, **kwargs):
         super(AddStudentForm, self).__init__(*args, **kwargs)
@@ -231,6 +247,7 @@ class AddStudentForm(forms.ModelForm):
         self.fields['branch'].help_text='Select one from dropdown'
         self.fields['room_number'].help_text='Select one from dropdown'
         self.fields['current_hostel_join_date'].help_text='Format: yyyy-mm-dd hh:mm:ss'
+        self.user = user
     def clean(self):
         username = self.cleaned_data.get('username')
         branch = self.cleaned_data.get('branch')
@@ -238,15 +255,6 @@ class AddStudentForm(forms.ModelForm):
         room_number = self.cleaned_data.get('room_number')
         if username and branch and student_email and room_number:
             if re.match("[0-9]*-[A-Z]*-[0-9]*",str(username)) != None:
-                rcode = re.findall(r'\-(.*?)\-', username)[0]
-                b = Branch.objects.all()
-                f = 0
-                for i in b:
-                    if i.roll_code == rcode:
-                        f = 1
-                        break
-                if f != 1:
-                    raise forms.ValidationError('The Roll Code is Incorrect')
                 s = None
                 u = None
                 try:
@@ -266,6 +274,35 @@ class AddStudentForm(forms.ModelForm):
             else:
                 raise forms.ValidationError('Incorrect format of username.(Correct format: 111-CO-15)')
         return self.cleaned_data
+
+    def clean_current_hostel_join_date(self):
+        date = self.cleaned_data.get('current_hostel_join_date')
+        try:
+            a = Hostels.objects.get(username = self.user)
+            a = a.semEndDate
+        except ObjectDoesNotExist:
+            pass
+        if date>date.today():
+            raise forms.ValidationError('Join date can\'t be in future')
+        elif date>a:
+            raise forms.ValidationError('You might want to change sem end date, join date can\'t be greater than sem end date')
+        else:
+            return date
+
+    def clean_paymentDate(self):
+        date = self.cleaned_data.get('paymentDate')
+        try:
+            a = Hostels.objects.get(username = self.user)
+            a=a.semEndDate
+        except ObjectDoesNotExist:
+            pass
+        if date>date.today():
+            raise forms.ValidationError('Payment date can\'t be in future')
+        elif date>a:
+            raise forms.ValidationError('You might want to change sem end date, payment date can\'t be greater than sem end date')
+        else:
+            return date
+
 class EditStudentForm(forms.ModelForm):
     class Meta:
         model = Students
@@ -323,19 +360,38 @@ class SearchStudentOtherForm(forms.Form):
         #    raise forms.ValidationError('Enter Roll Number in correct format: 111-AA-11')
         return self.cleaned_data
 class AttachStudentForm(forms.ModelForm):
+    paymentDate = forms.DateField(required=True)
+    receiptNumber = forms.IntegerField(required = True)
+    bank = forms.ModelChoiceField(required = True,queryset = Banks.objects.all())
     class Meta:
         model = Students
-        fields = ['username', 'room_number','current_hostel_join_date']
+        fields = ['username', 'room_number','current_hostel_join_date']+['bank','receiptNumber','paymentDate']
         widgets = {
             'current_hostel_join_date': AdminDateWidget(),
+            'paymentDate':AdminDateWidget(),
         }
     def __init__(self, user, *args, **kwargs):
         #self.user = kwargs.pop('user')
         super(AttachStudentForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['readonly'] = True
         self.fields['room_number'].queryset = Rooms.objects.filter(capacity_remaining__gt = 0, hostel = Hostels.objects.get(username=user))
+        self.user = user
     def clean(self):
         return self.cleaned_data
+
+    def clean_paymentDate(self):
+        date = self.cleaned_data.get('paymentDate')
+        try:
+            a = Hostels.objects.get(username = self.user)
+            a=a.semEndDate
+        except ObjectDoesNotExist:
+            pass
+        if date>date.today():
+            raise forms.ValidationError('Payment date can\'t be in future')
+        elif date>a:
+            raise forms.ValidationError('You might want to change sem end date, payment date can\'t be greater than sem end date')
+        else:
+            return date
 
 class AddNoticeForm(forms.ModelForm):
     class Meta:
@@ -355,6 +411,12 @@ class DetachStudentForm(forms.ModelForm):
         super(DetachStudentForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['readonly'] = True
         # self.fields['room_number'].widget.attrs['disabled'] = 'disabled'
+
+    def clean_hostel_leave_date(self):
+        date = self.cleaned_data.get('hostel_leave_date')
+        if date>date.today():
+            raise forms.ValidationError('This field can\'t be in future')
+        return date
 
 class AddCriminalForm(forms.ModelForm):
     class Meta:

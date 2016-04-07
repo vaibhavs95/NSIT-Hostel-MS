@@ -5,7 +5,8 @@
 *.swo
 *.swp
 *.swn
-
+*_auto_*.py
+settings.py
 # Directories #
 ###############
 logs/

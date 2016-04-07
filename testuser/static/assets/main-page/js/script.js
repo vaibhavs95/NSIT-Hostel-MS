@@ -15,14 +15,6 @@ function main() {
 		$('#forgot-password').closeModal();
 		$('#login-modal').openModal();
 	});
-	/*
-	$("#button").click(function() {
-		$('html, body').animate({
-			scrollTop: $("#myDiv").offset().top
-		}, 2000);
-	});
-	*/
-	
 	// handle links with @href started with '#' only
 	// $(document).on('click', 'a[href^="#"]', function(e) {
 	//	// target element id

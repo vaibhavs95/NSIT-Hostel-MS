@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^deletenotice/(?P<target>[0-9a-zA-Z]*)/$', views1.delNotice , name = 'WardenDelNotice'),
     url(r'^notices/$',views1.notices, name='warden-notices'),
     url(r'^payfine/(?P<primkey>[0-9a-zA-Z]*)/(?P<stu>[0-9A-Za-z-]*)/$',views1.payfine,name='WardenPayFine'),
-    url(r'^student$',views.student, name='warden-student'),
+    url(r'^student/$',views.student, name='warden-student'),
     url(r'^student/all/$',views.studentall, name='warden-student-full'),
     url(r'^student/add/$',views.addstudent, name='warden-add-student'),
     url(r'^student/edit/(?P<student>[a-zA-Z0-9=]*)/$',views.editstudent, name='warden-edit-student'),
@@ -44,4 +44,6 @@ urlpatterns = [
     url(r'^disciplineadd/(?P<target>[0-9A-Z-]*)/$',views1.addCriminalRecord,name = 'wardenAddCriminal'),
     url(r'^student/studentlist$',views.printStudentList, name='print-stu-list'),
     url(r'^student/roomlist$',views.printRoomList, name='print-room-list'),
+    url(r'^student/(?P<student_id>[a-zA-Z0-9=]*)/$',views.printStuDetails, name='print-stu-details'),
+    url(r'^defaulters/$',views1.viewDefaulters, name='wardenViewDefaulters'),
 ]

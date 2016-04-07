@@ -82,3 +82,28 @@ class AddNoticeForm(forms.ModelForm):
     class Meta:
         model = Notice
         exclude = ['creator']
+
+
+class SearchHostelRoomForm(forms.Form):
+    hostel = forms.ModelChoiceField(queryset = Hostels.objects.all())
+    room_no = forms.CharField(max_length=10,help_text='Search Room by Room Number, format : AA-111')
+    def __init__(self, *args, **kwargs):
+        super(SearchHostelRoomForm, self).__init__(*args, **kwargs)
+#        self.fields['hostel'].queryset = Hostels.objects.all()
+    def clean(self):
+        room_no = self.cleaned_data.get('room_no')
+        if room_no:
+            room_no = room_no.upper()
+            if re.match("[A-Z]+-[0-9]+",str(room_no))==None:
+                raise forms.ValidationError('Enter Room Number in correct format: AA-111')
+        else:
+            raise forms.ValidationError('Room Number cannot be empty.')
+        return self.cleaned_data
+
+
+class addBankForm(forms.ModelForm):
+    class Meta:
+        model = Banks
+        fields = ['name',]
+            
+        
