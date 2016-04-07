@@ -101,3 +101,9 @@ class SearchHostelRoomForm(forms.Form):
         return self.cleaned_data
 
 
+class addBankForm(forms.ModelForm):
+    class Meta:
+        model = Banks
+        fields = ['name',]
+            
+        

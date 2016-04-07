@@ -187,7 +187,7 @@ class Banks(models.Model):
 	def __init__(self, arg):
 		super(Banks,models.Model).__init__()
 		self.arg = arg"""
-	name = models.CharField(null=False,max_length = 100,default = '')
+	name = models.CharField(null=False,max_length = 100,default = '',unique = True)
 	def __str__(self):
 		return '%s'%(self.name)
 		
@@ -216,6 +216,15 @@ class CriminalRecord(models.Model):
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.description)
 	
+class PaymentDetails(models.Model):
+	student = models.ForeignKey(Students,null = False)
+	bank = models.ForeignKey(Banks,null = False)
+	paymentDate = models.DateField(null=False)
+	receiptNumber = models.IntegerField(null=False)
+
+	def __str__(self):
+		return "%s, %s"%(self.student,self.paymentDate)
+
 class PreviousHostelDetail(models.Model):
 	#code
 	hostel_name = models.CharField(null=False,max_length = 40)

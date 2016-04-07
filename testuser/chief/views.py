@@ -396,3 +396,23 @@ def searchroom(request):
             return render(request, 'chief/room.html', data)
     else:
         return redirect('logout')
+
+def addBank(request):
+    if str(request.user) == 'chiefwarden':
+        f = addBankForm(request.POST or None)
+        mes = None
+        if f.is_valid():
+            kent = f.save(commit=False)
+            kent.name = kent.name.upper()
+            kent.save()
+            mes = 'Bank added successfully'
+        a=Hostels.objects.all();
+        b=[]
+        for i in a:
+            d={'name':i.hostel_name,'id':i.username,'warden_name':i.name,'warden_nu':i.phone}
+            b.append(d)
+        delta = Banks.objects.all()
+        data = {'all_hostels': b,'form':f,'banks':delta}
+        return render(request, 'chief/addBank.html',data)
+    else:
+        return redirect('logout')
