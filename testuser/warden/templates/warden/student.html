@@ -11,6 +11,9 @@
 	#searchcard{
 		padding: 2%;
 	}
+	.addcard{
+		padding: 2%;
+	}
 </style>
 {% endblock %}
 
@@ -26,35 +29,43 @@
 {% endblock %}
 {% block content %}
 <div class="row">
-	<div class="col s12 m12 l12">
-		<div class="card-panel">
-		<h3>Students</h3>
+	<h3>Students</h3>
+	<div class="col s12">
+		<ul class="tabs">
+			<li class="tab col s4"><a class="active" href="#search">Search Student</a></li>
+			<li class="tab col s4"><a class="" href="#add">Add Student</a></li>
+			<li class="tab col s4"><a class="" href="#view">View Student</a></li>
+		</ul>
+	</div>
+
+	<!-- <div class="card-panel"> -->
+	<div class="col s12" id="search">
 		<div class="row card" id="searchcard">
-		<h5> Search Student </h5>
-		<hr>
+			<h5> Search Student </h5>
+			<hr>
 			<div class="col s12 m6 l6">
-			<blockquote>Search By Roll Number of Student.<br>.</blockquote>
-			<form method="post" action="{% url 'warden-search-student-rollno' %}">
-				{% csrf_token %}
-				{% form form=searchstudentrollnoform %}
-				{% endform %}
-				<button type="submit" name="search-student" class="btn waves-effect waves-light left"><i class="material-icons">search</i></button>
-			</form>
+				<blockquote>Search By Roll Number of Student.</blockquote>
+				<form method="post" action="{% url 'warden-search-student-rollno' %}">
+					{% csrf_token %}
+					{% form form=searchstudentrollnoform %}
+					{% endform %}
+					<button type="submit" name="search-student" class="btn waves-effect waves-light left"><i class="material-icons">search</i></button>
+				</form>
 			</div>
 			<div class="col s12 m6 l6">
-			<blockquote>Search By Name or Date of Birth of Student.</blockquote>
-			<form method="post" action="{% url 'warden-search-student-other' %}">
-				{% csrf_token %}
-				{% form form=searchstudentotherform %}
-				{% endform %}
-				<button type="submit" name="search-student" class="btn waves-effect waves-light left"><i class="material-icons">search</i></button>
-			</form>
+				<blockquote>Search By Name or Date of Birth of Student.</blockquote>
+				<form method="post" action="{% url 'warden-search-student-other' %}">
+					{% csrf_token %}
+					{% form form=searchstudentotherform %}
+					{% endform %}
+					<button type="submit" name="search-student" class="btn waves-effect waves-light left"><i class="material-icons">search</i></button>
+				</form>
 			</div>
 			{% if searchedstudentnotfound %}
 			<p>Student Not Found.</p>
 			{% endif %}
 			{% if searchedstudent %}
-				<table class="centered bordered striped">
+			<table class="centered bordered striped">
 				<thead>
 					<tr>
 						<th data-field="id">Roll Number</th>
@@ -67,49 +78,53 @@
 					{% for s in searchedstudent %}
 					<tr>
 						{% if s.mystudent %}
-							<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
-							<td><a href="{% url 'warden-edit-student' s.id %}">Edit Student Details</a></td>
-							<td><a href="{% url 'wardenDetachStudent' s.username %}">Detach Student</a></td>
-							<td><a href="{% url 'wardenAddCriminal' s.username %}">Add Disciplinary Action</a></td>
+						<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
+						<td><a href="{% url 'warden-edit-student' s.id %}">Edit Student Details</a></td>
+						<td><a href="{% url 'wardenDetachStudent' s.username %}">Detach Student</a></td>
+						<td><a href="{% url 'wardenAddCriminal' s.username %}">Add Disciplinary Action</a></td>
 						{% elif s.freestudent %}
-							<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
-							<td>NA</td>
-							<td><a href="{% url 'warden-attach-student' s.username %}">Attach Student</a></td>
-							<td>NA</td>
+						<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
+						<td>NA</td>
+						<td><a href="{% url 'warden-attach-student' s.username %}">Attach Student</a></td>
+						<td>NA</td>
 						{% else %}
-							<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
-							<td>NA</td>
-							<td>NA</td>
-							<td>NA</td>
+						<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
+						<td>NA</td>
+						<td>NA</td>
+						<td>NA</td>
 						{% endif %}
 					</tr>
 					{% endfor %}
 				</tbody>
-				</table>
+			</table>
 			{% endif %}
 		</div>
-			<ul class="collapsible" data-collapsible="accordion">
-		    <li>
-		      <div class="collapsible-header active">Add Student</div>
-		      <div class="collapsible-body">
-				<form method="post" action="{% url 'warden-add-student' %}" class="viewform">
-					{% csrf_token %}
-					<input type="hidden" name="next" value="{{ next }}" />
-					{% form form=addstudentform %}
-					{% endform %}
-					<div class="row">
-						<div class="col s12"> 
-							<button type="submit" name="add-student" class="btn waves-effect waves-light left">Add Student</button>
-						</div>
+	</div>
+	<div id="add" class="col s12">
+		<div class="card addcard">
+			<h5>Add Student</h5>
+			<hr>
+			<form method="post" action="{% url 'warden-add-student' %}" class="viewform">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ next }}" />
+				{% form form=addstudentform %}
+				{% endform %}
+				<div class="row">
+					<div class="col s12"> 
+						<button type="submit" name="add-student" class="btn waves-effect waves-light left">Add Student</button>
 					</div>
-				</form>
-		      </div>
-		    </li>
-		  	</ul>
-		  	{% if studentfulllist %}
-					<a class="btn" href="{% url 'warden-student' %}"> Hide All Students</a><br><br>
-					<a class="btn" href = "{%url 'print-stu-list' %}"> Print This List</a>
-				<table class="centered striped">
+				</div>
+			</form>
+		</div>
+	</div>
+	<div id="view" class="col s12">
+		<div class="card addcard">
+			<h5>View Student</h5>
+			<hr>
+			{% if studentfulllist %}
+			<a class="btn" href="{% url 'warden-student' %}"> Hide All Students</a><br><br>
+			<a class="btn" href = "{%url 'print-stu-list' %}"> Print This List</a>
+			<table class="centered striped">
 				<thead>
 					<tr>
 						<th data-field="name">Student Roll No.</th>
@@ -136,17 +151,17 @@
 				</tbody>
 			</table>
 			{% else %}
-				<a class="btn" href="{% url 'warden-student-full' %}"> View All Students</a>
-			{% endif %}
-
-			
-			{% if mes %}
-			<script type="text/javascript">
-				alert("{{ mes }}");
-			</script>
+			<a class="btn" href="{% url 'warden-student-full' %}"> View All Students</a>
 			{% endif %}
 		</div>
 	</div>
+
+	{% if mes %}
+	<script type="text/javascript">
+		alert("{{ mes }}");
+	</script>
+	{% endif %}
+	<!-- </div> -->
 </div>
 {% endblock %}
 {% block script %}
@@ -154,5 +169,31 @@
 	$('.collapsible-body').css({
 		"padding": "2%"
 	});
+	$('ul.tabs').tabs();
 </script>
+<script>
+	$(document).on('click', 'a[href^="#"]', function(e) {
+		// target element id
+		var id = $(this).attr('href');
+	
+		// target element
+		var $id = $(id);
+		if ($id.length === 0) {
+			return;
+		}
+	
+		// prevent standard hash navigation (avoid blinking in IE)
+		e.preventDefault();
+	
+		// top position relative to the document
+		//var pos = $(id).offset().top;
+		
+		// animated top scrolling
+		$('body, html').animate({scrollTop:pos},1000);
+		//$('body, html').noop();
+	});
+	
+	
+</script>
+
 {% endblock %}
