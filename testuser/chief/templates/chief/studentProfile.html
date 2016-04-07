@@ -48,174 +48,224 @@
 				</div>
 				<div class="col s12 m8 l8">
 					<table class="bordered striped centered">
-						<tr  >
-							<td>
-								Name :
-							</td>
-							<td>
-								{{s.name}}
-							</td>
-						</tr>
 						<tr>
-							<td>
-								Date of Birth
-							</td>
-							<td>
-								{{ s.date_of_birth }}
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Distance from Nsit :
-							</td>
-							<td>
-								{{ s.distance_from_nsit }}
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Gender :
-							</td>
-							<td>
-								{{ s.gender }}
-							</td>
-						</tr>
-						<tr  >
-							<td>
-								Blood group : 
-							</td>
-							<td>
-								{{ s.blood_group }}
-							</td>
-						</tr>
-						<tr>
-							<td>
-								College category :
-							</td>
-							<td>
-								{{ s.college_category }}
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Phone Number :
-							</td>
-							<td>
-								{{  s.student_phone_num }}
-							</td>
-						</tr>
-						<tr  >
-							<td>
-								Optional Phone number :
-							</td>
-							<td>
-								{{ s.student_optional_phone_num }}
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Father's Name :
-							</td>
-							<td>
-								{{ s.father_name }}
-							</td>
-						</tr>
-						<tr  >
-							<td>
-								Mother's name :
-							</td>
-							<td>
-								{{ s.mother_name }}
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Parent's email :
-							</td>
-							<td>
-								{{ s.parent_email }}
-							</td>
-						</tr>
-						<tr  >
-							<td>
-								Parent's phone number :
-							</td>
-							<td>
-								{{ s.parent_phone_num }}
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Parent's optional phone number :
-							</td>
-							<td>
-								{{ s.parent_optional_phone_num }}
-							</td>
-						</tr>
-						<tr  >
-							<td>
-								Permenant address :
-							</td>
-							<td>
-								{{ s.permanent_address }}
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Permenant address zipcode :
-							</td>
-							<td>
-								{{ s.permanent_address_zipcode }}
-							</td>
-						</tr>
-						<tr  >
-							<td>
-								Local guardian name :
-							</td>
-							<td>
-								{{ s.local_guardian_name }}
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Local guardian address :
-							</td>
-							<td>
-								{{ s.local_guardian_address }}
-							</td>
-						</tr>
-						<tr  >
-							<td>
-								Local guardian address zipcode :
-							</td>
-							<td>
-								{{ s.local_guardian_address_zipcode }}
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Local Guardian Phone Number :
-							</td>
-							<td>
-								{{ s.local_guardian_phone_number }}
-							</td>
-						</tr>
-						<tr  >
-							<td>
-								Local Guardian optional phone number :
-							</td>
-							<td>
-								{{ s.local_guardian_optional_phone_num }}
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Local Guardian Email :
-							</td>
-							<td>
-								{{ s.local_guardian_email }}
-							</td>
-						</tr>
+						<td>
+							Roll Number :
+						</td>
+						<td>
+							{{s.username}}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Name :
+						</td>
+						<td>
+							{{s.name}}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Date of Birth
+						</td>
+						<td>
+							{{ s.date_of_birth }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Hostel :
+						</td>
+						{% if s.room_number %}
+						<td>
+							{{ s.room_number.hostel.hostel_name }}
+						</td>
+						{% else %}
+						<td>
+							None
+						</td>
+						{% endif %}
+					</tr>
+					<tr>
+						<td>
+							Room Number :
+						</td>
+						{% if s.room_number %}
+						<td>
+							{{ s.room_number }}
+						</td>
+						{% else %}
+						<td>None</td>
+						{% endif %}
+					</tr>
+					<tr>
+						<td>
+							Branch :
+						</td>
+						<td>
+							{{ s.branch }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Current Hostel Join Date :
+						</td>
+						<td>
+							{{ s.current_hostel_join_date }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Distance from Nsit :
+						</td>
+						<td>
+							{{ s.distance_from_nsit }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Gender :
+						</td>
+						<td>
+							{{ s.gender }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Blood group : 
+						</td>
+						<td>
+							{{ s.blood_group }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							College category :
+						</td>
+						<td>
+							{{ s.college_category }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Phone Number :
+						</td>
+						<td>
+							{{  s.student_phone_num }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Optional Phone number :
+						</td>
+						<td>
+							{{ s.student_optional_phone_num }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Father's Name :
+						</td>
+						<td>
+							{{ s.father_name }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Mother's name :
+						</td>
+						<td>
+							{{ s.mother_name }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Parent's email :
+						</td>
+						<td>
+							{{ s.parent_email }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Parent's phone number :
+						</td>
+						<td>
+							{{ s.parent_phone_num }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Parent's optional phone number :
+						</td>
+						<td>
+							{{ s.parent_optional_phone_num }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Permenant address :
+						</td>
+						<td>
+							{{ s.permanent_address }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Permenant address zipcode :
+						</td>
+						<td>
+							{{ s.permanent_address_zipcode }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Local guardian name :
+						</td>
+						<td>
+							{{ s.local_guardian_name }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Local guardian address :
+						</td>
+						<td>
+							{{ s.local_guardian_address }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Local guardian address zipcode :
+						</td>
+						<td>
+							{{ s.local_guardian_address_zipcode }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Local Guardian Phone Number :
+						</td>
+						<td>
+							{{ s.local_guardian_phone_number }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Local Guardian optional phone number :
+						</td>
+						<td>
+							{{ s.local_guardian_optional_phone_num }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Local Guardian Email :
+						</td>
+						<td>
+							{{ s.local_guardian_email }}
+						</td>
+					</tr>
 
 					</table>
 				</div>

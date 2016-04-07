@@ -36,6 +36,15 @@
 					</h5>
 				  </div>
 				  <table>
+					<table>
+				  	<tr>
+						<td>
+							Roll Number :
+						</td>
+						<td>
+							{{s.username}}
+						</td>
+					</tr>
 					<tr id="tr1">
 						<td>
 							Name :
@@ -50,6 +59,48 @@
 						</td>
 						<td>
 							{{ s.date_of_birth }}
+						</td>
+					</tr>
+					<tr id="tr1">
+						<td>
+							Hostel :
+						</td>
+						{% if s.room_number %}
+						<td>
+							{{ s.room_number.hostel.hostel_name }}
+						</td>
+						{% else %}
+						<td>
+							None
+						</td>
+						{% endif %}
+					</tr>
+					<tr>
+						<td>
+							Room Number :
+						</td>
+						{% if s.room_number %}
+						<td>
+							{{ s.room_number }}
+						</td>
+						{% else %}
+						<td>None</td>
+						{% endif %}
+					</tr>
+					<tr id="tr1">
+						<td>
+							Branch :
+						</td>
+						<td>
+							{{ s.branch }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Current Hostel Join Date :
+						</td>
+						<td>
+							{{ s.current_hostel_join_date }}
 						</td>
 					</tr>
 					<tr id="tr1">
