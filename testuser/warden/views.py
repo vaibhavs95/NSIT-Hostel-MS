@@ -87,6 +87,15 @@ def home(request):
 		basic()
 		homebasic(request, request.user)
 		data['mes']=None
+		try:
+			a = HostelAttachDates.objects.filter(room__hostel__username = str(request.user),hostel_last_date__lt=date.today())
+			b = len(a)
+			mes =None
+			if b>0:
+				mes = 'There are %s students who have not filled in their details yet for over 10 days.'%b
+			data['mes']=mes
+		except ObjectDoesNotExist:
+			pass
 		return render(request, 'warden/home.html', data)
 	else:
 		return redirect('logout')
