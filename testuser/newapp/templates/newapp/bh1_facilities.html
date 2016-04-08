@@ -33,6 +33,7 @@
 
 					<ul id='dropdown2' class='dropdown-content'>
 						<li><a href="{% url 'home' %}">Profile</a></li>
+                      <li><a href="{% url 'newappResetPassword' %}">Reset Password</a></li>
 						<li><a href="{% url 'logout' %}">Logout</a></li>
 					</ul>
 
@@ -46,13 +47,19 @@
 		</nav>
 	</header>
 	
+<<<<<<< HEAD
 	<ul id="nav-mob" class="side-nav fixed">
 		<li id="lback"><a class="logo-side-nav" href="#!"><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'></a></li>
+=======
+	<ul id="nav-mobile" class="side-nav fixed">
+		<li id="lback"><a class="logo-side-nav" href='{% url "base" %}'><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'></a></li>
+>>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
 		<br>
 		<ul class="collapsible collapsible-accordion">
 			{% for hos in all_hostels %}			
 			{% if hos.id == target_hostel.username %}
 			<li>
+<<<<<<< HEAD
 				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
 				<div class="collapsible-body">
 					<ul id="colBod">
@@ -63,6 +70,17 @@
 						<li><a class="waves-effect" href="#mess">Mess</a></li>
 					</ul>
 				</div>
+=======
+				<!--<a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>-->
+				<!--<div class="collapsible-body">-->
+				<!--	<ul id="colBod">-->
+				<!--		<li><a class="waves-effect" href="#facilities">Facilities</a></li>-->
+				<!--		<li><a class="waves-effect" href="#basicInfo">Basic Info.</a></li>-->
+				<!--		<li><a class="waves-effect" href="#forms">Forms</a></li>-->
+				<!--		<li><a class="waves-effect" href="#messs">Mess</a></li>-->
+				<!--	</ul>-->
+				<!--</div>-->
+>>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
 			</li>
 			{% else %}
 			<li>
@@ -73,7 +91,13 @@
 						<li><a class="waves-effect" href="/newapp/{{ hos.id}}/#forms">Forms</a></li>
 						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#notices">Notices</a></li>
 						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#facilities">Facilities</a></li>
+<<<<<<< HEAD
 						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#mess">Mess</a></li>
+=======
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#basicInfo">Basic Info.</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#forms">Forms</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#messs">Mess</a></li>
+>>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
 					</ul>
 				</div>
 			</li>
@@ -88,6 +112,10 @@
 		<li><a class="modal-trigger waves-effect waves-light btn login-button" href="#login-modal">Login</a></li>
 		<ul class="collapsible collapsible-accordion">
 			{% for hos in all_hostels %}
+<<<<<<< HEAD
+=======
+			<!--<p>{{ hos.id }}</p>-->
+>>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
 			{% if hos.id == target_hostel.username %}
 			<li>
 				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
@@ -97,12 +125,22 @@
 						<li><a class="waves-effect" href="#forms">Forms</a></li>
 						<li><a class="waves-effect" href="#notices">Notices</a></li>
 						<li><a class="waves-effect" href="#facilities">Facilities</a></li>
+<<<<<<< HEAD
 						<li><a class="waves-effect" href="#mess">Mess</a></li>
+=======
+						<li><a class="waves-effect" href="#basicInfo">Basic Info.</a></li>
+						<li><a class="waves-effect" href="#forms">Forms</a></li>
+						<li><a class="waves-effect" href="#messs">Mess</a></li>
+>>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
 					</ul>
 				</div>
 			</li>
 			{% else %}
 			<li>
+<<<<<<< HEAD
+=======
+				<!--<p>{{ hos.id }}</p>-->
+>>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
 				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.id }}<i class="mdi-navigation-arrow-drop-down"></i></a>
 				<div class="collapsible-body">
 					<ul id="colBod">
@@ -110,7 +148,13 @@
 						<li><a class="waves-effect" href="/newapp/{{ hos.id}}/#forms">Forms</a></li>
 						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#notices">Notices</a></li>
 						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#facilities">Facilities</a></li>
+<<<<<<< HEAD
 						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#mess">Mess</a></li>
+=======
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#basicInfo">Basic Info.</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#forms">Forms</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#messs">Mess</a></li>
+>>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
 					</ul>
 				</div>
 			</li>
@@ -121,6 +165,7 @@
 	
 	
 	
+<<<<<<< HEAD
 	<!-- main center content -->
 	<main>
 		<div class="container">
@@ -150,25 +195,60 @@
 					</div>
 				</div>
 				{% for c in council %}
+=======
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="container bfp">
+		
+		{% for hos in all_hostels %}			
+			{% if hos.id == target_hostel.username %}
+			<h3 class="center">{{ hos.name }} (PAGE)</h3>
+			
+			{% endif  %}
+		{% endfor %}
+		
+		<div class="col s12">
+			<ul class="tabs row">
+				<li class="tab col l4"><a class="active" href="#facilities">Facilities</a></li>
+				<li class="tab col l4"><a class="" href="#basicInfo">basicInfo</a></li>
+				<li class="tab col l4"><a class="" href="#forms">Forms</a></li>
+				<li class="tab col l4"><a class="" href="#messs">Messs</a></li>
+			</ul>
+		</div>
+	</div>
+		<!-- <div class="card-panel"> -->
+		
+		<main class="container col l12 bfp" id="facilities">
+			<h4 class="center">Facilities</h3>
+			<hr>
+			<br>
+			<div>
+				{% for f in facilities %}
+>>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
 				<div class="card">
 					<div class="card-content black-text row">
 						<div class="col s12 l6 m6">
-							<span class="card-title deep-orange-text">{{ c.coun.position }} - {{ c.coun.committee }}</span>
-							<p class="brown-text text-darken-2">Name : {{ c.coun.name }}</p>
-							<p class="brown-text text-darken-2">Email : {{ c.coun.email }}</p>
-							<p class="brown-text text-darken-2">Phone Number : {{ c.coun.phone }}</p>
+							<span class="card-title deep-orange-text">{{ f.fac.facility_name }}</span>
+							<p class="brown-text text-darken-2">{{ f.fac.facility_description }}</p>
 						</div>
 						<div class="col s12 l6 m6">
-							{% if c.photo %}
-							<img class="profilepic" src="{{ c.coun.photo.url }}">
+							{% if f.photo %}
+							<img class="squarepic" src="{{ f.fac.photo.url }}">
 							{% else %}
-							<img class="profilepic" src="/media/demo.png">
+							<img class="squarepic" src="/media/warden/images/facilities/demo.jpg">
 							{% endif %}
 						</div>
 					</div>
 				</div>
 				{% endfor %}
 			</div>
+<<<<<<< HEAD
 
 			<div id="forms">
 				<h3 class="center">Forms</h3>
@@ -230,9 +310,34 @@
 								{% endif %}
 							</div>
 						</div>
+=======
+		</main>
+		<main class="container col l12 bfp" id="basicInfo">
+			<h4 class="center">Basic Information</h3>
+			<hr></br>
+			<div class="card">
+				<div class="card-content black-text row">
+					<div class="col s12 m6 l6">
+						<span class="card-title deep-orange-text">Warden</span><br>
+						Name : {{ target_hostel.name }}<br>
+						Phone No  : {{ target_hostel.phone }}<br>
+						Landline : {{ target_hostel.landline }}<br>
+						Email : {{ target_hostel.email }}<br>
+						Department : {{ target_hostel.dept }}<br>
+						Portfolio : {{ target_hostel.portfolio }}<br>
+						Total Capacity : {{  total_rooms }}<br>
+						Available Capacity : {{ rooms_available }}<br>
 					</div>
-					{% endfor %}
+					<div class="col s12 m6 l6">
+						{% if wardenphoto %}
+						<img class="profilepic" src="{{ target_hostel.warden_photo.url }}">
+						{% else %}
+						<img class="profilepic" src="/media/demo.png">
+						{% endif %}
+>>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
+					</div>
 				</div>
+<<<<<<< HEAD
 			</div>	
 			<div id="mess">
 				<h3 class="center">Mess Details</h3>
@@ -297,37 +402,155 @@
 							<td>{{ mess.weekend_snack_from }} - {{mess.weekend_snack_to}}</td>
 							<td>{{ mess.weekend_snack_charge }}</td>
 						</tr>
+=======
+			</div>
+			{% for c in council %}
+			<div class="card">
+				<div class="card-content black-text row">
+					<div class="col s12 l6 m6">
+						<span class="card-title deep-orange-text">{{ c.coun.position }} - {{ c.coun.committee }}</span>
+						<p class="brown-text text-darken-2">Name : {{ c.coun.name }}</p>
+						<p class="brown-text text-darken-2">Email : {{ c.coun.email }}</p>
+						<p class="brown-text text-darken-2">Phone Number : {{ c.coun.phone }}</p>
+					</div>
+					<div class="col s12 l6 m6">
+						{% if c.photo %}
+						<img class="profilepic" src="{{ c.coun.photo.url }}">
+						{% else %}
+						<img class="profilepic" src="/media/demo.png">
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</main>
+		<main class="container col l12 bfp" id="forms">
+			<h4 class="center">Forms</h3>
+			<hr></br>
+			<table class="centered striped">
+				<tbody>
+					{% for h in hosform %}
+>>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
 						<tr>
-							<td>Dinner</td>
-							<td>{{ mess.weekend_dinner_from }} - {{mess.weekend_dinner_to}}</td>
-							<td>{{ mess.weekend_dinner_charge }}</td>
+						<td>
+							<a href="{{ h.hosf.file.url }}" target="__blank">{{ h.hosf.title }}</a>
+						</td>
 						</tr>
-					</tbody>
-				</table>
-				<a class="btn" target="__blank" href="{{ mess.menu.url }}">Mess Menu</a>
+					{% endfor %}
+				</tbody>
+			</table>
+		</main>
+		<main class="container col l12 bfp" id="messs">
+			<h4 class="center">Mess Details</h3>
+			<hr><br>
+			{% if mess %}
+			<div class="card">
+				<div class="card-body">
+					<p>Weekdays</p>
+					<table id="messtable">
+						<thead>
+							<tr>
+								<th data-field="name">Meal</th>
+								<th data-field="id">From - To</th>
+								<th data-field="name">Charges (Rs.)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Breakfast</td>
+								<td>{{ mess.weekday_breakfast_from }} - {{mess.weekday_breakfast_to}}</td>
+								<td>{{ mess.weekday_breakfast_charge }}</td>
+							</tr>
+							<tr>
+								<td>Lunch</td>
+								<td>{{ mess.weekday_lunch_from }} - {{mess.weekday_lunch_to}}</td>
+								<td>{{ mess.weekday_lunch_charge }}</td>
+							</tr>
+							<tr>
+								<td>Snack</td>
+								<td>{{ mess.weekday_snack_from }} - {{mess.weekday_snack_to}}</td>
+								<td>{{ mess.weekday_snack_charge }}</td>
+							</tr>
+							<tr>
+								<td>Dinner</td>
+								<td>{{ mess.weekday_dinner_from }} - {{mess.weekday_dinner_to}}</td>
+								<td>{{ mess.weekday_dinner_charge }}</td>
+							</tr>
+						</tbody>
+					</table>
+					<p>Weekend</p>
+					<table>
+						<thead>
+							<tr>
+								<th data-field="name">Meal</th>
+								<th data-field="id">From - To</th>
+								<th data-field="name">Charges (Rs.)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Breakfast</td>
+								<td>{{ mess.weekend_breakfast_from }} - {{mess.weekend_breakfast_to}}</td>
+								<td>{{ mess.weekend_breakfast_charge }}</td>
+							</tr>
+							<tr>
+								<td>Lunch</td>
+								<td>{{ mess.weekend_lunch_from }} - {{mess.weekend_lunch_to}}</td>
+								<td>{{ mess.weekend_lunch_charge }}</td>
+							</tr>
+							<tr>
+								<td>Snack</td>
+								<td>{{ mess.weekend_snack_from }} - {{mess.weekend_snack_to}}</td>
+								<td>{{ mess.weekend_snack_charge }}</td>
+							</tr>
+							<tr>
+								<td>Dinner</td>
+								<td>{{ mess.weekend_dinner_from }} - {{mess.weekend_dinner_to}}</td>
+								<td>{{ mess.weekend_dinner_charge }}</td>
+							</tr>
+						</tbody>
+					</table>
+					<a class="btn" target="__blank" href="{{ mess.menu.url }}">Mess Menu</a>
 				</div>
 			</div>
 			{% else %}
 			<p>No Mess Details Available now.</p>
 			{% endif %}
-			</div>		
-		</div>
-	</main>
-
-
-
-
+		</main>
+	</div>
 	<!-- Footer --> 
 
 	<footer id="footr" class="page-footer grey darken-4">
 		<div class="container footer">
-			<a class="grey-text text-lighten-3" href="#!">About</a>
-			<a class="grey-text text-lighten-3" href="#!">Contact Us</a>
-			<a class="grey-text text-lighten-3" href="#!">Locate Us</a>
-			<a class="grey-text text-lighten-3" href="#!">Feedback</a>
-			<a class="grey-text text-lighten-3" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
+			<a class="grey-text text-lighten-3 modal-trigger" href="#aboutt">About</a>
+			<a class="grey-text text-lighten-3 modal-trigger" href="#!">Contact Us</a>
+			<a class="grey-text text-lighten-3 modal-trigger" href="#locate">Locate Us</a>
+			<a class="grey-text text-lighten-3 modal-trigger" href="#!">Feedback</a>
+			<a class="grey-text text-lighten-3 modal-trigger" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
 		</div>
 	</footer>
+	
+<!--	modals-->
+		<!-- About -->
+		<div id="aboutt" class="modal">
+			<div class="modal-content">
+				<h3 class="center">
+					About us
+				</h3>
+				<hr>
+				<p>
+					wawwe ewqweq eqweweqe qewqe qewqeqw resdfdd fffdfdfd
+				</p>
+			</div>
+		</div>
+		
+		<!-- Locate Us -->
+		<div id="locate" class="modal">
+			<div class="modal-content">
+				<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.6879906005356!2d77.03287455023379!3d28.609135591804954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d053516783c9b%3A0x7e540ab22a28446!2sNetaji+Subhas+Institute+Of+Technology!5e0!3m2!1sen!2sin!4v1458988779817" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+			</div>
+		</div>	
+	
 	<!--Scripts -->
 	<script type="text/javascript" src='{% static "assets/main-page/js/jquery-1.11.3.min.js" %}'></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -338,5 +561,30 @@
 			main();
 		});
 	</script>
+<script>
+	$(document).on('click', 'a[href^="#"]', function(e) {
+		// target element id
+		var id = $(this).attr('href');
+	
+		// target element
+		var $id = $(id);
+		if ($id.length === 0) {
+			return;
+		}
+	
+		// prevent standard hash navigation (avoid blinking in IE)
+		e.preventDefault();
+	
+		// top position relative to the document
+		//var pos = $(id).offset().top;
+		
+		// animated top scrolling
+		$('body, html').animate({scrollTop:pos},1000);
+		//$('body, html').noop();
+	});
+	
+	
+</script>
+
 </body>
 </html>

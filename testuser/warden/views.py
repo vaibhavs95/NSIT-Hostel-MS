@@ -1,6 +1,6 @@
 import re
 import os
-import base64
+import base64,random,string
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
@@ -14,13 +14,17 @@ from django.conf import settings
 from newapp.models import *
 from newapp.forms import *
 from .forms import *
-
+from datetime import datetime,timedelta
 from io import StringIO, BytesIO
 from reportlab.lib.enums import TA_JUSTIFY
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.pagesizes import letter, inch
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.units import inch
+from reportlab.lib.utils import ImageReader
 
 data = {}
 
@@ -57,6 +61,7 @@ def capacity(user):
 def homebasic(request, h):
 		#basic()
 		user = Hostels.objects.get(username=h)
+		
 		data['name'] = user.name
 		data['phone'] = user.phone
 		data['landline'] = user.landline
@@ -82,6 +87,14 @@ def home(request):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
 		basic()
 		homebasic(request, request.user)
+		data['mes']=None
+		try:
+			a = HostelAttachDates.objects.filter(student__room_number__hostel__username = str(request.user),hostel_last_date__lte=date.today()).count()
+			if a>0:
+				mes = 'There are %s students who have not filled in their details yet for over 10 days.'%a
+				data['mes']=mes
+		except ObjectDoesNotExist:
+			pass
 		return render(request, 'warden/home.html', data)
 	else:
 		return redirect('logout')
@@ -92,6 +105,7 @@ def home(request):
 def profileedit(request):
 	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
 		basic()
+		data['mes']=None
 		data['wardenphoto'] = None
 		h = Hostels.objects.get(username=request.user)
 		if request.method == 'POST':
@@ -99,7 +113,6 @@ def profileedit(request):
 			if f.is_valid():
 				f.save()
 				homebasic(request, request.user)
-				print(data)
 				return render(request, 'warden/home.html', data)
 			else:
 				data['editprofileform'] = f
@@ -109,7 +122,6 @@ def profileedit(request):
 					data['wardenphoto'] = 'yes'
 				else:
 					data['userid'] = None
-				print(data)
 				return render(request, 'warden/home.html', data)
 		else:
 			if h.warden_photo:
@@ -143,6 +155,7 @@ def roombasic():
 	g = SearchRoomForm()
 	data['searchroomform'] = g
 	data['addroomform'] = f
+	
 	return
 
 
@@ -174,6 +187,7 @@ def roomall(request):
 			student.append(p)
 		d = {'room': i, 'students': student}
 		rooms.append(d)
+	
 	data['rooms'] = rooms
 	data['roomfulllist'] = 'yes'
 	return render(request, 'warden/room.html', data)
@@ -198,9 +212,13 @@ def addroom(request):
 				a.save()
 				roombasic()
 				mes = 'Room added successfully'
-			data['addroomform'] = f
-			data['mes'] = mes
-			return render(request, 'warden/room.html', data)
+				data['addroomform'] = f
+				data['mes'] = mes
+				return render(request, 'warden/room.html', data)
+			else:
+				data['addroomform'] = f
+				data['mes'] = mes
+				return render(request, 'warden/room.html', data)
 		else:
 			f = AddRoomForm()
 			data['addroomform'] = f
@@ -217,6 +235,7 @@ def deleteroom(request, pk):
 		basic()
 		roombasic()
 		# data['pk'] = pk
+		data['mes']=None
 		room = None
 		try:
 			room = Rooms.objects.get(pk=pk)
@@ -701,7 +720,6 @@ def addmess(request):
 		messbasic(request.user)
 		if data['mess'] == None:
 			if request.method == 'POST':
-				print(request.user)
 				f = AddMessForm(request.POST, request.FILES)
 				if f.is_valid():
 					a = f.save(commit=False)
@@ -742,7 +760,6 @@ def editmess(request, pk):
 				a = None
 				a = request.FILES.__contains__('menu')
 				if a:
-					print('deleted')
 					mess.menu.delete(True)
 				f = AddMessForm(request.POST, request.FILES, instance=mess)
 				if f.is_valid():
@@ -813,16 +830,19 @@ def addstudent(request):
 		basic()
 		mes = None
 		if request.method == 'POST':
+			print(request.user)
 			f = AddStudentForm(request.user, request.POST)
 			if f.is_valid():
 				username = f.cleaned_data.get('username')
 				branch = f.cleaned_data.get('branch')
 				student_email = f.cleaned_data.get('student_email')
 				room_number = f.cleaned_data.get('room_number')
-				current_hostel_join_date = f.cleaned_data.get('current_hostel_join_date')
+				current_hostel_join_date = f.cleaned_data.get('current_hostel_join_date')				
+				pas = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(10))
 				s = Students(username=username, student_email=student_email, branch=branch,
 							 room_number=room_number, current_hostel_join_date=current_hostel_join_date)
 				user = MyUser.objects.create_user(f.cleaned_data.get(
+<<<<<<< HEAD
 					'username'), '2016-02-02', f.cleaned_data.get('student_email'))
 				# send email to fill details
 				url = "http://127.0.0.1:8080/student/" + \
@@ -830,10 +850,31 @@ def addstudent(request):
 				message = ''' Welcome To NSIT Hostel Management System. Click <a href= '%s'>here </a> to fill your details ''' % url
 				email = EmailMessage('Welcome to NSIT-HMS', message, to=[student_email])
 				#email.send()
+=======
+					'username'), datetime.now(), pas)
+				bank = f.cleaned_data.get('bank')
+				payDate = f.cleaned_data.get('paymentDate')
+				receipt = f.cleaned_data.get('receiptNumber')
+				last_date = s.current_hostel_join_date+timedelta(days=10)
+>>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
 				s.save()
 				user.save()
+				hostelAttach = HostelAttachDates(hostel_last_date = last_date,student=s)
+				hostelAttach.save()
+				ins = PaymentDetails(student = s,bank = bank,paymentDate = payDate,receiptNumber=receipt)
+				ins.save()
 				room_number.capacity_remaining -= 1
 				room_number.save()
+				# send email to fill details
+				url = "http://127.0.0.1:8080/student/" + \
+					base64.b64encode(username.encode('utf-8')).decode('utf-8')
+				message = ''' Welcome To NSIT Hostel Management System. Click <a href= '%s'>here </a> to fill your details.
+				These are your login details required.
+				UserId:  %s
+				Password:  %s
+				''' % (url,username,pas)
+				email = EmailMessage('Welcome to NSIT-HMS', message, to=[student_email])
+				email.send(fail_silently=True)
 				mes = 'Student added successfully'
 				studentbasic(request.user)
 #				data['addstudentform'] = f
@@ -960,17 +1001,14 @@ def searchstudentrollno(request):
 					searchedstudent.append(p)
 				data['searchedstudent'] = searchedstudent
 				data['searchstudentrollnoform'] = f
-				print(data)
 				return render(request,'warden/student.html',data)
 			else:
 				data['searchstudentrollnoform'] = f
-				print(data)
 				return render(request,'warden/student.html',data)
 		else:
 
 			f = SearchStudentRollNoForm()
 			data['searchstudentrollnoform'] = f
-			print(data)
 			return render(request, 'warden/student.html',data)
 	else:
 		return redirect('logout')
@@ -1041,9 +1079,13 @@ def attachstudent(request,student):
 			f = AttachStudentForm(request.user, request.POST, instance = s)
 			#searchedstudent = []
 			if f.is_valid():
+				bank = f.cleaned_data.get('bank')
+				payDate = f.cleaned_data.get('paymentDate')
+				receipt = f.cleaned_data.get('receiptNumber')
 				room_number = f.cleaned_data.get('room_number')
-				f.room_number = room_number
 				f.save()
+				ins = PaymentDetails(student = s,bank = bank,paymentDate = payDate,receiptNumber=receipt)
+				ins.save()
 				room_number.capacity_remaining -= 1
 				room_number.save()
 				return redirect('warden-student')
@@ -1075,7 +1117,7 @@ def printStudentList(request):
 	elements.append(Spacer(1, 50))
 	u = Students.objects.filter(room_number__hostel__username = request.user)
 	data = []
-	lst = ['Roll Number', 'Name', 'Room Number']
+	lst = ['Roll Number', 'Name', 'Room Number', 'Remarks']
 	data.append(lst)
 	for i in u:
 		lst = []
@@ -1085,8 +1127,9 @@ def printStudentList(request):
 		else:
 			lst.append('NA')
 		lst.append(i.room_number)
+		lst.append('')
 		data.append(lst)
-	t=Table(data, colWidths=[1.9*inch] * 5, hAlign='LEFT')
+	t=Table(data, colWidths=[1.7*inch] * 5, hAlign='LEFT')
 	t.setStyle(TableStyle([('GRID', (0,0), (-1,-1), 0.25, colors.black),]))
 	elements.append(t)
 	# write the document to disk
@@ -1120,9 +1163,10 @@ def printRoomList(request):
 		lst.append(i.room_no)
 		for a in b:
 			if a.name != '':
-				lst.append(a.name)
+				s = a.name + "\n" + a.username
+				lst.append(s)
 			else:
-				lst.append('NA')
+				lst.append('NA' + "\n" + 'NA')
 		data.append(lst)
 	t=Table(data, colWidths=[1.6*inch] * 4, hAlign='LEFT')
 	t.setStyle(TableStyle([('GRID', (0,0), (-1,-1), 0.25, colors.black),]))
@@ -1133,6 +1177,7 @@ def printRoomList(request):
 	buff.close()
 	return response
 
+<<<<<<< HEAD
 
 #######
 '''
@@ -1253,3 +1298,164 @@ def viewevent(request, pk):
 		return render(request,'newapp/eventpage.html',data)
 	else:
 		return redirect('logout')
+=======
+@login_required
+@require_http_methods(['GET', 'POST'])
+def printStuDetails(request, student_id):
+	print ("Hello")
+	alpha =  str(base64.b64decode(student_id))
+	alpha = alpha[2:-1]
+	u = Students.objects.get(username=alpha)
+	response = HttpResponse(content_type='application/pdf')
+	response['Content-Disposition'] = 'attachment; filename="Student Profile.pdf"'
+
+	p = canvas.Canvas(response)
+
+
+	filename = "logo.png"   # Adding LOGO
+	path = settings.MEDIA_ROOT + "/" + str(filename)
+	p.drawImage(path, 40, 760, 1*inch, 1 * inch)
+
+
+	if u.student_photo:
+	    path = settings.MEDIA_ROOT
+	    path = path[:-6]
+	    path = path + u.student_photo.url
+	else:
+	    path = settings.MEDIA_ROOT+"/"+"demo.png"
+    
+	p.drawImage(path, 400, 630, 2*inch, 2 * inch)
+
+	p.setFont('Helvetica-Bold', 20)
+	p.drawString(180, 800, "STUDENT INFO")
+
+	p.setFont('Helvetica', 8)
+	p.drawString(200, 780, "Hostel Management System")
+
+	p.drawString(50, 750, "Roll Number:")
+	p.drawString(270, 750, "%s" %u.username)
+
+	p.drawString(50, 730, "Name:")
+	p.drawString(270, 730, "%s" %u.name)
+
+	if u.room_number:
+		p.drawString(50, 710, "Hostel:")
+		p.drawString(270, 710, "%s" %u.room_number.hostel.hostel_name)
+		p.drawString(50, 690, "Room Number:")
+		p.drawString(270, 690, "%s" %u.room_number)    
+	else:
+	    p.drawString(50, 710, "Hostel:")
+	    p.drawString(270, 710, "None")
+
+	    p.drawString(50, 690, "Room Number:")
+	    p.drawString(270, 690, "None")
+
+	p.drawString(50, 670, "Date of Birth:")
+	p.drawString(270, 670, "%s" %u.date_of_birth)
+
+	p.drawString(50, 650, "Distance from nsit:")
+	p.drawString(270, 650, "%s" %u.distance_from_nsit)
+
+	p.drawString(50, 630, "Gender:")
+	p.drawString(270, 630, "%s" %u.gender)
+
+	p.drawString(50, 610, "College Category:")
+	p.drawString(270, 610, "%s" %u.college_category)
+
+	p.drawString(50, 590, "Blood Group:")
+	p.drawString(270, 590, "%s" %u.blood_group)
+
+	p.drawString(50, 570, "Phone Number:")
+	p.drawString(270, 570, "%s" %u.student_phone_num)
+
+	p.drawString(50, 550, "Optional Phone Number:")
+	p.drawString(270, 550, "%s" %u.student_optional_phone_num)
+
+	p.drawString(50, 530, "Father's Name:")
+	p.drawString(270, 530, "%s" %u.father_name)
+
+	p.drawString(50, 510, "Mother's Name:")
+	p.drawString(270, 510, "%s" %u.mother_name)
+
+	p.drawString(50, 490, "Parent's Phone Number:")
+	p.drawString(270, 490, "%s" %u.parent_phone_num)
+
+	p.drawString(50, 470, "Parent's Optional Phone Number:")
+	p.drawString(270, 470, "%s" %u.parent_optional_phone_num)
+
+	p.drawString(50, 450, "Permanent Address:")
+	p.drawString(270, 450, "%s" %u.permanent_address)
+
+	p.drawString(50, 430, "Permanent Address Zipcode:")
+	p.drawString(270, 430, "%s" %u.permanent_address_zipcode)
+
+	p.drawString(50, 410, "Local Guardian Name:")
+	p.drawString(270, 410, "%s" %u.local_guardian_name)
+
+	p.drawString(50, 390, "Local Guardian Address:")
+	p.drawString(270, 390, "%s" %u.local_guardian_address)
+
+	p.drawString(50, 370, "Local Guardian Address Zipcode:")
+	p.drawString(270, 370, "%s" %u.local_guardian_address_zipcode)
+
+	p.drawString(50, 350, "Local Guardian Phone Number:")
+	p.drawString(270, 350, "%s" %u.local_guardian_phone_num)
+
+	p.drawString(50, 330, "Local Guardian Optional Phone Number:")
+	p.drawString(270, 330, "%s" %u.local_guardian_optional_phone_num)
+
+	p.drawString(50, 310, "Local Guardian Email:")
+	p.drawString(270, 310, "%s" %u.local_guardian_email)
+
+	p.setFont('Helvetica-Bold', 15)
+	p.drawString(50, 280, "PREVIOUS HOSTEL DETAILS")
+
+	p.setFont('Helvetica', 8)
+	cur = 240
+	try:
+		prev = PreviousHostelDetail.objects.filter(student=alpha)
+		if not prev:
+			p.drawString(50, 260, "No Records Available")
+		else:
+			p.setFont('Helvetica-Bold', 8)
+			p.drawString(50, 260, "S.No     Hostel Name          Room No.          Join Date         Leave Date")
+			ctr = 1
+			p.setFont('Helvetica', 8)
+			for i in prev:
+				p.drawString(50, cur, " %s.         %s           %s            %s        %s" %(ctr, i.hostel_name, i.room_no, i.hostel_join_date, i.hostel_leave_date))
+				ctr = ctr+1
+				cur = cur-20
+	except ObjectDoesNotExist:
+		pass
+	cur = cur-20
+	p.setFont('Helvetica-Bold', 15)
+	p.drawString(50, cur, "DISCIPLINARY ACTIONS")
+	cur = cur-20
+
+	p.setFont('Helvetica', 8)
+	try:
+		crimi = CriminalRecord.objects.filter(student=alpha)
+		if not crimi:
+			p.drawString(50, cur, "No Records Available")
+		else:
+			p.setFont('Helvetica-Bold', 8)
+			p.drawString(50, cur, "S.No     Date of Action          Fine Amount          Paid or not")
+			cur = cur-20
+			ctr = 1
+			p.setFont('Helvetica', 8)
+			for i in crimi:
+				if i.paid:
+					pay = "Yes"
+				else:
+					pay = "No"
+				p.drawString(50, cur, " %s.         %s                %s                            %s" %(ctr, i.date_of_action, i.fine_amount, pay))
+				ctr = ctr+1
+				cur = cur-20
+	except ObjectDoesNotExist:
+		pass
+
+    # Close the PDF object cleanly, and we're done.
+	p.showPage()
+	p.save()
+	return response
+>>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b

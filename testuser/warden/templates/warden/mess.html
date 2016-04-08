@@ -12,12 +12,13 @@
 {% block sidelist %}
 <li><a class="waves-effect" href="{% url 'warden-room' %}">Room</a></li>
 <li><a class="waves-effect" href="{% url 'warden-student' %}">Student</a></li>
-<li><a class="waves-effect" href="{% url 'warden-facilities' %}">Facilities</a></li>
 <li><a class="waves-effect" href="{% url 'warden-council' %}">Council</a></li>
-<li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
-<li><a class="waves-effect" href="{% url 'warden-mess' %}">Mess</a></li>
 <li><a class="waves-effect" href="{% url 'warden-notices' %}">Notices</a></li>
 <li><a class="waves-effect" href="{% url 'wardenViewComplaint' %}">Complaints</a></li>
+<li><a class="waves-effect" href="{% url 'warden-mess' %}">Mess</a></li>
+<li><a class="waves-effect" href="{% url 'warden-facilities' %}">Facilities</a></li>
+<li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
+<li><a class="waves-effect" href="{% url 'wardenViewDefaulters' %}">Defaulters</a></li>
 {% endblock %}
 {% block content %}
 <div class="row">

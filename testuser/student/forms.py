@@ -12,15 +12,32 @@ class CreateStudentForm(forms.ModelForm):
                     self.user_cache = None
                     super(CreateStudentForm, self).__init__(*args, **kwargs)
     def clean(self):
-    	student_phone_num = self.cleaned_data.get('student_phone_num')
-    	parent_phone_num = self.cleaned_data.get('parent_phone_num')
-    	local_guardian_phone_num = self.cleaned_data.get('local_guardian_phone_num')
-    	if len(str(student_phone_num)) == 10 and len(str(parent_phone_num)) == 10 and len(str(local_guardian_phone_num)) == 10:
-    		pass
-    	else:
-    		raise forms.ValidationError('Enter a valid 10 digit phone number')
-    	blood_group = self.cleaned_data.get('blood_group')
-    	return self.cleaned_data
+        student_phone_num = self.cleaned_data.get('student_phone_num')
+        if len(str(student_phone_num)) == 10:
+            pass
+        else:
+            raise forms.ValidationError('Enter your valid 10 digit phone number')
+
+        distance_from_nsit = self.cleaned_data.get('distance_from_nsit')
+        if distance_from_nsit > 0:
+            pass
+        else:
+            raise forms.ValidationError('Enter a valid positive distance from NSIT')            
+
+        parent_phone_num = self.cleaned_data.get('parent_phone_num')
+        if len(str(parent_phone_num)) == 10:
+            pass
+        else:
+            raise forms.ValidationError('Enter your parents valid 10 digit phone number')
+            local_guardian_phone_num = self.cleaned_data.get('local_guardian_phone_num')
+            if local_guardian_phone_num == '':
+                pass
+            else:
+                if len(str(local_guardian_phone_num)) != 10:
+                    raise forms.ValidationError('Enter your local guardians valid 10 digit phone number')
+                else:
+                    pass
+        return self.cleaned_data
     def get_user(self):
         return self.user_cache
     

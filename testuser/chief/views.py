@@ -397,6 +397,7 @@ def searchroom(request):
     else:
         return redirect('logout')
 
+<<<<<<< HEAD
 
 @login_required
 @require_http_methods(['GET', 'POST'])
@@ -463,5 +464,24 @@ def payfine(request,primkey,stu):
 #        return redirect("{% url 'chief-student-profile' stu %}")
  #       return redirect("{% url 'WardenViewStudentProfile' u.username %}")
         return redirect('chief-student-profile',student = stu)
+=======
+def addBank(request):
+    if str(request.user) == 'chiefwarden':
+        f = addBankForm(request.POST or None)
+        mes = None
+        if f.is_valid():
+            kent = f.save(commit=False)
+            kent.name = kent.name.upper()
+            kent.save()
+            mes = 'Bank added successfully'
+        a=Hostels.objects.all();
+        b=[]
+        for i in a:
+            d={'name':i.hostel_name,'id':i.username,'warden_name':i.name,'warden_nu':i.phone}
+            b.append(d)
+        delta = Banks.objects.all()
+        data = {'all_hostels': b,'form':f,'banks':delta}
+        return render(request, 'chief/addBank.html',data)
+>>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
     else:
         return redirect('logout')

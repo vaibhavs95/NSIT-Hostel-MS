@@ -20,7 +20,12 @@ admin.site.register(HostelCouncil)
 admin.site.register(Closures)
 admin.site.register(MessDetail)
 admin.site.register(Notice)
+<<<<<<< HEAD
 admin.site.register(Event)
+=======
+admin.site.register(PaymentDetails)
+admin.site.register(HostelAttachDates)
+>>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
 
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required

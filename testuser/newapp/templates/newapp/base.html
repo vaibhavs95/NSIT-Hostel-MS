@@ -19,7 +19,7 @@
     <header>
         <nav class="indigo">
             <div class="nav-wrapper">
-                <a href="#!" class="brand-logo "><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'>
+                <a href='{% url "base" %}' class="brand-logo "><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'>
                     <div id="header-text-nsit" class="brand-logo flow-text left-align">Netaji Subhas Institue of Technology
                     </div>
                     <div id="header-text-hms" class="brand-logo flow-text left-align">Hostel Management System</div>
@@ -31,7 +31,8 @@
                     <a class='dropdown-button btn login-button' href='#' data-activates='dropdown2'>{{user}}</a>
                                       
                     <ul id='dropdown2' class='dropdown-content'>
-                      <li><a href="{% url 'home' %}">Profile</a></li>
+                      <li><a href="{% url 'home' %}">Profile</a></li>                      
+                      <li><a href="{% url 'newappResetPassword' %}">Reset Password</a></li>
                       <li><a href="{% url 'logout' %}">Logout</a></li>
                     </ul>
                         
@@ -49,6 +50,7 @@
                     
                     <ul id='dropdown3' class='dropdown-content'>
                       <li><a href="{% url 'home' %}">Profile</a></li>
+                      <li><a href="{% url 'newappResetPassword' %}">Reset Password</a></li>
                       <li><a href="{% url 'logout' %}">Logout</a></li>
                     </ul>
                     {% else %}

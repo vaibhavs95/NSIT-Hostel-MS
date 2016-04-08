@@ -45,6 +45,7 @@ urlpatterns = [
     url(r'^student/profile/(?P<student>[0-9]+-[A-Z]+-[0-9]+)/$',views1.StudentProfile,name='WardenViewStudentProfile'),
     url(r'^student/studentlist$',views.printStudentList, name='print-stu-list'),
     url(r'^student/roomlist$',views.printRoomList, name='print-room-list'),
+<<<<<<< HEAD
     url(r'^detach/(?P<target>[0-9A-Z-]*)/$',views1.detachStudent,name = 'wardenDetachStudent'),
     url(r'^disciplineadd/(?P<target>[0-9A-Z-]*)/$',views1.addCriminalRecord,name = 'wardenAddCriminal'),
     #complaints
@@ -58,3 +59,8 @@ urlpatterns = [
     url(r'^event/view/(?P<pk>[0-9]+)/$',views.viewevent, name='event-view'),
 ]
     #url(r'^$', views.ContactView.as_view())
+=======
+    url(r'^student/(?P<student_id>[a-zA-Z0-9=]*)/$',views.printStuDetails, name='print-stu-details'),
+    url(r'^defaulters/$',views1.viewDefaulters, name='wardenViewDefaulters'),
+]
+>>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
