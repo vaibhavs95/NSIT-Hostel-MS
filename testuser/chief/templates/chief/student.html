@@ -69,10 +69,10 @@
 					{% for s in searchedstudent %}
 					<tr>
 						{% if s.freestudent %}
-						<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
-						<td><a href="{% url 'wardenAddCriminal' s.username %}">Add Disciplinary Action</a></td>
+						<td><a href="{% url 'chief-student-profile' s.username %}">{{ s.username }}</a></td>
+						<td><a href="{% url 'chief-add-fine' s.username %}">Add Disciplinary Action</a></td>
 						{% else %}
-						<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
+						<td><a href="{% url 'chief-student-profile' s.username %}">{{ s.username }}</a></td>
 						<td>NA</td>
 						{% endif %}
 					</tr>

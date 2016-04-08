@@ -51,9 +51,8 @@ def handleLogin(request):
             return redirect('warden-home')
         elif re.match("[0-9]*-[A-Za-z0-9]*",str(user))!=None:
             a = Students.objects.get(username = user)
-            alpha = str(base64.b64encode(a.username.encode('utf-8')).decode('utf-8'))
-            data = {'next' : nexturl, 'username': alpha}
-            return redirect('studentid', student_id = alpha)
+            data = {'username': user}
+            return redirect('studentid', student_id = user)
         else:
             return redirect('logout')
     mes = None
@@ -66,21 +65,21 @@ def handleLogin(request):
             try:
                 a = ChiefWarden.objects.get(username = userid)
                 m1 = (subject,message,settings.EMAIL_HOST_USER,[a.email])
-                send_mass_mail((m1,),fail_silently = False)
+                send_mass_mail((m1,),fail_silently = True)
             except ObjectDoesNotExist:
                 pass
         elif re.match("[a-zA-Z0-9_]*warden",str(userid))!=None:
             try:
                 a = Hostels.objects.get(username = userid)
                 m1 = (subject,message,settings.EMAIL_HOST_USER,[a.email])
-                send_mass_mail((m1,),fail_silently = False)
+                send_mass_mail((m1,),fail_silently = True)
             except ObjectDoesNotExist:
                 pass
         elif re.match("[0-9]*-[A-Za-z0-9]*",str(userid))!=None:
             try:
                 a = Students.objects.get(username = userid)
                 m1 = (subject,message,settings.EMAIL_HOST_USER,[a.student_email])
-                send_mass_mail((m1,),fail_silently = False)
+                send_mass_mail((m1,),fail_silently = True)
             except ObjectDoesNotExist:
                 pass
         mes = 'A verification mail has been sent to your registered mail, if userid was valid'
@@ -106,7 +105,7 @@ def home(request):
         a = Students.objects.get(username = a)
         alpha = str(base64.b64encode(a.username.encode('utf-8')).decode('utf-8'))
         #data = {'next' : nexturl, 'username': alpha}
-        return redirect('studentid', student_id = alpha)
+        return redirect('studentid', student_id = a.username)
 
 @require_GET
 def logoutview(request):
@@ -137,7 +136,7 @@ def hostels(request,hostel_name):
         if f.is_valid():
             return redirect('login')
     else:
-        f=LoginForm()
+        f = LoginForm()
     a=Hostels.objects.all();
     b=[]
     for i in a:
@@ -157,12 +156,6 @@ def hostels(request,hostel_name):
             d = {'fac': i, 'photo': None}
         facilities.append(d)
     data['facilities'] = facilities
-        #data['name'] = user.name
-        #data['phone'] = user.phone
-        #data['landline'] = user.landline
-        #data['email'] = user.email
-        #data['dept'] = user.department
-        #data['portfolio'] = user.portfolio
     data['total_rooms'] = capacity(h.username)
     data['rooms_available'] = capacityremaining(h.username)
     if h.warden_photo:
@@ -186,6 +179,8 @@ def hostels(request,hostel_name):
         d = {'hosf': i}
         hosform.append(d)
     data['hosform'] = hosform
+    n = (Notice.objects.filter(creator = h.username)).order_by('time')
+    data['notices'] = n
     messdetail = MessDetail.objects.filter(hostel=h)
     if messdetail:
         data['mess'] = messdetail[0]

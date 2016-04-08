@@ -26,144 +26,143 @@
 {% endblock %}
 {% block content %}
 <div class="row">
-	<div class="col s12 m12 l12">
-		<div class="card-panel">
-		{% if mes %}
-			<p>
-				{{ mes }}
-			</p>
-		{% endif %}
-		<h3>Rooms</h3>
-		<div class="row card" id="searchcard">
-		<h5> Search Room </h5>
-		<hr>
-			<div class="col s12 m6 l6">
-			<form method="post" action="{% url 'warden-search-room' %}">
-				{% csrf_token %}
-				{% form form=searchroomform %}
-				{% endform %}
-				<button type="submit" name="search-room" class="btn waves-effect waves-light left"><i class="material-icons">search</i></button>
-			</form>
+	<h3>Rooms</h3>
+	<hr>
+	<div class="col s12">
+		<ul class="tabs">
+			<li class="tab col s4"><a class="active" href="#search">Search Room</a></li>
+			<li class="tab col s4"><a class="" href="#add">Add Room</a></li>
+			<li class="tab col s4"><a class="" href="#view">View Room</a></li>
+		</ul>
+	</div>
+	{% if mes %}
+	<p>
+		<script type="text/javascript">
+			toast({{ mes }});
+		</script>
+		{{ mes }}
+	</p>
+	<script>
+		function toast(message){
+			Materialize.toast(message, 4000)
+		}
+	</script>
+	{% endif %}
+	<div class="col s12 m12 l12" id="search">
+		<div class="card addcard" >
+			<div class="row">
+				<h5> Search Room </h5>
+				<hr>
+				<div class="col s12 m6 l6">
+					<form method="post" action="{% url 'warden-search-room' %}">
+						{% csrf_token %}
+						{% form form=searchroomform %}
+						{% endform %}
+						<button type="submit" name="search-room" class="btn waves-effect waves-light left"><i class="material-icons">search</i></button>
+					</form>
+				</div>
+				{% if searchedroom %}
+				<table class="centered bordered">
+					<thead>
+						<tr>
+							<th data-field="id">Room Number</th>
+							<th data-field="name">Capacity of Room</th>
+							<th data-field="name">Capacity Available</th>
+							<th data-field="name">Students</th>
+							<th data-field="name">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{ searchedroom.room.room_no }}</td>
+							<td>{{ searchedroom.room.capacity_of_room }}</td>
+							<td>{{ searchedroom.room.capacity_remaining }}</td>
+							<td>
+								{% for s in searchedroom.students %}
+								<a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></br> 
+								{% endfor %}
+							</td>
+							<td><a href="#!" onclick="myFunction('{{ searchedroom.room.room_no }}','{{ searchedroom.room.pk }}')">Delete Room</a></td>
+						</tr>
+					</tbody>
+				</table>
+				{% endif %}
+				{% if searchedroomnotfound %}
+				<p>Room Not Found.</p>
+				{% endif %}
 			</div>
-			{% if searchedroom %}
-				<table class="centered bordered">
-				<thead>
-					<tr>
-						<th data-field="id">Room Number</th>
-						<th data-field="name">Capacity of Room</th>
-						<th data-field="name">Capacity Available</th>
-						<th data-field="name">Students</th>
-						<th data-field="name">Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>{{ searchedroom.room.room_no }}</td>
-						<td>{{ searchedroom.room.capacity_of_room }}</td>
-						<td>{{ searchedroom.room.capacity_remaining }}</td>
-						<td>
-						{% for s in searchedroom.students %}
-						<a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></br> 
-						{% endfor %}
-						</td>
-						<td><a href="#!" onclick="myFunction('{{ searchedroom.room.room_no }}','{{ searchedroom.room.pk }}')">Delete Room</a></td>
-					</tr>
-				</tbody>
-				</table>
-			{% endif %}
-<!--			{% if searchedroomhistory %}
-				<table class="centered bordered">
-				<thead>
-					<tr>
-						<th data-field="id">Room Number</th>
-						<th data-field="name">Capacity of Room</th>
-						<th data-field="name">Capacity Available</th>
-						<th data-field="name">Students</th>
-						<th data-field="name">Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>{{ searchedroom.room.room_no }}</td>
-						<td>{{ searchedroom.room.capacity_of_room }}</td>
-						<td>{{ searchedroom.room.capacity_remaining }}</td>
-						<td>
-						{% for s in searchedroom.students %}
-						<a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></br> 
-						{% endfor %}
-						</td>
-						<td><a href="#!" onclick="myFunction('{{ searchedroom.room.room_no }}','{{ searchedroom.room.pk }}')">Delete Room</a></td>
-					</tr>
-				</tbody>
-				</table>
-			{% endif %}-->
-			{% if searchedroomnotfound %}
-			<p>Room Not Found.</p>
-			{% endif %}
-		</div>
-			<ul class="collapsible" data-collapsible="accordion">
-		    <li>
-		      <div class="collapsible-header active"><i class="material-icons">keyboard_arrow_down</i>Add Room</div>
-		      <div class="collapsible-body">
-				<form method="post" action="{% url 'warden-add-room' %}">
-					{% csrf_token %}
-					<input type="hidden" name="next" value="{{ next }}" />
-					{% form form=addroomform %}
-					{% endform %}
-					<div class="row">
-						<div class="col s12"> 
-							<button type="submit" name="add-room" class="btn waves-effect waves-light left">Add Room</button>
-						</div>
-					</div>
-				</form>
-		      </div>
-		    </li>
-		  	</ul>
-			{% if roomfulllist %}
-					<a class="btn" href="{% url 'warden-room' %}"> Hide All Rooms</a><br><br>
-					<a class="btn" href = "{%url 'print-room-list' %}"> Print This List</a>
-				<table class="centered striped">
-				<thead>
-					<tr>
-						<th data-field="id">Room Number</th>
-						<th data-field="name">Capacity of Room</th>
-						<th data-field="name">Capacity Available</th>
-						<th data-field="name">Students</th>
-						<th data-field="name">Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for r in rooms %}
-					<tr>
-						<td>{{ r.room.room_no }}</td>
-						<td>{{ r.room.capacity_of_room }}</td>
-						<td>{{ r.room.capacity_remaining }}</td>
-						<td>
-						{% for s in r.students %}
-						<a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></br> 
-						{% endfor %}
-						</td>
-						<td><a href="#" onclick="myFunction('{{ r.room.room_no }}','{{ r.room.pk }}')">Delete Room</a></td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-			{% else %}
-				<a class="btn" href="{% url 'warden-room-full' %}"> View All Rooms</a>
-			{% endif %}
-			{% if studentinroom %}
-			<script type="text/javascript">
-				alert("Room cannot be deleted as student is already there in that room.");
-			</script>
-			{% endif %}
-			{% if studentnotinroom %}
-			<script type="text/javascript">
-				alert("Room deleted Successfully");
-			</script>
-			{% endif %}
-			
 		</div>
 	</div>
+	<div class="col s12 m12 l12" id="add">
+		<div class="card addcard">
+			<h5>Search Room</h5>
+			<hr>
+			<form method="post" action="/warden/room/add/#add">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ next }}" />
+				{% form form=addroomform %}
+				{% endform %}
+				<div class="row">
+					<div class="col s12"> 
+						<button type="submit" name="add-room" class="btn waves-effect waves-light left">Add Room</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="col s12 m12 l12" id="view">
+	<div class="card addcard">
+	<h5>View Room</h5>
+	<hr>
+	{% if roomfulllist %}
+	<a class="btn" href="/warden/room/#view"> Hide All Rooms</a><br><br>
+	<a class="btn" href = "{%url 'print-room-list' %}"> Print This List</a>
+	<table class="centered striped">
+		<thead>
+			<tr>
+				<th data-field="id">Room Number</th>
+				<th data-field="name">Capacity of Room</th>
+				<th data-field="name">Capacity Available</th>
+				<th data-field="name">Students</th>
+				<th data-field="name">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for r in rooms %}
+			<tr>
+				<td>{{ r.room.room_no }}</td>
+				<td>{{ r.room.capacity_of_room }}</td>
+				<td>{{ r.room.capacity_remaining }}</td>
+				<td>
+					{% for s in r.students %}
+					<a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></br> 
+					{% endfor %}
+				</td>
+				<td><a href="#" onclick="myFunction('{{ r.room.room_no }}','{{ r.room.pk }}')">Delete Room</a></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% else %}
+	<a class="btn" href="/warden/room/all/#view"> View All Rooms</a>
+	{% endif %}
+	</div>
+	</div>
+
+	{% if studentinroom %}
+	<script type="text/javascript">
+		alert("Room cannot be deleted as student is already there in that room.");
+	</script>
+	{% endif %}
+	
+	{% if studentnotinroom %}
+	<script type="text/javascript">
+		alert("Room deleted Successfully");
+	</script>
+	{% endif %}
+
+</div>
+</div>
 </div>
 {% endblock %}
 {% block script %}
@@ -176,9 +175,7 @@
 	function myFunction(rno,rid) {
 		a = "Delete Room '"+rno+"' ?"
 		if (confirm(a) == true) {
-			console.log('url called')
 			window.location = "/warden/room/delete/"+rid
-			console.log('url called again')
 		}
 	}
 </script>

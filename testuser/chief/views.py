@@ -149,7 +149,7 @@ def notices(request):
                 a.creator = 'chiefwarden'
                 a.file = request.FILES['file']
                 a.save();
-                SendNoticeMail(request.FILES['file'].name,f.cleaned_data.get('title'))
+                #SendNoticeMail(request.FILES['file'].name,f.cleaned_data.get('title'))
                 mes = 'Notice added successfully'
             else:
                 f=AddNoticeForm()
@@ -192,7 +192,7 @@ def delNotice(request,target):
     
 def StudentProfile(request,student):
     # pass
-    alpha = request.user
+    alpha = str(request.user)
     if alpha == 'chiefwarden':
         a=Hostels.objects.all();
         b=[]
@@ -203,15 +203,15 @@ def StudentProfile(request,student):
         prev = None
         crimi = None
         try:
-            prev = PreviPreviousHostelDetail.objects.filter(student = student)
+            prev = PreviousHostelDetail.objects.filter(student = u)
         except ObjectDoesNotExist:
             pass
         try:
-            crimi = CriminalRecord.objects.filter(student = student)
+            crimi = CriminalRecord.objects.filter(student = u)
         except ObjectDoesNotExist:
             pass
-        data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi}
-        return render(request,'chief/studentProfile.html',data)
+        data = {'all_hostels': b,'student':'yes', 'username': u.username ,'s': u,'prev':prev,'crim':crimi}
+        return render(request,'chief/studentprofile.html',data)
     else:
         return redirect('logout')
 
@@ -394,5 +394,74 @@ def searchroom(request):
             f = SearchHostelRoomForm()
             data['searchroomform'] = f
             return render(request, 'chief/room.html', data)
+    else:
+        return redirect('logout')
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def addfine(request,student):
+    basic()
+    s = Students.objects.get(username = student)
+    crimi = None
+    if re.match("chiefwarden",str(request.user))!=None:
+        if request.method == 'POST':
+            print(request.FILES)
+            f = AddCriminalForm(request.POST,request.FILES)
+            if f.is_valid():
+                delta = f.save(commit = False)
+                delta.student = s
+                delta.file = request.FILES['file']
+                url = 'http://127.0.0.1:8000'+delta.file.url
+                subject_pa = 'NSIT-HMS Disciplinary action against your ward'
+                message_pa = '''Disciplinary actions have been taken against your ward for not following the code of conduct of the hostels properly.
+                    Refer to this <a href = '%s '> link </a> for more details.'''%(url)
+                subject = 'NSIT-HMS, Disciplinary action taken against you'
+                message = '''Disciplinary actions have been taken against you for not following the code of conduct of the hostels properly.
+                    Refer to this <a href = '%s '> link </a> for more details.'''%(url)
+                m1 = (subject_pa,message_pa,settings.EMAIL_HOST_USER,[s.parent_email,])
+                m2 = (subject,message,settings.EMAIL_HOST_USER,[s.student_email,])
+                try:
+                    send_mass_mail((m1,m2,),fail_silently = True)
+                except:
+                    pass
+                delta.save()
+                try:
+                    crimi = CriminalRecord.objects.filter(student = s)
+                    data['crimi'] = crimi
+                except ObjectDoesNotExist:
+                    pass
+                data['stu'] = s.username
+                data['form']=f
+                return render(request, 'chief/studentprofile.html', data)
+            else:
+                try:
+                    crimi = CriminalRecord.objects.filter(student = s)
+                    data['crimi'] = crimi
+                except ObjectDoesNotExist:
+                    pass
+                data['stu'] = s.username
+                data['form']=f
+                return render(request,'chief/addfine.html',data)
+        else:
+            f = AddCriminalForm()
+            try:
+                crimi = CriminalRecord.objects.filter(student = s)
+                data['crimi'] = crimi
+            except ObjectDoesNotExist:
+                pass
+            data['stu'] = s.username
+            data['form']=f
+            return render(request,'chief/addfine.html',data)
+    else:
+        return redirect('logout')
+def payfine(request,primkey,stu):
+    if str(request.user) == "chiefwarden":
+        delta = CriminalRecord.objects.get(pk = primkey)
+        delta.paid = True
+        delta.save()
+#        return redirect("{% url 'chief-student-profile' stu %}")
+ #       return redirect("{% url 'WardenViewStudentProfile' u.username %}")
+        return redirect('chief-student-profile',student = stu)
     else:
         return redirect('logout')

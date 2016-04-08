@@ -1,0 +1,32 @@
+{% extends "newapp/home.html" %}
+{% load staticfiles %}
+{% load material_form %}
+{% block title %} HMS-Event{% endblock %}
+
+{% block extrahead %}
+{% endblock %}
+
+{% block extrastyle %}
+<style>
+	.material-placeholder, .materialboxed{
+		display: inline;
+	}
+</style>
+{% endblock %}
+
+{% block sidelist %}
+{% endblock %}
+{% block content %}
+	<h3>{{ event.title }}</h3>
+	<hr>
+	<h5>Event Description: </h5>
+	<p>{{ event.description }}</p>
+	<h5>Event Photo(s): </h5>
+		{% for p in ephotos %}
+		<img class="materialboxed" width="200" src="{{ p.image.url }}">
+		
+		{% endfor %}
+{% endblock %}
+
+{% block script %}
+{% endblock %}

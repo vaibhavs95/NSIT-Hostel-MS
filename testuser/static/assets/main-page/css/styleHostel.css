@@ -1,6 +1,9 @@
 /******
 Header
 ******/
+.addcard{
+	padding: 2%;
+}
 .squarepic{
 	width: 200px;
 	height: 200px;
@@ -12,6 +15,16 @@ Header
 	background-position: center center;
 		background-size: cover;
 }
+.facpic{
+		width: 200px;
+		height: 200px;
+		border: 1px solid;
+		margin-left: 20%;
+		margin-top: 10%;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: cover;
+	}
 .profilepic{
 		width: 180px;
 		height: 180px;

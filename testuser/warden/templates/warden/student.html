@@ -30,6 +30,7 @@
 {% block content %}
 <div class="row">
 	<h3>Students</h3>
+	<hr>
 	<div class="col s12">
 		<ul class="tabs">
 			<li class="tab col s4"><a class="active" href="#search">Search Student</a></li>
@@ -79,7 +80,7 @@
 					<tr>
 						{% if s.mystudent %}
 						<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
-						<td><a href="{% url 'warden-edit-student' s.id %}">Edit Student Details</a></td>
+						<td><a href="{% url 'warden-edit-student' s.username %}">Edit Student Details</a></td>
 						<td><a href="{% url 'wardenDetachStudent' s.username %}">Detach Student</a></td>
 						<td><a href="{% url 'wardenAddCriminal' s.username %}">Add Disciplinary Action</a></td>
 						{% elif s.freestudent %}
@@ -140,13 +141,14 @@
 					{% for s in students %}
 					<tr>
 						<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
-						<td>{{ s.room.room_no }}</td>
-						<td>{{ s.room.capacity_of_room }}</td>
-						<td>{{ s.room.capacity_remaining }}</td>
-						<td><a href="{% url 'warden-edit-student' s.id %}">Edit Student Details</a></td>
+						<td>{{ s.room_number }}</td>
+						<td>{{ s.room_number.capacity_of_room }}</td>
+						<td>{{ s.room_number.capacity_remaining }}</td>
+						<td><a href="{% url 'warden-edit-student' s.username %}">Edit Student Details</a></td>
 						<td><a href="{% url 'wardenDetachStudent' s.username %}">Detach Student</a></td>
 						<td><a href="{% url 'wardenAddCriminal' s.username %}">Add Disciplinary Action</a></td>
 					</tr>
+					
 					{% endfor %}
 				</tbody>
 			</table>

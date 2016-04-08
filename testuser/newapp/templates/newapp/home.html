@@ -71,10 +71,11 @@
 				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
 				<div class="collapsible-body">
 					<ul id="colBod">
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#main">Basic Info.</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id}}/#forms">Forms</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#notices">Notices</a></li>
 						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#facilities">Facilities</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#basicInfo">Basic Info.</a></li>
-						<li><a class="waves-effect" href={{ the_url }}>Forms</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#messs">Mess</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#mess">Mess</a></li>
 					</ul>
 				</div>
 			</li>

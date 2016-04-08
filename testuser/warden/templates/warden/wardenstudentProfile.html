@@ -292,8 +292,8 @@
 				<th >
 					Paid
 				</th>
-				<th >
-					Description
+				<th>
+					
 				</th>
 			</tr>
 				
@@ -316,6 +316,11 @@
 					Yes
 					{% else %}
 					No
+					{% endif %}
+				</td>
+				<td>
+					{% if i.paid == False %}
+					<a href="{% url 'WardenPayFine' i.pk i.student %}">Pay</a>
 					{% endif %}
 				</td>
 				<td >{{ i.description }}</td></tr>

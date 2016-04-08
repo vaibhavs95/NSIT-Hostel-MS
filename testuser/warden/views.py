@@ -3,6 +3,7 @@ import os
 import base64
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
+from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods, require_GET, require_POST
 from django.contrib.auth import login, logout, authenticate
@@ -284,52 +285,6 @@ def searchroom(request):
 			return render(request, 'warden/room.html', data)
 	else:
 		return redirect('logout')
-'''@login_required
-@require_http_methods(['GET', 'POST'])
-def searchroomhistory(request):
-	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
-		h = Hostels.objects.get(username=request.user)
-		roombasic()
-		searchedroomhistory = []
-		if request.method == 'POST':
-			f = SearchRoomForm(request.POST)
-			if f.is_valid():
-				room_no = f.cleaned_data.get('room_no')
-				room_no = room_no.upper()
-				his = []
-				try:
-					his = PreviousHostelDetail.objects.filter(hostel_name = h.hostel_name, room_no = room_no)
-				except:
-					pass
-				if(len(his) < 1):
-					data['searchedroomnotfound'] = 'yes'
-				if not data['searchedstudentnotfound']:
-					for k in his:
-						a = Rooms.objects.get(hostel=h, room_no=k.room_no)
-						s = Students.objects.filter(room_number=a)
-						student = []
-						for j in s:
-							p = {'username': j.username, 'id': base64.b64encode(
-							    j.username.encode('utf-8'))}
-							student.append(p)
-						d = {'room': a, 'students': student}
-						searchedroomhistory.append(d)
-				if len(searchedroomhistory) > 1:
-					data['searchedroomhistory'] = searchedroomhistory
-				else:
-					data['searchedroomhistory'] = None
-				data['searchroomhistoryform'] = f
-				return render(request, 'warden/room.html', data)
-			else:
-				data['searchroomhistoryform'] = f
-				return render(request, 'warden/room.html', data)
-		else:
-			f = SearchRoomForm()
-			data['searchroomhistoryform'] = f
-			return render(request, 'warden/room.html', data)
-	else:
-		return redirect('logout')
-'''
 
 #######
 
@@ -506,7 +461,6 @@ def addcouncil(request):
 					    'position'), committee=f.cleaned_data.get('committee'), hostel=Hostels.objects.get(username=request.user))
 				coun.save()
 				councilbasic(request.user)
-			f = AddCouncilForm()
 			data['addcouncilform'] = f
 			return render(request, 'warden/council.html', data)
 		else:
@@ -836,18 +790,10 @@ def studentall(request):
 	studentbasic(request.user)
 	user = request.user
 	h = Hostels.objects.get(username=user)
-	r = Rooms.objects.filter(hostel=h)
-	student = []
-	for i in r:
-		s = Students.objects.filter(room_number=i)
-		for j in s:
-			p = {'room': i, 'username': j.username,
-				'id': base64.b64encode(j.username.encode('utf-8'))}
-			student.append(p)
-	data['students'] = student
+	s = Students.objects.filter(room_number__hostel = h)
+	data['students'] = s
 	data['studentfulllist'] = 'yes'
 	return render(request, 'warden/student.html', data)
-
 
 @login_required
 @require_http_methods(['GET', 'POST'])
@@ -883,7 +829,7 @@ def addstudent(request):
 					base64.b64encode(username.encode('utf-8')).decode('utf-8')
 				message = ''' Welcome To NSIT Hostel Management System. Click <a href= '%s'>here </a> to fill your details ''' % url
 				email = EmailMessage('Welcome to NSIT-HMS', message, to=[student_email])
-				email.send()
+				#email.send()
 				s.save()
 				user.save()
 				room_number.capacity_remaining -= 1
@@ -913,12 +859,13 @@ def addstudent(request):
 @login_required
 @require_http_methods(['GET', 'POST'])
 def editstudent(request, student):
-	alpha = str(base64.b64decode(student))
-	alpha = alpha[2:11]
 	basic()
-	#studentbasic()
 	h = Hostels.objects.get(username=request.user)
-	u = Students.objects.get(username=alpha)
+	try:
+		u = Students.objects.get(username=student)
+	except:
+		return redirect('warden-student')
+	oldusername = u.username
 	if u.room_number:
 		if u.room_number.hostel == h:
 			pass
@@ -930,11 +877,11 @@ def editstudent(request, student):
 	if re.match("[bg]h[0-9]+warden", str(user)) != None:
 		if request.method == 'POST':
 			f = EditStudentForm(
-				request.POST or None, request.FILES, user=request.user, username=alpha, instance=u)
+				request.POST or None, request.FILES, user=request.user, username=student, instance=u)
 			if f.is_valid():
 				if request.FILES.__contains__('student_photo'):
 					ext = request.FILES['student_photo'].name.split('.')[-1]
-					filename = alpha
+					filename = student
 					path = settings.MEDIA_ROOT + "/student/images/" + \
 						str(filename) + "." + str(ext)
 					try:
@@ -943,14 +890,25 @@ def editstudent(request, student):
 						pass
 					f.student_photo = request.FILES['student_photo']
 				f.save()
+				#a = f.save(commit = False)
+				#print(u)
+				#print(a)
+				#print(u.username)
+				newusername = f.cleaned_data.get('username')
+				print(newusername)
+				s = MyUser.objects.get(userid = oldusername)
+				s.userid = newusername
+				#a.username = newusername
+				s.save()
+				#a.save()
 				prev = None
 				crimi = None
 				try:
-					prev = PreviousHostelDetail.objects.filter(student=alpha)
+					prev = PreviousHostelDetail.objects.filter(student=u)
 				except ObjectDoesNotExist:
 					pass
 				try:
-					i = CriminalRecord.objects.filter(student=alpha)
+					i = CriminalRecord.objects.filter(student=u)
 				except ObjectDoesNotExist:
 					pass
 				data['student'] = 'yes'
@@ -958,20 +916,19 @@ def editstudent(request, student):
 				data['s'] = u
 				data['prev'] = prev
 				data['crim'] = crimi
-				return render(request, 'student/students/studentProfile.html', data)
+				return render(request, 'warden/wardenstudentProfile.html', data)
 			else:
 				data['form'] = f
 				data['student'] = None
 				data['username'] = student
-				return render(request, 'student/students/home.html', data)
+				return render(request, 'warden/editstudent.html', data)
 		else:
-			f = EditStudentForm(user=request.user, username=alpha, instance=u)
-			data['student'] = 'yes'
-			data['username'] = student
-			data['s'] = u
+			f = EditStudentForm(user=request.user, username=student, instance=u)
+			#data['student'] = 'yes'
+			#data['s'] = u
 			data['form'] = f
 			data['username'] = student
-			return render(request, 'student/students/home.html', data)
+			return render(request, 'warden/editstudent.html', data)
 	else:
 		return redirect('logout')
 
@@ -995,14 +952,12 @@ def searchstudentrollno(request):
 				if not data['searchedstudentnotfound']:
 					if sx.room_number:
 						if sx.room_number.hostel == h:
-							p = {'username':sx.username, 'id':base64.b64encode(sx.username.encode('utf-8')),'mystudent':'yes'}
+							p = {'username':sx.username,'mystudent':'yes'}
 						else:
-							p = {'username':sx.username, 'id':base64.b64encode(sx.username.encode('utf-8'))}
+							p = {'username':sx.username,}
 					else:
-						p = {'username':sx.username, 'id':base64.b64encode(sx.username.encode('utf-8')),'freestudent':'yes'}
+						p = {'username':sx.username, 'freestudent':'yes'}
 					searchedstudent.append(p)
-					#else:
-					#    data['searchedstudentnotfound'] = 'yes'
 				data['searchedstudent'] = searchedstudent
 				data['searchstudentrollnoform'] = f
 				print(data)
@@ -1177,3 +1132,124 @@ def printRoomList(request):
 	response.write(buff.getvalue())
 	buff.close()
 	return response
+
+
+#######
+'''
+Complaints
+'''
+#######
+@login_required
+@require_http_methods(['GET', 'POST'])
+def forwardcomplaint(request,pk):
+	if re.match("[bg]h[0-9]+warden",str(request.user))!=None:
+		basic()
+		data['pk'] = pk
+		c = Complaints.objects.get(pk=pk)
+		if request.method == 'POST':
+			f = ForwardComplaintForm(request.POST)
+			if f.is_valid():
+				subject = f.cleaned_data.get('subject')
+				body = f.cleaned_data.get('body')
+				to = f.cleaned_data.get('forward_to')
+				try:
+					send_mail(subject, body, settings.EMAIL_HOST_USER, [to,], fail_silently=False)
+					c.forwarded = True
+					c.save()
+				except:
+					pass
+				return redirect('wardenViewComplaint')
+			else:
+				data['forwardcomplaintform'] = f
+				return render(request,'warden/forwardcomplaint.html',data)
+		else:
+			subject = 'Complaint in '+str(c.hostel.hostel_name)
+			body = 'There is Complaint in '+str(c.hostel.hostel_name)+'\n\nPlease take a swift action to resolve it.\n\nComplaint : '+ str(c.description)+'\n Date of Complaint : '+str(c.date_of_complaint)+'\n\nWarden,'+str(c.hostel.hostel_name)
+			test = {'subject' : subject, 'body': body}
+			f = ForwardComplaintForm(initial = test)
+			data['pk'] = pk
+			data['forwardcomplaintform'] = f
+			return render(request, 'warden/forwardcomplaint.html',data)
+	else:
+		return redirect('logout')
+
+#############
+'''
+Events
+'''
+#############
+def eventbasic(user):
+	#basic()
+	h = Hostels.objects.get(username=user)
+	data['events'] = Event.objects.filter(hostel=h)
+	f = AddEventForm()
+	data['form'] = f
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def event(request):
+	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
+		eventbasic(request.user)
+		return render(request, 'warden/event.html', data)
+	else:
+		return redirect('logout')
+'''
+from django.views.generic.edit import FormView, CreateView
+
+from .forms import ContactForm
+from .models import Message
+
+
+class ContactView(CreateView):
+    model = Message
+    form_class = ContactForm
+    template_name = 'contact_form/form.html'
+    success_url = '?success'
+'''
+@login_required
+@require_http_methods(['GET', 'POST'])
+def addevent(request):
+	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
+		eventbasic(request.user)
+		print('here')
+		f = AddEventForm(request.POST, request.FILES,user=request.user)
+		if request.method == 'POST':
+			if f.is_valid():
+				f.save()
+				eventbasic(request.user)
+			data['form'] = f
+			return render(request, 'warden/event.html', data)
+		else:
+			return redirect('warden-event')
+	else:
+		return redirect('logout')
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def deleteevent(request, pk):
+	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		print(pk)
+		h = Hostels.objects.get(username=request.user)
+		img = Images.objects.filter(event__hostel = h)
+		for i in img:
+			i.image.delete(True)
+		e = Event.objects.get(pk=pk)
+		e.delete()
+		return redirect('warden-event')
+	else:
+		return redirect('logout')
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def viewevent(request, pk):
+	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		print(pk)
+		basic()
+		e = Event.objects.get(pk=pk)
+		data['event'] = e
+		data['ephotos'] = Images.objects.filter(event = e)
+		return render(request,'newapp/eventpage.html',data)
+	else:
+		return redirect('logout')

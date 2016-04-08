@@ -20,22 +20,22 @@ from .forms import *
 @login_required
 @require_http_methods(['GET', 'POST'])
 def completeStudent(request, student_id):
-    alpha =  str(base64.b64decode(student_id))
-    alpha = alpha[2:-1]
-    u = Students.objects.get(username= alpha)
+    #alpha =  str(base64.b64decode(student_id))
+    #alpha = alpha[2:-1]
+    u = Students.objects.get(username= student_id)
     a=Hostels.objects.all();
     b=[]
     for i in a:
         d={'name':i.hostel_name,'id':i.username}
         b.append(d)
-    if re.match("[0-9]+-[a-zA-Z0-9]*",alpha)!=None:
+    if re.match("[0-9]+-[a-zA-Z0-9]*",student_id)!=None:
         if request.method == 'POST':
-            u = Students.objects.get(username = alpha)
+            u = Students.objects.get(username = student_id)
             f = CreateStudentForm(request.POST or None, request.FILES, instance = u)
             if f.is_valid():
                 if request.FILES.__contains__('student_photo'):
                     ext = request.FILES['student_photo'].name.split('.')[-1]
-                    filename = alpha
+                    filename = student_id
                     path = settings.MEDIA_ROOT + "/student/images/" + str(filename) + "." + str(ext)
                     try:
                         os.remove(path)
@@ -46,11 +46,11 @@ def completeStudent(request, student_id):
                 prev = None
                 crimi = None
                 try:
-                    prev = PreviousHostelDetail.objects.filter(student = alpha)
+                    prev = PreviousHostelDetail.objects.filter(student = u)
                 except ObjectDoesNotExist:
                     pass
                 try:
-                    crimi = CriminalRecord.objects.filter(student = alpha)
+                    crimi = CriminalRecord.objects.filter(student = u)
                 except ObjectDoesNotExist:
                     pass
                 data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi}
@@ -60,15 +60,15 @@ def completeStudent(request, student_id):
                 return render(request,'student/students/home.html',data)
 
         else:
-            u = Students.objects.get(username=alpha)
+            u = Students.objects.get(username=student_id)
             prev = None
             crimi = None
             try:
-                prev = PreviousHostelDetail.objects.filter(student = alpha)
+                prev = PreviousHostelDetail.objects.filter(student = u)
             except ObjectDoesNotExist:
                 pass
             try:
-                crimi = CriminalRecord.objects.filter(student = alpha)
+                crimi = CriminalRecord.objects.filter(student = u)
             except ObjectDoesNotExist:
                 pass
             data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi}
@@ -82,9 +82,9 @@ def completeStudent(request, student_id):
 
 def printPDF(request, student_id, student_name):
     print ("Hello")
-    alpha =  str(base64.b64decode(student_id))
-    alpha = alpha[2:-1]
-    u = Students.objects.get(username=alpha)
+    #alpha =  str(base64.b64decode(student_id))
+    #alpha = alpha[2:-1]
+    u = Students.objects.get(username=student_id)
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="Student Profile.pdf"'
 

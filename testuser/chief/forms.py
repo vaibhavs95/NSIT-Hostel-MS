@@ -3,6 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate
 from newapp.models import *
 import re
+from django.contrib.admin.widgets import AdminDateWidget
 
 class CreateWardenForm(forms.Form):
     userid = forms.CharField(max_length = 254,required = True)
@@ -101,3 +102,10 @@ class SearchHostelRoomForm(forms.Form):
         return self.cleaned_data
 
 
+class AddCriminalForm(forms.ModelForm):
+    class Meta:
+        model = CriminalRecord
+        exclude = ['student']
+        widgets = {
+            'date_of_action':AdminDateWidget(),
+        }

@@ -1,0 +1,37 @@
+{% extends "newapp/home.html" %}
+{% load staticfiles %}
+{% load material_form %}
+{% block title %} ChiefWarden - HMS {% endblock %}
+
+{% block extrahead %}
+{% endblock %}
+
+{% block extrastyle %}
+{% endblock %}
+
+{% block sidelist %}
+<li><a href="/chiefwarden/branch/">Branches</a></li>
+<li><a href="/chiefwarden/notices/">Notices</a></li>
+<li><a href="/chiefwarden/room/">Room</a></li>
+<li><a href="/chiefwarden/student/">Student</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+<div class="col s12">
+<h3>Add Disciplinary Action/Fine</h3>
+<hr>
+<div class="card addcard">
+	<h5 class="center blue-text"> {{ stu }} </h5>
+	<form method="post" action="{% url 'chief-add-fine' stu %}" enctype="multipart/form-data">
+		{% csrf_token %}
+		{% form form=form %}
+		{% endform %}
+		<button type="submit" name="attach-student" class="btn waves-effect waves-light">Add Disciplinary Action</button>
+	</form>
+</div>
+</div>
+</div>
+{% endblock %}
+{% block script %}
+{% endblock %}

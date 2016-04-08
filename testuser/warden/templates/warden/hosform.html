@@ -21,67 +21,83 @@
 {% endblock %}
 {% block content %}
 <div class="row">
-	<div class="col s12 m12 l12">
-		<div class="card-panel">
-		<h3>Forms</h3>
-			<ul class="collapsible" data-collapsible="accordion">
-		    <li>
-		      <div class="collapsible-header active">Add Form</div>
-		      <div class="collapsible-body">
-				<form method="post" action="{% url 'warden-add-hosform' %}" enctype="multipart/form-data">
-					{% csrf_token %}
-					<input type="hidden" name="next" value="{{ next }}" />
-					{% form form=addhosformform %}
-					{% endform %}
-					<div class="row">
-						<div class="col s12"> 
-							<button type="submit" name="add-hosform" class="btn waves-effect waves-light left">Add Form</button>
-						</div>
-					</div>
-				</form>
-		      </div>
-		    </li>
-		    {% if editformvisible %}
-		    <li>
-		      <div class="collapsible-header active">Edit Form</div>
-		      <div class="collapsible-body">
-				<form method="post" action="{% url 'warden-edit-hosform'  pk %}" enctype="multipart/form-data">
-					{% csrf_token %}
-					<input type="hidden" name="next" value="{{ next }}" />
-					{% form form=edithosformform %}
-					{% endform %}
-					<div class="row">
-						<div class="col s12"> 
-							<button type="submit" name="edit-hosform" class="btn waves-effect waves-light left">Edit Form</button>
-							<a class="btn waves-effect waves-light right" href="{% url 'warden-hosform' %}">Cancel</a>
-						</div>
-					</div>
-				</form>
-		      </div>
-		    </li>
-		    {% endif %}
-		  	</ul>
-		  	{% for h in hosform %}
-			  	<div class="card">
-	            <div class="card-content black-text row">
-	            <div class="col s12 l6 m6">
-	              <span class="card-title deep-orange-text">{{ h.hosf.title }}</span>
-	              <p class="brown-text text-darken-2"><a href="{{ h.hosf.file.url }}" target="__blank">View File Here</a></p>
-	            </div>
-	            </div>
-	            <div class="card-action">
-	              <a class="blue-text" href="/warden/hosform/edit/{{ h.hosf.pk }}/">Edit Form</a>
-	              <a class="blue-text" href="#" onclick="myFunction('{{ h.hosf.title }}','{{ h.hosf.pk }}')">Delete Form</a>
-	            </div>
-	          	</div>
-			{% endfor %}
-			{% if hosform_added %}
-			<script type="text/javascript">
-				alert("Form added successfully.");
-			</script>
+	<h3>Forms</h3>
+	<hr>
+	<div class="col s12">
+		<ul class="tabs">
+			<li class="tab col s4"><a class="" href="#add">Add Form</a></li>
+			{% if hosform|length > 0 %}
+			<li class="tab col s4"><a class="active" href="#all">All Forms</a></li>
 			{% endif %}
+			{% if editformvisible %}
+			<li class="tab col s4"><a class="" href="#edit">Edit Form</a></li>
+			{% endif %}
+		</ul>
+	</div>
+	<div class="col s12 m12 l12" id="add">
+		<div class="card addcard">
+			<h5>Add Form</h5>
+			<hr>
+			<form method="post" action="{% url 'warden-add-hosform' %}" enctype="multipart/form-data">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ next }}" />
+				{% form form=addhosformform %}
+				{% endform %}
+				<div class="row">
+					<div class="col s12"> 
+						<button type="submit" name="add-hosform" class="btn waves-effect waves-light left">Add Form</button>
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
+	<div class="col s12 m12 l12" id="edit">
+		{% if editformvisible %}
+		<div class="card addcard">
+			<h5>Edit Form</h5>
+			<hr>
+			<form method="post" action="{% url 'warden-edit-hosform'  pk %}" enctype="multipart/form-data">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ next }}" />
+				{% form form=edithosformform %}
+				{% endform %}
+				<div class="row">
+					<div class="col s12"> 
+						<button type="submit" name="edit-hosform" class="btn waves-effect waves-light left">Edit Form</button>
+						<a class="btn waves-effect waves-light right" href="/warden/hosform/#all">Cancel</a>
+					</div>
+				</div>
+			</form>
+		</div>
+		{% endif %}
+	</div>
+	<div class="col s12 m12 l12" id="all">
+		{% if hosform|length > 0 %}
+		<div class="card addcard">
+			<h5>All Forms</h5>
+			<hr>
+			{% for h in hosform %}
+			<div class="card">
+				<div class="card-content black-text row">
+					<div class="col s12 l6 m6">
+						<span class="card-title deep-orange-text">{{ h.hosf.title }}</span>
+						<p class="brown-text text-darken-2"><a href="{{ h.hosf.file.url }}" target="__blank">View File Here</a></p>
+					</div>
+				</div>
+				<div class="card-action">
+				<a class="blue-text" href="/warden/hosform/edit/{{ h.hosf.pk }}/#edit">Edit Form</a>
+					<a class="blue-text" href="#" onclick="myFunction('{{ h.hosf.title }}','{{ h.hosf.pk }}')">Delete Form</a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		{% endif %}
+	</div>
+	{% if hosform_added %}
+	<script type="text/javascript">
+		alert("Form added successfully.");
+	</script>
+	{% endif %}
 </div>
 {% endblock %}
 {% block script %}
@@ -91,13 +107,13 @@
 	});
 </script>
 <script type='text/javascript' >
-		function myFunction(hosform,hfid) {
-			a = "Delete hosform '"+hosform+"' ?"
-			if (confirm(a) == true) {
+	function myFunction(hosform,hfid) {
+		a = "Delete hosform '"+hosform+"' ?"
+		if (confirm(a) == true) {
 				//console.log('url called')
 				window.location = "/warden/hosform/delete/"+hfid
 				//console.log('url called again')
 			}
 		}
 	</script>
-{% endblock %}
+	{% endblock %}

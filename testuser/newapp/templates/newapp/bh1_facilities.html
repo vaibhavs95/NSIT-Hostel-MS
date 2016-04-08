@@ -46,7 +46,7 @@
 		</nav>
 	</header>
 	
-	<ul id="nav-mobile" class="side-nav fixed">
+	<ul id="nav-mob" class="side-nav fixed">
 		<li id="lback"><a class="logo-side-nav" href="#!"><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'></a></li>
 		<br>
 		<ul class="collapsible collapsible-accordion">
@@ -56,10 +56,11 @@
 				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
 				<div class="collapsible-body">
 					<ul id="colBod">
+						<li><a class="waves-effect" href="#main">Basic Info.</a></li>
+						<li><a class="waves-effect" href="#forms">Forms</a></li>
+						<li><a class="waves-effect" href="#notices">Notices</a></li>
 						<li><a class="waves-effect" href="#facilities">Facilities</a></li>
-						<li><a class="waves-effect" href="#basicInfo">Basic Info.</a></li>
-						<li><a class="waves-effect" href="#!">Forms</a></li>
-						<li><a class="waves-effect" href="#messs">Mess</a></li>
+						<li><a class="waves-effect" href="#mess">Mess</a></li>
 					</ul>
 				</div>
 			</li>
@@ -68,10 +69,11 @@
 				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
 				<div class="collapsible-body">
 					<ul id="colBod">
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#main">Basic Info.</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id}}/#forms">Forms</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#notices">Notices</a></li>
 						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#facilities">Facilities</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#basicInfo">Basic Info.</a></li>
-						<li><a class="waves-effect" href={{ the_url }}>Forms</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#messs">Mess</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#mess">Mess</a></li>
 					</ul>
 				</div>
 			</li>
@@ -86,29 +88,29 @@
 		<li><a class="modal-trigger waves-effect waves-light btn login-button" href="#login-modal">Login</a></li>
 		<ul class="collapsible collapsible-accordion">
 			{% for hos in all_hostels %}
-			<p>{{ hos.id }}</p>
 			{% if hos.id == target_hostel.username %}
 			<li>
 				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
 				<div class="collapsible-body">
 					<ul id="colBod">
+						<li><a class="waves-effect" href="#main">Basic Info.</a></li>
+						<li><a class="waves-effect" href="#forms">Forms</a></li>
+						<li><a class="waves-effect" href="#notices">Notices</a></li>
 						<li><a class="waves-effect" href="#facilities">Facilities</a></li>
-						<li><a class="waves-effect" href="#basicInfo">Basic Info.</a></li>
-						<li><a class="waves-effect" href="#!">Forms</a></li>
-						<li><a class="waves-effect" href="#messs">Mess</a></li>
+						<li><a class="waves-effect" href="#mess">Mess</a></li>
 					</ul>
 				</div>
 			</li>
 			{% else %}
 			<li>
-				<p>{{ hos.id }}</p>
 				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.id }}<i class="mdi-navigation-arrow-drop-down"></i></a>
 				<div class="collapsible-body">
 					<ul id="colBod">
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#main">Basic Info.</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id}}/#forms">Forms</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#notices">Notices</a></li>
 						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#facilities">Facilities</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#basicInfo">Basic Info.</a></li>
-						<li><a class="waves-effect" href={{ the_url }}>Forms</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#messs">Mess</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#mess">Mess</a></li>
 					</ul>
 				</div>
 			</li>
@@ -122,7 +124,7 @@
 	<!-- main center content -->
 	<main>
 		<div class="container">
-			<div id="basicInfo">
+			<div id="main">
 				<h3 class="center">Basic Information</h3>
 				<hr></br>
 				<div class="card">
@@ -168,7 +170,47 @@
 				{% endfor %}
 			</div>
 
-			<div class=""id="facilities">
+			<div id="forms">
+				<h3 class="center">Forms</h3>
+				<hr></br>
+			  	<table class="centered striped">
+				  	<tbody>
+						{% for h in hosform %}
+							<tr>
+							<td>
+								<a href="{{ h.hosf.file.url }}" target="__blank">{{ h.hosf.title }}</a>
+							</td>
+							</tr>
+						{% endfor %}
+				  	</tbody>
+	          	</table>
+			</div>
+			<div id="notices">
+				<h3 class="center">Notices</h3>
+				<hr></br>
+			  	<table class=" centered striped">
+			  	<thead>
+			  	<tr>
+			  		<th>
+			  		Notice Title
+			  		</th>
+			  		<th>Added On</th>
+			  	</tr>
+			  	</thead>
+				  	<tbody>
+						{% for n in notices %}
+							<tr>
+							<td>
+								<a href="{{ n.file.url }}" target="__blank">{{ n.title }}</a>
+							</td>
+							<td>{{ n.time|date }}</td>
+							</tr>
+						{% endfor %}
+				  	</tbody>
+	          	</table>
+			</div>
+			
+			<div id="facilities">
 				<h3 class="center">Facilities</h3>
 				<hr>
 				<br>
@@ -192,22 +234,7 @@
 					{% endfor %}
 				</div>
 			</div>	
-			<div id="forms">
-				<h3 class="center">Forms</h3>
-				<hr></br>
-			  	<table class="centered striped">
-				  	<tbody>
-						{% for h in hosform %}
-							<tr>
-							<td>
-								<a href="{{ h.hosf.file.url }}" target="__blank">{{ h.hosf.title }}</a>
-							</td>
-							</tr>
-						{% endfor %}
-				  	</tbody>
-	          	</table>
-			</div>
-			<div id="messs">
+			<div id="mess">
 				<h3 class="center">Mess Details</h3>
 				<hr><br>
 				{% if mess %}

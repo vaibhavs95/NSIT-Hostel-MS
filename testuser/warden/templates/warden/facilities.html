@@ -12,12 +12,11 @@
 		width: 200px;
 		height: 200px;
 		border: 1px solid;
-		//border-radius: 50%;
 		margin-left: 20%;
 		margin-top: 10%;
 		background-repeat: no-repeat;
 		background-position: center center;
-  		background-size: cover;
+		background-size: cover;
 	}
 </style>
 {% endblock %}
@@ -31,93 +30,105 @@
 <li><a class="waves-effect" href="{% url 'warden-mess' %}">Mess</a></li>
 <li><a class="waves-effect" href="{% url 'warden-notices' %}">Notices</a></li>
 <li><a class="waves-effect" href="{% url 'wardenViewComplaint' %}">Complaints</a></li>
+<li><a class="waves-effect" href="{% url 'warden-event' %}">Events</a></li>
 {% endblock %}
 {% block content %}
 <div class="row">
-	<div class="col s12 m12 l12">
-		<div class="card-panel">
-		<h3>Facilities</h3>
-			<ul class="collapsible" data-collapsible="accordion">
-		    <li>
-		      <div class="collapsible-header active">Add Facility</div>
-		      <div class="collapsible-body">
-				<form method="post" action="{% url 'warden-add-facility' %}" enctype="multipart/form-data">
-					{% csrf_token %}
-					<input type="hidden" name="next" value="{{ next }}" />
-					{% form form=addfacilityform %}
-					{% endform %}
-					<div class="row">
-						<div class="col s12"> 
-							<button type="submit" name="add-facility" class="btn waves-effect waves-light left">Add Facility</button>
-						</div>
-					</div>
-				</form>
-		      </div>
-		    </li>
-		    {% if editformvisible %}
-		    <li>
-		      <div class="collapsible-header active">Edit Facility</div>
-		      <div class="collapsible-body">
-				<form method="post" action="{% url 'warden-edit-facility'  pk %}" enctype="multipart/form-data">
-					{% csrf_token %}
-					<input type="hidden" name="next" value="{{ next }}" />
-					{% form form=editfacilityform %}
-					{% endform %}
-					<div class="row">
-						<div class="col s12"> 
-							<button type="submit" name="edit-facility" class="btn waves-effect waves-light left">Edit Facility</button>
-							<a class="btn waves-effect waves-light right" href="{% url 'warden-facilities' %}">Cancel</a>
-						</div>
-					</div>
-				</form>
-		      </div>
-		    </li>
-		    {% endif %}
-		  	</ul>
-		  	{% for f in facilities %}
-			  	<div class="card">
-	            <div class="card-content black-text row">
-	            <div class="col s12 l6 m6">
-	              <span class="card-title deep-orange-text">{{ f.fac.facility_name }}</span>
-	              <p class="brown-text text-darken-2">{{ f.fac.facility_description }}</p>
-	            </div>
-	            <div class="col s12 l6 m6">
-		            {% if f.photo %}
-						<img class="facpic" src="{{ f.fac.photo.url }}">
-					{% else %}
-						<img class="facpic" src="/media/warden/images/facilities/demo.jpg">
-					{% endif %}
-	            </div>
-	            </div>
-	            <div class="card-action">
-	              <a class="blue-text" href="/warden/facilities/edit/{{ f.fac.pk }}/">Edit Facility</a>
-	              <a class="blue-text" href="#" onclick="myFunction('{{ f.fac.facility_name }}','{{ f.fac.pk }}')">Delete Facility</a>
-	            </div>
-	          	</div>
-			{% endfor %}
-			{% if facility_added %}
-			<script type="text/javascript">
-				alert("Facility added successfully.");
-			</script>
+	<h3>Facilities</h3>
+	<hr>
+	<div class="col s12">
+		<ul class="tabs">
+			<li class="tab col s4"><a class="" href="#add">Add Facility</a></li>
+			{% if facilities|length > 0 %}
+			<li class="tab col s4"><a class="active" href="#all">All Facilities</a></li>
 			{% endif %}
+			{% if editformvisible %}
+			<li class="tab col s4"><a class="" href="#edit">Edit Facility</a></li>
+			{% endif %}
+		</ul>
+	</div>
+	<div class="col s12 m12 l12" id="add">
+		<div class="card addcard">
+			<h5>Add Facility</h5>
+			<hr>
+			<form method="post" action="{% url 'warden-add-facility' %}" enctype="multipart/form-data">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ next }}" />
+				{% form form=addfacilityform %}
+				{% endform %}
+				<div class="row">
+					<div class="col s12"> 
+						<button type="submit" name="add-facility" class="btn waves-effect waves-light left">Add Facility</button>
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
+	<div class="col s12 m12 l12" id="edit">
+		{% if editformvisible %}
+		<div class="card addcard">
+			<h5>Edit Facility</h5>
+			<hr>
+			<form method="post" action="{% url 'warden-edit-facility'  pk %}" enctype="multipart/form-data">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ next }}" />
+				{% form form=editfacilityform %}
+				{% endform %}
+				<div class="row">
+					<div class="col s12"> 
+						<button type="submit" name="edit-facility" class="btn waves-effect waves-light left">Edit Facility</button>
+						<a class="btn waves-effect waves-light right" href="/warden/facilities/#all">Cancel</a>
+					</div>
+				</div>
+			</form>
+		</div>
+		{% endif %}
+	</div>
+	<div class="col s12 m12 l12" id="all">
+		{% if facilities|length > 0 %}
+		<div class="card addcard">
+		<h5>All Facilities</h5>
+		<hr>
+		{% for f in facilities %}
+		<div class="card">
+			<div class="card-content black-text row">
+				<div class="col s12 l6 m6">
+					<span class="card-title deep-orange-text">{{ f.fac.facility_name }}</span>
+					<p class="brown-text text-darken-2">{{ f.fac.facility_description }}</p>
+				</div>
+				<div class="col s12 l6 m6">
+					{% if f.photo %}
+					<img class="facpic" src="{{ f.fac.photo.url }}">
+					{% else %}
+					<img class="facpic" src="/media/warden/images/facilities/demo.jpg">
+					{% endif %}
+				</div>
+			</div>
+			<div class="card-action">
+				<a class="blue-text" href="/warden/facilities/edit/{{ f.fac.pk }}/#edit">Edit Facility</a>
+				<a class="blue-text" href="#" onclick="myFunction('{{ f.fac.facility_name }}','{{ f.fac.pk }}')">Delete Facility</a>
+			</div>
+		</div>
+		{% endfor %}
+		</div>
+		{% endif %}
+	</div>
+
+	{% if facility_added %}
+	<script type="text/javascript">
+		alert("Facility added successfully.");
+	</script>
+	{% endif %}
 </div>
 {% endblock %}
+
 {% block script %}
-<script type="text/javascript">
-	$('.collapsible-body').css({
-		"padding": "2%"
-	});
-</script>
 <script type='text/javascript' >
-		function myFunction(ftitle,fid) {
-			a = "Delete Facility '"+ftitle+"' ?"
-			if (confirm(a) == true) {
-				console.log('url called')
-				window.location = "/warden/facilities/delete/"+fid
-				console.log('url called again')
-			}
+	function myFunction(ftitle,fid) {
+		a = "Delete Facility '"+ftitle+"' ?"
+		if (confirm(a) == true) {
+			window.location = "/warden/facilities/delete/"+fid
 		}
-	</script>
+	}
+</script>
 {% endblock %}
