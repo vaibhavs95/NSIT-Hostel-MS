@@ -1,20 +1,12 @@
 {% extends "newapp/home.html" %}
 {% load staticfiles %}
 {% load material_form %}
-{% block title %} ChiefWarden - HMS {% endblock %}
+{% block title %} Student-ChiefWarden{% endblock %}
 
 {% block extrahead %}
 {% endblock %}
 
 {% block extrastyle %}
-<style>
-	#searchcard{
-		padding: 2%;
-	}
-	.addcard{
-		padding: 2%;
-	}
-</style>
 {% endblock %}
 
 {% block sidelist %}
@@ -28,13 +20,9 @@
 {% block content %}
 <div class="row">
 	<h3>Students</h3>
-	<div class="col s12">
-		<ul class="tabs">
-			<li class="tab col s4"><a class="active" href="#search">Search Student</a></li>
-		</ul>
-	</div>
+	<hr>
 	<div class="col s12" id="search">
-		<div class="row card" id="searchcard">
+		<div class="row card addcard">
 			<h5> Search Student </h5>
 			<hr>
 			<div class="col s12 m6 l6">

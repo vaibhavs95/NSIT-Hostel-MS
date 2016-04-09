@@ -193,6 +193,8 @@ def hostels(request,hostel_name):
     data['hosform'] = hosform
     n = (Notice.objects.filter(creator = h.username)).order_by('time')
     data['notices'] = n
+    e = (Event.objects.filter(hostel = h)).order_by('time')
+    data['events'] = e
     messdetail = MessDetail.objects.filter(hostel=h)
     if messdetail:
         data['mess'] = messdetail[0]
@@ -223,4 +225,14 @@ def resetPassword(request):
         return render(request,'newapp/resetPassword.html',data)
     else:
         return redirect('logout')
-    
+def viewevent(request, pk):
+    a=Hostels.objects.all();
+    b=[]
+    for i in a:
+        d={'name':i.hostel_name,'id':i.username}
+        b.append(d)
+    data = {'all_hostels': b}
+    e = Event.objects.get(pk=pk)
+    data['event'] = e
+    data['ephotos'] = Images.objects.filter(event = e)
+    return render(request,'newapp/eventpage.html',data)

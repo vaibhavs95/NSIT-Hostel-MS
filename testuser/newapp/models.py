@@ -140,13 +140,8 @@ def student_photo_name(instance, filename):
 	ext = filename.split('.')[-1]
 	return 'student/images/'+instance.username+'.'+ext
 class Students(models.Model):
-<<<<<<< HEAD
 	username = models.CharField(max_length = 20, unique=True, default='');
-	name = models.CharField(max_length=50 , blank = True, default='');
-=======
-	username = models.CharField(max_length = 20, primary_key = True , default='');
 	name = models.CharField(max_length=50 , null = False, default='');
->>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
 	date_of_birth = models.DateField(null=False,default=timezone.now())
 	room_number = models.ForeignKey(Rooms,null = True);
 	distance_from_nsit = models.IntegerField(null = False, default=0);
@@ -349,19 +344,9 @@ def eventphotoname(instance,filename):
 	return 'warden/images/event/'+instance.event.title+'/'+'event_photo'+'.'+ext
 class Event(models.Model):
 	hostel = models.ForeignKey(Hostels)
-	title = models.CharField(max_length=100, default='')
+	title = models.CharField(max_length=100, default='',unique=True)
 	description = models.TextField(max_length=1000, default='')
+	time = models.DateTimeField(default = timezone.now())
 class Images(models.Model):
     event = models.ForeignKey(Event, default=None)
     image = models.ImageField(upload_to=eventphotoname)
-'''
-class Message(models.Model):
-    author_name = models.CharField(_('Name'), max_length=255)
-    author_email = models.EmailField(_('Email'))
-    content = models.TextField(_('Content'))
-
-
-class Attachment(models.Model):
-    message = models.ForeignKey(Message, verbose_name=_('Message'))
-    file = models.FileField(_('Attachment'), upload_to='attachments')
-'''

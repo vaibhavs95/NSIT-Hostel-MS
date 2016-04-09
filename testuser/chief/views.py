@@ -397,8 +397,6 @@ def searchroom(request):
     else:
         return redirect('logout')
 
-<<<<<<< HEAD
-
 @login_required
 @require_http_methods(['GET', 'POST'])
 def addfine(request,student):
@@ -461,10 +459,9 @@ def payfine(request,primkey,stu):
         delta = CriminalRecord.objects.get(pk = primkey)
         delta.paid = True
         delta.save()
-#        return redirect("{% url 'chief-student-profile' stu %}")
- #       return redirect("{% url 'WardenViewStudentProfile' u.username %}")
         return redirect('chief-student-profile',student = stu)
-=======
+    else:
+        return redirect('logout')
 def addBank(request):
     if str(request.user) == 'chiefwarden':
         f = addBankForm(request.POST or None)
@@ -482,6 +479,5 @@ def addBank(request):
         delta = Banks.objects.all()
         data = {'all_hostels': b,'form':f,'banks':delta}
         return render(request, 'chief/addBank.html',data)
->>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
     else:
         return redirect('logout')

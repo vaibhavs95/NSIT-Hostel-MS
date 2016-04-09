@@ -842,21 +842,11 @@ def addstudent(request):
 				s = Students(username=username, student_email=student_email, branch=branch,
 							 room_number=room_number, current_hostel_join_date=current_hostel_join_date)
 				user = MyUser.objects.create_user(f.cleaned_data.get(
-<<<<<<< HEAD
-					'username'), '2016-02-02', f.cleaned_data.get('student_email'))
-				# send email to fill details
-				url = "http://127.0.0.1:8080/student/" + \
-					base64.b64encode(username.encode('utf-8')).decode('utf-8')
-				message = ''' Welcome To NSIT Hostel Management System. Click <a href= '%s'>here </a> to fill your details ''' % url
-				email = EmailMessage('Welcome to NSIT-HMS', message, to=[student_email])
-				#email.send()
-=======
 					'username'), datetime.now(), pas)
 				bank = f.cleaned_data.get('bank')
 				payDate = f.cleaned_data.get('paymentDate')
 				receipt = f.cleaned_data.get('receiptNumber')
 				last_date = s.current_hostel_join_date+timedelta(days=10)
->>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
 				s.save()
 				user.save()
 				hostelAttach = HostelAttachDates(hostel_last_date = last_date,student=s)
@@ -931,10 +921,6 @@ def editstudent(request, student):
 						pass
 					f.student_photo = request.FILES['student_photo']
 				f.save()
-				#a = f.save(commit = False)
-				#print(u)
-				#print(a)
-				#print(u.username)
 				newusername = f.cleaned_data.get('username')
 				print(newusername)
 				s = MyUser.objects.get(userid = oldusername)
@@ -1177,8 +1163,6 @@ def printRoomList(request):
 	buff.close()
 	return response
 
-<<<<<<< HEAD
-
 #######
 '''
 Complaints
@@ -1226,7 +1210,7 @@ Events
 def eventbasic(user):
 	#basic()
 	h = Hostels.objects.get(username=user)
-	data['events'] = Event.objects.filter(hostel=h)
+	data['events'] = (Event.objects.filter(hostel=h)).order_by('time')
 	f = AddEventForm()
 	data['form'] = f
 
@@ -1239,19 +1223,6 @@ def event(request):
 		return render(request, 'warden/event.html', data)
 	else:
 		return redirect('logout')
-'''
-from django.views.generic.edit import FormView, CreateView
-
-from .forms import ContactForm
-from .models import Message
-
-
-class ContactView(CreateView):
-    model = Message
-    form_class = ContactForm
-    template_name = 'contact_form/form.html'
-    success_url = '?success'
-'''
 @login_required
 @require_http_methods(['GET', 'POST'])
 def addevent(request):
@@ -1295,17 +1266,13 @@ def viewevent(request, pk):
 		e = Event.objects.get(pk=pk)
 		data['event'] = e
 		data['ephotos'] = Images.objects.filter(event = e)
-		return render(request,'newapp/eventpage.html',data)
+		return render(request,'warden/eventpage.html',data)
 	else:
 		return redirect('logout')
-=======
 @login_required
 @require_http_methods(['GET', 'POST'])
 def printStuDetails(request, student_id):
-	print ("Hello")
-	alpha =  str(base64.b64decode(student_id))
-	alpha = alpha[2:-1]
-	u = Students.objects.get(username=alpha)
+	u = Students.objects.get(username=student_id)
 	response = HttpResponse(content_type='application/pdf')
 	response['Content-Disposition'] = 'attachment; filename="Student Profile.pdf"'
 
@@ -1413,7 +1380,7 @@ def printStuDetails(request, student_id):
 	p.setFont('Helvetica', 8)
 	cur = 240
 	try:
-		prev = PreviousHostelDetail.objects.filter(student=alpha)
+		prev = PreviousHostelDetail.objects.filter(student=u)
 		if not prev:
 			p.drawString(50, 260, "No Records Available")
 		else:
@@ -1434,7 +1401,7 @@ def printStuDetails(request, student_id):
 
 	p.setFont('Helvetica', 8)
 	try:
-		crimi = CriminalRecord.objects.filter(student=alpha)
+		crimi = CriminalRecord.objects.filter(student=u)
 		if not crimi:
 			p.drawString(50, cur, "No Records Available")
 		else:
@@ -1458,4 +1425,3 @@ def printStuDetails(request, student_id):
 	p.showPage()
 	p.save()
 	return response
->>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b

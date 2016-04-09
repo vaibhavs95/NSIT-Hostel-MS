@@ -19,6 +19,7 @@
 <li><a class="waves-effect" href="{% url 'warden-facilities' %}">Facilities</a></li>
 <li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
 <li><a class="waves-effect" href="{% url 'wardenViewDefaulters' %}">Defaulters</a></li>
+<li><a class="waves-effect" href="{% url 'warden-event' %}">Events</a></li>
 {% endblock %}
 
 {% block content %}
@@ -78,16 +79,6 @@
 				</tbody>
 			</table>
 			</div> 
-			<!--
-				Name : {{ name }}<br>
-				Phone No  : {{ phone }}<br>
-				Landline : {{ landline }}<br>
-				Email : {{ email }}<br>
-				Department : {{ dept }}<br>
-				Portfolio : {{ portfolio }}<br>
-				Total Capacity : {{  total_rooms }}<br>
-				Available Capacity : {{ rooms_available }}<br>
-			-->
 			<div class="col s12 m6 l6">
 				{% if wardenphoto %}
 				<img class="profilepic" src="{{ userid.warden_photo.url }}">

@@ -4,40 +4,45 @@
 {% block title %} Chief Warden {% endblock %}
 
 {% block extrahead %} 
-<!--<link rel="stylesheet" href="{% static 'assests/main-page/css/cw-home.css' %}">-->
-   <link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/styleHostel.css' %}"/>
-<!--<link rel="stylesheet" href="{% static 'assests/main-page/css/styleHostel.css' %}">-->
 {% endblock %}
 
 {% block content %}
 {% if mes %}
-	<script type="text/javascript">
-		alert("{{ mes }}");
-	</script>
+<script type="text/javascript">
+	alert("{{ mes }}");
+</script>
 {% endif %}
 <div class="row">
-	<div class="col s12 m12 l12">
-		<div class="card-panel">
-		<h3>Complaints</h3>
-			<ul class="collapsible" data-collapsible="accordion">
-		    <li>
-		      <div class="collapsible-header">Add Complaint</div>
-		      <div class="collapsible-body">
-				<form method="post" action="">
-					{% csrf_token %}
-					<input type="hidden" name="next" value="{{ next }}" />
-					{% form form=form %}
-					{% endform %}
-					<div class="row">
-						<div class="col s12"> 
-							<button type="submit" name="add-room" class="btn waves-effect waves-light left">Add Complaint</button>
-						</div>
+	<h3>Complaints</h3>
+	<hr>
+	<div class="col s12">
+		<ul class="tabs">
+			<li class="tab col s4"><a class="" href="#add">Add Complaint</a></li>
+			<li class="tab col s4"><a class="" href="#all">All Complaints</a></li>
+		</ul>
+	</div>
+	<div class="col s12 m12 l12" id="add">
+		<div class="card addcard">
+			<h5>Add Complaint</h5>
+			<hr>
+			<form method="post" action="">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ next }}" />
+				{% form form=form %}
+				{% endform %}
+				<div class="row">
+					<div class="col s12"> 
+						<button type="submit" name="add-room" class="btn waves-effect waves-light left">Add Complaint</button>
 					</div>
-				</form>
-		      </div>
-		    </li>
-		  	</ul>
-			<table>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="col s12" id="all">
+		<div class="card addcard">
+			<h5>All Complaints</h5>
+			<hr>{% if comp|length > 0 %}
+			<table class="striped centered bordered">
 				<thead>
 					<tr>
 						<th data-field="id">S. No.</th>
@@ -59,21 +64,22 @@
 							{{ hos.date_of_complaint }}
 						</td>
 						<td align="center">
-                            {% if hos.closed != True %}
-                            No
-                            {% else %}
-                            Yes
-                            {% endif %}
+							{% if hos.closed != True %}
+							No
+							{% else %}
+							Yes
+							{% endif %}
 						</td>
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
+			{% else %}
+			No Complaints made.
+			{% endif %}
 		</div>
 	</div>
 </div>
-	
-
 {% endblock %}
 
 {% block sidelist %}

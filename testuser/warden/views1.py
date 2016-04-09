@@ -159,11 +159,7 @@ def StudentProfile(request,student):
         except ObjectDoesNotExist:
             pass
         try:
-<<<<<<< HEAD
-            crimi = CriminalRecord.objects.filter(student = u)
-=======
-            crimi = CriminalRecord.objects.filter(student = student).order_by('date_of_action')
->>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
+            crimi = CriminalRecord.objects.filter(student = u).order_by('date_of_action')
         except ObjectDoesNotExist:
             pass
         data = {'all_hostels': b,'student':'yes','s': u,'prev':prev,'crim':crimi}
@@ -307,9 +303,6 @@ def addCriminalRecord(request,target):
             return render(request,'warden/addDiscipline.html',data)
     else:
         return redirect('logout')
-<<<<<<< HEAD
-=======
-
 @login_required
 def viewDefaulters(request):
     alpha = str(request.user)
@@ -328,4 +321,3 @@ def viewDefaulters(request):
         return render(request,'warden/defaulterslist.html',data)
     else:
         return redirect('logout')
->>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b

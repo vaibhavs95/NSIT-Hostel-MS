@@ -7,95 +7,36 @@ event.html{% extends "newapp/home.html" %}
 {% endblock %}
 
 {% block extrastyle %}
+<style>
+	.material-placeholder, .materialboxed{
+		display: inline;
+	}
+</style>
 {% endblock %}
 
-{% block sidelist %}
-<li><a class="waves-effect" href="{% url 'warden-room' %}">Room</a></li>
-<li><a class="waves-effect" href="{% url 'warden-student' %}">Student</a></li>
-<li><a class="waves-effect" href="{% url 'warden-facilities' %}">Facilities</a></li>
-<li><a class="waves-effect" href="{% url 'warden-council' %}">Council</a></li>
-<li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
-<li><a class="waves-effect" href="{% url 'warden-mess' %}">Mess</a></li>
-<li><a class="waves-effect" href="{% url 'warden-notices' %}">Notices</a></li>
-<li><a class="waves-effect" href="{% url 'wardenViewComplaint' %}">Complaints</a></li>
-<li><a class="waves-effect" href="{% url 'warden-event' %}">Events</a></li>
-{% endblock %}
 {% block content %}
-<div class="row">
-	<h3>Events</h3>
+	<h3>{{ event.title }}</h3>
 	<hr>
-	<div class="col s12">
-		<ul class="tabs">
-			<li class="tab col s4"><a class="" href="#add">Add Event</a></li>
-			{% if events|length > 0 %}
-			<li class="tab col s4"><a class="active" href="#all">All Events</a></li>
-			{% endif %}
-		</ul>
-	</div>
-	<div class="col s12 m12 l12" id="add">
-		<div class="card addcard">
-			<h5>Add Event</h5>
-			<hr>
-			<form method="post" action="{% url 'warden-add-event' %}" enctype="multipart/form-data">
-				{% csrf_token %}
-				<input type="hidden" name="next" value="{{ next }}" />
-				{% form %}
-				{% part form.images %}
-				<div class="row">
-					<div class="input-field file-field col s12" id="id_images_container">
-						<div class="btn">
-						<span>Images</span>
-							<input type="file" name="images" multiple="multiple" multiple/>
-						</div>
-						<div class="file-path-wrapper">
-							<input class="file-path" id="id_images" placeholder="Images" type="text" multiple="multiple" multiple/>
-						</div>  
-					</div>
-				</div>
-				{% endpart %}
-				{% endform %}
-				<div class="row">
-					<div class="col s12"> 
-						<button type="submit" name="add-event" class="btn waves-effect waves-light left">Add Event</button>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
-	<div class="col s12 m12 l12" id="all">
-		{% if events|length > 0 %}
-		<h5>All Events</h5>
-		<hr>
-		{% for e in events %}
-		<div class="card addcard">
-			<div class="card-content">
-				<span class="card-title deep-orange-text">{{ e.title }}</span>
-				<p class="brown-text text-darken-2">{{ e.description }}</p>
-			</div>
-			<div class="card-action">
-				<a href="{% url 'event-view' e.pk %}">View Event</a>
-				<a href="#" onclick="myFunction('{{ e.title }}','{{ e.pk }}')">Delete Event</a>
-			</div>
-		</div>
+	<h5>Event Description: </h5>
+	<p>{{ event.description }}</p>
+	<h5>Event Photo(s): </h5>
+		{% for p in ephotos %}
+		<img class="materialboxed" width="200" src="{{ p.image.url }}">
+		
 		{% endfor %}
-		{% endif %}
-	</div>
-
-	{% if facility_added %}
-	<script type="text/javascript">
-		alert("Facility added successfully.");
-	</script>
-	{% endif %}
-</div>
 {% endblock %}
 
 {% block script %}
-<script type='text/javascript' >
-	function myFunction(etitle,eid) {
-		a = "Delete Event '"+etitle+"' ?"
-		if (confirm(a) == true) {
-			window.location = "/warden/event/delete/"+eid
-		}
-	}
-</script>
+{% endblock %}
+{% block sidelist %}
+<li><a class="waves-effect" href="{% url 'warden-room' %}">Room</a></li>
+<li><a class="waves-effect" href="{% url 'warden-student' %}">Student</a></li>
+<li><a class="waves-effect" href="{% url 'warden-council' %}">Council</a></li>
+<li><a class="waves-effect" href="{% url 'warden-notices' %}">Notices</a></li>
+<li><a class="waves-effect" href="{% url 'wardenViewComplaint' %}">Complaints</a></li>
+<li><a class="waves-effect" href="{% url 'warden-mess' %}">Mess</a></li>
+<li><a class="waves-effect" href="{% url 'warden-facilities' %}">Facilities</a></li>
+<li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
+<li><a class="waves-effect" href="{% url 'wardenViewDefaulters' %}">Defaulters</a></li>
+<li><a class="waves-effect" href="{% url 'warden-event' %}">Events</a></li>
 {% endblock %}

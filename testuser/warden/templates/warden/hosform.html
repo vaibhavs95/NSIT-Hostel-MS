@@ -1,7 +1,7 @@
 {% extends "newapp/home.html" %}
 {% load staticfiles %}
 {% load material_form %}
-{% block title %} HMS-Warden-Council {% endblock %}
+{% block title %} Forms-Warden {% endblock %}
 
 {% block extrahead %}
 {% endblock %}
@@ -19,6 +19,7 @@
 <li><a class="waves-effect" href="{% url 'warden-facilities' %}">Facilities</a></li>
 <li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
 <li><a class="waves-effect" href="{% url 'wardenViewDefaulters' %}">Defaulters</a></li>
+<li><a class="waves-effect" href="{% url 'warden-event' %}">Events</a></li>
 {% endblock %}
 {% block content %}
 <div class="row">

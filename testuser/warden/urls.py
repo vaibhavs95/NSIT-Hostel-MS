@@ -41,11 +41,11 @@ urlpatterns = [
     url(r'^student/search/rollno/$',views.searchstudentrollno, name='warden-search-student-rollno'),
     url(r'^student/search/other/$',views.searchstudentother, name='warden-search-student-other'),
     url(r'^student/attach/(?P<student>[0-9]+-[A-Z]+-[0-9]+)/$',views.attachstudent, name='warden-attach-student'),
+    url(r'^defaulters/$',views1.viewDefaulters, name='wardenViewDefaulters'),
     url(r'^student/delete/(?P<target>[a-z0-9A-Z-=]*)/$',views1.remstudent, name='wardenRemoveStudent'),
     url(r'^student/profile/(?P<student>[0-9]+-[A-Z]+-[0-9]+)/$',views1.StudentProfile,name='WardenViewStudentProfile'),
-    url(r'^student/studentlist$',views.printStudentList, name='print-stu-list'),
+    url(r'^student/studentlist/$',views.printStudentList, name='print-stu-list'),
     url(r'^student/roomlist$',views.printRoomList, name='print-room-list'),
-<<<<<<< HEAD
     url(r'^detach/(?P<target>[0-9A-Z-]*)/$',views1.detachStudent,name = 'wardenDetachStudent'),
     url(r'^disciplineadd/(?P<target>[0-9A-Z-]*)/$',views1.addCriminalRecord,name = 'wardenAddCriminal'),
     #complaints
@@ -57,10 +57,5 @@ urlpatterns = [
     url(r'^event/add/$',views.addevent, name='warden-add-event'),
     url(r'^event/delete/(?P<pk>[0-9]+)/$',views.deleteevent, name='warden-delete-event'),
     url(r'^event/view/(?P<pk>[0-9]+)/$',views.viewevent, name='event-view'),
+    url(r'^student/(?P<student_id>[0-9]+-[A-Z]+-[0-9]+)/$',views.printStuDetails, name='print-stu-details'),
 ]
-    #url(r'^$', views.ContactView.as_view())
-=======
-    url(r'^student/(?P<student_id>[a-zA-Z0-9=]*)/$',views.printStuDetails, name='print-stu-details'),
-    url(r'^defaulters/$',views1.viewDefaulters, name='wardenViewDefaulters'),
-]
->>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b

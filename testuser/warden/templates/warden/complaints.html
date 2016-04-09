@@ -1,12 +1,9 @@
 {% extends "newapp/home.html" %}
 {% load staticfiles %}
 {% load material_form %}
-{% block title %} Chief Warden {% endblock %}
+{% block title %} Complaints-Warden {% endblock %}
 
 {% block extrahead %} 
-<!--<link rel="stylesheet" href="{% static 'assests/main-page/css/cw-home.css' %}">-->
-<link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/styleHostel.css' %}"/>
-<!--<link rel="stylesheet" href="{% static 'assests/main-page/css/styleHostel.css' %}">-->
 {% endblock %}
 
 {% block content %}
@@ -72,15 +69,15 @@
 	</div>
 </div>
 {% endblock %}
+{% block script %}
 <script type='text/javascript' >
 	function myFunction(hosid) {
 		if (confirm("Close complaint ? ") == true) {
-			console.log('url called')
 			window.location = "/warden/complaint/"+hosid+'/'
-			console.log('url called again')
 		}
 	}
 </script>
+{% endblock %}
 
 {% block sidelist %}
 <li><a class="waves-effect" href="{% url 'warden-room' %}">Room</a></li>
@@ -92,4 +89,5 @@
 <li><a class="waves-effect" href="{% url 'warden-facilities' %}">Facilities</a></li>
 <li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
 <li><a class="waves-effect" href="{% url 'wardenViewDefaulters' %}">Defaulters</a></li>
+<li><a class="waves-effect" href="{% url 'warden-event' %}">Events</a></li>
 {% endblock %}

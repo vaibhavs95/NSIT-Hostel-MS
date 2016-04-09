@@ -437,7 +437,7 @@ class ForwardComplaintForm(forms.Form):
 class AddEventForm(forms.ModelForm):
     class Meta:
         model = Event
-        fields = ['title', 'description']  # not attachments!
+        fields = ['title', 'description','time']  # not attachments!
         widgets = {
             'description': forms.Textarea(attrs={'class': 'input-field'})
         }

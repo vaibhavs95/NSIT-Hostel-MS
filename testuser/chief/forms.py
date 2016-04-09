@@ -101,8 +101,6 @@ class SearchHostelRoomForm(forms.Form):
             raise forms.ValidationError('Room Number cannot be empty.')
         return self.cleaned_data
 
-
-<<<<<<< HEAD
 class AddCriminalForm(forms.ModelForm):
     class Meta:
         model = CriminalRecord
@@ -110,11 +108,7 @@ class AddCriminalForm(forms.ModelForm):
         widgets = {
             'date_of_action':AdminDateWidget(),
         }
-=======
 class addBankForm(forms.ModelForm):
     class Meta:
         model = Banks
         fields = ['name',]
-            
-        
->>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b

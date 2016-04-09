@@ -1,24 +1,12 @@
 {% extends "newapp/home.html" %}
 {% load staticfiles %}
 {% load material_form %}
-{% block title %} Warden - HMS {% endblock %}
+{% block title %} Facilities-Warden {% endblock %}
 
 {% block extrahead %}
 {% endblock %}
 
 {% block extrastyle %}
-<style>
-	.facpic{
-		width: 200px;
-		height: 200px;
-		border: 1px solid;
-		margin-left: 20%;
-		margin-top: 10%;
-		background-repeat: no-repeat;
-		background-position: center center;
-		background-size: cover;
-	}
-</style>
 {% endblock %}
 
 {% block sidelist %}
@@ -27,14 +15,11 @@
 <li><a class="waves-effect" href="{% url 'warden-council' %}">Council</a></li>
 <li><a class="waves-effect" href="{% url 'warden-notices' %}">Notices</a></li>
 <li><a class="waves-effect" href="{% url 'wardenViewComplaint' %}">Complaints</a></li>
-<<<<<<< HEAD
-<li><a class="waves-effect" href="{% url 'warden-event' %}">Events</a></li>
-=======
 <li><a class="waves-effect" href="{% url 'warden-mess' %}">Mess</a></li>
 <li><a class="waves-effect" href="{% url 'warden-facilities' %}">Facilities</a></li>
 <li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
 <li><a class="waves-effect" href="{% url 'wardenViewDefaulters' %}">Defaulters</a></li>
->>>>>>> 608a2bb0b8ceeac023d91daaaf39bfc47abe378b
+<li><a class="waves-effect" href="{% url 'warden-event' %}">Events</a></li>
 {% endblock %}
 {% block content %}
 <div class="row">
