@@ -14,7 +14,7 @@ from django.core.mail import send_mass_mail
 from django.core.exceptions import ObjectDoesNotExist
 
 def SendNoticeMail(title,usern):
-    a = Students.objects.filter( room_number__hostel = usern )
+    a = Students.objects.filter(room_number__hostel = usern )
     n = Notice.objects.get(title=title)
     url =  n.file.url
     url = "http://127.0.0.1:8000" + url
@@ -28,7 +28,7 @@ def SendNoticeMail(title,usern):
     # email.to = c
     # email.send()
     see = ("New announcement for hostel residents of NSIT",message,settings.EMAIL_HOST_USER,c)
-    send_mass_mail((see,),fail_silently = False)
+    send_mass_mail((see,),fail_silently = True)
     return
 
 @login_required
@@ -94,13 +94,14 @@ def remstudent(request,target):
         try:
             a = Students.objects.get(username = str(target))
         except ObjectDoesNotExist:
-            pass
-        
+            pass # why pass ? if student is not there and there is request to remove that student,
+            # then redirect to logout ?
+            #return redirect('logout')
         try:
             b = Rooms.objects.get(students__username = str(target))
         except ObjectDoesNotExist:
             pass
-        c = PreviousHostelDetail(hostel_name = b.hostel.hostel_name,room_no = b.room_no,student = a,hostel_join_date = a.current_hostel_join_date)
+        c = PreviousHostelDetail(hostel_name = b.hostel.hostel_name,room_no = b.room_no,student = a,hostel_join_date = a.current_hostel_join_date) # if not redirect to logout then there will be entry in previous hostel detail table with student = None.
         c.save()
         a.current_hostel_join_date = None
         a.room_number = None
@@ -157,12 +158,13 @@ def StudentProfile(request,student):
         u = Students.objects.get(username = student)
         prev = None
         crimi = None
+#        stu = Students.objects.get(username=student)
         try:
-            prev = PreviousHostelDetail.objects.filter(student = student)
+            prev = PreviousHostelDetail.objects.filter(student = u)
         except ObjectDoesNotExist:
             pass
         try:
-            crimi = CriminalRecord.objects.filter(student = student).order_by('date_of_action')
+            crimi = CriminalRecord.objects.filter(student = u).order_by('date_of_action')
         except ObjectDoesNotExist:
             pass
         payments = None
@@ -170,7 +172,7 @@ def StudentProfile(request,student):
             payments = PaymentDetails.objects.filter(student = u)
         except:
             pass
-        data = {'all_hostels': b,'student':'yes', 'username': base64.b64encode(u.username.encode('utf-8')), 's': u,'prev':prev,'crim':crimi,'paym':payments}
+        data = {'all_hostels': b,'student':'yes','s': u,'prev':prev,'crim':crimi,'paym':payments}
         return render(request,'warden/studentProfile.html',data)
     else:
         return redirect('logout')
@@ -225,7 +227,7 @@ def detachStudent(request,target):
     data['all_hostels'] = b
     crimi = None
     try:
-        crimi = CriminalRecord.objects.filter(student = target)
+        crimi = CriminalRecord.objects.filter(student = s)
         data['crimi'] = crimi
     except ObjectDoesNotExist:
         pass
@@ -311,7 +313,6 @@ def addCriminalRecord(request,target):
             return render(request,'warden/addDiscipline.html',data)
     else:
         return redirect('logout')
-
 @login_required
 def viewDefaulters(request):
     alpha = str(request.user)

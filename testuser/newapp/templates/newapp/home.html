@@ -9,7 +9,6 @@
 	<title> {% block title %} HMS {% endblock %} </title>
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	{% include 'material/includes/material_css.html' %}
-	<!--<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>-->
 	<link type="text/css" rel="stylesheet" href='{% static "assets/main-page/css/styleHostel.css" %}'/>
 	{% block extrahead %}
 	{% endblock %}
@@ -22,7 +21,7 @@
 		<nav class="indigo">
 			<a href="#" data-activates="nav-mobile" class="button-collapse top-nav waves-effect waves-light circle hide-on-large-only"><i class="mdi-navigation-menu"></i></a>
 			<div class="nav-wrapper">
-				<a href="#!" class="brand-logo ">
+				<a href='{% url "base" %}' class="brand-logo ">
 					<div id="header-text-nsit" class="brand-logo flow-text left-align">
 						Netaji Subhas Institue of Technology
 					</div>
@@ -37,7 +36,7 @@
 
 					<ul id='dropdown2' class='dropdown-content'>
 						<li><a href="{% url 'home' %}">Profile</a></li>
-                      <li><a href="{% url 'newappResetPassword' %}">Reset Password</a></li>
+						<li><a href="{% url 'newappResetPassword' %}">Reset Password</a></li>
 						<li><a href="{% url 'logout' %}">Logout</a></li>
 					</ul>
 
@@ -52,7 +51,7 @@
 	</header>
 	
 	<ul id="nav-mobile" class="side-nav fixed">
-		<li id="lback"><a class="logo-side-nav" href="#!"><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'></a></li>
+		<li id="lback"><a class="logo-side-nav" href='{% url "base" %}'><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'></a></li>
 		<br>
 		<ul class="collapsible collapsible-accordion">
 			{% if user.is_authenticated %}
@@ -61,7 +60,8 @@
 				<div class="collapsible-body">
 					<ul id="colBod">
 						<li><a href="{% url 'home' %}">Profile</a></li>
-						<li><a href="{% url 'logout' %}">Logout</a></li>
+						<li class="hide-on-med-and-up"><a href="{% url 'newappResetPassword' %}">Reset Password</a></li>
+						<li class="hide-on-med-and-up"><a href="{% url 'logout' %}">Logout</a></li>
 						{% block sidelist %}
 						{% endblock %}
 					</ul>
@@ -73,10 +73,12 @@
 				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
 				<div class="collapsible-body">
 					<ul id="colBod">
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#main">Basic Info.</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id}}/#forms">Forms</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#notices">Notices</a></li>
 						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#facilities">Facilities</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#basicInfo">Basic Info.</a></li>
-						<li><a class="waves-effect" href={{ the_url }}>Forms</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#messs">Mess</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#mess">Mess</a></li>
+						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#eventlist">Events</a></li>
 					</ul>
 				</div>
 			</li>
@@ -95,9 +97,9 @@
 	<!-- Footer --> 
 	<footer id="footr" class="page-footer grey darken-4">
 		<div class="container footer">
-			<a class="grey-text text-lighten-3" href="#aboutt">About</a>
+			<a class="grey-text text-lighten-3 modal-trigger" href="#about">About</a>
 			<a class="grey-text text-lighten-3" href="#!">Contact Us</a>
-			<a class="grey-text text-lighten-3" href="#locate">Locate Us</a>
+			<a class="grey-text text-lighten-3 modal-trigger" href="#locate">Locate Us</a>
 			<a class="grey-text text-lighten-3" href="#!">Feedback</a>
 			<a class="grey-text text-lighten-3" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
 		</div>
@@ -106,38 +108,37 @@
 	<!-- Modals -->
 	
 	<!-- About -->
-		<div id="aboutt" class="modal">
-			<div class="modal-content">
-				<h3 class="center">
-					About us
-				</h3>
-				<hr>
-				<p>
-					wawwe ewqweq eqweweqe qewqe qewqeqw resdfdd fffdfdfd
-				</p>
-			</div>
+	<div id="about" class="modal">
+		<div class="modal-content">
+			<h5 class="center">
+				About us
+			</h5>
+			<hr>
+			<p>This is NSIT's Hostel Management System.
+			</p>
 		</div>
-		
-		<!-- Locate Us -->
-		<div id="locate" class="modal">
-			<div class="modal-content">
-				<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.6879906005356!2d77.03287455023379!3d28.609135591804954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d053516783c9b%3A0x7e540ab22a28446!2sNetaji+Subhas+Institute+Of+Technology!5e0!3m2!1sen!2sin!4v1458988779817" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
-			</div>
+	</div>
+
+	<!-- Locate Us -->
+	<div id="locate" class="modal">
+		<div class="modal-content">
+			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.6879906005356!2d77.03287455023379!3d28.609135591804954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d053516783c9b%3A0x7e540ab22a28446!2sNetaji+Subhas+Institute+Of+Technology!5e0!3m2!1sen!2sin!4v1458988779817" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
 		</div>
+	</div>
 	
 	<!--Scripts -->
-	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
 	<script type="text/javascript" src='{% static "assets/main-page/js/jquery-1.11.3.min.js" %}'></script>
-	
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 	{% block script %}
 	{% endblock %}
 	{% include 'material/includes/material_js.html' %}
 	<script type="text/javascript" src='{% static "assets/main-page/js/script.js" %}'></script>
 	<script>
-  $(function() {
-    $( "#tabs" ).tabs();
-  });
-  </script>
+		$(function() {
+			$( "#tabs" ).tabs();
+		});
+	</script>
 	<script type="text/javascript">
 		$( window ).load(function() {
 			main();

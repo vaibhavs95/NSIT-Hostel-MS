@@ -1,70 +1,82 @@
 {% extends "newapp/home.html" %}
 {% load staticfiles %}
 {% load material_form %}
-{% block title %} Chief Warden {% endblock %}
+{% block title %} Complaints-Warden {% endblock %}
 
 {% block extrahead %} 
-<!--<link rel="stylesheet" href="{% static 'assests/main-page/css/cw-home.css' %}">-->
-   <link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/styleHostel.css' %}"/>
-<!--<link rel="stylesheet" href="{% static 'assests/main-page/css/styleHostel.css' %}">-->
 {% endblock %}
 
 {% block content %}
 {% if mes %}
-	<script type="text/javascript">
-		alert("{{ mes }}");
-	</script>
+<script type="text/javascript">
+	alert("{{ mes }}");
+</script>
 {% endif %}
 <div class="row">
 	<div class="col s12 m12 l12">
-		<div class="card-panel">
 		<h3>Complaints</h3>
-			<table>
+		<hr>
+		{% if comp|length > 0 %}
+		<div class="card">
+			<table class="striped centered bordered">
 				<thead>
 					<tr>
 						<th data-field="id">S. No.</th>
 						<th data-field="name">Description</th>						
 						<th data-field="name">Dated</th>
 						<th data-field="name">Submitted by</th>
-						<th data-field="name"></th>
+						<th data-field="name">Action</th>
+						<th data-field="name">Forwarded</th>
+						<th data-field="name">Forward Complaint</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for hos in comp %}
 					<tr>
-						<td align="center">
+						<td>
 							{{ forloop.counter }}.
 						</td>
-						<td align="center">
+						<td>
 							{{ hos.description }}
 						</td>
-						<td align="center">
+						<td>
 							{{ hos.date_of_complaint }}
 						</td>
-						<td align="center">
+						<td>
 							<a href="{% url 'WardenViewStudentProfile' hos.lodgers_roll_no %}">{{ hos.lodgers_roll_no }}</a>
 						</td>
-						<td align="center">
-							<a href="#!" onclick="myFunction('{{ hos.pk }}')">Close complaint</a>                            
+						<td>
+							<a href="#!" onclick="myFunction('{{ hos.pk }}')">Close Complaint</a>                            
+						</td>
+						<td>
+							{% if hos.forwarded %}
+							YES
+							{% else %}
+							NO
+							{% endif %}
+						</td>
+						<td>
+							<a href="{% url 'warden-forward-complaint' hos.pk %}">Forward Complaint</a>
 						</td>
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
-            <script type='text/javascript' >
-		function myFunction(hosid) {
-			if (confirm("Close complaint ? ") == true) {
-				console.log('url called')
-				window.location = "/warden/complaint/"+hosid+'/'
-				console.log('url called again')
-			}
-		}
-	</script>
 		</div>
+		{% else %}
+		<p>No Complaints Registered</p>
+		{% endif %}
 	</div>
 </div>
-	
-
+{% endblock %}
+{% block script %}
+<script type='text/javascript' >
+	function myFunction(hosid) {
+		if (confirm("Close complaint ? ") == true) {
+			window.location = "/warden/complaint/"+hosid+'/'
+		}
+	}
+</script>
 {% endblock %}
 
 {% block sidelist %}
@@ -77,4 +89,5 @@
 <li><a class="waves-effect" href="{% url 'warden-facilities' %}">Facilities</a></li>
 <li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
 <li><a class="waves-effect" href="{% url 'wardenViewDefaulters' %}">Defaulters</a></li>
+<li><a class="waves-effect" href="{% url 'warden-event' %}">Events</a></li>
 {% endblock %}

@@ -20,6 +20,7 @@ admin.site.register(HostelCouncil)
 admin.site.register(Closures)
 admin.site.register(MessDetail)
 admin.site.register(Notice)
+admin.site.register(Event)
 admin.site.register(PaymentDetails)
 admin.site.register(HostelAttachDates)
 

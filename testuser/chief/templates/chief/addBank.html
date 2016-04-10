@@ -5,40 +5,47 @@
 
 {% block extrahead %} 
 <!--<link rel="stylesheet" href="{% static 'assests/main-page/css/cw-home.css' %}">-->
-   <link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/styleHostel.css' %}"/>
+<link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/styleHostel.css' %}"/>
 <!--<link rel="stylesheet" href="{% static 'assests/main-page/css/styleHostel.css' %}">-->
 {% endblock %}
 
 {% block content %}
-</div>
 {% if mes %}
-	<script type="text/javascript">
-		alert("{{ mes }}");
-	</script>
+<script type="text/javascript">
+	alert("{{ mes }}");
+</script>
 {% endif %}
 <div class="row">
-	<div class="col s12 m12 l12">
-		<div class="card-panel">
-		<h3>Hostels</h3>
-			<ul class="collapsible" data-collapsible="accordion" action>
-		    <li>
-		      <div class="collapsible-header">Add Bank</div>
-		      <div class="collapsible-body">
-				<form method="post" action="">
-					{% csrf_token %}
-					<input type="hidden" name="next" value="{{ next }}" />
-					{% form form=form %}
-					{% endform %}
-					<div class="row">
-						<div class="col s12"> 
-							<button type="submit" name="add-room" class="btn waves-effect waves-light left">Add Bank</button>
-						</div>
+	<h3>Banks</h3>
+	<hr>
+	<div class="col s12">
+		<ul class="tabs">
+			<li class="tab col s6"><a class="active" href="#add">Add Bank</a></li>
+			{% if banks|length > 0 %}<li class="tab col s6"><a class="" href="#all">All Banks</a></li>{% endif %}
+		</ul>
+	</div>
+	<div class="col s12 m12 l12" id="add">
+		<div class="card addcard">
+			<h5>Add Bank</h5>
+			<hr>
+			<form method="post" action="">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ next }}" />
+				{% form form=form %}
+				{% endform %}
+				<div class="row">
+					<div class="col s12"> 
+						<button type="submit" name="add-room" class="btn waves-effect waves-light left">Add Bank</button>
 					</div>
-				</form>
-		      </div>
-		    </li>
-		  	</ul>
-			<table>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="col s12" id="all">
+		<div class="card addcard">
+			<h5>All Banks</h5>
+			<hr>
+			<table class="striped centered bordered">
 				<thead>
 					<tr>
 						<th data-field="id">S. No.</th>
@@ -61,7 +68,7 @@
 		</div>
 	</div>
 </div>
-	
+
 
 {% endblock %}
 

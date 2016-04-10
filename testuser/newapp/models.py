@@ -5,6 +5,7 @@ from django.contrib.auth.models import (
 	BaseUserManager, AbstractBaseUser
 )
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 
 class MyUserManager(BaseUserManager):
 	def create_user(self, userid, date_of_birth, password=None):
@@ -139,7 +140,7 @@ def student_photo_name(instance, filename):
 	ext = filename.split('.')[-1]
 	return 'student/images/'+instance.username+'.'+ext
 class Students(models.Model):
-	username = models.CharField(max_length = 20, primary_key = True , default='');
+	username = models.CharField(max_length = 20, unique=True, default='');
 	name = models.CharField(max_length=50 , null = False, default='');
 	date_of_birth = models.DateField(null=False,default=timezone.now())
 	room_number = models.ForeignKey(Rooms,null = True);
@@ -231,7 +232,7 @@ class PreviousHostelDetail(models.Model):
 	#code
 	hostel_name = models.CharField(null=False,max_length = 40)
 	room_no = models.CharField(max_length = 10, null=False)
-	student = models.ForeignKey(Students,null=False)
+	student = models.ForeignKey(Students,null=True,on_delete = models.SET_NULL)
 	hostel_join_date = models.DateField(null=False)
 	hostel_leave_date = models.DateField(null=False,default = datetime.now)
 	# corpus_paid = models.IntegerField(null=False)
@@ -245,6 +246,7 @@ class Complaints(models.Model):
 	hostel = models.ForeignKey(Hostels)
 	date_of_complaint = models.DateField(auto_now=True)
 	closed = models.BooleanField(default = False)
+	forwarded = models.BooleanField(default = False)
 
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.description)
@@ -255,7 +257,7 @@ def council_photo_name(instance, filename):
 	return 'warden/images/council/'+instance.hostel.username+'/'+instance.position+'.'+ext
 class HostelCouncil(models.Model):
 	hostel = models.ForeignKey(Hostels)
-	name = models.CharField(null=True,blank=True,max_length=100,default='')
+	name = models.CharField(max_length=100,default='')
 	email = models.EmailField(null=False)
 	phone = models.CharField(max_length=15,default='',null=False,blank=False)
 	position = models.CharField(max_length=100, default='')
@@ -307,7 +309,7 @@ def facility_photo_name(instance, filename):
 	return 'warden/images/facilities/'+instance.hostel.username+'/'+instance.facility_name+'.'+ext
 class Facilities(models.Model):
 	hostel = models.ForeignKey(Hostels)
-	facility_name = models.CharField(null=False, unique=True, max_length=100,default='')
+	facility_name = models.CharField(null=False, max_length=100,default='')
 	facility_description = models.TextField(null=False, default='')
 	photo = models.ImageField(upload_to=facility_photo_name,null=True, blank=True)
 	def __str__(self):
@@ -336,3 +338,15 @@ class Notice(models.Model):
 	file = models.FileField(upload_to = noticePhotoForm,null = True)
 	creator = models.CharField(max_length = 30,null = False)
 	date = models.DateField(null = False,default = date.today())
+
+def eventphotoname(instance,filename):
+	ext = filename.split('.')[-1]
+	return 'warden/images/event/'+instance.event.title+'/'+'event_photo'+'.'+ext
+class Event(models.Model):
+	hostel = models.ForeignKey(Hostels)
+	title = models.CharField(max_length=100, default='',unique=True)
+	description = models.TextField(max_length=1000, default='')
+	time = models.DateTimeField(default = timezone.now())
+class Images(models.Model):
+    event = models.ForeignKey(Event, default=None)
+    image = models.ImageField(upload_to=eventphotoname)

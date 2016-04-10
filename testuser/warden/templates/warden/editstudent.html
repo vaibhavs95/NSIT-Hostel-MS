@@ -1,7 +1,12 @@
 {% extends "newapp/home.html" %}
 {% load staticfiles %}
 {% load material_form %}
-{% block title %} Warden - HMS {% endblock %}
+{% block title %} Warden-Edit Student {% endblock %}
+
+
+{% block extrahead %} 
+<link rel="stylesheet" href="{% static 'assests/main-page/css/cw-home.css' %}">
+{% endblock %}
 
 {% block sidelist %}
 <li><a class="waves-effect" href="{% url 'warden-room' %}">Room</a></li>
@@ -15,18 +20,26 @@
 <li><a class="waves-effect" href="{% url 'wardenViewDefaulters' %}">Defaulters</a></li>
 <li><a class="waves-effect" href="{% url 'warden-event' %}">Events</a></li>
 {% endblock %}
+
 {% block content %}
-<main id="studentInfo">
-			<h3 class="center">
-				{{stu}}
-			</h3>
-			</main>
-	<form method="post" action="" enctype="multipart/form-data">
-		{% csrf_token %}
-		{% form form=form %}
-		{% endform %}
-		<button type="submit" name="attach-student" class="btn waves-effect waves-light left">Add Disciplinary Action</button>
-	</form>
-{% endblock %}
-{% block script %}
+<div class="row">
+	<div class="col s12">
+		<div class="card-panel">
+		<form method="post" action="{% url 'warden-edit-student' username  %} " enctype="multipart/form-data">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ next }}" />
+				{% form form=form %}
+				{% endform %}
+				<div class="row">
+					<div class="col s12"> 
+						<button type="submit" name="login" class="btn waves-effect waves-light left">Submit Details</button>
+					</div>
+				</div>
+		</form>
+		{% if student %}
+		<p>Details successfully Submitted</p>
+		{% endif %}
+		</div>
+	</div>
+</div>
 {% endblock %}

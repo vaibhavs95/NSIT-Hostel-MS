@@ -1,20 +1,12 @@
 {% extends "newapp/home.html" %}
 {% load staticfiles %}
 {% load material_form %}
-{% block title %} Warden - HMS {% endblock %}
+{% block title %} Student-Warden {% endblock %}
 
 {% block extrahead %}
 {% endblock %}
 
 {% block extrastyle %}
-<style>
-	#searchcard{
-		padding: 2%;
-	}
-	.addcard{
-		padding: 2%;
-	}
-</style>
 {% endblock %}
 
 {% block sidelist %}
@@ -27,10 +19,12 @@
 <li><a class="waves-effect" href="{% url 'warden-facilities' %}">Facilities</a></li>
 <li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
 <li><a class="waves-effect" href="{% url 'wardenViewDefaulters' %}">Defaulters</a></li>
+<li><a class="waves-effect" href="{% url 'warden-event' %}">Events</a></li>
 {% endblock %}
 {% block content %}
 <div class="row">
 	<h3>Students</h3>
+	<hr>
 	<div class="col s12">
 		<ul class="tabs">
 			<li class="tab col s4"><a class="active" href="#search">Search Student</a></li>
@@ -41,7 +35,7 @@
 
 	<!-- <div class="card-panel"> -->
 	<div class="col s12" id="search">
-		<div class="row card" id="searchcard">
+		<div class="row card addcard">
 			<h5> Search Student </h5>
 			<hr>
 			<div class="col s12 m6 l6">
@@ -80,7 +74,7 @@
 					<tr>
 						{% if s.mystudent %}
 						<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
-						<td><a href="{% url 'warden-edit-student' s.id %}">Edit Student Details</a></td>
+						<td><a href="{% url 'warden-edit-student' s.username %}">Edit Student Details</a></td>
 						<td><a href="{% url 'wardenDetachStudent' s.username %}">Detach Student</a></td>
 						<td><a href="{% url 'wardenAddCriminal' s.username %}">Add Disciplinary Action</a></td>
 						{% elif s.freestudent %}
@@ -141,13 +135,14 @@
 					{% for s in students %}
 					<tr>
 						<td><a href="{% url 'WardenViewStudentProfile' s.username %}">{{ s.username }}</a></td>
-						<td>{{ s.room.room_no }}</td>
-						<td>{{ s.room.capacity_of_room }}</td>
-						<td>{{ s.room.capacity_remaining }}</td>
-						<td><a href="{% url 'warden-edit-student' s.id %}">Edit Student Details</a></td>
+						<td>{{ s.room_number }}</td>
+						<td>{{ s.room_number.capacity_of_room }}</td>
+						<td>{{ s.room_number.capacity_remaining }}</td>
+						<td><a href="{% url 'warden-edit-student' s.username %}">Edit Student Details</a></td>
 						<td><a href="{% url 'wardenDetachStudent' s.username %}">Detach Student</a></td>
 						<td><a href="{% url 'wardenAddCriminal' s.username %}">Add Disciplinary Action</a></td>
 					</tr>
+					
 					{% endfor %}
 				</tbody>
 			</table>
@@ -162,14 +157,11 @@
 		alert("{{ mes }}");
 	</script>
 	{% endif %}
-	<!-- </div> -->
 </div>
 {% endblock %}
 {% block script %}
 <script type="text/javascript">
-	$('.collapsible-body').css({
-		"padding": "2%"
-	});
 	$('ul.tabs').tabs();
 </script>
+
 {% endblock %}

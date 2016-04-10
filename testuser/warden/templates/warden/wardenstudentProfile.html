@@ -1,0 +1,397 @@
+{% extends "newapp/home.html" %}
+{% load staticfiles %}
+{% load material_form %}
+{% block title %} Warden - HMS {% endblock %}
+
+{% block extrahead %} 
+{% endblock %}
+
+{% block extrastyle %}
+<style type="text/css">
+	.addcard{
+		padding: 2%;
+	}
+	.details{
+		font-size: 22px;
+		display : inline;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="row" id="studennfo">
+	<h3 class="center">Student Profile</h3>
+	<hr>
+	<div class="col s12">
+		<ul class="tabs">
+			<li class="tab col s4"><a class="active" href="#personal">Personal Details</a></li>
+			<li class="tab col s4"><a class="" href="#previous">Previous Hostel Details</a></li>
+			<li class="tab col s4"><a class="" href="#fines">Fines</a></li>
+			<li class="tab col s4"><a class="" href="#payment">Payment History</a></li>
+		</ul>
+	</div>
+	<div class="col s12" id="personal">
+			<div class="card row addcard">
+				<div class="details">Personal Details</div>
+					<a href = "{% url 'print-PDF' name s.username %}"><i class="material-icons">print</i></a>
+				<hr>
+				<div class="col s12 m8 l8">
+					<table class="striped">
+						<tr  >
+							<td>
+								Name :
+							</td>
+							<td>
+								{{s.name}}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Date of Birth
+							</td>
+							<td>
+								{{ s.date_of_birth }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Distance from Nsit :
+							</td>
+							<td>
+								{{ s.distance_from_nsit }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Gender :
+							</td>
+							<td>
+								{{ s.gender }}
+							</td>
+						</tr>
+						<tr  >
+							<td>
+								Blood group : 
+							</td>
+							<td>
+								{{ s.blood_group }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								College category :
+							</td>
+							<td>
+								{{ s.college_category }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Phone Number :
+							</td>
+							<td>
+								{{  s.student_phone_num }}
+							</td>
+						</tr>
+						<tr  >
+							<td>
+								Optional Phone number :
+							</td>
+							<td>
+								{{ s.student_optional_phone_num }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Father's Name :
+							</td>
+							<td>
+								{{ s.father_name }}
+							</td>
+						</tr>
+						<tr  >
+							<td>
+								Mother's name :
+							</td>
+							<td>
+								{{ s.mother_name }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Parent's email :
+							</td>
+							<td>
+								{{ s.parent_email }}
+							</td>
+						</tr>
+						<tr  >
+							<td>
+								Parent's phone number :
+							</td>
+							<td>
+								{{ s.parent_phone_num }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Parent's optional phone number :
+							</td>
+							<td>
+								{{ s.parent_optional_phone_num }}
+							</td>
+						</tr>
+						<tr  >
+							<td>
+								Permenant address :
+							</td>
+							<td>
+								{{ s.permanent_address }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Permenant address zipcode :
+							</td>
+							<td>
+								{{ s.permanent_address_zipcode }}
+							</td>
+						</tr>
+						<tr  >
+							<td>
+								Local guardian name :
+							</td>
+							<td>
+								{{ s.local_guardian_name }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Local guardian address :
+							</td>
+							<td>
+								{{ s.local_guardian_address }}
+							</td>
+						</tr>
+						<tr  >
+							<td>
+								Local guardian address zipcode :
+							</td>
+							<td>
+								{{ s.local_guardian_address_zipcode }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Local Guardian Phone Number :
+							</td>
+							<td>
+								{{ s.local_guardian_phone_number }}
+							</td>
+						</tr>
+						<tr  >
+							<td>
+								Local Guardian optional phone number :
+							</td>
+							<td>
+								{{ s.local_guardian_optional_phone_num }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Local Guardian Email :
+							</td>
+							<td>
+								{{ s.local_guardian_email }}
+							</td>
+						</tr>
+
+					</table>
+				</div>
+				<div class="col s12 m4 l4">
+					{% if s.student_photo %}
+					<img class="profilepic" src="{{ s.student_photo.url }}">
+					{% else %}
+					<img class="profilepic" src="/media/demo.png">
+					{% endif %}				
+				</div>
+			</div>
+			</div>
+
+	<div class="col s12" id="previous">
+		<div class="card addcard">
+			<h5>Previous Hostel history</h5>
+			<hr>
+			{% if prev|length > 0 %}
+			<table class="bordered centered striped">
+				<thead>
+				<tr >
+					<th >
+						S.No.
+					</th>
+					<th >
+						Hostel
+					</th>
+					<th >
+						Room no.
+					</th>
+					<th >
+						Join Date
+					</th>
+					<th >
+						Left on
+					</th>
+				</tr>
+					
+				</thead>
+				<tbody>
+				{% for i in prev %}
+				<tr>
+					<td >
+						{{forloop.counter}}
+					</td>
+					<td >
+						{{ i.hostel_name }}
+					</td>
+					<td >
+						{{ i.room_no }}
+					</td>
+					<td >
+						{{ i.hostel_join_date }}
+					</td>
+					<td >
+						{{ i.hostel_leave_date }}
+					</td>
+				</tr>
+				{% endfor %}
+					
+				</tbody>
+			</table>
+			{% else %}
+			<p>No Records Available.</p>
+			{% endif %}
+		</div>
+	</div>
+	<div class="col s12" id="fines">
+		<div class="card addcard">
+			<h5>Disciplinary Actions and Fines</h5>
+			<hr>
+		{% if crim|length > 0 %}
+		<table class="striped centered bordered">
+			<thead>
+			<tr >
+				<th >
+					S.No.
+				</th>
+				<th >
+					Date
+				</th>
+				<th >
+					Fine amount
+				</th>
+				<th >
+					Paid
+				</th>
+				<th>
+					
+				</th>
+			</tr>
+				
+			</thead>
+			<tbody>
+				
+			{% for i in crim %}
+			<tr>
+				<td >
+					{{forloop.counter}}
+				</td>
+				<td >
+					{{ i.date_of_action }}
+				</td>
+				<td >
+					{{ i.fine_amount }}
+				</td>
+				<td >
+					{% if i.paid_or_not %}
+					Yes
+					{% else %}
+					No
+					{% endif %}
+				</td>
+				<td>
+					{% if i.paid == False %}
+					<a href="{% url 'WardenPayFine' i.pk i.student %}">Pay</a>
+					{% endif %}
+				</td>
+				<td >{{ i.description }}</td></tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		{% else %}
+		<p>No Records Available.</p>
+		{% endif%}
+		</div>
+	</div>
+	<div class="col s12" id="payment">
+		<div class="card addcard">
+			<h5>Payment History</h5>
+			<hr>
+		{% if paym|length > 0 %}
+		<table class="striped centered bordered">
+			<thead>
+			<tr >
+				<th >
+					S.No.
+				</th>
+				<th >
+					Date
+				</th>
+				<th >
+					Bank
+				</th>
+				<th >
+					Receipt Number
+				</th>
+			</tr>
+				
+			</thead>
+			<tbody>				
+			{% for i in paym %}
+			<tr>
+				<td >
+					{{forloop.counter}}
+				</td>
+				<td >
+					{{ i.paymentDate }}
+				</td>
+				<td >
+					{{ i.bank }}
+				</td>
+				<td>
+					{{ i.receiptNumber }}
+				</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		{% else %}
+			<p>No Records Available.</p>
+		{% endif %}
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col s12"> 
+	</div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+	$('.collapsible-body').css({
+		"padding": "2%"
+	});
+</script>
+{% endblock %}

@@ -1,28 +1,26 @@
 {% extends "newapp/home.html" %}
 {% load staticfiles %}
 {% load material_form %}
-{% block title %} Chief Warden {% endblock %}
+{% block title %} Defaulters-Warden {% endblock %}
 
 {% block extrahead %} 
-<!--<link rel="stylesheet" href="{% static 'assests/main-page/css/cw-home.css' %}">-->
-   <link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/styleHostel.css' %}"/>
-<!--<link rel="stylesheet" href="{% static 'assests/main-page/css/styleHostel.css' %}">-->
 {% endblock %}
 
 {% block content %}
 {% if mes %}
-	<script type="text/javascript">
-		alert("{{ mes }}");
-	</script>
+<script type="text/javascript">
+	alert("{{ mes }}");
+</script>
 {% endif %}
 <div class="row">
+	<h3>Personal data defaulters list</h3>
+	<hr>
 	<div class="col s12 m12 l12">
-		<div class="card-panel">
-		<h3>Personal data defaulters list</h3>
-		{% if count == 0 %}
-		There are entries to be shown
-		{% else %}
-			<table>
+		<div class="card addcard">
+			{% if count == 0 %}
+			There are entries to be shown
+			{% else %}
+			<table class="centered striped bordered">
 				<thead>
 					<tr>
 						<th data-field="id">S. No.</th>
@@ -46,15 +44,7 @@
 					{% endfor %}
 				</tbody>
 			</table>
-		{% endif %}
-			<script type='text/javascript' >
-		}
-		function myFunction(hosid) {
-			if (confirm("Delete Notice ?") == true) {
-				window.location = "/warden/deletenotice/"+hosid
-			}
-		}
-	</script>
+			{% endif %}
 		</div>
 	</div>
 </div>
@@ -69,4 +59,5 @@
 <li><a class="waves-effect" href="{% url 'warden-facilities' %}">Facilities</a></li>
 <li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
 <li><a class="waves-effect" href="{% url 'wardenViewDefaulters' %}">Defaulters</a></li>
+<li><a class="waves-effect" href="{% url 'warden-event' %}">Events</a></li>
 {% endblock %}

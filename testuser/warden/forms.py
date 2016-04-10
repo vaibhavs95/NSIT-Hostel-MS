@@ -6,6 +6,7 @@ from newapp.models import *
 import re
 from django.contrib.admin.widgets import AdminDateWidget
 from datetime import date,datetime
+from multiupload.fields import MultiFileField
 
 def photocheck(requestfiles,field):
     a = None
@@ -306,7 +307,7 @@ class AddStudentForm(forms.ModelForm):
 class EditStudentForm(forms.ModelForm):
     class Meta:
         model = Students
-        exclude = ['username','room_number']
+        exclude = ['room_number']
 #        fields = '__all__'
         widgets = {
             'current_hostel_join_date': AdminDateWidget(),
@@ -316,10 +317,7 @@ class EditStudentForm(forms.ModelForm):
         self.username = kwargs.pop('username', None)
         self.user = kwargs.pop('user',None)
         super(EditStudentForm, self).__init__(*args, **kwargs)
-        #self.fields['room_number'].queryset = Rooms.objects.filter(capacity_remaining__gt = 0, hostel = Hostels.objects.get(username=self.user))
- #       self.fields['username'].help_text='Roll No: 111-CO-16'
         self.fields['branch'].help_text='Select one from dropdown'
-        #self.fields['room_number'].help_text='Select one from dropdown'
         self.fields['current_hostel_join_date'].help_text='Format: yyyy-mm-dd hh:mm:ss'
     def clean(self):
         student_phone_num = self.cleaned_data.get('student_phone_num')
@@ -425,4 +423,37 @@ class AddCriminalForm(forms.ModelForm):
         widgets = {
             'date_of_action':AdminDateWidget(),
         }
-        
+
+class ForwardComplaintForm(forms.Form):
+    forward_to = forms.EmailField()
+    subject = forms.CharField(max_length = 100)
+    body = forms.CharField(max_length = 500,widget=forms.Textarea)
+    def __init__(self, *args, **kwargs):
+        super(ForwardComplaintForm, self).__init__(*args, **kwargs)
+    def clean(self):
+        return self.cleaned_data
+
+
+class AddEventForm(forms.ModelForm):
+    class Meta:
+        model = Event
+        fields = ['title', 'description','time']  # not attachments!
+        widgets = {
+            'description': forms.Textarea(attrs={'class': 'input-field'})
+        }
+    images = MultiFileField(min_num=0, max_num=150, max_file_size=1024*1024*5)
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user',None)
+        super(AddEventForm, self).__init__(*args, **kwargs)
+        self.fields['description'].required=True
+        self.fields['title'].required=True
+        self.fields['images'].required=False
+    def save(self, commit=True):
+        instance = super(AddEventForm, self).save(commit=False)
+        print(instance)
+        print(instance.title)
+        instance.hostel = Hostels.objects.get(username=self.user)
+        instance.save(commit)
+        for each in self.cleaned_data['images']:
+            Images.objects.create(image=each, event=instance)
+        return instance

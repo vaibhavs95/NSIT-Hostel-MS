@@ -19,7 +19,7 @@
     <header>
         <nav class="indigo">
             <div class="nav-wrapper">
-                <a href="#!" class="brand-logo "><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'>
+                <a href='{% url "base" %}' class="brand-logo "><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'>
                     <div id="header-text-nsit" class="brand-logo flow-text left-align">Netaji Subhas Institue of Technology
                     </div>
                     <div id="header-text-hms" class="brand-logo flow-text left-align">Hostel Management System</div>
@@ -72,7 +72,14 @@
                     <table class="collapsible-body">
                         {% if noti %}
                         {% for i in noti %}
-                        <tr><td><a href="http://127.0.0.1:8000{{i.file.url}}" target="_blank">{{ i.title }}</a></td><td>{{i.date}}</td></tr>
+                        <tr>
+                        <td>
+                        <a href="http://127.0.0.1:8000{{i.file.url}}" target="_blank">{{ i.title }}</a>
+                        </td>
+                        <td>
+                            {{ i.date }}
+                        </td>
+                        </tr>
                         {% endfor %}
                         {% else %}
                         <tr><td>No notifications</td></tr>
@@ -108,7 +115,7 @@
                                         <p id="hDesc">Old but Gold. The very first hostel of NSIT. A little different but better. Fill me with Pleasure.</p>
                                     </div>
                                     <div class="card-action">
-                                        <a href="/newapp/{{ hos.username }}/" >More Info.</a>
+                                        <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +130,7 @@
                                         <p id="hDesc">I am a Hostel. Currently housing 4th year students that's why I am alone inside. Please fill me.</p>
                                     </div>
                                     <div class="card-action">
-                                        <a href="/newapp/{{ hos.username }}/#facilities" >More Info.</a>
+                                        <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
                                     </div>
                                 </div>
                             </div>
@@ -144,7 +151,7 @@
                                         <p id="hDesc">Old but Golddd. The very first hostel of NSIT. A little different but better. Fill me with Pleasure.</p>
                                     </div>
                                     <div class="card-action">
-                                        <a href="/newapp/{{ hos.username }}/#facilities" >More Info.</a>
+                                        <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
                                     </div>
                                 </div>
                             </div>
@@ -161,7 +168,7 @@
                                         <p id="hDesc">Old but Gold. The very first hostel of NSIT. A little different but better. Fill me with Pleasure.</p>
                                     </div>
                                     <div class="card-action">
-                                        <a href="/newapp/{{ hos.username }}/#facilities" >More Info.</a>
+                                        <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
                                     </div>
                                 </div>
                             </div>
@@ -176,7 +183,7 @@
                                         <p id="hDesc">I am a Hostel. Currently housing 4th year students that's why I am alone inside. Please fill me.</p>
                                     </div>
                                     <div class="card-action">
-                                        <a href="/newapp/{{ hos.username }}/#facilities" >More Info.</a>
+                                        <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
                                     </div>
                                 </div>
                             </div>
@@ -192,7 +199,7 @@
 
     <footer class="page-footer grey darken-4">
         <div class="container footer">
-            <a class="grey-text text-lighten-3 modal-trigger" href="#aboutt">About</a>
+            <a class="grey-text text-lighten-3 modal-trigger" href="#about">About</a>
             <a class="grey-text text-lighten-3" href="#!">Contact Us</a>
             <a class="grey-text text-lighten-3 modal-trigger" href="#locate">Locate Us</a>
             <a class="grey-text text-lighten-3" href="#!">Feedback</a>
@@ -202,36 +209,15 @@
 
     <!-- Modals -->
 
-    <!--login-->
-    <div id="login-modal" class="modal">
-        <div class="modal-content">
-            <h4>Log In</h4>
-            <hr>
-            <form method="post" action="{% url 'login' %}">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{{ next }}" />
-                {% form form=form %}
-                {% endform %}
-                <div class="row">
-                    <button class="btn waves-effect waves-light col s6" type="submit" name="login">Log In</button>
-                    <a id="forgot-button" data-target="forgot-password" class="modal-trigger col s6" href="#!">Forgot Password</a>
-                </div>
-                <div class="modal-footer">
-                    <a href="#!" class="modal-action modal-close waves-effect btn-flat ">Cancel</a>
-                </div>
-            </form>
-        </div>
-    </div>
-    
     <!-- About -->
-		<div id="aboutt" class="modal">
+		<div id="about" class="modal">
 			<div class="modal-content">
-				<h3 class="center">
+				<h4 class="center">
 					About us
-				</h3>
+				</h4>
 				<hr>
 				<p>
-					wawwe ewqweq eqweweqe qewqe qewqeqw resdfdd fffdfdfd
+					Hostel Management System of NSIT.
 				</p>
 			</div>
 		</div>

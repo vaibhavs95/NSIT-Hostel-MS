@@ -13,6 +13,8 @@ urlpatterns = [
     url(r'^student/search/other/$',views.searchstudentother, name='chiefwarden-search-student-other'),
     url(r'^deletenotice/(?P<target>[0-9a-zA-Z]*)/$', views.delNotice , name = 'chiefwarden-delnotice'),
     url(r'^delete/(?P<target>[0-9a-z]*)/$',views.delete_hos,name = 'hos_delete'),
-    url(r'^student/profile/(?P<student>[0-9A-Z-]*/$)',views.StudentProfile,name='ChiefWardenViewStudentProfile'),
+    url(r'^student/profile/(?P<student>[0-9]+-[A-Z]+-[0-9]+)/$',views.StudentProfile,name='chief-student-profile'),
+    url(r'^student/fine/add/(?P<student>[0-9]+-[A-Z]+-[0-9]+)/$',views.addfine,name='chief-add-fine'),
+    url(r'^student/payfine/(?P<primkey>[0-9]+)/(?P<stu>[0-9]+-[A-Z]+-[0-9]+)/$',views.payfine,name='chief-payfine'),
     url(r'^addBank/$',views.addBank,name = 'chiefAddBank'),
 ]

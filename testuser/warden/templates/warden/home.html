@@ -7,19 +7,6 @@
 {% endblock %}
 
 {% block extrastyle %}
-<style>
-	.profilepic{
-		width: 180px;
-		height: 180px;
-		border: 1px solid;
-		border-radius: 50%;
-		margin-left: 20%;
-		margin-top: 10%;
-		background-repeat: no-repeat;
-		background-position: center center;
-  		background-size: cover;
-	}
-</style>
 {% endblock %}
 
 {% block sidelist %}
@@ -32,6 +19,7 @@
 <li><a class="waves-effect" href="{% url 'warden-facilities' %}">Facilities</a></li>
 <li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
 <li><a class="waves-effect" href="{% url 'wardenViewDefaulters' %}">Defaulters</a></li>
+<li><a class="waves-effect" href="{% url 'warden-event' %}">Events</a></li>
 {% endblock %}
 
 {% block content %}
@@ -41,45 +29,81 @@
 	</script>
 {% endif %}
 <div class="row">
-	<div class="col s12 m12 l12">
+	<h3>Profile</h3>
+	<hr>
+	<div class="col s12">
+		<ul class="tabs">
+			<li class="tab col s6"><a class="active" href="#profile">Profile</a></li>
+			<li class="tab col s6"><a class="" href="#editprofile">Edit Profile</a></li>
+		</ul>
+	</div>
+	<div class="col s12 m12 l12" id="profile">
 		<div class="card-panel row">
+			<h5>Profile</h5>
+			<hr>
+			 <div class="col s12 m6 l6">
+			<table class="striped">
+				<tbody>
+					<tr>
+						<td>Name : </td>
+						<td>{{ name }}</td>
+					</tr>
+					<tr>
+						<td>Phone No. : </td>
+						<td>{{ phone }}</td>
+					</tr>
+					<tr>
+						<td>Landline : </td>
+						<td>{{ landline }}</td>
+					</tr>
+					<tr>
+						<td>Email : </td>
+						<td>{{ email }}</td>
+					</tr>
+					<tr>
+						<td>Department : </td>
+						<td>{{ dept }}</td>
+					</tr>
+					<tr>
+						<td>Portfolio : </td>
+						<td>{{ portfolio }}</td>
+					</tr>
+					<tr>
+						<td>Available Capacity : </td>
+						<td>{{ rooms_available }}</td>
+					</tr>
+					<tr>
+						<td>Total Capacity : </td>
+						<td>{{ total_rooms }}</td>
+					</tr>
+				</tbody>
+			</table>
+			</div> 
 			<div class="col s12 m6 l6">
-				<h4>Basic Info</h4>
-				Name : {{ name }}<br>
-				Phone No  : {{ phone }}<br>
-				Landline : {{ landline }}<br>
-				Email : {{ email }}<br>
-				Department : {{ dept }}<br>
-				Portfolio : {{ portfolio }}<br>
-				Total Capacity : {{  total_rooms }}<br>
-				Available Capacity : {{ rooms_available }}<br>
-			</div>
-			<div class="col s12 m6 l6">
-			{% if wardenphoto %}
+				{% if wardenphoto %}
 				<img class="profilepic" src="{{ userid.warden_photo.url }}">
-			{% else %}
+				{% else %}
 				<img class="profilepic" src="/media/demo.png">
-			{% endif %}
+				{% endif %}
 			</div>
 		</div>
-		<ul id="editprofile" class="collapsible" data-collapsible="accordion">
-			<li>
-				<div class="collapsible-header">Edit Profile</div>
-				<div class="collapsible-body">
-					<form method="post" action="{% url 'warden-profile-edit' %}" enctype="multipart/form-data">
-						{% csrf_token %}
-						<input type="hidden" name="next" value="{{ next }}" />
-						{% form form=editprofileform %}
-						{% endform %}
-						<div class="row">
-							<div class="col s12"> 
-								<button type="submit" name="edit-profile" class="btn waves-effect waves-light left">Edit profile</button>
-							</div>
-						</div>
-					</form>
+	</div>
+	<div class="col s12" id="editprofile">
+	<div class="card addcard">
+			<h5>Edit Profile</h5>
+			<hr>
+			<form method="post" action="/warden/profile-edit/#editprofile" enctype="multipart/form-data">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ next }}" />
+				{% form form=editprofileform %}
+				{% endform %}
+				<div class="row">
+					<div class="col s12"> 
+						<button type="submit" name="edit-profile" class="btn waves-effect waves-light left">Edit profile</button>
+					</div>
 				</div>
-			</li>
-		</ul>
+			</form>
+		</div>
 	</div>
 </div>
 {% endblock %}

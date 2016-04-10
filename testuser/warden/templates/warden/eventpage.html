@@ -1,8 +1,33 @@
-{% extends "newapp/home.html" %}
+event.html{% extends "newapp/home.html" %}
 {% load staticfiles %}
 {% load material_form %}
-{% block title %} Warden - HMS {% endblock %}
+{% block title %} HMS-Warden-Event{% endblock %}
 
+{% block extrahead %}
+{% endblock %}
+
+{% block extrastyle %}
+<style>
+	.material-placeholder, .materialboxed{
+		display: inline;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+	<h3>{{ event.title }}</h3>
+	<hr>
+	<h5>Event Description: </h5>
+	<p>{{ event.description }}</p>
+	<h5>Event Photo(s): </h5>
+		{% for p in ephotos %}
+		<img class="materialboxed" width="200" src="{{ p.image.url }}">
+		
+		{% endfor %}
+{% endblock %}
+
+{% block script %}
+{% endblock %}
 {% block sidelist %}
 <li><a class="waves-effect" href="{% url 'warden-room' %}">Room</a></li>
 <li><a class="waves-effect" href="{% url 'warden-student' %}">Student</a></li>
@@ -14,19 +39,4 @@
 <li><a class="waves-effect" href="{% url 'warden-hosform' %}">Forms</a></li>
 <li><a class="waves-effect" href="{% url 'wardenViewDefaulters' %}">Defaulters</a></li>
 <li><a class="waves-effect" href="{% url 'warden-event' %}">Events</a></li>
-{% endblock %}
-{% block content %}
-<main id="studentInfo">
-			<h3 class="center">
-				{{stu}}
-			</h3>
-			</main>
-	<form method="post" action="" enctype="multipart/form-data">
-		{% csrf_token %}
-		{% form form=form %}
-		{% endform %}
-		<button type="submit" name="attach-student" class="btn waves-effect waves-light left">Add Disciplinary Action</button>
-	</form>
-{% endblock %}
-{% block script %}
 {% endblock %}
