@@ -41,7 +41,8 @@
 				<thead>
 					<tr>
 						<th data-field="id">S. No.</th>
-						<th data-field="name">Title</th>						
+						<th data-field="name">Title</th>
+						<th data-field="name">Dated</th>
 						<th data-field="name"></th>
 					</tr>
 				</thead>
@@ -53,6 +54,9 @@
 						</td>
 						<td align="center">
 							<a href="{{ hos.file.url }}">{{ hos.title }}</a>
+						</td>
+						<td align="center">
+							{{ hos.date }}.
 						</td>
 						<td align="center">
 							<a href="#!" onclick="myFunction('{{ hos.id }}')">Delete Notice</a>

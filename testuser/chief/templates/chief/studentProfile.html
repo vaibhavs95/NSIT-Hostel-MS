@@ -36,8 +36,9 @@
 	<div class="col s12">
 		<ul class="tabs">
 			<li class="tab col s4"><a class="active" href="#personal">Personal Details</a></li>
-			<li class="tab col s4"><a class="" href="#previous">Previous Hostel Details</a></li>
+			<li class="tab col s4"><a class="" href="#previous">Hostel History</a></li>
 			<li class="tab col s4"><a class="" href="#fines">Fines</a></li>
+			<li class="tab col s4"><a class="" href="#payment">Payments History</a></li>
 		</ul>
 	</div>
 	<div class="col s12" id="personal">
@@ -367,6 +368,43 @@
 				</td>
 			</tr>
 			<tr><td colspan="5" class="center"><a href='{{i.file.url}}' action>{{ i.description }}</a></td></tr>
+			{% endfor %}
+		</table>
+		</div>
+	</div>
+	<div class="col s12" id="payment">
+		<div class="card">
+			<h5>Payments history</h5>
+		<table class="striped centered bordered">
+			<tr >
+				<td >
+					S.No.
+				</td>
+				<td >
+					Date
+				</td>
+				<td >
+					Bank
+				</td>
+				<td >
+					Receipt number
+				</td>
+			</tr>
+			{% for i in paym %}
+			<tr>
+				<td >
+					{{forloop.counter}}
+				</td>
+				<td >
+					{{ i.paymentDate }}
+				</td>
+				<td >
+					{{ i.bank }}
+				</td>
+				<td >
+					{{ if i.receiptNumber }}
+				</td>
+			</tr>
 			{% endfor %}
 		</table>
 		</div>

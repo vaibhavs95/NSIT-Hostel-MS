@@ -42,6 +42,7 @@ def notices(request):
                 a = f.save(commit = False)
                 a.creator = str(request.user)
                 a.file = request.FILES['file']
+                a.date = date.today()
                 a.save();
                 SendNoticeMail(f.cleaned_data.get('title'),str(request.user))
                 mes = 'Notice added successfully'
@@ -116,14 +117,19 @@ def remstudent(request,target):
         prev = None
         crimi = None
         try:
-            prev = PreviousHostelDetail.objects.filter(student = target)
+            prev = PreviousHostelDetail.objects.filter(student = u)
         except ObjectDoesNotExist:
             pass
         try:
-            crimi = CriminalRecord.objects.filter(student = target)
+            crimi = CriminalRecord.objects.filter(student = u)
         except ObjectDoesNotExist:
             pass
-        data = {'all_hostels': b,'student':'yes', 'username': base64.b64encode(u.username.encode('utf-8')), 's': u,'prev':prev,'crim':crimi}
+        payments = None
+        try:
+            payments = PaymentDetails.objects.filter(student = u)
+        except:
+            pass
+        data = {'all_hostels': b,'student':'yes', 'username': base64.b64encode(u.username.encode('utf-8')), 's': u,'prev':prev,'crim':crimi,'paym':payments}
         # return render(request,'warden/studentProfile.html',data)
         return redirect("{% url 'WardenViewStudentProfile' u.username %}")
     else:
@@ -159,7 +165,12 @@ def StudentProfile(request,student):
             crimi = CriminalRecord.objects.filter(student = student).order_by('date_of_action')
         except ObjectDoesNotExist:
             pass
-        data = {'all_hostels': b,'student':'yes', 'username': base64.b64encode(u.username.encode('utf-8')), 's': u,'prev':prev,'crim':crimi}
+        payments = None
+        try:
+            payments = PaymentDetails.objects.filter(student = u)
+        except:
+            pass
+        data = {'all_hostels': b,'student':'yes', 'username': base64.b64encode(u.username.encode('utf-8')), 's': u,'prev':prev,'crim':crimi,'paym':payments}
         return render(request,'warden/studentProfile.html',data)
     else:
         return redirect('logout')

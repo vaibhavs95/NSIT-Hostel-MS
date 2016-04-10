@@ -335,3 +335,4 @@ class Notice(models.Model):
 	title = models.CharField(null=False, max_length = 200,default = None,unique = True)
 	file = models.FileField(upload_to = noticePhotoForm,null = True)
 	creator = models.CharField(max_length = 30,null = False)
+	date = models.DateField(null = False,default = date.today())

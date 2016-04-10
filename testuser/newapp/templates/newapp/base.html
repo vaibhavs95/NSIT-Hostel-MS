@@ -72,7 +72,7 @@
                     <table class="collapsible-body">
                         {% if noti %}
                         {% for i in noti %}
-                        <tr><td><a href="http://127.0.0.1:8000{{i.file.url}}" target="_blank">{{ i.title }}</a></td></tr>
+                        <tr><td><a href="http://127.0.0.1:8000{{i.file.url}}" target="_blank">{{ i.title }}</a></td><td>{{i.date}}</td></tr>
                         {% endfor %}
                         {% else %}
                         <tr><td>No notifications</td></tr>

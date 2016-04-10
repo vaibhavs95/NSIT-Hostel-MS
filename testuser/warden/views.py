@@ -900,7 +900,7 @@ def addstudent(request):
 				bank = f.cleaned_data.get('bank')
 				payDate = f.cleaned_data.get('paymentDate')
 				receipt = f.cleaned_data.get('receiptNumber')
-				last_date = s.current_hostel_join_date+timedelta(days=10)
+				last_date = date.today()+timedelta(days=10)
 				s.save()
 				user.save()
 				hostelAttach = HostelAttachDates(hostel_last_date = last_date,student=s)
@@ -989,6 +989,11 @@ def editstudent(request, student):
 				data['s'] = u
 				data['prev'] = prev
 				data['crim'] = crimi
+				try:
+					payments = PaymentDetails.objects.filter(student = u)
+					data['paym']=payments
+				except:
+					pass
 				return render(request, 'student/students/studentProfile.html', data)
 			else:
 				data['form'] = f

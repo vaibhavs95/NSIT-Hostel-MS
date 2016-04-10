@@ -396,7 +396,7 @@ class AttachStudentForm(forms.ModelForm):
 class AddNoticeForm(forms.ModelForm):
     class Meta:
         model = Notice
-        exclude = ['creator']
+        exclude = ['creator','date']
 
 class DetachStudentForm(forms.ModelForm):
     hostel_leave_date = forms.DateField(required = True)
