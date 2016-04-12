@@ -108,11 +108,15 @@
                             <div class="col s12 m6 l6">
                                 <div class="card">
                                     <div class="card-image gradient">
-                                        <img src='{% static "assets/main-page/media/images/hostel.jpg" %}'>
+                                        {% if hos.hostel_photo %}
+                                        <img src="{{ hos.hostel_photo.url }}">
+                                        {% else %}
+                                        <img src="/media/hosteldemo.jpg">
+                                        {% endif %}
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p id="hDesc">Old but Gold. The very first hostel of NSIT. A little different but better. Fill me with Pleasure.</p>
+                                        <p id="hDesc">{{ hos.hostel_text }}</p>
                                     </div>
                                     <div class="card-action">
                                         <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
@@ -123,11 +127,15 @@
                             <div class="col s12 m6 l6">
                                 <div class="card">
                                     <div class="card-image  gradient">
-                                        <img src='{% static "assets/main-page/media/images/hostel2.jpg" %}'>
+                                        {% if hos.hostel_photo %}
+                                        <img src="{{ hos.hostel_photo.url }}">
+                                        {% else %}
+                                        <img src="/media/hosteldemo.jpg">
+                                        {% endif %}
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p id="hDesc">I am a Hostel. Currently housing 4th year students that's why I am alone inside. Please fill me.</p>
+                                        <p id="hDesc">{{ hos.hostel_text }}</p>
                                     </div>
                                     <div class="card-action">
                                         <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
@@ -144,11 +152,15 @@
                             <div class="col s6 offset-s3">
                                 <div class="card">
                                     <div class="card-image gradient">
-                                        <img src='{% static "assets/main-page/media/images/hostel.jpg" %}'>
+                                        {% if hos.hostel_photo %}
+                                        <img src="{{ hos.hostel_photo.url }}">
+                                        {% else %}
+                                        <img src="/media/hosteldemo.jpg">
+                                        {% endif %}
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p id="hDesc">Old but Golddd. The very first hostel of NSIT. A little different but better. Fill me with Pleasure.</p>
+                                        <p id="hDesc">{{ hos.hostel_text }}</p>
                                     </div>
                                     <div class="card-action">
                                         <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
@@ -161,11 +173,15 @@
                             <div class="col s12 m6 l6">
                                 <div class="card">
                                     <div class="card-image gradient">
-                                        <img src='{% static "assets/main-page/media/images/hostel.jpg" %}'>
+                                        {% if hos.hostel_photo %}
+                                        <img src="{{ hos.hostel_photo.url }}">
+                                        {% else %}
+                                        <img src="/media/hosteldemo.jpg">
+                                        {% endif %}
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p id="hDesc">Old but Gold. The very first hostel of NSIT. A little different but better. Fill me with Pleasure.</p>
+                                    <p id="hDesc">{{ hos.hostel_text }}</p>
                                     </div>
                                     <div class="card-action">
                                         <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
@@ -176,11 +192,15 @@
                             <div class="col s12 m6 l6">
                                 <div class="card">
                                     <div class="card-image  gradient">
-                                        <img src='{% static "assets/main-page/media/images/hostel2.jpg" %}'>
+                                        {% if hos.hostel_photo %}
+                                        <img src="{{ hos.hostel_photo.url }}">
+                                        {% else %}
+                                        <img src="/media/hosteldemo.jpg">
+                                        {% endif %}
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p id="hDesc">I am a Hostel. Currently housing 4th year students that's why I am alone inside. Please fill me.</p>
+                                        <p id="hDesc">{{ hos.hostel_text }}</p>
                                     </div>
                                     <div class="card-action">
                                         <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>

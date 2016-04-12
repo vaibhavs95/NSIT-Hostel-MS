@@ -59,25 +59,14 @@ def capacity(user):
 
 
 def homebasic(request, h):
-		#basic()
 		user = Hostels.objects.get(username=h)
-		
-		data['name'] = user.name
-		data['phone'] = user.phone
-		data['landline'] = user.landline
-		data['email'] = user.email
-		data['dept'] = user.department
-		data['portfolio'] = user.portfolio
 		data['total_rooms'] = capacity(user.username)
 		data['rooms_available'] = capacityremaining(user.username)
-		if user.warden_photo:
-			data['wardenphoto'] = 'yes'
-			data['userid'] = user
-		else:
-			data['wardenphoto'] = None
-			data['userid'] = None
+		data['u'] = user
+		g = MainDetailEditForm(instance = user)
 		f = EditWardenProfileForm(request=request, instance=user)
 		data['editprofileform'] = f
+		data['editmaindetailform'] = g
 		# return render(request,'warden/home.html',data)
 
 
@@ -99,6 +88,43 @@ def home(request):
 	else:
 		return redirect('logout')
 
+@require_http_methods(['GET', 'POST'])
+@login_required
+def mainpageedit(request):
+	if re.match("[bg]h[0-9]warden", str(request.user)) != None:
+		basic()
+		data['mes']=None
+		#data['wardenphoto'] = None
+		h = Hostels.objects.get(username=request.user)
+		if request.method == 'POST':
+			f = MainDetailEditForm(request.POST, request.FILES, instance=h)
+			if f.is_valid():
+				f.save()
+				homebasic(request, request.user)
+				return render(request, 'warden/home.html', data)
+			else:
+				homebasic(request, request.user)
+				data['editmaindetailform'] = f
+				
+				#data['userid'] = h
+				#if h.warden_photo:
+				#	data['userid'] = h
+				#	data['wardenphoto'] = 'yes'
+				#else:
+				#	data['userid'] = None
+				return render(request, 'warden/home.html', data)
+		else:
+			#if h.warden_photo:
+			#	data['userid'] = h
+			#	data['wardenphoto'] = 'yes'
+			#else:
+			#	data['userid'] = None
+			f = MainDetailEditForm(instance=h)
+			#data['userid'] = h
+			data['editmaindetailform'] = f
+			return render(request, 'warden/home.html', data)
+	else:
+		return redirect('logout')
 
 @require_http_methods(['GET', 'POST'])
 @login_required
@@ -983,7 +1009,11 @@ def searchstudentrollno(request):
 						else:
 							p = {'username':sx.username,}
 					else:
-						p = {'username':sx.username, 'freestudent':'yes'}
+						fine = CriminalRecord.objects.filter(student=sx,paid=False)
+						if len(fine) > 0:
+							p = {'username':sx}
+						else:
+							p = {'username':sx.username, 'freestudent':'yes'}
 					searchedstudent.append(p)
 				data['searchedstudent'] = searchedstudent
 				data['searchstudentrollnoform'] = f
@@ -1035,11 +1065,15 @@ def searchstudentother(request):
 					for i in sx:
 						if i.room_number:
 							if i.room_number.hostel == h:
-								p = {'username':i.username, 'id':base64.b64encode(i.username.encode('utf-8')),'mystudent':'yes'}
+								p = {'username':i.username,'mystudent':'yes'}
 							else:
-								p = {'username':i.username, 'id':base64.b64encode(i.username.encode('utf-8'))}
+								p = {'username':i.username}
 						else:
-							p = {'username':i.username, 'id':base64.b64encode(i.username.encode('utf-8')),'freestudent':'yes'}
+							fine = CriminalRecord.objects.filter(student=i,paid=False)
+							if len(fine) > 0:
+								p = {'username':i.username}
+							else:
+								p = {'username':i.username,'freestudent':'yes'}
 						searchedstudent.append(p)
 				data['searchedstudent'] = searchedstudent
 				data['searchstudentotherform'] = f

@@ -377,7 +377,7 @@
 							{% endif %}
 						</td>
 						<td>
-							{% if i.paid == False %}
+							{% if i.paid == False and i.student.room_number %}
 							<a href="{% url 'WardenPayFine' i.pk i.student %}">Pay</a>
 							{% endif %}
 						</td>

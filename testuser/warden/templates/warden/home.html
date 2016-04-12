@@ -33,8 +33,9 @@
 	<hr>
 	<div class="col s12">
 		<ul class="tabs">
-			<li class="tab col s6"><a class="active" href="#profile">Profile</a></li>
-			<li class="tab col s6"><a class="" href="#editprofile">Edit Profile</a></li>
+			<li class="tab col s4"><a class="active" href="#profile">Profile</a></li>
+			<li class="tab col s4"><a class="" href="#editprofile">Edit Profile</a></li>
+			<li class="tab col s4"><a href="#editmaindetail"> Main Page Details</a></li>
 		</ul>
 	</div>
 	<div class="col s12 m12 l12" id="profile">
@@ -46,27 +47,27 @@
 				<tbody>
 					<tr>
 						<td>Name : </td>
-						<td>{{ name }}</td>
+						<td>{{ u.name }}</td>
 					</tr>
 					<tr>
 						<td>Phone No. : </td>
-						<td>{{ phone }}</td>
+						<td>{{ u.phone }}</td>
 					</tr>
 					<tr>
 						<td>Landline : </td>
-						<td>{{ landline }}</td>
+						<td>{{ u.landline }}</td>
 					</tr>
 					<tr>
 						<td>Email : </td>
-						<td>{{ email }}</td>
+						<td>{{ u.email }}</td>
 					</tr>
 					<tr>
 						<td>Department : </td>
-						<td>{{ dept }}</td>
+						<td>{{ u.department }}</td>
 					</tr>
 					<tr>
 						<td>Portfolio : </td>
-						<td>{{ portfolio }}</td>
+						<td>{{ u.portfolio }}</td>
 					</tr>
 					<tr>
 						<td>Available Capacity : </td>
@@ -80,8 +81,8 @@
 			</table>
 			</div> 
 			<div class="col s12 m6 l6">
-				{% if wardenphoto %}
-				<img class="profilepic" src="{{ userid.warden_photo.url }}">
+				{% if u.warden_photo %}
+				<img class="profilepic" src="{{ u.warden_photo.url }}">
 				{% else %}
 				<img class="profilepic" src="/media/demo.png">
 				{% endif %}
@@ -100,6 +101,38 @@
 				<div class="row">
 					<div class="col s12"> 
 						<button type="submit" name="edit-profile" class="btn waves-effect waves-light left">Edit profile</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="col s12" id="editmaindetail">
+	<div class="card addcard row">
+	<h5>Current Main Page Details</h5>
+	<hr>
+	<div class="col s6">
+		<p>{{ u.hostel_text }}</p>
+	</div>
+	<div class="col s6">
+		{% if u.hostel_photo %}
+			<img class="squarepic" src="{{ u.hostel_photo.url }}">
+		{% else %}
+			<img class="squarepic" src="/media/hosteldemo.jpg">
+		{% endif %}
+	</div>
+		
+	</div>
+	<div class="card addcard">
+			<h5>Edit Main Page Details</h5>
+			<hr>
+			<form method="post" action="/warden/main-page-edit/#editmaindetail" enctype="multipart/form-data">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ next }}" />
+				{% form form=editmaindetailform %}
+				{% endform %}
+				<div class="row">
+					<div class="col s12"> 
+						<button type="submit" name="edit-profile" class="btn waves-effect waves-light left">Edit Details</button>
 					</div>
 				</div>
 			</form>

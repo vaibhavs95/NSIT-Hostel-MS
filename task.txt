@@ -1,0 +1,93 @@
+New task:
+Print Student Details:
+1. branch
+2. email id
+3. current hostel join date
+4. fee details ??
+5. box for sign.
+
+
+Attach/Add Student:
+1. take Amount as input with chalan no.
+2. show fee details in all studentprofile.html
+
+
+@@@@@ Done @@@@
+# Edit Student
+1. Edit student roll no by warden after attach. 
+
+# on student add, warden will add mail id.
+
+# Chiefwarden notice in base page, hostel notice in different hostel's page.
+
+# News/Announcements with date.
+
+#Print List:
+1. Blank Field for sign.
+2. Category(DGEN) in Student profile print.
+3. Two type of student profile print:
+	a. warden/chiefwarden - with fine and previous hostel details.
+	b. student - only profile + sign field.
+4. Both name of student and roll no in rooms print list.
+5. Student current hostel join date
+6. branch
+7. emailid
+
+#Student View:
+1. Branch Add.
+2. Current Hostel Join Date.
+rollno
+mail id.
+
+# Parent/Local Guardian ALL details compulsary:
+	- optional only for outside delhi students.
+	- for delhi students local guardian is same as parents details.
+
+# Forgot Password:
+	- ask userid.
+	- temporary password will be sent to his email id.
+	- login with that temporary password and reset password.
+# reset password link along with profile, logout side dropdown list.
+# Random Passwords for:
+	- first time student.
+	- forget passwords requests.
+# Chiefwarden can add Banks like branches.
+
+# Chief Warden can add fine/disciplinary action only for free student.
+# Warden can forward Complaints to other person(Chief Engineer):
+	- ask mail id.
+	- send complaint in mail body.
+# Events:
+	- title
+	- description
+	- 1000 photos.(casarol)
+	- view these in hostel page.
+# Attach Student:
+	- valid till.
+	- Fee Details:
+		- challan no.
+		- bank
+		- date
+		- amount.
+
+@@@@@@@@@@
+
+
+
+
+
+
+
+
+
+
+Later @@@@
+
+# Detach Student:
+	- Check due and fines paid or not.
+	- if current time > valid upto time:
+		- don't detach.
+		- show this student to warden as: student haven't paid 
+		his/her fines thus can't be detached on valid upto date. 
+# Trigger to detach students if current date > valid upto date:
+	- handle case for student who haven't paid fines.

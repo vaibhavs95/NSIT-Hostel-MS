@@ -102,6 +102,9 @@ class ChiefWarden(models.Model):
 def warden_photo_name(instance, filename):
 	ext = filename.split('.')[-1]
 	return 'warden/images/hostel/'+instance.username+'.'+ext
+def main_page_photo_name(instance, filename):
+	ext = filename.split('.')[-1]
+	return 'warden/images/hostel/mainpage/'+instance.username+'.'+ext
 
 class Hostels(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True, default='')
@@ -117,7 +120,8 @@ class Hostels(models.Model):
 	department = models.CharField(null = True,max_length = 20, blank=True)
 	chief_warden = models.ForeignKey(ChiefWarden)
 	warden_photo = models.ImageField(upload_to = warden_photo_name, null = True, blank = True)	
-	#admission_form = models.FileField(upload_to = get_upload_file_name)
+	hostel_photo = models.ImageField(upload_to = main_page_photo_name, null = True, blank=True)
+	hostel_text = models.CharField(max_length=100, default='')
 	def __str__(self):              # __unicode__ on Python 2
 		return self.username
 

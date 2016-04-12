@@ -7,6 +7,7 @@ from django.contrib.admin.widgets import AdminDateWidget
 
 class CreateWardenForm(forms.Form):
     userid = forms.CharField(max_length = 254,required = True)
+    email = forms.EmailField()
     password = forms.CharField(widget = forms.PasswordInput,required = True)
     retype_password = forms.CharField(widget = forms.PasswordInput,required = True)
     def __init__(self, *args, **kwargs):

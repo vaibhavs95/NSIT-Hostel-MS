@@ -22,7 +22,7 @@ def home(request):
         if f.is_valid():
             user = MyUser.objects.create_user(f.cleaned_data.get('userid'), '2016-02-02', f.cleaned_data.get('password'))
             user.save()
-            warden = Hostels(username = f.cleaned_data.get('userid'))
+            warden = Hostels(username = f.cleaned_data.get('userid'),email = f.cleaned_data.get('email'))
             warden.chief_warden = ChiefWarden.objects.all()[0]
             hos = str(f.cleaned_data.get('userid'))
             fo,m = hos.split('w')
@@ -430,7 +430,7 @@ def addfine(request,student):
                     data['crimi'] = crimi
                 except ObjectDoesNotExist:
                     pass
-                data['stu'] = s.username
+                data['s'] = s
                 data['form']=f
                 return render(request, 'chief/studentprofile.html', data)
             else:
@@ -439,7 +439,7 @@ def addfine(request,student):
                     data['crimi'] = crimi
                 except ObjectDoesNotExist:
                     pass
-                data['stu'] = s.username
+                data['s'] = s
                 data['form']=f
                 return render(request,'chief/addfine.html',data)
         else:
@@ -449,7 +449,7 @@ def addfine(request,student):
                 data['crimi'] = crimi
             except ObjectDoesNotExist:
                 pass
-            data['stu'] = s.username
+            data['s'] = s
             data['form']=f
             return render(request,'chief/addfine.html',data)
     else:

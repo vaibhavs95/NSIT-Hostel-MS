@@ -5,6 +5,8 @@ from . import views,views1
 urlpatterns = [
     url(r'^$',views.home, name='warden-home'),
     url(r'^profile-edit/$',views.profileedit, name='warden-profile-edit'),
+    url(r'^main-page-edit/$',views.mainpageedit, name='warden-mainpage-edit'),
+    #url(r'^profile-edit/$',views.profileedit, name='warden-profile-edit'),
     #room
     url(r'^room/$',views.room, name='warden-room'),
     url(r'^room/all/$',views.roomall, name='warden-room-full'),

@@ -114,8 +114,6 @@ def home(request):
         return redirect('warden-home')
     else:
         a = Students.objects.get(username = a)
-        alpha = str(base64.b64encode(a.username.encode('utf-8')).decode('utf-8'))
-        #data = {'next' : nexturl, 'username': alpha}
         return redirect('studentid', student_id = a.username)
 
 @require_GET

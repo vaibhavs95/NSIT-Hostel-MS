@@ -275,7 +275,7 @@ def addCriminalRecord(request,target):
                 # m2 = (subject,message,settings.EMAIL_HOST_USER,[s.student_email,])
                 # send_mass_mail((m1,m2,),fail_silently = True)
                 try:
-                    crimi = CriminalRecord.objects.filter(student = target)
+                    crimi = CriminalRecord.objects.filter(student = s)
                     data['crimi'] = crimi
                 except ObjectDoesNotExist:
                     pass
@@ -284,7 +284,7 @@ def addCriminalRecord(request,target):
                 return redirect('WardenViewStudentProfile', student=s.username)
             else:
                 try:
-                    crimi = CriminalRecord.objects.filter(student = target)
+                    crimi = CriminalRecord.objects.filter(student = s)
                     data['crimi'] = crimi
                 except ObjectDoesNotExist:
                     pass
@@ -294,7 +294,7 @@ def addCriminalRecord(request,target):
         else:
             f = AddCriminalForm()
             try:
-                crimi = CriminalRecord.objects.filter(student = target)
+                crimi = CriminalRecord.objects.filter(student = s)
                 data['crimi'] = crimi
             except ObjectDoesNotExist:
                 pass
