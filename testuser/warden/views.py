@@ -1193,7 +1193,7 @@ def printRoomList(request):
 				s = a.name + "\n" + a.username
 				lst.append(s)
 			else:
-				lst.append('NA' + "\n" + 'NA')
+				lst.append('NA' + "\n" + a.username)
 		data.append(lst)
 	t=Table(data, colWidths=[1.6*inch] * 4, hAlign='LEFT')
 	t.setStyle(TableStyle([('GRID', (0,0), (-1,-1), 0.25, colors.black),]))
@@ -1481,6 +1481,7 @@ class MyCronJob(CronJobBase):
     	lst = []
     	for i in h:
     		if i.semEndDate == date.today():
+    			send_mail('NSIT_HMS','Students have been detatched as Sem End Date has been reached. Check the view all students tab to find out the students who were not detatched due to some unpaid fine',settings.EMAIL_HOST_USER,[i.email,])
     			s = Students.objects.all()
     			for stu in s:
     				crimi = None
@@ -1507,4 +1508,4 @@ class MyCronJob(CronJobBase):
     					delta = PreviousHostelDetail(hostel_name = i.hostel_name,room_no = rom.room_no,student = stu,hostel_join_date = stu.current_hostel_join_date,
     						hostel_leave_date = date.today())
     					delta.save()
-    	print (lst) # This is the list to be rendered to each warden as per the hostel
+    	
