@@ -1310,13 +1310,14 @@ def viewevent(request, pk):
 		return render(request,'warden/eventpage.html',data)
 	else:
 		return redirect('logout')
+
 @login_required
 @require_http_methods(['GET', 'POST'])
 def printStuDetails(request, student_id):
-	u = Students.objects.get(username=student_id)
+	alpha = student_id
+	u = Students.objects.get(username=alpha)
 	response = HttpResponse(content_type='application/pdf')
 	response['Content-Disposition'] = 'attachment; filename="Student Profile.pdf"'
-
 	p = canvas.Canvas(response)
 
 
@@ -1331,7 +1332,6 @@ def printStuDetails(request, student_id):
 	    path = path + u.student_photo.url
 	else:
 	    path = settings.MEDIA_ROOT+"/"+"demo.png"
-    
 	p.drawImage(path, 400, 630, 2*inch, 2 * inch)
 
 	p.setFont('Helvetica-Bold', 20)
@@ -1347,10 +1347,14 @@ def printStuDetails(request, student_id):
 	p.drawString(270, 730, "%s" %u.name)
 
 	if u.room_number:
-		p.drawString(50, 710, "Hostel:")
-		p.drawString(270, 710, "%s" %u.room_number.hostel.hostel_name)
-		p.drawString(50, 690, "Room Number:")
-		p.drawString(270, 690, "%s" %u.room_number)    
+	    p.drawString(50, 710, "Hostel:")
+	    p.drawString(270, 710, "%s" %u.room_number.hostel.hostel_name)
+
+	    p.drawString(50, 690, "Room Number:")
+	    p.drawString(270, 690, "%s" %u.room_number)
+
+	    p.drawString(50, 670, "Hostel Join Date:")
+	    p.drawString(270, 670, "%s" %u.current_hostel_join_date)    
 	else:
 	    p.drawString(50, 710, "Hostel:")
 	    p.drawString(270, 710, "None")
@@ -1358,75 +1362,102 @@ def printStuDetails(request, student_id):
 	    p.drawString(50, 690, "Room Number:")
 	    p.drawString(270, 690, "None")
 
-	p.drawString(50, 670, "Date of Birth:")
-	p.drawString(270, 670, "%s" %u.date_of_birth)
+	    p.drawString(50, 670, "Hostel Join Date:")
+	    p.drawString(270, 670, "None")
 
-	p.drawString(50, 650, "Distance from nsit:")
-	p.drawString(270, 650, "%s" %u.distance_from_nsit)
+	p.drawString(50, 650, "Date of Birth:")
+	p.drawString(270, 650, "%s" %u.date_of_birth)
 
-	p.drawString(50, 630, "Gender:")
-	p.drawString(270, 630, "%s" %u.gender)
+	p.drawString(50, 630, "Distance from nsit:")
+	p.drawString(270, 630, "%s" %u.distance_from_nsit)
 
-	p.drawString(50, 610, "College Category:")
-	p.drawString(270, 610, "%s" %u.college_category)
+	p.drawString(50, 610, "Branch:")
+	p.drawString(270, 610, "%s" %u.branch)
 
-	p.drawString(50, 590, "Blood Group:")
-	p.drawString(270, 590, "%s" %u.blood_group)
+	p.drawString(50, 590, "Gender:")
+	p.drawString(270, 590, "%s" %u.gender)
 
-	p.drawString(50, 570, "Phone Number:")
-	p.drawString(270, 570, "%s" %u.student_phone_num)
+	p.drawString(50, 570, "College Category:")
+	p.drawString(270, 570, "%s" %u.college_category)
 
-	p.drawString(50, 550, "Optional Phone Number:")
-	p.drawString(270, 550, "%s" %u.student_optional_phone_num)
+	p.drawString(50, 550, "Blood Group:")
+	p.drawString(270, 550, "%s" %u.blood_group)
 
-	p.drawString(50, 530, "Father's Name:")
-	p.drawString(270, 530, "%s" %u.father_name)
+	p.drawString(50, 530, "Phone Number:")
+	p.drawString(270, 530, "%s" %u.student_phone_num)
 
-	p.drawString(50, 510, "Mother's Name:")
-	p.drawString(270, 510, "%s" %u.mother_name)
+	if u.student_optional_phone_num:
+	    p.drawString(50, 510, "Optional Phone Number:")
+	    p.drawString(270, 510, "%s" %u.student_optional_phone_num)
+	else:
+	    p.drawString(50, 510, "Optional Phone Number:")
+	    p.drawString(270, 510, "None")
 
-	p.drawString(50, 490, "Parent's Phone Number:")
-	p.drawString(270, 490, "%s" %u.parent_phone_num)
+	p.drawString(50, 490, "Students Email:")
+	p.drawString(270, 490, "%s" %u.student_email)
 
-	p.drawString(50, 470, "Parent's Optional Phone Number:")
-	p.drawString(270, 470, "%s" %u.parent_optional_phone_num)
+	p.drawString(50, 470, "Father's Name:")
+	p.drawString(270, 470, "%s" %u.father_name)
 
-	p.drawString(50, 450, "Permanent Address:")
-	p.drawString(270, 450, "%s" %u.permanent_address)
+	p.drawString(50, 450, "Mother's Name:")
+	p.drawString(270, 450, "%s" %u.mother_name)
 
-	p.drawString(50, 430, "Permanent Address Zipcode:")
-	p.drawString(270, 430, "%s" %u.permanent_address_zipcode)
+	p.drawString(50, 430, "Parent's Email:")
+	p.drawString(270, 430, "%s" %u.parent_email)
 
-	p.drawString(50, 410, "Local Guardian Name:")
-	p.drawString(270, 410, "%s" %u.local_guardian_name)
+	p.drawString(50, 410, "Parent's Phone Number:")
+	p.drawString(270, 410, "%s" %u.parent_phone_num)
 
-	p.drawString(50, 390, "Local Guardian Address:")
-	p.drawString(270, 390, "%s" %u.local_guardian_address)
+	if u.parent_optional_phone_num:
+	    p.drawString(50, 390, "Parent's Optional Phone Number:")
+	    p.drawString(270, 390, "%s" %u.parent_optional_phone_num)
+	else:
+	    p.drawString(50, 390, "Parent's Optional Phone Number:")
+	    p.drawString(270, 390, "None")
 
-	p.drawString(50, 370, "Local Guardian Address Zipcode:")
-	p.drawString(270, 370, "%s" %u.local_guardian_address_zipcode)
 
-	p.drawString(50, 350, "Local Guardian Phone Number:")
-	p.drawString(270, 350, "%s" %u.local_guardian_phone_num)
+	p.drawString(50, 370, "Permanent Address:")
+	p.drawString(270, 370, "%s" %u.permanent_address)
 
-	p.drawString(50, 330, "Local Guardian Optional Phone Number:")
-	p.drawString(270, 330, "%s" %u.local_guardian_optional_phone_num)
+	p.drawString(50, 350, "Permanent Address Zipcode:")
+	p.drawString(270, 350, "%s" %u.permanent_address_zipcode)
 
-	p.drawString(50, 310, "Local Guardian Email:")
-	p.drawString(270, 310, "%s" %u.local_guardian_email)
+	p.drawString(50, 330, "Local Guardian Name:")
+	p.drawString(270, 330, "%s" %u.local_guardian_name)
+
+	p.drawString(50, 310, "Local Guardian Address:")
+	p.drawString(270, 310, "%s" %u.local_guardian_address)
+
+	p.drawString(50, 290, "Local Guardian Address Zipcode:")
+	p.drawString(270, 290, "%s" %u.local_guardian_address_zipcode)
+
+	p.drawString(50, 270, "Local Guardian Phone Number:")
+	p.drawString(270, 270, "%s" %u.local_guardian_phone_num)
+
+	if u.local_guardian_optional_phone_num:
+	    p.drawString(50, 250, "Local Guardian Optional Phone Number:")
+	    p.drawString(270, 250, "%s" %u.local_guardian_optional_phone_num)
+	else:
+	    p.drawString(50, 250, "Local Guardian Optional Phone Number:")
+	    p.drawString(270, 250, "None")
+
+
+	p.drawString(50, 230, "Local Guardian Email:")
+	p.drawString(270, 230, "%s" %u.local_guardian_email)
 
 	p.setFont('Helvetica-Bold', 15)
-	p.drawString(50, 280, "PREVIOUS HOSTEL DETAILS")
+	p.drawString(50, 200, "PREVIOUS HOSTEL DETAILS")
 
 	p.setFont('Helvetica', 8)
-	cur = 240
+	cur = 160
 	try:
-		prev = PreviousHostelDetail.objects.filter(student=u)
+		# print (alpha)
+		prev = PreviousHostelDetail.objects.filter(student__username=alpha)
 		if not prev:
-			p.drawString(50, 260, "No Records Available")
+			p.drawString(50, 180, "No Records Available")
 		else:
 			p.setFont('Helvetica-Bold', 8)
-			p.drawString(50, 260, "S.No     Hostel Name          Room No.          Join Date         Leave Date")
+			p.drawString(50, 180, "S.No     Hostel Name          Room No.          Join Date         Leave Date")
 			ctr = 1
 			p.setFont('Helvetica', 8)
 			for i in prev:
@@ -1434,7 +1465,7 @@ def printStuDetails(request, student_id):
 				ctr = ctr+1
 				cur = cur-20
 	except ObjectDoesNotExist:
-		pass
+	    pass
 	cur = cur-20
 	p.setFont('Helvetica-Bold', 15)
 	p.drawString(50, cur, "DISCIPLINARY ACTIONS")
@@ -1442,27 +1473,27 @@ def printStuDetails(request, student_id):
 
 	p.setFont('Helvetica', 8)
 	try:
-		crimi = CriminalRecord.objects.filter(student=u)
-		if not crimi:
-			p.drawString(50, cur, "No Records Available")
-		else:
-			p.setFont('Helvetica-Bold', 8)
-			p.drawString(50, cur, "S.No     Date of Action          Fine Amount          Paid or not")
-			cur = cur-20
-			ctr = 1
-			p.setFont('Helvetica', 8)
-			for i in crimi:
-				if i.paid:
-					pay = "Yes"
-				else:
-					pay = "No"
-				p.drawString(50, cur, " %s.         %s                %s                            %s" %(ctr, i.date_of_action, i.fine_amount, pay))
-				ctr = ctr+1
-				cur = cur-20
+	    crimi = CriminalRecord.objects.filter(student__username=alpha)
+	    if not crimi:
+	        p.drawString(50, cur, "No Records Available")
+	    else:
+	        p.setFont('Helvetica-Bold', 8)
+	        p.drawString(50, cur, "S.No     Date of Action          Fine Amount          Paid or not")
+	        cur = cur-20
+	        ctr = 1
+	        p.setFont('Helvetica', 8)
+	        for i in crimi:
+	            if i.paid:
+	                pay = "Yes"
+	            else:
+	                pay = "No"
+	            p.drawString(50, cur, " %s.         %s                %s                            %s" %(ctr, i.date_of_action, i.fine_amount, pay))
+	            ctr = ctr+1
+	            cur = cur-20
 	except ObjectDoesNotExist:
-		pass
+	    pass
 
-    # Close the PDF object cleanly, and we're done.
+	# Close the PDF object cleanly, and we're done.
 	p.showPage()
 	p.save()
 	return response
@@ -1508,4 +1539,3 @@ class MyCronJob(CronJobBase):
     					delta = PreviousHostelDetail(hostel_name = i.hostel_name,room_no = rom.room_no,student = stu,hostel_join_date = stu.current_hostel_join_date,
     						hostel_leave_date = date.today())
     					delta.save()
-    	
