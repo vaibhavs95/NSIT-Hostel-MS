@@ -45,7 +45,7 @@
 			<a href = "{% url 'print-stu-details' s.username %}"><i class="material-icons">print</i></a>
 			<hr>
 			<div class="col s12 m8 l8">
-				<table>
+				<table class="striped centered bordered">
 					<tr>
 						<td>
 							Roll Number :
@@ -54,7 +54,7 @@
 							{{s.username}}
 						</td>
 					</tr>
-					<tr id="tr1">
+					<tr>
 						<td>
 							Name :
 						</td>
@@ -70,7 +70,7 @@
 							{{ s.date_of_birth }}
 						</td>
 					</tr>
-					<tr id="tr1">
+					<tr>
 						<td>
 							Hostel :
 						</td>
@@ -93,10 +93,12 @@
 							{{ s.room_number }}
 						</td>
 						{% else %}
-						<td>None</td>
+						<td>
+							None
+						</td>
 						{% endif %}
 					</tr>
-					<tr id="tr1">
+					<tr>
 						<td>
 							Branch :
 						</td>
@@ -112,7 +114,7 @@
 							{{ s.current_hostel_join_date }}
 						</td>
 					</tr>
-					<tr id="tr1">
+					<tr>
 						<td>
 							Distance from Nsit :
 						</td>
@@ -128,7 +130,7 @@
 							{{ s.gender }}
 						</td>
 					</tr>
-					<tr id="tr1">
+					<tr>
 						<td>
 							Blood group : 
 						</td>
@@ -152,12 +154,26 @@
 							{{  s.student_phone_num }}
 						</td>
 					</tr>
-					<tr id="tr1">
+					<tr>
 						<td>
 							Optional Phone number :
 						</td>
+						{% if s.student_optional_phone_num %}
 						<td>
 							{{ s.student_optional_phone_num }}
+						</td>
+						{% else %}
+						<td>
+							None
+						</td>
+						{% endif %}
+					</tr>
+					<tr>
+						<td>
+							Email Id :
+						</td>
+						<td>
+							{{ s.student_email }}
 						</td>
 					</tr>
 					<tr>
@@ -168,7 +184,7 @@
 							{{ s.father_name }}
 						</td>
 					</tr>
-					<tr id="tr1">
+					<tr>
 						<td>
 							Mother's name :
 						</td>
@@ -184,7 +200,7 @@
 							{{ s.parent_email }}
 						</td>
 					</tr>
-					<tr id="tr1">
+					<tr>
 						<td>
 							Parent's phone number :
 						</td>
@@ -196,11 +212,17 @@
 						<td>
 							Parent's optional phone number :
 						</td>
+						{% if s.parent_optional_phone_num %}
 						<td>
 							{{ s.parent_optional_phone_num }}
 						</td>
+						{% else %}
+						<td>
+							None
+						</td>
+						{% endif %}
 					</tr>
-					<tr id="tr1">
+					<tr>
 						<td>
 							Permenant address :
 						</td>
@@ -216,7 +238,7 @@
 							{{ s.permanent_address_zipcode }}
 						</td>
 					</tr>
-					<tr id="tr1">
+					<tr>
 						<td>
 							Local guardian name :
 						</td>
@@ -232,7 +254,7 @@
 							{{ s.local_guardian_address }}
 						</td>
 					</tr>
-					<tr id="tr1">
+					<tr>
 						<td>
 							Local guardian address zipcode :
 						</td>
@@ -245,16 +267,22 @@
 							Local Guardian Phone Number :
 						</td>
 						<td>
-							{{ s.local_guardian_phone_number }}
+							{{ s.local_guardian_phone_num }}
 						</td>
 					</tr>
-					<tr id="tr1">
+					<tr>
 						<td>
 							Local Guardian optional phone number :
 						</td>
+						{% if s.local_guardian_optional_phone_num %}
 						<td>
 							{{ s.local_guardian_optional_phone_num }}
 						</td>
+						{% else %}
+						<td>
+							None
+						</td>
+						{% endif %}
 					</tr>
 					<tr>
 						<td>
