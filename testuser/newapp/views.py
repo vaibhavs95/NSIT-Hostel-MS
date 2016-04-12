@@ -189,7 +189,7 @@ def hostels(request,hostel_name):
         d = {'hosf': i}
         hosform.append(d)
     data['hosform'] = hosform
-    n = (Notice.objects.filter(creator = h.username)).order_by('time')
+    n = (Notice.objects.filter(creator = h.username)).order_by('date')
     data['notices'] = n
     e = (Event.objects.filter(hostel = h)).order_by('time')
     data['events'] = e

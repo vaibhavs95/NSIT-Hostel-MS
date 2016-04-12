@@ -83,7 +83,7 @@ class AddBranchForm(forms.Form):
 class AddNoticeForm(forms.ModelForm):
     class Meta:
         model = Notice
-        exclude = ['creator']
+        exclude = ['creator','date']
 
 
 class SearchHostelRoomForm(forms.Form):

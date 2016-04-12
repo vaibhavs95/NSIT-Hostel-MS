@@ -148,6 +148,7 @@ def notices(request):
                 a = f.save(commit = False)
                 a.creator = 'chiefwarden'
                 a.file = request.FILES['file']
+                a.date = date.today()
                 a.save();
                 #SendNoticeMail(request.FILES['file'].name,f.cleaned_data.get('title'))
                 mes = 'Notice added successfully'
@@ -210,7 +211,12 @@ def StudentProfile(request,student):
             crimi = CriminalRecord.objects.filter(student = u)
         except ObjectDoesNotExist:
             pass
-        data = {'all_hostels': b,'student':'yes', 'username': u.username ,'s': u,'prev':prev,'crim':crimi}
+        payments = None
+        try:
+            payments = PaymentDetails.objects.filter(student = u)
+        except:
+            pass
+        data = {'all_hostels': b,'student':'yes', 'username': u.username ,'s': u,'prev':prev,'crim':crimi,'paym':payments}
         return render(request,'chief/studentprofile.html',data)
     else:
         return redirect('logout')

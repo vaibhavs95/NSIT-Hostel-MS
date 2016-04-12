@@ -16,9 +16,10 @@
 			<li class="tab col s4"><a class="active" href="#personal">Personal Details</a></li>
 			<li class="tab col s4"><a class="" href="#previous">Previous Hostel Details</a></li>
 			<li class="tab col s4"><a class="" href="#fines">Fines</a></li>
+			<li class="tab col s4"><a class="" href="#payment">Payment History</a></li>
 		</ul>
 	</div>
-	<div class="col s12">
+	<div class="col s12" id="personal">
 		<div class="card row addcard">
 			<div class="details">Personal Details</div>
 			<a href = "{% url 'print-stu-details' s.username %}"><i class="material-icons">print</i></a>
@@ -369,6 +370,53 @@
 			{% else %}
 			<p>No Records Available.</p>
 			{% endif%}
+		</div>
+	</div>
+	<div class="col s12" id="payment">
+		<div class="card addcard">
+			<h5>Payment History</h5>
+			<hr>
+		{% if paym|length > 0 %}
+		<table class="striped centered bordered">
+			<thead>
+			<tr >
+				<th >
+					S.No.
+				</th>
+				<th >
+					Date
+				</th>
+				<th >
+					Bank
+				</th>
+				<th >
+					Receipt Number
+				</th>
+			</tr>
+				
+			</thead>
+			<tbody>				
+			{% for i in paym %}
+			<tr>
+				<td >
+					{{forloop.counter}}
+				</td>
+				<td >
+					{{ i.paymentDate }}
+				</td>
+				<td >
+					{{ i.bank }}
+				</td>
+				<td>
+					{{ i.receiptNumber }}
+				</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		{% else %}
+			<p>No Records Available.</p>
+		{% endif %}
 		</div>
 	</div>
 </div>

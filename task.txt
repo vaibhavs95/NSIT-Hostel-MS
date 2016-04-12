@@ -11,7 +11,6 @@ Attach/Add Student:
 1. take Amount as input with chalan no.
 2. show fee details in all studentprofile.html
 
-
 @@@@@ Done @@@@
 # Edit Student
 1. Edit student roll no by warden after attach. 

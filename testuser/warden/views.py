@@ -14,7 +14,7 @@ from django.conf import settings
 from newapp.models import *
 from newapp.forms import *
 from .forms import *
-from datetime import datetime,timedelta
+from datetime import datetime,timedelta, date
 from io import StringIO, BytesIO
 from reportlab.lib.enums import TA_JUSTIFY
 from reportlab.lib import colors
@@ -25,6 +25,8 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from reportlab.lib.utils import ImageReader
+from django_cron import CronJobBase, Schedule
+from django.core.mail import send_mail
 
 data = {}
 
@@ -872,7 +874,7 @@ def addstudent(request):
 				bank = f.cleaned_data.get('bank')
 				payDate = f.cleaned_data.get('paymentDate')
 				receipt = f.cleaned_data.get('receiptNumber')
-				last_date = s.current_hostel_join_date+timedelta(days=10)
+				last_date = date.today()+timedelta(days=10)
 				s.save()
 				user.save()
 				hostelAttach = HostelAttachDates(hostel_last_date = last_date,student=s)
@@ -969,6 +971,11 @@ def editstudent(request, student):
 				data['s'] = u
 				data['prev'] = prev
 				data['crim'] = crimi
+				try:
+					payments = PaymentDetails.objects.filter(student = u)
+					data['paym']=payments
+				except:
+					pass
 				return render(request, 'warden/wardenstudentProfile.html', data)
 			else:
 				data['form'] = f
@@ -1459,3 +1466,45 @@ def printStuDetails(request, student_id):
 	p.showPage()
 	p.save()
 	return response
+
+
+
+class MyCronJob(CronJobBase):
+    RUN_EVERY_MINS=720
+    # every 12 hours
+    schedule = Schedule(run_every_mins =RUN_EVERY_MINS)
+    code= 'student.my_cron_job'
+    # a unique code
+    def do(self):
+    	print ("Hello from Cron")
+    	h = Hostels.objects.all()
+    	lst = []
+    	for i in h:
+    		if i.semEndDate == date.today():
+    			s = Students.objects.all()
+    			for stu in s:
+    				crimi = None
+    				try:
+    					crimi = CriminalRecord.objects.filter(student = stu.username)
+    				except ObjectDoesNotExist:
+    					pass
+    				f = 0
+    				for rec in crimi:
+    					if rec.paid == False:
+    						f = 1
+    						break
+    				if f == 1:
+    					lst.append(stu)
+    				if stu.room_number != None and stu.room_number.hostel.hostel_name == i.hostel_name and f == 0:
+    					try:
+    						rom = Rooms.objects.get(students__username = stu.username)
+    						rom.capacity_remaining+=1
+    						rom.save()
+    					except ObjectDoesNotExist:
+    						pass
+    					stu.room_number=None
+    					stu.save()
+    					delta = PreviousHostelDetail(hostel_name = i.hostel_name,room_no = rom.room_no,student = stu,hostel_join_date = stu.current_hostel_join_date,
+    						hostel_leave_date = date.today())
+    					delta.save()
+    	print (lst) # This is the list to be rendered to each warden as per the hostel
