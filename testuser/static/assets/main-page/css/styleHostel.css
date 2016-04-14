@@ -1,6 +1,11 @@
 /******
 Header
 ******/
+#logoMob{
+	margin: 5% 0% 0% 15%;
+	width: 110px;
+	border-radius: 50%;
+}
 .addcard{
 	padding: 2%;
 }
@@ -104,9 +109,12 @@ nav{
 }
 #dropdown2
 {
-    margin-left: 4%;
-	margin-top: 3%;
+    margin-top: 3%;
+	margin-left: 2%;
+	margin-right: 0px !important;
 	/*background-color: red;*/
+	float: right;
+	width: 12%;
 }
 /*
 #leftSideMenu
@@ -337,13 +345,46 @@ media queries
 *******/
 
 /*** header ****/
+@media only screen and (max-width: 1126px)
+{
+	#dropdown2
+	{
+		margin-top: 3%;
+		margin-left: 2%;
+		margin-right: 0px !important;
+		/*background-color: red;*/
+		float: right;
+		width: 13%;
+	}	
+}
+
 @media only screen and (max-width: 1090px)
 {
     #menuItems
     {
         margin: 0 1% 0 1%;
     }
-	
+	#dropdown2
+	{
+		margin-top: 3%;
+		margin-left: 2%;
+		margin-right: 0px !important;
+		/*background-color: red;*/
+		float: right;
+		width: 13%;
+	}	
+}
+@media only screen and (max-width: 997px)
+{
+	#dropdown2
+	{
+		margin-top: 3%;
+		margin-left: 2%;
+		margin-right: 0px !important;
+		/*background-color: red;*/
+		float: right;
+		width: 16%;
+	}
 }
 @media only screen and (max-width: 992px){
 	#logo{

@@ -1,6 +1,11 @@
 /******
 Header
 ******/
+#logoMob{
+	margin: 5% 0% 0% 15%;
+	width: 110px;
+	border-radius: 50%;
+}
 #logo{
 	margin: 5% 0% 0% 5%;
 	width: 110px;
@@ -166,9 +171,9 @@ media queries
 	}
 	#sideContainer
 	{
-		width: 120%;
+		width: 100%;
 		float: left;
-		margin-left: -5%;
+		margin-left: 0%;
 		margin-right: 0%;
 	}
 }
