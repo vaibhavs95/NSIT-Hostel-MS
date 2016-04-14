@@ -140,6 +140,21 @@
 			{% endfor %}
 		</tbody>
 	</table>
+	<div class="pagination">
+		<span class="step-links">
+		{% if rooms.has_previous %}
+			<a href="?page={{ rooms.previous_page_number }}#view">previous</a>
+			{% endif %}
+
+			<span class="current">
+				Page {{ rooms.number }} of {{ rooms.paginator.num_pages }}
+			</span>
+
+			{% if rooms.has_next %}
+			<a href="?page={{ rooms.next_page_number }}#view">next</a>
+			{% endif %}
+		</span>
+	</div>
 	{% else %}
 	<a class="btn" href="/warden/room/all/#view"> View All Rooms</a>
 	{% endif %}

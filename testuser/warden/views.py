@@ -205,6 +205,7 @@ def roomall(request):
 	roombasic()
 	h = Hostels.objects.get(username=request.user)
 	a = (Rooms.objects.filter(hostel=h)).order_by('room_no')
+
 	rooms = []
 	for i in a:
 		s = Students.objects.filter(room_number=i)
@@ -215,7 +216,18 @@ def roomall(request):
 			student.append(p)
 		d = {'room': i, 'students': student}
 		rooms.append(d)
-	
+
+	paginator = Paginator(rooms, 1) # Show 1 contacts per page
+	page = request.GET.get('page')
+	try:
+	    rooms = paginator.page(page)
+	except PageNotAnInteger:
+	    # If page is not an integer, deliver first page.
+	    rooms = paginator.page(1)
+	except EmptyPage:
+	    # If page is out of range (e.g. 9999), deliver last page of results.
+	    rooms = paginator.page(paginator.num_pages)
+
 	data['rooms'] = rooms
 	data['roomfulllist'] = 'yes'
 	return render(request, 'warden/room.html', data)
@@ -836,6 +848,16 @@ def studentall(request):
 	user = request.user
 	h = Hostels.objects.get(username=user)
 	s = Students.objects.filter(room_number__hostel = h)
+	paginator = Paginator(s, 1) # Show 1 contacts per page
+	page = request.GET.get('page')
+	try:
+	    s = paginator.page(page)
+	except PageNotAnInteger:
+	    # If page is not an integer, deliver first page.
+	    s = paginator.page(1)
+	except EmptyPage:
+	    # If page is out of range (e.g. 9999), deliver last page of results.
+	    s = paginator.page(paginator.num_pages)
 	data['students'] = s
 	data['studentfulllist'] = 'yes'
 	return render(request, 'warden/student.html', data)
