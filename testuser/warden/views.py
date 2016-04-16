@@ -27,6 +27,7 @@ from reportlab.lib.units import inch
 from reportlab.lib.utils import ImageReader
 from django_cron import CronJobBase, Schedule
 from django.core.mail import send_mail
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 data = {}
 
