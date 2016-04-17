@@ -40,7 +40,7 @@
 							{{s.username}}
 						</td>
 					</tr>
-					<tr >
+					<tr>
 						<td>
 							Name :
 						</td>
@@ -56,7 +56,7 @@
 							{{ s.date_of_birth }}
 						</td>
 					</tr>
-					<tr >
+					<tr>
 						<td>
 							Hostel :
 						</td>
@@ -79,23 +79,17 @@
 							{{ s.room_number }}
 						</td>
 						{% else %}
-						<td>None</td>
+						<td>
+							None
+						</td>
 						{% endif %}
 					</tr>
-					<tr >
+					<tr>
 						<td>
 							Branch :
 						</td>
 						<td>
 							{{ s.branch }}
-						</td>
-					</tr>
-					<tr >
-						<td>
-							Email Id :
-						</td>
-						<td>
-							{{ s.student_email }}
 						</td>
 					</tr>
 					<tr>
@@ -106,7 +100,7 @@
 							{{ s.current_hostel_join_date }}
 						</td>
 					</tr>
-					<tr >
+					<tr>
 						<td>
 							Distance from Nsit :
 						</td>
@@ -122,7 +116,7 @@
 							{{ s.gender }}
 						</td>
 					</tr>
-					<tr >
+					<tr>
 						<td>
 							Blood group : 
 						</td>
@@ -146,12 +140,26 @@
 							{{  s.student_phone_num }}
 						</td>
 					</tr>
-					<tr >
+					<tr>
 						<td>
 							Optional Phone number :
 						</td>
+						{% if s.student_optional_phone_num %}
 						<td>
 							{{ s.student_optional_phone_num }}
+						</td>
+						{% else %}
+						<td>
+							None
+						</td>
+						{% endif %}
+					</tr>
+					<tr>
+						<td>
+							Email Id :
+						</td>
+						<td>
+							{{ s.student_email }}
 						</td>
 					</tr>
 					<tr>
@@ -162,7 +170,7 @@
 							{{ s.father_name }}
 						</td>
 					</tr>
-					<tr >
+					<tr>
 						<td>
 							Mother's name :
 						</td>
@@ -178,7 +186,7 @@
 							{{ s.parent_email }}
 						</td>
 					</tr>
-					<tr >
+					<tr>
 						<td>
 							Parent's phone number :
 						</td>
@@ -190,11 +198,17 @@
 						<td>
 							Parent's optional phone number :
 						</td>
+						{% if s.parent_optional_phone_num %}
 						<td>
 							{{ s.parent_optional_phone_num }}
 						</td>
+						{% else %}
+						<td>
+							None
+						</td>
+						{% endif %}
 					</tr>
-					<tr >
+					<tr>
 						<td>
 							Permenant address :
 						</td>
@@ -210,7 +224,7 @@
 							{{ s.permanent_address_zipcode }}
 						</td>
 					</tr>
-					<tr >
+					<tr>
 						<td>
 							Local guardian name :
 						</td>
@@ -226,7 +240,7 @@
 							{{ s.local_guardian_address }}
 						</td>
 					</tr>
-					<tr >
+					<tr>
 						<td>
 							Local guardian address zipcode :
 						</td>
@@ -239,16 +253,22 @@
 							Local Guardian Phone Number :
 						</td>
 						<td>
-							{{ s.local_guardian_phone_number }}
+							{{ s.local_guardian_phone_num }}
 						</td>
 					</tr>
-					<tr >
+					<tr>
 						<td>
 							Local Guardian optional phone number :
 						</td>
+						{% if s.local_guardian_optional_phone_num %}
 						<td>
 							{{ s.local_guardian_optional_phone_num }}
 						</td>
+						{% else %}
+						<td>
+							None
+						</td>
+						{% endif %}
 					</tr>
 					<tr>
 						<td>

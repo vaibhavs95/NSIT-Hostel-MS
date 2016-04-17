@@ -114,8 +114,6 @@ def home(request):
         return redirect('warden-home')
     else:
         a = Students.objects.get(username = a)
-        alpha = str(base64.b64encode(a.username.encode('utf-8')).decode('utf-8'))
-        #data = {'next' : nexturl, 'username': alpha}
         return redirect('studentid', student_id = a.username)
 
 @require_GET
@@ -191,7 +189,7 @@ def hostels(request,hostel_name):
         d = {'hosf': i}
         hosform.append(d)
     data['hosform'] = hosform
-    n = (Notice.objects.filter(creator = h.username)).order_by('time')
+    n = (Notice.objects.filter(creator = h.username)).order_by('date')
     data['notices'] = n
     e = (Event.objects.filter(hostel = h)).order_by('time')
     data['events'] = e

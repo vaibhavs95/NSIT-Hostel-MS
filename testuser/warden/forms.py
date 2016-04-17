@@ -457,3 +457,38 @@ class AddEventForm(forms.ModelForm):
         for each in self.cleaned_data['images']:
             Images.objects.create(image=each, event=instance)
         return instance
+class MainDetailEditForm(forms.ModelForm):
+    class Meta:
+        model = Hostels
+        fields = ['hostel_text','hostel_photo']
+    def __init__(self, *args, **kwargs):
+        super(MainDetailEditForm, self).__init__(*args, **kwargs)
+    def clean(self):
+        return self.cleaned_data
+class EditWardenProfileForm(forms.ModelForm):
+    class Meta:
+        model = Hostels
+        fields = ['name','phone','email','landline','department','portfolio','semEndDate','warden_photo']
+        widgets = {
+        'semEndDate':AdminDateWidget,
+        }
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(EditWardenProfileForm, self).__init__(*args, **kwargs)
+        self.fields['semEndDate'].required = True
+    def clean(self):
+        name = self.cleaned_data.get('name')
+        phone = self.cleaned_data.get('phone')
+        landline = self.cleaned_data.get('landline')
+        if name and phone and landline:
+            name = name.title()
+            if len(phone) != 10:
+                raise forms.ValidationError('Enter Correct Phone Number without std code')
+            if len(landline) != 8:
+                raise forms.ValidationError('Enter Correct Landline Number without std code')
+            if photocheck(self.request.FILES,'warden_photo'):
+                h = Hostels.objects.get(username=self.request.user)
+                h.warden_photo.delete(True)
+                #pass
+               # raise forms.ValidationError('Add Photo of correct format - JPG,jpeg,PNG,png,jpg,JPEG')
+        return self.cleaned_data

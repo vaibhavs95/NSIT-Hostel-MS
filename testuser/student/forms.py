@@ -29,14 +29,28 @@ class CreateStudentForm(forms.ModelForm):
             pass
         else:
             raise forms.ValidationError('Enter your parents valid 10 digit phone number')
-            local_guardian_phone_num = self.cleaned_data.get('local_guardian_phone_num')
-            if local_guardian_phone_num == '':
-                pass
+
+        zipcode = self.cleaned_data.get('permanent_address_zipcode')
+
+        if len(str(zipcode)) == 6:
+            pass
+        else:
+            raise forms.ValidationError('Enter a valid 6 digit zipcode')
+
+        local_guardian_phone_num = self.cleaned_data.get('local_guardian_phone_num')
+        if local_guardian_phone_num == '':
+            pass
+        else:
+            if len(str(local_guardian_phone_num)) != 10:
+                raise forms.ValidationError('Enter your local guardians valid 10 digit phone number')
             else:
-                if len(str(local_guardian_phone_num)) != 10:
-                    raise forms.ValidationError('Enter your local guardians valid 10 digit phone number')
-                else:
-                    pass
+                pass
+        zipcode = self.cleaned_data.get('local_guardian_address_zipcode')
+        
+        if len(str(zipcode)) == 6:
+            pass
+        else:
+            raise forms.ValidationError('Enter local guardians valid 6 digit zipcode')
         return self.cleaned_data
     def get_user(self):
         return self.user_cache

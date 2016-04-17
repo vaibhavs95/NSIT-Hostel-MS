@@ -1,5 +1,4 @@
 New task:
-
 Print Student Details:
 1. branch
 2. email id
@@ -11,13 +10,6 @@ Print Student Details:
 Attach/Add Student:
 1. take Amount as input with chalan no.
 2. show fee details in all studentprofile.html
-
-
-
-
-
-
-
 
 @@@@@ Done @@@@
 # Edit Student
