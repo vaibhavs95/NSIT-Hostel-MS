@@ -59,7 +59,7 @@ MIDDLEWARE_CLASSES = (
 
 CRONJOBS = [
     ('*/720 * * * *', 'warden.views.MyCronJob')
-    
+
 ]
 
 CRON_CLASSES = [
@@ -95,7 +95,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'tanayjha$testuser',
         'USER' : 'tanayjha',
-        'HOST' : 'tanayjha.mysql.pythonanywhere-services.com', 
+        'HOST' : 'tanayjha.mysql.pythonanywhere-services.com',
         'PASSWORD' : 'abcd@1234',
         'PORT' : 3306
     }
@@ -118,7 +118,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/assets')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 

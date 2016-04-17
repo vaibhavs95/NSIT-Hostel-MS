@@ -17,6 +17,7 @@ from django.core.mail import send_mass_mail
 @require_http_methods(['GET', 'POST'])
 def home(request):
     alpha = str(request.user)
+    mes = None
     if alpha =='chiefwarden':
         f = CreateWardenForm(request.POST or None)
         if f.is_valid():
@@ -32,12 +33,13 @@ def home(request):
             elif fo=='g':
                 warden.hostel_name= "Girls Hostel "+m
             warden.save()
+            mes = 'Hostel added successfully'
         a=Hostels.objects.all();
         b=[]
         for i in a:
             d={'name':i.hostel_name,'id':i.username,'warden_name':i.name,'warden_nu':i.phone}
             b.append(d)
-        data = {'all_hostels': b,'form':f}
+        data = {'all_hostels': b,'form':f,'mes':mes}
         return render(request, 'chief/home.html',data)
     else:
         return redirect('logout')
@@ -93,7 +95,7 @@ def delete_hos(request,target):
                 pass
             a.delete()
             mes="Hostel deleted successfully."
-            return redirect('chiefwarden-home')
+            return redirect('/chiefwarden/#all')
         f=CreateWardenForm(request.POST or None)
         if f.is_valid():
             user = MyUser.objects.create_user(f.cleaned_data.get('userid'), '2016-02-02', f.cleaned_data.get('password'))

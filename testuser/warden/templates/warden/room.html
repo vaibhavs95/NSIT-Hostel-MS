@@ -22,6 +22,11 @@
 <li><a class="waves-effect" href="{% url 'warden-event' %}">Events</a></li>
 {% endblock %}
 {% block content %}
+{% if mes %}
+<script type="text/javascript">
+	alert("{{ mes }}");
+</script>
+{% endif %}
 <div class="row">
 	<h3>Rooms</h3>
 	<hr>
