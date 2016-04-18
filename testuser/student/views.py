@@ -44,7 +44,8 @@ def completeStudent(request, student_id):
                     f.student_photo = request.FILES['student_photo']
                 f.save()
                 deaf = HostelAttachDates.objects.filter(student = u)
-                deaf.delete
+                print(deaf)
+                deaf.delete()
                 prev = None
                 crimi = None
                 try:
@@ -60,7 +61,6 @@ def completeStudent(request, student_id):
                     payment = PaymentDetails.objects.filter(student = u).order_by('paymentDate')
                 except ObjectDoesNotExist:
                     pass
-                print(payment)
                 data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi,'paym':payment}
                 return render(request,'student/students/studentProfile.html',data)
             else:

@@ -1209,7 +1209,7 @@ def printRoomList(request):
 	lst = ['Room Number', 'Student No. 1', 'Student No. 2', 'Student No. 3']
 	data.append(lst)
 	for i in u:
-		b = Students.objects.filter(room_number__room_no = i.room_no)
+		b = Students.objects.filter(room_number__room_no = i.room_no, room_number__hostel__username = request.user)
 		lst = []
 		lst.append(i.room_no)
 		for a in b:

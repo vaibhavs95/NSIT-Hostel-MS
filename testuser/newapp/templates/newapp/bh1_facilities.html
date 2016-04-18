@@ -44,9 +44,9 @@ overflow-x: hidden;
 					</ul>
 
 					{% else %}
-					<li class="login-button"><a class="modal-trigger waves-effect waves-light btn" href="{% url 'login' %}">
-						Login
-					</a></li>
+					<li class="login-button">
+						<a class="waves-effect waves-light btn" href="{% url 'login' %}">Login</a>
+					</li>
 					{% endif %}
 				</ul>	
 			</div>
@@ -82,29 +82,35 @@ overflow-x: hidden;
 	</ul>
 	<!-- for mobile version -->
 	<ul class="side-nav" id="mobile-demo">
-		<li><a class="login-button" href="#!">Home</a></li>
-		<li><a class="modal-trigger waves-effect waves-light btn login-button" href="#login-modal">Login</a></li>
+		<li><a href='{% url "base" %}'><img id="logoMob" src= '{% static "assets/main-page/media/images/logo.png" %}'></a></li>
+		<br><br><br>
+		{% if user.is_authenticated %}
+		
 		<ul class="collapsible collapsible-accordion">
-			{% for hos in all_hostels %}
-			<!--<p>{{ hos.id }}</p>-->
+			<a class="btn collapsible-header waves-effect waves-teal">{{ user }}<i class="mdi-navigation-arrow-drop-down"></i></a>
+		
+			<div class="collapsible-body">
+				<ul id="colBod">
+					<li><a class="waves-effect" href="{% url 'home' %}">Profile</a></li>
+					<li><a class="waves-effect" href="{% url 'newappResetPassword' %}">Reset password</a></li>
+					<li><a class="waves-effect" href="{% url 'logout' %}">Logout</a></li>
+				</ul>
+			</div>
+		</ul>
+		
+		{% else %}
+		<li class="login-button">
+			<a class="waves-effect waves-light btn" href="{% url 'login' %}">Login</a>
+		</li>
+		{% endif %}
+		<ul class="collapsible collapsible-accordion">
+			{% for hos in all_hostels %}			
 			{% if hos.id == target_hostel.username %}
 			<li>
-				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
-				<div class="collapsible-body">
-					<ul id="colBod">
-						<li><a class="waves-effect" href="#main">Basic Info.</a></li>
-						<li><a class="waves-effect" href="#notice">Notice</a></li>
-						<li><a class="waves-effect" href="#forms">Forms</a></li>
-						<li><a class="waves-effect" href="#mess">Mess</a></li>
-						<li><a class="waves-effect" href="#facilities">Facilities</a></li>
-						<li><a class="waves-effect" href="#eventlist">Event</a></li>
-					</ul>
-				</div>
 			</li>
 			{% else %}
 			<li>
-				<!--<p>{{ hos.id }}</p>-->
-				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.id }}<i class="mdi-navigation-arrow-drop-down"></i></a>
+				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
 				<div class="collapsible-body">
 					<ul id="colBod">
 						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#main">Basic Info.</a></li>
@@ -118,7 +124,10 @@ overflow-x: hidden;
 			</li>
 			{% endif  %}
 			{% endfor %}
+
 		</ul>
+		
+		
 	</ul>
 	
 	<div class="container bfp">
@@ -208,7 +217,7 @@ overflow-x: hidden;
 							{% for n in notices %}
 							<tr>
 								<td>
-									<a href="{{ n.file.url }}" target="__blank">{{ n.title|linesbreak }}</a>
+									<a href="{{ n.file.url }}" target="__blank">{{ n.title|linebreaks }}</a>
 								</td>
 								<td>{{ n.time|date }}</td>
 							</tr>
@@ -228,7 +237,7 @@ overflow-x: hidden;
 							{% for h in hosform %}
 							<tr>
 								<td>
-									<a href="{{ h.hosf.file.url }}" target="__blank">{{ h.hosf.title|linesbreak }}</a>
+									<a href="{{ h.hosf.file.url }}" target="__blank">{{ h.hosf.title|linebreaks }}</a>
 								</td>
 							</tr>
 							{% endfor %}
@@ -326,7 +335,7 @@ overflow-x: hidden;
 							<div class="card-content black-text row">
 								<div class="col s12 l6 m6">
 									<span class="card-title deep-orange-text">{{ f.fac.facility_name }}</span>
-									<p class="brown-text text-darken-2">{{ f.fac.facility_description|linesbreak }}</p>
+									<p class="brown-text text-darken-2">{{ f.fac.facility_description|linebreaks }}</p>
 								</div>
 								<div class="col s12 l6 m6">
 									{% if f.photo %}
@@ -353,7 +362,7 @@ overflow-x: hidden;
 						<div class="card addcard">
 							<div class="card-content">
 								<span class="card-title deep-orange-text">{{ e.title }}</span>
-								<p class="brown-text text-darken-2">{{ e.description|linesbreak }}</p>
+								<p class="brown-text text-darken-2">{{ e.description|linebreaks }}</p>
 							</div>
 							<div class="card-action">
 								<a href="{% url 'newapp-event-view' e.pk %}">View Event</a>
@@ -374,9 +383,9 @@ overflow-x: hidden;
 <footer id="footr" class="page-footer grey darken-4">
 	<div class="container footer">
 		<a class="grey-text text-lighten-3 modal-trigger" href="#about">About</a>
-		<a class="grey-text text-lighten-3 modal-trigger" href="#!">Contact Us</a>
+		<!-- <a class="grey-text text-lighten-3 modal-trigger" href="#!">Contact Us</a> -->
 		<a class="grey-text text-lighten-3 modal-trigger" href="#locate">Locate Us</a>
-		<a class="grey-text text-lighten-3 modal-trigger" href="#!">Feedback</a>
+		<!-- <a class="grey-text text-lighten-3 modal-trigger" href="#!">Feedback</a> -->
 		<a class="grey-text text-lighten-3 modal-trigger" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
 	</div>
 </footer>

@@ -51,7 +51,7 @@
 	</header>
 	
 	<ul id="nav-mobile" class="side-nav fixed">
-		<li id="lback"><a class="logo-side-nav" href='{% url "base" %}'><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'></a></li>
+		<li id="lback"><a class="logo-side-nav" href='{% url "base" %}'><img id="logoMob" src= '{% static "assets/main-page/media/images/logo.png" %}'></a></li>
 		<br>
 		<ul class="collapsible collapsible-accordion">
 			{% if user.is_authenticated %}
@@ -98,9 +98,9 @@
 	<footer id="footr" class="page-footer grey darken-4">
 		<div class="container footer">
 			<a class="grey-text text-lighten-3 modal-trigger" href="#about">About</a>
-			<a class="grey-text text-lighten-3" href="#!">Contact Us</a>
+	<!-- 		<a class="grey-text text-lighten-3" href="#!">Contact Us</a> -->
 			<a class="grey-text text-lighten-3 modal-trigger" href="#locate">Locate Us</a>
-			<a class="grey-text text-lighten-3" href="#!">Feedback</a>
+<!-- 			<a class="grey-text text-lighten-3" href="#!">Feedback</a> -->
 			<a class="grey-text text-lighten-3" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
 		</div>
 	</footer>

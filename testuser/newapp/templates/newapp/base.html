@@ -37,24 +37,30 @@
                     </ul>
                         
                     {% else %}
-                    <li class="login-button"><a class="modal-trigger waves-effect waves-light btn" href="{% url 'login' %}">
+                    <li class="login-button"><a class="waves-effect waves-light btn" href="{% url 'login' %}">
                         Login
                     </a></li>
                     {% endif %}
                 </ul>
                 
                 <ul class="side-nav" id="mobile-demo">
-                    <li><a href="#!">Home</a></li>
-                    {% if user.is_authenticated %}
-                    <li><a class='dropdown-button btn' data-activates='dropdown3' href="#!">{{user}}</a></li>
-                    
-                    <ul id='dropdown3' class='dropdown-content'>
-                      <li><a href="{% url 'home' %}">Profile</a></li>
-                      <li><a href="{% url 'newappResetPassword' %}">Reset Password</a></li>
-                      <li><a href="{% url 'logout' %}">Logout</a></li>
+                    <li><a href='{% url "base" %}'><img id="logoMob" src='{% static "assets/main-page/media/images/logo.png" %}'></a></li><br>
+                    <ul class="collapsible collapsible-accordion">
+                        {% if user.is_authenticated %}
+                        <li>
+                            <a class="btn collapsible-header waves-effect waves-teal">{{ user }}</a>
+                            <div class="collapsible-body">
+                                <ul id="colBod">
+                                    <li><a class="waves-effect" href="{% url 'home' %}">Profile</a></li>
+                                    <li><a class="waves-effect" href="{% url 'newappResetPassword' %}">Reset password</a></li>
+                                    <li><a class="waves-effect" href="{% url 'logout' %}">Logout</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        
                     </ul>
                     {% else %}
-                    <li><a class="modal-trigger waves-effect waves-light btn" href="#login-modal">Login</a></li>
+                    <li><a class="modal-trigger waves-effect waves-light btn" href="{% url 'login' %}">Login</a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -68,7 +74,10 @@
             
             <ul class="collapsible" data-collapsible="accordion">
                 <li>
-                    <div class="collapsible-header active" id="news"><i class="fa fa-sort-desc"></i>News/Announcements</div>        
+                    <div class="collapsible-header" id="news">
+                    <i class="fa fa-sorc"></i>
+                    News/Announcements
+                    </div>        
                     <table class="collapsible-body">
                         {% if noti %}
                         {% for i in noti %}
@@ -89,16 +98,6 @@
                     </table>
                 </li>
             </ul>
-            <!--<ul  data-collapsible="accordion">
-                <li>
-                    <div  id="news">News/Announcements</div>        
-                    <table >
-                        <tr><td><a href="#">Link1</a></td></tr>
-                        <tr><td><a href="#">Link2</a></td></tr>
-                        <tr><td><a href="#">Link3</a></td></tr>
-                    </table>
-                </li>
-            </ul>-->
         </div>
         <div class="container" id="sideContainer">
             {% if len|divisibleby:2 %}
@@ -126,12 +125,17 @@
                     {% else %}
                             <div class="col s12 m6 l6">
                                 <div class="card">
+<<<<<<< HEAD
+                                    <div class="card-image gradient">
+                                        <img src='{% static "assets/main-page/media/images/hostel2.jpg" %}'>
+=======
                                     <div class="card-image  gradient">
                                         {% if hos.hostel_photo %}
                                         <img src="{{ hos.hostel_photo.url }}">
                                         {% else %}
                                         <img src="/media/hosteldemo.jpg">
                                         {% endif %}
+>>>>>>> 84af9b2ad8ffd023faf543c74b8cd1adfe7af9bf
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
@@ -220,9 +224,9 @@
     <footer class="page-footer grey darken-4">
         <div class="container footer">
             <a class="grey-text text-lighten-3 modal-trigger" href="#about">About</a>
-            <a class="grey-text text-lighten-3" href="#!">Contact Us</a>
-            <a class="grey-text text-lighten-3 modal-trigger" href="#locate">Locate Us</a>
-            <a class="grey-text text-lighten-3" href="#!">Feedback</a>
+            <!-- <a class="grey-text text-lighten-3" href="#!">Contact Us</a>
+             --><a class="grey-text text-lighten-3 modal-trigger" href="#locate">Locate Us</a>
+            <!-- <a class="grey-text text-lighten-3" href="#!">Feedback</a> -->
             <a class="grey-text text-lighten-3" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
         </div>
     </footer>
