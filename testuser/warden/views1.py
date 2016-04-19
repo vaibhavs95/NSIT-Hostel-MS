@@ -12,6 +12,7 @@ from .forms import *
 from testuser import settings
 from django.core.mail import send_mass_mail
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def SendNoticeMail(title,usern):
     a = Students.objects.filter(room_number__hostel = usern )
@@ -324,6 +325,16 @@ def viewDefaulters(request):
         for i in a:
             d={'name':i.hostel_name,'id':i.username}
             b.append(d)
+        paginator = Paginator(lis, 20) # Show 1 contacts per page
+        page = request.GET.get('page')
+        try:
+            lis = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            lis = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            lis = paginator.page(paginator.num_pages)
         data = {}
         data['all_hostels'] = b
         data['list'] = lis

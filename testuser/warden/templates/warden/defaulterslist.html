@@ -18,12 +18,11 @@
 	<div class="col s12 m12 l12">
 		<div class="card addcard">
 			{% if count == 0 %}
-			There are entries to be shown
+			There are no entries to be shown
 			{% else %}
 			<table class="centered striped bordered">
 				<thead>
 					<tr>
-						<th data-field="id">S. No.</th>
 						<th data-field="name">Student</th>
 						<th data-field="name">Last date of submission</th>
 					</tr>
@@ -32,10 +31,7 @@
 					{% for hos in list %}
 					<tr>
 						<td align="center">
-							{{ forloop.counter }}.
-						</td>
-						<td align="center">
-							{{ hos.student }}
+							<a href="{% url 'WardenViewStudentProfile' hos.student.username %}">{{ hos.student }}</a>
 						</td>
 						<td align="center">
 							{{ hos.hostel_last_date }}
@@ -44,6 +40,21 @@
 					{% endfor %}
 				</tbody>
 			</table>
+			<div class="pagination center">
+				<span class="step-links">
+					{% if list.has_previous %}
+					<a href="?page={{ list.previous_page_number }}">previous</a>
+					{% endif %}
+
+					<span class="current">
+						Page {{ list.number }} of {{ list.paginator.num_pages }}
+					</span>
+
+					{% if list.has_next %}
+					<a href="?page={{ list.next_page_number }}">next</a>
+					{% endif %}
+				</span>
+			</div>
 			{% endif %}
 		</div>
 	</div>
