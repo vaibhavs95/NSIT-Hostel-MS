@@ -17,7 +17,7 @@ def SendNoticeMail(title,usern):
     a = Students.objects.filter(room_number__hostel = usern )
     n = Notice.objects.get(title=title)
     url =  n.file.url
-    url = "http://127.0.0.1:8000" + url
+    url = "http://nsithostels.pythonanywhere.com" + url
     c=[]
     message = "A new announcement has been put up by the Warden for all the residents of the hostel. Click <a href= '%s '>here </a> to view the announcement" % url
     for i in a:

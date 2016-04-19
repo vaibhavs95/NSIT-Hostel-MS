@@ -908,8 +908,7 @@ def addstudent(request):
 				room_number.capacity_remaining -= 1
 				room_number.save()
 				# send email to fill details
-				url = "http://127.0.0.1:8080/student/" + \
-					base64.b64encode(username.encode('utf-8')).decode('utf-8')
+				url = "http://nsithostels.pythonanywhere.com/newapp/login/"
 				message = ''' Welcome To NSIT Hostel Management System. Click <a href= '%s'>here </a> to fill your details.
 				These are your login details required.
 				UserId:  %s
