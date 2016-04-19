@@ -23,7 +23,7 @@
 <hr>
 <div class="card addcard">
 	<h5 class="center blue-text"> {{ stu }} </h5>
-	<form method="post" action="{% url 'chief-add-fine' stu %}" enctype="multipart/form-data">
+	<form method="post" action="" enctype="multipart/form-data">
 		{% csrf_token %}
 		{% form form=form %}
 		{% endform %}

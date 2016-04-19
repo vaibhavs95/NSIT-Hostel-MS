@@ -281,7 +281,7 @@
 					Previous Hostel History
 				</h5>
 				<hr>
-				{% if prev|length > 0 %}
+				{% if prev|length >= 0 %}
 				<table class="striped centered bordered"id="table1">
 					<tr >
 						<th >
@@ -327,7 +327,7 @@
 					Disciplinary actions & fines
 				</h5>
 				<hr>
-				{% if crim|length > 0 %}
+				{% if crim|length >= 0 %}
 				<table class="striped centered bordered"id="table1">
 					<tr >
 						<th >
@@ -366,11 +366,57 @@
 						</td>
 						<td>
 							{% if i.paid == False and not i.student.room_number %}
-							<a href="{% url 'chief-pay-fine' i.pk i.student.username %}">Pay</a>
+							<a href="#!" onclick="PayFine('{{ i.pk }}','{{i.student}}')">Pay</a>
 							{% endif %}
 						</td>
 					</tr>
-					<tr><td colspan="5" class="center"><a href='{{i.file.url}}' action>{{ i.description }}</a></td></tr>
+					<tr><td colspan="5" class="center"><a href='{{i.file.url}}' action>{{ i.description|linebreaks }}</a></td></tr>
+					{% endfor %}
+				</table>
+				{% else %}
+				No Records.
+				{% endif %}
+				<h5 class="center">
+					Payment History
+				</h5>
+				<hr>
+				{% if paym|length >= 0 %}
+				<table class="striped centered bordered"id="table1">
+					<tr >
+						<th >
+							S.No.
+						</th>
+						<th >
+							Receipt Number
+						</th>
+						<th >
+							Payment Date
+						</th>
+						<th >
+							Payment Amount
+						</th>
+						<th >
+							Bank
+						</th>
+					</tr>
+					{% for i in paym %}
+					<tr>
+						<td >
+							{{forloop.counter}}
+						</td>
+						<td >
+							{{ i.receiptNumber }}
+						</td>
+						<td >
+							{{ i.paymentDate }}
+						</td>
+						<td >
+							{{ i.paymentAmount }}
+						</td>
+						<td >
+							{{ i.bank }}
+						</td>
+					</tr>
 					{% endfor %}
 				</table>
 				{% else %}
@@ -389,6 +435,13 @@
 	$('.collapsible-body').css({
 		"padding": "2%"
 	});
+</script>
+<script type='text/javascript' >
+	function PayFine(fineid,student) {
+		if (confirm("Are you sure to pay Fine ?") == true) {
+			window.location = '/chiefwarden/student/payfine/'+fineid+'/'+student+'/'
+		}
+	}
 </script>
 {% endblock %}
 {% block sidelist %}

@@ -164,7 +164,7 @@ def notices(request):
             d={'name':i.hostel_name,'id':i.username}
             b.append(d)
         try:
-            a= Notice.objects.filter(creator= 'chiefwarden')
+            a= Notice.objects.filter(creator= 'chiefwarden').order_by('-date')
         except ObjectDoesNotExist:
             pass
         data = {'all_hostels': b,'mes':mes,'form':f,'notices':a}
@@ -206,18 +206,19 @@ def StudentProfile(request,student):
         prev = None
         crimi = None
         try:
-            prev = PreviousHostelDetail.objects.filter(student = u)
+            prev = PreviousHostelDetail.objects.filter(student = u).order_by('hostel_join_date')
         except ObjectDoesNotExist:
             pass
         try:
-            crimi = CriminalRecord.objects.filter(student = u)
+            crimi = CriminalRecord.objects.filter(student = u).order_by('date_of_action')
         except ObjectDoesNotExist:
             pass
         payments = None
         try:
-            payments = PaymentDetails.objects.filter(student = u)
+            payments = PaymentDetails.objects.filter(student = u).order_by('paymentDate')
         except:
             pass
+        print(payments)
         data = {'all_hostels': b,'student':'yes', 'username': u.username ,'s': u,'prev':prev,'crim':crimi,'paym':payments}
         return render(request,'chief/studentprofile.html',data)
     else:
@@ -433,14 +434,7 @@ def addfine(request,student):
                 except:
                     pass
                 delta.save()
-                try:
-                    crimi = CriminalRecord.objects.filter(student = s)
-                    data['crimi'] = crimi
-                except ObjectDoesNotExist:
-                    pass
-                data['s'] = s
-                data['form']=f
-                return render(request, 'chief/studentprofile.html', data)
+                return redirect('chief-student-profile',student=s.username)
             else:
                 try:
                     crimi = CriminalRecord.objects.filter(student = s)

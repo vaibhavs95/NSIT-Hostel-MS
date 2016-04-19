@@ -15,7 +15,7 @@
 
 <body>
     <!-- Header -->
-<!--<div><p class="center">Notice from chiefwarden</p></div>-->
+
     <header>
         <nav class="indigo">
             <div class="nav-wrapper">
@@ -45,8 +45,8 @@
                 
                 <ul class="side-nav" id="mobile-demo">
                     <li><a href='{% url "base" %}'><img id="logoMob" src='{% static "assets/main-page/media/images/logo.png" %}'></a></li><br>
-                    <ul class="collapsible collapsible-accordion">
-                        {% if user.is_authenticated %}
+                    {% if user.is_authenticated %}
+                    <ul class="collapsible collapsible-accordion"> 
                         <li>
                             <a class="btn collapsible-header waves-effect waves-teal">{{ user }}</a>
                             <div class="collapsible-body">
@@ -57,10 +57,9 @@
                                 </ul>
                             </div>
                         </li>
-                        
                     </ul>
                     {% else %}
-                    <li><a class="modal-trigger waves-effect waves-light btn" href="{% url 'login' %}">Login</a></li>
+                    <li><a class="waves-effect waves-light btn" href="{% url 'login' %}">Login</a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -80,16 +79,18 @@
                             {% if noti %}
                             {% for i in noti %}
                             <tr>
-                            <td>
-                            <a href="http://127.0.0.1:8000{{i.file.url}}" target="_blank">{{ i.title }}</a>
-                            </td>
-                            <td>
-                                {{ i.date }}
-                            </td>
+                                <td id="tNoti" class="center">
+                                <a href="http://127.0.0.1:8000{{i.file.url}}" target="_blank">{{ i.title }}</a>
+                                </td>
+                                <td class="center">
+                                    {{ i.date }}
+                                </td>
                             </tr>
                             {% endfor %}
                             {% else %}
-                            <tr><td>No notifications</td></tr>
+                            <tr>
+                                <td>No notifications</td>
+                            </tr>
                             {% endif %}
                         </table>
                     </div>
@@ -122,17 +123,14 @@
                     {% else %}
                             <div class="col s12 m6 l6">
                                 <div class="card">
-<<<<<<< HEAD
-                                    <div class="card-image gradient">
-                                        <img src='{% static "assets/main-page/media/images/hostel2.jpg" %}'>
-=======
+
                                     <div class="card-image  gradient">
                                         {% if hos.hostel_photo %}
                                         <img src="{{ hos.hostel_photo.url }}">
                                         {% else %}
                                         <img src="/media/hosteldemo.jpg">
                                         {% endif %}
->>>>>>> 84af9b2ad8ffd023faf543c74b8cd1adfe7af9bf
+
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">

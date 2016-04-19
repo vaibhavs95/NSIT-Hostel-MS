@@ -23,6 +23,7 @@
 			<li class="tab col s4"><a class="active" href="#personal">Personal Details</a></li>
 			<li class="tab col s4"><a class="" href="#previous">Previous Hostel Details</a></li>
 			<li class="tab col s4"><a class="" href="#fines">Fines</a></li>
+			<li class="tab col s4"><a class="" href="#payment">Payment History</a></li>
 		</ul>
 	</div>
 	<div class="col s12" id="personal">
@@ -365,9 +366,6 @@
 						<th >
 							Paid
 						</th>
-						<th>
-
-						</th>
 					</tr>
 
 				</thead>
@@ -391,11 +389,6 @@
 							No
 							{% endif %}
 						</td>
-						<td>
-							{% if i.paid == False %}
-							<a href="{% url 'WardenPayFine' i.pk i.student %}">Pay</a>
-							{% endif %}
-						</td>
 					</tr>
 					<tr><td colspan="5" class="center"><a href='{{i.file.url}}' action>{{ i.description }}</a></td></tr>
 					{% endfor %}
@@ -404,6 +397,58 @@
 			{% else %}
 			<p>No Records Available.</p>
 			{% endif%}
+		</div>
+	</div><div class="col s12" id="payment">
+		<div class="card addcard">
+			<h5>Payment History</h5>
+			<hr>
+		{% if paym|length >= 0 %}
+		<table class="striped centered bordered">
+			<thead>
+			<tr >
+				<th >
+					S.No.
+				</th>
+				<th >
+					Date
+				</th>
+				<th >
+					Bank
+				</th>
+				<th >
+					Receipt Number
+				</th>
+				<th>
+					Payment Amount
+				</th>
+			</tr>
+				
+			</thead>
+			<tbody>				
+			{% for i in paym %}
+			<tr>
+				<td >
+					{{forloop.counter}}
+				</td>
+				<td >
+					{{ i.paymentDate }}
+				</td>
+				<td >
+					{{ i.bank }}
+				</td>
+				<td>
+					{{ i.receiptNumber }}
+				</td>
+				<td>
+					{{ i.paymentAmount }}
+				</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		{% else %}
+			<p>No Records Available.</p>
+		{% endif %}
 		</div>
 	</div>
 </div>

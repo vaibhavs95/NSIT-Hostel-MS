@@ -56,7 +56,7 @@ def notices(request):
             d={'name':i.hostel_name,'id':i.username}
             b.append(d)
         try:
-            a= Notice.objects.filter(creator= request.user)
+            a= Notice.objects.filter(creator= request.user).order_by('-date')
         except ObjectDoesNotExist:
             pass
         data = {'all_hostels': b,'mes':mes,'form':f,'notices':a}
@@ -160,7 +160,7 @@ def StudentProfile(request,student):
         crimi = None
 #        stu = Students.objects.get(username=student)
         try:
-            prev = PreviousHostelDetail.objects.filter(student = u)
+            prev = PreviousHostelDetail.objects.filter(student = u).order_by('hostel_join_date')
         except ObjectDoesNotExist:
             pass
         try:
@@ -169,7 +169,7 @@ def StudentProfile(request,student):
             pass
         payments = None
         try:
-            payments = PaymentDetails.objects.filter(student = u)
+            payments = PaymentDetails.objects.filter(student = u).order_by('paymentDate')
         except:
             pass
         data = {'all_hostels': b,'student':'yes','s': u,'prev':prev,'crim':crimi,'paym':payments}

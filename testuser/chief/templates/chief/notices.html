@@ -38,7 +38,7 @@
 			</form>
 		</div>
 	</div>
-	<div class="col s12">
+	<div class="col s12" id="all">
 		{% if notices|length > 0 %}
 		<div class="card addcard">
 			<h5>All Notices</h5>
@@ -59,7 +59,7 @@
 							{{ forloop.counter }}.
 						</td>
 						<td align="center">
-							<a href="{{ hos.file.url }}">{{ hos.title }}</a>
+							<a href="{{ hos.file.url }}">{{ hos.title|linebreaks }}</a>
 						</td>
 						<td align="center">
 							{{ hos.date }}.

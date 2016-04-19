@@ -31,16 +31,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'material',
+    'material.frontend',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_crontab',
-    'django_cron',
     'newapp',
-    'material',
     'chief',
     'student',
     'warden',
@@ -56,15 +55,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 )
-
-CRONJOBS = [
-    ('*/720 * * * *', 'warden.views.MyCronJob')
-
-]
-
-CRON_CLASSES = [
-    "warden.views.MyCronJob",
-]
 
 ROOT_URLCONF = 'testuser.urls'
 
@@ -93,10 +83,10 @@ WSGI_APPLICATION = 'testuser.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tanayjha$testuser',
-        'USER' : 'tanayjha',
-        'HOST' : 'tanayjha.mysql.pythonanywhere-services.com',
-        'PASSWORD' : 'abcd@1234',
+        'NAME': 'testuser',
+        'USER' : 'root',
+        'HOST' : 'localhost', 
+        'PASSWORD' : '12345',
         'PORT' : 3306
     }
 }
@@ -118,8 +108,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/assets')
 STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 #TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)

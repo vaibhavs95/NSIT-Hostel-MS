@@ -170,7 +170,7 @@ class Students(models.Model):
 	parent_phone_num = models.CharField(null = False, max_length=20)
 	parent_optional_phone_num = models.CharField(null = True, blank = True, max_length=20)
 	permanent_address = models.CharField(null=False, max_length=200)
-	permanent_address_zipcode = models.IntegerField(null=True,  blank = True )
+	permanent_address_zipcode = models.IntegerField(null=False,default = 0 )
 # Local Guradian
 	local_guardian_name = models.CharField(null=False, max_length=100,default='')
 	local_guardian_address = models.CharField(null= False, max_length=200,default='')
@@ -178,7 +178,7 @@ class Students(models.Model):
 	local_guardian_phone_num = models.CharField(null = False, max_length=20,default='')
 	local_guardian_optional_phone_num = models.CharField(null = False, blank = True, max_length=20,default='')
 	local_guardian_email = models.EmailField(null=False,default='')
-	student_photo = models.ImageField(upload_to=student_photo_name, null = True, blank = True)
+	student_photo = models.ImageField(upload_to=student_photo_name, null = False)
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.username)
 
@@ -228,7 +228,7 @@ class PaymentDetails(models.Model):
 	bank = models.ForeignKey(Banks,null = False)
 	paymentDate = models.DateField(null=False)
 	receiptNumber = models.IntegerField(null=False)
-
+	paymentAmount = models.IntegerField(null = False)
 	def __str__(self):
 		return "%s, %s"%(self.student,self.paymentDate)
 
@@ -290,14 +290,14 @@ class MessDetail(models.Model):
 	weekend_snack_to = models.TimeField(null=False)
 	weekend_dinner_from = models.TimeField(null=False)
 	weekend_dinner_to = models.TimeField(null=False)
-	weekday_breakfast_charge = models.IntegerField(null=False)
-	weekday_lunch_charge = models.IntegerField(null=False)
-	weekday_snack_charge = models.IntegerField(null=False)
-	weekday_dinner_charge = models.IntegerField(null=False)
-	weekend_breakfast_charge = models.IntegerField(null=False)
-	weekend_lunch_charge = models.IntegerField(null=False)
-	weekend_snack_charge = models.IntegerField(null=False)
-	weekend_dinner_charge = models.IntegerField(null=False)
+	# weekday_breakfast_charge = models.IntegerField(null=False)
+	# weekday_lunch_charge = models.IntegerField(null=False)
+	# weekday_snack_charge = models.IntegerField(null=False)
+	# weekday_dinner_charge = models.IntegerField(null=False)
+	# weekend_breakfast_charge = models.IntegerField(null=False)
+	# weekend_lunch_charge = models.IntegerField(null=False)
+	# weekend_snack_charge = models.IntegerField(null=False)
+	# weekend_dinner_charge = models.IntegerField(null=False)
 	menu = models.FileField(upload_to=messmenu_file_name,null=False)
 def form_file_name(instance, filename):
 	ext = filename.split('.')[-1]

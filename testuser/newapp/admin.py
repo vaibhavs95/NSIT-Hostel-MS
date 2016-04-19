@@ -23,6 +23,7 @@ admin.site.register(Notice)
 admin.site.register(Event)
 admin.site.register(PaymentDetails)
 admin.site.register(HostelAttachDates)
+admin.site.register(Banks)
 
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required

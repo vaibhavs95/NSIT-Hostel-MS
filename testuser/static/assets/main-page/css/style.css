@@ -1,6 +1,14 @@
 /******
 Header
 ******/
+tr
+{
+	width: 100%;
+}
+#tNoti
+{
+	width: 80%;
+}
 #logoMob{
 	margin: 5% 0% 0% 15%;
 	width: 110px;
@@ -36,11 +44,14 @@ nav{
 {
 	width: 70%;
 	float: left;
+	/*margin-left: 5%;*/
 }
 #rSideContainer
 {
 	width: 30%;
 	float: right;
+	margin-right: 5%;
+	margin-left: -5%;
 }
 table
 {
@@ -60,7 +71,7 @@ table
 {
 	font-size: small;
 }
-td,#news
+#news
 {
 	width: 100%;
 	text-align: center;
