@@ -27,7 +27,7 @@ overflow-x: hidden;
 			<div class="nav-wrapper">
 				<a href="#!" class="brand-logo "><img id="logo1" src= "{% static 'assets/main-page/media/images/logo.png' %}">
 					<div id="header-text-nsit" class="brand-logo flow-text left-align">
-						Netaji Subhas Institue of Technology
+						Netaji Subhas Institute of Technology
 					</div>
 					<div id="header-text-hms" class="brand-logo flow-text left-align">
 						Hostel Management System
@@ -68,12 +68,12 @@ overflow-x: hidden;
 				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
 				<div class="collapsible-body">
 					<ul id="colBod">
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#main">Basic Info.</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#notice">Notice</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#forms">Forms</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#mess">Mess</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#facilities">Facilities</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#eventlist">Events</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#main">Basic Info.</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#notice">Notice</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#forms">Forms</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#mess">Mess</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#facilities">Facilities</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#eventlist">Events</a></li>
 					</ul>
 				</div>
 			</li>
@@ -114,12 +114,12 @@ overflow-x: hidden;
 				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<!--<i class="mdi-navigation-arrow-drop-down"></i>--></a>
 				<div class="collapsible-body">
 					<ul id="colBod">
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#main">Basic Info.</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#notice">Notice</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#forms">Forms</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#mess">Mess</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#facilities">Facilities</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#eventlist">Events</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#main">Basic Info.</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#notice">Notice</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#forms">Forms</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#mess">Mess</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#facilities">Facilities</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#eventlist">Events</a></li>
 					</ul>
 				</div>
 			</li>
@@ -168,226 +168,231 @@ overflow-x: hidden;
 	<!-- <div class="card-panel"> -->
 	
 	<main>
-		<div class="container">		
-			<div class=" col l12" id="main">
-				<h5 class="center blue-text text-accent-1">Basic Information</h5>
-				<hr><br>
-				<div class="card">
-					<div class="card-content black-text row">
-						<div class="col s12 m6 l6">
-							<span class="card-title deep-orange-text">Warden</span><br>
-							Name : {{ target_hostel.name }}<br>
-							Phone No  : {{ target_hostel.phone }}<br>
-							Landline : {{ target_hostel.landline }}<br>
-							Email : {{ target_hostel.email }}<br>
-							Department : {{ target_hostel.dept }}<br>
-							Portfolio : {{ target_hostel.portfolio }}<br>
-							Total Capacity : {{  total_rooms }}<br>
-							Available Capacity : {{ rooms_available }}<br>
-						</div>
-						<div class="col s12 m6 l6">
-							{% if wardenphoto %}
-							<img class="profilepic" src="{{ target_hostel.warden_photo.url }}">
-							{% else %}
-							<img class="profilepic" src="/media/demo.png">
-							{% endif %}
-						</div>
-					</div>
-				</div>
-				{% for c in council %}
-				<div class="card">
-					<div class="card-content black-text row">
-						<div class="col s12 l6 m6">
-							<span class="card-title deep-orange-text">{{ c.coun.position }} - {{ c.coun.committee }}</span>
-							<p class="brown-text text-darken-2">Name : {{ c.coun.name }}</p>
-							<p class="brown-text text-darken-2">Email : {{ c.coun.email }}</p>
-							<p class="brown-text text-darken-2">Phone Number : {{ c.coun.phone }}</p>
-						</div>
-						<div class="col s12 l6 m6">
-							{% if c.photo %}
-							<img class="profilepic" src="{{ c.coun.photo.url }}">
-							{% else %}
-							<img class="profilepic" src="/media/demo.png">
-							{% endif %}
+		<div class="container">
+			<div class="row">
+				<div class=" col l12 bfp" id="main">
+					<h5 class="center blue-text text-accent-1">Basic Information</h5>
+					<hr><br>
+					<div class="card">
+						<div class="card-content black-text row">
+							<div class="col s12 m6 l6">
+								<span class="card-title deep-orange-text">{{target_hostel.hostel_name}}</span>
+								<br>
+								Total Capacity : {{  total_rooms }}<br>
+								Available Capacity : {{ rooms_available }}<br>
+								Warden's Name : {{ target_hostel.name }}<br>
+								Warden's Phone No  : {{ target_hostel.phone }}<br>
+								Warden's Landline : {{ target_hostel.landline }}<br>
+								Warden's Email : {{ target_hostel.email }}<br>
+								Warden's Department : {{ target_hostel.dept }}<br>
+								Warden's Portfolio : {{ target_hostel.portfolio }}<br>
+							</div>
+							
+							<div class="col s12 m6 l6">
+								{% if wardenphoto %}
+								<img class="profilepic" src="{{ target_hostel.warden_photo.url }}">
+								{% else %}
+								<img class="profilepic" src="/media/demo.png">
+								{% endif %}
+							</div>
 						</div>
 					</div>
-				</div>
-				{% endfor %}
-			</div>
-			<div id="notice">
-				<h5 class="center blue-text text-accent-1">Notices</h5>
-				<hr><br>
-				{% if notices|length > 0 %}
-				<table class=" centered striped">
-					<thead>
-						<tr>
-							<th>
-								Notice Title
-							</th>
-							<th>Added On</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for n in notices %}
-						<tr>
-							<td>
-								<a href="{{ n.file.url }}" target="__blank">{{ n.title }}</a>
-							</td>
-							<td>{{ n.time|date }}</td>
-						</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-				{% else %}
-				There is no Notice.
-				{% endif %}
-			</div>
-			<div class=" col l12 bfp" id="forms">
-				<h5 class="center blue-text text-accent-1">Forms</h5>
-				<hr><br>
-				{% if hosform|length > 0 %}
-				<table class="centered striped">
-					<tbody>
-						{% for h in hosform %}
-						<tr>
-							<td>
-								<a href="{{ h.hosf.file.url }}" target="__blank">{{ h.hosf.title }}</a>
-							</td>
-						</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-				{% else %}
-				Currently forms are not available.
-				{% endif%}
-			</div>
-			<div class=" col l12 bfp" id="mess">
-				<h5 class="center blue-text text-accent-1">Mess Details</h5>
-				<hr><br>
-				{% if mess %}
-				<div class="card">
-					<div class="card-body">
-						<p class="center orange-text">Weekdays</p>
-						<table class="striped centered bordered "id="messtable">
-							<thead>
-								<tr>
-									<th data-field="name">Meal</th>
-									<th data-field="id">From - To</th>
-									<th data-field="name">Charges (Rs.)</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Breakfast</td>
-									<td>{{ mess.weekday_breakfast_from }} - {{mess.weekday_breakfast_to}}</td>
-									<td>{{ mess.weekday_breakfast_charge }}</td>
-								</tr>
-								<tr>
-									<td>Lunch</td>
-									<td>{{ mess.weekday_lunch_from }} - {{mess.weekday_lunch_to}}</td>
-									<td>{{ mess.weekday_lunch_charge }}</td>
-								</tr>
-								<tr>
-									<td>Snack</td>
-									<td>{{ mess.weekday_snack_from }} - {{mess.weekday_snack_to}}</td>
-									<td>{{ mess.weekday_snack_charge }}</td>
-								</tr>
-								<tr>
-									<td>Dinner</td>
-									<td>{{ mess.weekday_dinner_from }} - {{mess.weekday_dinner_to}}</td>
-									<td>{{ mess.weekday_dinner_charge }}</td>
-								</tr>
-							</tbody>
-						</table>
-						<p class="center orange-text">Weekend</p>
-						<table class="striped centered bordered">
-							<thead>
-								<tr>
-									<th data-field="name">Meal</th>
-									<th data-field="id">From - To</th>
-									<th data-field="name">Charges (Rs.)</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Breakfast</td>
-									<td>{{ mess.weekend_breakfast_from }} - {{mess.weekend_breakfast_to}}</td>
-									<td>{{ mess.weekend_breakfast_charge }}</td>
-								</tr>
-								<tr>
-									<td>Lunch</td>
-									<td>{{ mess.weekend_lunch_from }} - {{mess.weekend_lunch_to}}</td>
-									<td>{{ mess.weekend_lunch_charge }}</td>
-								</tr>
-								<tr>
-									<td>Snack</td>
-									<td>{{ mess.weekend_snack_from }} - {{mess.weekend_snack_to}}</td>
-									<td>{{ mess.weekend_snack_charge }}</td>
-								</tr>
-								<tr>
-									<td>Dinner</td>
-									<td>{{ mess.weekend_dinner_from }} - {{mess.weekend_dinner_to}}</td>
-									<td>{{ mess.weekend_dinner_charge }}</td>
-								</tr>
-							</tbody>
-						</table>
-						<a class="btn" target="__blank" href="{{ mess.menu.url }}">Mess Menu</a>
-					</div>
-				</div>
-				{% else %}
-				<p>No Mess Details Available now.</p>
-				{% endif %}
-			</div>
-			<div class=" col l12 bfp" id="eventlist">
-				<h5 class="center blue-text text-accent-1">Events</h5>
-				<hr>
-				<div>
-					{% if events|length > 0 %}
-					{% for e in events %}
-					<div class="card addcard">
-						<div class="card-content">
-							<span class="card-title deep-orange-text">{{ e.title }}</span>
-							<p class="brown-text text-darken-2">{{ e.description }}</p>
-						</div>
-						<div class="card-action">
-							<a href="{% url 'newapp-event-view' e.pk %}">View Event</a>
-						</div>
-					</div>
-					{% endfor %}
-					{% else %}
-					<p>Eventless Hostel.</p>
-					{% endif %}
-				</div>
-			</div>
-			<div class=" col l12 bfp" id="facilities">
-				<h5 class="center blue-text text-accent-1">Facilities</h5>
-				<hr>
-				<br>
-				<div>
-					{% if facilities|length > 0 %}
-					{% for f in facilities %}
+					{% for c in council %}
 					<div class="card">
 						<div class="card-content black-text row">
 							<div class="col s12 l6 m6">
-								<span class="card-title deep-orange-text">{{ f.fac.facility_name }}</span>
-								<p class="brown-text text-darken-2">{{ f.fac.facility_description }}</p>
+								<span class="card-title deep-orange-text">{{ c.coun.position }} - {{ c.coun.committee }}</span>
+								<p class="brown-text text-darken-2">Name : {{ c.coun.name }}</p>
+								<p class="brown-text text-darken-2">Email : {{ c.coun.email }}</p>
+								<p class="brown-text text-darken-2">Phone Number : {{ c.coun.phone }}</p>
 							</div>
 							<div class="col s12 l6 m6">
-								{% if f.photo %}
-								<img class="squarepic" src="{{ f.fac.photo.url }}">
+								{% if c.photo %}
+								<img class="profilepic" src="{{ c.coun.photo.url }}">
 								{% else %}
-								<img class="squarepic" src="/media/warden/images/facilities/demo.jpg">
+								<img class="profilepic" src="/media/demo.png">
 								{% endif %}
 							</div>
 						</div>
 					</div>
 					{% endfor %}
+				</div>
+				<div id="notice">
+					<h5 class="center blue-text text-accent-1">Notices</h5>
+					<hr><br>
+					{% if notices|length > 0 %}
+					<table class=" centered striped">
+						<thead>
+							<tr>
+								<th>
+									Notice Title
+								</th>
+								<th>Added On</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for n in notices %}
+							<tr>
+								<td>
+									<a href="{{ n.file.url }}" target="__blank">{{ n.title|linebreaks }}</a>
+								</td>
+								<td>{{ n.date }}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					{% else %}
+					There is no Notice.
+					{% endif %}
+				</div>
+				<div class=" col l12 bfp" id="forms">
+					<h5 class="center blue-text text-accent-1">Forms</h5>
+					<hr><br>
+					{% if hosform|length > 0 %}
+					<table class="centered striped">
+						<tbody>
+							{% for h in hosform %}
+							<tr>
+								<td>
+									<a href="{{ h.hosf.file.url }}" target="__blank">{{ h.hosf.title|linebreaks }}</a>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					{% else %}
+					Currently forms are not available.
+					{% endif%}
+				</div>
+				<div class=" col l12 bfp" id="mess">
+					<h5 class="center blue-text text-accent-1">Mess Details</h5>
+					<hr><br>
+					{% if mess %}
+					<div class="card">
+						<div class="card-body">
+							<p class="center orange-text">Weekdays</p>
+							<table class="striped centered bordered "id="messtable">
+								<thead>
+									<tr>
+										<th data-field="name">Meal</th>
+										<th data-field="id">From - To</th>
+										<th data-field="name">Charges (Rs.)</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Breakfast</td>
+										<td>{{ mess.weekday_breakfast_from }} - {{mess.weekday_breakfast_to}}</td>
+										<td>{{ mess.weekday_breakfast_charge }}</td>
+									</tr>
+									<tr>
+										<td>Lunch</td>
+										<td>{{ mess.weekday_lunch_from }} - {{mess.weekday_lunch_to}}</td>
+										<td>{{ mess.weekday_lunch_charge }}</td>
+									</tr>
+									<tr>
+										<td>Snack</td>
+										<td>{{ mess.weekday_snack_from }} - {{mess.weekday_snack_to}}</td>
+										<td>{{ mess.weekday_snack_charge }}</td>
+									</tr>
+									<tr>
+										<td>Dinner</td>
+										<td>{{ mess.weekday_dinner_from }} - {{mess.weekday_dinner_to}}</td>
+										<td>{{ mess.weekday_dinner_charge }}</td>
+									</tr>
+								</tbody>
+							</table>
+							<p class="center orange-text">Weekend</p>
+							<table class="striped centered bordered">
+								<thead>
+									<tr>
+										<th data-field="name">Meal</th>
+										<th data-field="id">From - To</th>
+										<th data-field="name">Charges (Rs.)</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Breakfast</td>
+										<td>{{ mess.weekend_breakfast_from }} - {{mess.weekend_breakfast_to}}</td>
+										<td>{{ mess.weekend_breakfast_charge }}</td>
+									</tr>
+									<tr>
+										<td>Lunch</td>
+										<td>{{ mess.weekend_lunch_from }} - {{mess.weekend_lunch_to}}</td>
+										<td>{{ mess.weekend_lunch_charge }}</td>
+									</tr>
+									<tr>
+										<td>Snack</td>
+										<td>{{ mess.weekend_snack_from }} - {{mess.weekend_snack_to}}</td>
+										<td>{{ mess.weekend_snack_charge }}</td>
+									</tr>
+									<tr>
+										<td>Dinner</td>
+										<td>{{ mess.weekend_dinner_from }} - {{mess.weekend_dinner_to}}</td>
+										<td>{{ mess.weekend_dinner_charge }}</td>
+									</tr>
+								</tbody>
+							</table>
+							<a class="btn" target="__blank" href="{{ mess.menu.url }}">Mess Menu</a>
+						</div>
+					</div>
+					{% else %}
+					<p>No mess details available.</p>
+					{% endif %}
+				</div>
+				<div class=" col l12 bfp" id="facilities">
+					<h5 class="center blue-text text-accent-1">Facilities</h5>
+					<hr>
+					<br>
+					<div>
+						{% if facilities|length > 0 %}
+						{% for f in facilities %}
+						<div class="card">
+							<div class="card-content black-text row">
+								<div class="col s12 l6 m6">
+									<span class="card-title deep-orange-text">{{ f.fac.facility_name }}</span>
+									<p class="brown-text text-darken-2">{{ f.fac.facility_description|linebreaks }}</p>
+								</div>
+								<div class="col s12 l6 m6">
+									{% if f.photo %}
+									<img class="squarepic" src="{{ f.fac.photo.url }}">
+									{% else %}
+									<img class="squarepic" src="/media/warden/images/facilities/demo.jpg">
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					{% endfor %}
 				
 					{% else %}
 					There is no Facility in this Hostel.
 					{% endif %}
+					</div>
+				</div>			
+				<!-- </div> -->
+				<div class=" col l12 bfp" id="eventlist">
+					<h5 class="center blue-text text-accent-1">Events</h5>
+					<hr>
+					<div>
+						{% if events|length > 0 %}
+						{% for e in events %}
+						<div class="card addcard">
+							<div class="card-content">
+								<span class="card-title deep-orange-text">{{ e.title }}</span>
+								<p class="brown-text text-darken-2">{{ e.description|linebreaks }}</p>
+							</div>
+							<div class="card-action">
+								<a href="{% url 'newapp-event-view' e.pk %}">View Event</a>
+							</div>
+						</div>
+						{% endfor %}
+						{% else %}
+						<p>Eventless Hostel.</p>
+						{% endif %}
+					</div>
 				</div>
-			</div>			
+			</div>
 		</div>
 	</main>
 
@@ -397,9 +402,9 @@ overflow-x: hidden;
 <footer id="footr" class="page-footer grey darken-4">
 	<div class="container footer">
 		<a class="grey-text text-lighten-3 modal-trigger" href="#about">About</a>
-		<a class="grey-text text-lighten-3 modal-trigger" href="#!">Contact Us</a>
+		<!-- <a class="grey-text text-lighten-3 modal-trigger" href="#!">Contact Us</a> -->
 		<a class="grey-text text-lighten-3 modal-trigger" href="#locate">Locate Us</a>
-		<a class="grey-text text-lighten-3 modal-trigger" href="#!">Feedback</a>
+		<a class="grey-text text-lighten-3" href="https://docs.google.com/forms/d/15YfpMLeOaOc9gBiR-S2X8jMWS7zjmd1HaFdyK9dQoDc/viewform" target="_blank">Feedback</a>
 		<a class="grey-text text-lighten-3 modal-trigger" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
 	</div>
 </footer>

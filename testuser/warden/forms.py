@@ -68,7 +68,7 @@ class AddRoomForm(forms.Form):
             room_no = room_no.upper()
             if re.match("[A-Z]+-[0-9]+",str(room_no))==None:
                 raise forms.ValidationError('Enter Room Number in correct format: AA-111')
-            if capacity_of_room > 3:
+            if capacity_of_room > 4:
                 raise forms.ValidationError('Capacity of Room cannot be more than three')
             h = Hostels.objects.get(username = self.request.user)
             r = Rooms.objects.filter(room_no = room_no,hostel = h)

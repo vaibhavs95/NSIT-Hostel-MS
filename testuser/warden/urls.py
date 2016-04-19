@@ -60,4 +60,5 @@ urlpatterns = [
     url(r'^event/delete/(?P<pk>[0-9]+)/$',views.deleteevent, name='warden-delete-event'),
     url(r'^event/view/(?P<pk>[0-9]+)/$',views.viewevent, name='event-view'),
     url(r'^student/(?P<student_id>[0-9]+-[A-Z]+-[0-9]+)/$',views.printStuDetails, name='print-stu-details'),
+    url(r'^student/defaulterslist$',views.printDefaultersList, name='print-defaulters-list'),
 ]

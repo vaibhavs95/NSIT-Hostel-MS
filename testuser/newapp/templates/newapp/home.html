@@ -27,7 +27,7 @@
 			<div class="nav-wrapper">
 				<a href='{% url "base" %}' class="brand-logo ">
 					<div id="header-text-nsit" class="brand-logo flow-text left-align">
-						Netaji Subhas Institue of Technology
+						Netaji Subhas Institute of Technology
 					</div>
 					<div id="header-text-hms" class="brand-logo flow-text left-align">
 						Hostel Management System
@@ -77,12 +77,12 @@
 				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
 				<div class="collapsible-body">
 					<ul id="colBod">
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#main">Basic Info.</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id}}/#forms">Forms</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#notices">Notices</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#facilities">Facilities</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#mess">Mess</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#eventlist">Events</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#main">Basic Info.</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#forms">Forms</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#notices">Notices</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#facilities">Facilities</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#mess">Mess</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#eventlist">Events</a></li>
 					</ul>
 				</div>
 			</li>
@@ -102,9 +102,9 @@
 	<footer id="footr" class="page-footer grey darken-4">
 		<div class="container footer">
 			<a class="grey-text text-lighten-3 modal-trigger" href="#about">About</a>
-			<a class="grey-text text-lighten-3" href="#!">Contact Us</a>
+	<!-- 		<a class="grey-text text-lighten-3" href="#!">Contact Us</a> -->
 			<a class="grey-text text-lighten-3 modal-trigger" href="#locate">Locate Us</a>
-			<a class="grey-text text-lighten-3" href="#!">Feedback</a>
+			<a class="grey-text text-lighten-3" href="https://docs.google.com/forms/d/15YfpMLeOaOc9gBiR-S2X8jMWS7zjmd1HaFdyK9dQoDc/viewform" target="_blank">Feedback</a>
 			<a class="grey-text text-lighten-3" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
 		</div>
 	</footer>

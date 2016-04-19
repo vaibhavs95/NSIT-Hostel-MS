@@ -20,7 +20,7 @@ def base(request):
         return redirect('login')
     else:
         f=LoginForm()
-    hos=Hostels.objects.all().order_by('hostel_name')
+    hos=Hostels.objects.all().order_by('pk')
     next_url = request.GET.get('next')
     noti = None
     try:
@@ -234,3 +234,16 @@ def viewevent(request, pk):
     data['event'] = e
     data['ephotos'] = Images.objects.filter(event = e)
     return render(request,'newapp/eventpage.html',data)
+
+
+def bad_request(request):
+    return render(request,'newapp/err400.html',)
+
+def permission_denied(request):
+    return render(request,'newapp/err403.html',)
+    
+def page_not_found(request):
+    return render(request,'newapp/err404.html',)
+
+def server_error(request):
+    return render(request,'newapp/err500.html',)

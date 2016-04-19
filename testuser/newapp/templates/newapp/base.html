@@ -20,7 +20,7 @@
         <nav class="indigo">
             <div class="nav-wrapper">
                 <a href='{% url "base" %}' class="brand-logo "><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'>
-                    <div id="header-text-nsit" class="brand-logo flow-text left-align">Netaji Subhas Institue of Technology
+                    <div id="header-text-nsit" class="brand-logo flow-text left-align">Netaji Subhas Institute of Technology
                     </div>
                     <div id="header-text-hms" class="brand-logo flow-text left-align">Hostel Management System</div>
                 </a>
@@ -73,14 +73,16 @@
             
             <ul class="collapsible" data-collapsible="accordion">
                 <li>
-                    <div class="collapsible-header active" id="news"><i class="fa fa-sort-desc"></i>News/Announcements</div>        
+                    <div class="collapsible-header active" id="news">
+                        <i class="fa fa-sort-desc"></i>News/Announcements
+                    </div>        
                     <div class="collapsible-body">
                         <table>
                             {% if noti %}
                             {% for i in noti %}
                             <tr>
                                 <td id="tNoti" class="center">
-                                <a href="http://127.0.0.1:8000{{i.file.url}}" target="_blank">{{ i.title }}</a>
+                                <a href="http://127.0.0.1:8000{{i.file.url}}" target="_blank">{{ i.title|linebreaks }}</a>
                                 </td>
                                 <td class="center">
                                     {{ i.date }}
@@ -113,31 +115,29 @@
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p id="hDesc">{{ hos.hostel_text }}</p>
+                                        <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
                                     </div>
                                     <div class="card-action">
-                                        <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
+                                        <a href="/{{ hos.username }}/#main" >More Info.</a>
                                     </div>
                                 </div>
                             </div>
                     {% else %}
                             <div class="col s12 m6 l6">
                                 <div class="card">
-
                                     <div class="card-image  gradient">
                                         {% if hos.hostel_photo %}
                                         <img src="{{ hos.hostel_photo.url }}">
                                         {% else %}
                                         <img src="/media/hosteldemo.jpg">
                                         {% endif %}
-
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p id="hDesc">{{ hos.hostel_text }}</p>
+                                        <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
                                     </div>
                                     <div class="card-action">
-                                        <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
+                                        <a href="/{{ hos.username }}/#main" >More Info.</a>
                                     </div>
                                 </div>
                             </div>
@@ -159,10 +159,10 @@
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p id="hDesc">{{ hos.hostel_text }}</p>
+                                        <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
                                     </div>
                                     <div class="card-action">
-                                        <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
+                                        <a href="/{{ hos.username }}/#main" >More Info.</a>
                                     </div>
                                 </div>
                             </div>
@@ -180,10 +180,10 @@
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                    <p id="hDesc">{{ hos.hostel_text }}</p>
+                                    <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
                                     </div>
                                     <div class="card-action">
-                                        <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
+                                        <a href="/{{ hos.username }}/#main" >More Info.</a>
                                     </div>
                                 </div>
                             </div>
@@ -199,10 +199,10 @@
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p id="hDesc">{{ hos.hostel_text }}</p>
+                                        <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
                                     </div>
                                     <div class="card-action">
-                                        <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
+                                        <a href="/{{ hos.username }}/#main" >More Info.</a>
                                     </div>
                                 </div>
                             </div>
@@ -219,9 +219,9 @@
     <footer class="page-footer grey darken-4">
         <div class="container footer">
             <a class="grey-text text-lighten-3 modal-trigger" href="#about">About</a>
-            <a class="grey-text text-lighten-3" href="#!">Contact Us</a>
-            <a class="grey-text text-lighten-3 modal-trigger" href="#locate">Locate Us</a>
-            <a class="grey-text text-lighten-3" href="#!">Feedback</a>
+            <!-- <a class="grey-text text-lighten-3" href="#!">Contact Us</a>
+             --><a class="grey-text text-lighten-3 modal-trigger" href="#locate">Locate Us</a>
+            <a class="grey-text text-lighten-3" href="https://docs.google.com/forms/d/15YfpMLeOaOc9gBiR-S2X8jMWS7zjmd1HaFdyK9dQoDc/viewform" target="_blank">Feedback</a>
             <a class="grey-text text-lighten-3" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
         </div>
     </footer>
