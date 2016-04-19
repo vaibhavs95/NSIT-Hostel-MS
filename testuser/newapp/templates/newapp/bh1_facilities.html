@@ -66,12 +66,12 @@ overflow-x: hidden;
 				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
 				<div class="collapsible-body">
 					<ul id="colBod">
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#main">Basic Info.</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#notice">Notice</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#forms">Forms</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#mess">Mess</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#facilities">Facilities</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#eventlist">Events</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#main">Basic Info.</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#notice">Notice</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#forms">Forms</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#mess">Mess</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#facilities">Facilities</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#eventlist">Events</a></li>
 					</ul>
 				</div>
 			</li>
@@ -113,12 +113,12 @@ overflow-x: hidden;
 				<a class="btn collapsible-header waves-effect waves-teal">{{ hos.name }}<i class="mdi-navigation-arrow-drop-down"></i></a>
 				<div class="collapsible-body">
 					<ul id="colBod">
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#main">Basic Info.</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#notice">Notice</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#forms">Forms</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#mess">Mess</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#facilities">Facilities</a></li>
-						<li><a class="waves-effect" href="/newapp/{{ hos.id }}/#eventlist">Events</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#main">Basic Info.</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#notice">Notice</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#forms">Forms</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#mess">Mess</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#facilities">Facilities</a></li>
+						<li><a class="waves-effect" href="/{{ hos.id }}/#eventlist">Events</a></li>
 					</ul>
 				</div>
 			</li>
@@ -161,15 +161,15 @@ overflow-x: hidden;
 					<div class="card">
 						<div class="card-content black-text row">
 							<div class="col s12 m6 l6">
-								<span class="card-title deep-orange-text">Warden</span><br>
-								Name : {{ target_hostel.name }}<br>
-								Phone No  : {{ target_hostel.phone }}<br>
-								Landline : {{ target_hostel.landline }}<br>
-								Email : {{ target_hostel.email }}<br>
-								Department : {{ target_hostel.dept }}<br>
-								Portfolio : {{ target_hostel.portfolio }}<br>
+								<span class="card-title deep-orange-text">{{target_hostel.hostel_name}}</span><br>
 								Total Capacity : {{  total_rooms }}<br>
 								Available Capacity : {{ rooms_available }}<br>
+								Warden's Name : {{ target_hostel.name }}<br>
+								Warden's Phone No  : {{ target_hostel.phone }}<br>
+								Warden's Landline : {{ target_hostel.landline }}<br>
+								Warden's Email : {{ target_hostel.email }}<br>
+								Warden's Department : {{ target_hostel.dept }}<br>
+								Warden's Portfolio : {{ target_hostel.portfolio }}<br>
 							</div>
 							<div class="col s12 m6 l6">
 								{% if wardenphoto %}
@@ -219,7 +219,7 @@ overflow-x: hidden;
 								<td>
 									<a href="{{ n.file.url }}" target="__blank">{{ n.title|linebreaks }}</a>
 								</td>
-								<td>{{ n.time|date }}</td>
+								<td>{{ n.date }}</td>
 							</tr>
 							{% endfor %}
 						</tbody>

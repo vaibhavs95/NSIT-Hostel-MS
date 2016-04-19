@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+{% load staticfiles %}
+{% load material_form %}
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name = "viewport" content = "width=device-width, initial-scale = 1">
+   <title> {% block title %} HMS {% endblock %} </title>
+   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+   {% include 'material/includes/material_css.html' %}
+   <link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/style.css' %}"/>
+   <link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/font-awesome-4.5.0/css/font-awesome.min.css' %}"/>
+</head>
+<style>
+	#errImg
+	{
+		width:40%;
+		margin-left: 30%;
+	}
+    body
+    {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+    }
+    main
+    {
+        flex: 1 0 auto;
+    }
+    .footer
+    {
+        display: flex;
+        justify-content: space-around;
+        padding-bottom: 20px;
+        flex-wrap: wrap;
+    }
+</style>
+<body>
+    <!-- Header -->
+<!--<div><p class="center">Notice from chiefwarden</p></div>-->
+    <header>
+        <nav class="indigo">
+            <div class="nav-wrapper">
+                <a href='{% url "base" %}' class="brand-logo "><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'>
+                    <div id="header-text-nsit" class="brand-logo flow-text left-align">Netaji Subhas Institue of Technology
+                    </div>
+                    <div id="header-text-hms" class="brand-logo flow-text left-align">Hostel Management System</div>
+                </a>   
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+<div class="container">
+<!-- <img src="/media/hosteldemo.jpg"> -->
+            <img id="errImg" src="/media/err400_1.jpg">
+            <p class="center">Your browser sent a request that this server could not understand</p>
+        </div>
+        </main>
+
+    <!-- Footer --> 
+
+    <footer class="page-footer grey darken-4">
+        <div class="container footer">
+            <a class="grey-text text-lighten-3 modal-trigger" href="#about">About</a>
+            <!-- <a class="grey-text text-lighten-3" href="#!">Contact Us</a>
+             --><a class="grey-text text-lighten-3 modal-trigger" href="#locate">Locate Us</a>
+            <a class="grey-text text-lighten-3" href="https://docs.google.com/forms/d/15YfpMLeOaOc9gBiR-S2X8jMWS7zjmd1HaFdyK9dQoDc/viewform">Feedback</a>
+            <a class="grey-text text-lighten-3" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+
+    <!-- About -->
+		<div id="about" class="modal">
+			<div class="modal-content">
+				<h4 class="center">
+					About us
+				</h4>
+				<hr>
+				<p>
+					Hostel Management System of NSIT.
+				</p>
+			</div>
+		</div>
+		
+		<!-- Locate Us -->
+		<div id="locate" class="modal">
+			<div class="modal-content">
+				<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.6879906005356!2d77.03287455023379!3d28.609135591804954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d053516783c9b%3A0x7e540ab22a28446!2sNetaji+Subhas+Institute+Of+Technology!5e0!3m2!1sen!2sin!4v1458988779817" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+			</div>
+		</div>
+    
+    <!-- forgot password -->
+
+        <!--Scripts -->
+        <script type="text/javascript" src='{% static "assets/main-page/js/jquery-1.11.3.min.js" %}'></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        {% include 'material/includes/material_js.html' %}
+        <script type="text/javascript" src='{% static "assets/main-page/js/script.js" %}'></script>
+        <script type="text/javascript">
+            $( window ).load(function() {
+                main();
+            });
+        </script>
+    </body>
+    </html>
+        

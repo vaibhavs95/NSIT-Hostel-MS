@@ -16,12 +16,20 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-
+from django.conf.urls import (
+    handler400, handler403, handler404, handler500
+)
 urlpatterns = [
-    url(r'^$', 'newapp.views.base', name='base'),
-    url(r'^newapp/',include('newapp.urls')),
+    url(r'^',include('newapp.urls')),
+    # url(r'^newapp/',include('newapp.urls')),
     url(r'^chiefwarden/',include('chief.urls')),
     url(r'^warden/',include('warden.urls')),
     url(r'^student/',include('student.urls')),
     url(r'^admin/', include(admin.site.urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+handler400 = 'newapp.views.bad_request'
+handler403 = 'newapp.views.permission_denied'
+handler404 = 'newapp.views.page_not_found'
+handler500 = 'newapp.views.server_error'
