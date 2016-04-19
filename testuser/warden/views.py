@@ -898,7 +898,8 @@ def addstudent(request):
 				bank = f.cleaned_data.get('bank')
 				payDate = f.cleaned_data.get('paymentDate')
 				receipt = f.cleaned_data.get('receiptNumber')
-				last_date = date.today()+timedelta(days=10)
+				# last_date = date.today()+timedelta(days=10)
+				last_date = date.today()+timedelta(days=-2)
 				s.save()
 				user.save()
 				hostelAttach = HostelAttachDates(hostel_last_date = last_date,student=s)
@@ -1521,7 +1522,38 @@ def printStuDetails(request, student_id):
 	p.save()
 	return response
 
-
+@login_required
+@require_http_methods(['GET', 'POST'])
+def printDefaultersList(request):
+	alpha = str(request.user)
+	response = HttpResponse(content_type='application/pdf')
+	response['Content-Disposition'] = 'attachment; filename="defaulterslist.pdf"'
+	buff = BytesIO()
+	doc = SimpleDocTemplate(buff, pagesize=letter)
+	# container for the 'Flowable' objects
+	elements = []
+	styles=getSampleStyleSheet()
+	styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
+	ptext = '<font size=20><b>DEFAULTERS LIST</b></font>'
+	elements.append(Paragraph(ptext, styles["Normal"]))
+	elements.append(Spacer(1, 50))
+	u = HostelAttachDates.objects.filter(student__room_number__hostel__username=alpha,hostel_last_date__lt = date.today())
+	data = []
+	lst = ['Roll Number', 'Room No.']
+	data.append(lst)
+	for i in u:
+		lst = []
+		lst.append(i.student.username)
+		lst.append(i.student.room_number)
+		data.append(lst)
+	t=Table(data, colWidths=[1.7*inch] * 5, hAlign='LEFT')
+	t.setStyle(TableStyle([('GRID', (0,0), (-1,-1), 0.25, colors.black),]))
+	elements.append(t)
+	# write the document to disk
+	doc.build(elements)
+	response.write(buff.getvalue())
+	buff.close()
+	return response
 
 class MyCronJob(CronJobBase):
     RUN_EVERY_MINS=720
@@ -1562,3 +1594,6 @@ class MyCronJob(CronJobBase):
     					delta = PreviousHostelDetail(hostel_name = i.hostel_name,room_no = rom.room_no,student = stu,hostel_join_date = stu.current_hostel_join_date,
     						hostel_leave_date = date.today())
     					delta.save()
+
+
+
