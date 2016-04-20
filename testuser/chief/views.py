@@ -13,6 +13,8 @@ from .forms import *
 from warden.forms import SearchStudentRollNoForm, SearchStudentOtherForm
 from testuser import settings
 from django.core.mail import send_mass_mail
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 @login_required
 @require_http_methods(['GET', 'POST'])
 def home(request):
@@ -164,10 +166,24 @@ def notices(request):
             d={'name':i.hostel_name,'id':i.username}
             b.append(d)
         try:
-            a= Notice.objects.filter(creator= 'chiefwarden').order_by('-date')
+            a= Notice.objects.filter(creator= 'chiefwarden',active=True).order_by('-date')
         except ObjectDoesNotExist:
             pass
-        data = {'all_hostels': b,'mes':mes,'form':f,'notices':a}
+        try:
+            nonactive = Notice.objects.filter(creator= 'chiefwarden',active=False).order_by('-date')
+        except ObjectDoesNotExist:
+            pass
+        paginator = Paginator(nonactive, 20) # Show 1 contacts per page
+        page = request.GET.get('page')
+        try:
+            nonactive = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            nonactive = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            nonactive = paginator.page(paginator.num_pages)        
+        data = {'all_hostels': b,'mes':mes,'form':f,'notices':a,'nonactive':nonactive}
         return render(request,'chief/notices.html',data)
     else:
         return redirect('logout')
@@ -183,12 +199,25 @@ def delNotice(request,target):
             c=Notice.objects.get(pk=target)
         except ObjectDoesNotExist:
             pass
-        url =  c.file.url
-        delta = settings.MEDIA_ROOT
-        delta = delta.split('media')[-2]
-        url = delta+url
-        os.remove(url)
-        c.delete()
+        c.active = False
+        c.save()
+        return redirect('chiefwarden-notices')
+    else:
+        return redirect('logout')
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def activateNotice(request,target):
+    alpha = str(request.user)
+    if alpha =='chiefwarden':
+        mes  = None
+        f= AddNoticeForm()
+        try:
+            c=Notice.objects.get(pk=target)
+        except ObjectDoesNotExist:
+            pass
+        c.active = True
+        c.save()
         return redirect('chiefwarden-notices')
     else:
         return redirect('logout')

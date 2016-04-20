@@ -24,7 +24,7 @@ def base(request):
     next_url = request.GET.get('next')
     noti = None
     try:
-        noti = Notice.objects.filter(creator = 'chiefwarden').order_by('-pk')
+        noti = Notice.objects.filter(creator = 'chiefwarden',active = True).order_by('-pk')
     except ObjectDoesNotExist:
         pass
     data = { 'next' : next_url, 'form': f,'hostels':hos,'len':len(hos),'noti':noti}
@@ -189,7 +189,7 @@ def hostels(request,hostel_name):
         d = {'hosf': i}
         hosform.append(d)
     data['hosform'] = hosform
-    n = (Notice.objects.filter(creator = h.username)).order_by('date')
+    n = (Notice.objects.filter(creator = h.username,active = True)).order_by('date')
     data['notices'] = n
     e = (Event.objects.filter(hostel = h)).order_by('time')
     data['events'] = e

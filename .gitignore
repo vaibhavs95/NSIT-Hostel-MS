@@ -1,6 +1,7 @@
 *initial.py
 *_initial.py
 *_auto_*.py
+__pycache__
 #
 ##############
 *.pyc
@@ -8,7 +9,7 @@
 *.swp
 *.swn
 *_auto_*.py
-# settings.py
+settings.py
 # Directories #
 ###############
 logs/

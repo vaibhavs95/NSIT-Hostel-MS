@@ -32,7 +32,10 @@
 		<ul class="tabs">
 			<li class="tab col s4"><a class="" href="#add">Add Notice</a></li>
 			{% if notices|length > 0 %}
-			<li class="tab col s4"><a class="active" href="#all">All Notices</a></li>
+			<li class="tab col s4"><a class="active" href="#all">Active Notices</a></li>
+			{% endif %}
+			{% if nonactive|length > 0 %}
+			<li class="tab col s4"><a class="active" href="#archive">Archive Notices</a></li>
 			{% endif %}
 		</ul>
 	</div>
@@ -89,11 +92,68 @@
 		</div>
 		{% endif %}
 	</div>
+
+	<div class="col s12" id="archive"> 
+		{% if nonactive|length > 0 %}
+		<div class="card addcard" >
+			<h5>Archive Notices</h5>
+			<hr> 
+			<table class="bordered striped centered">
+				<thead>
+					<tr>
+						<th data-field="id">S. No.</th>
+						<th data-field="name">Title</th>
+						<th data-field="name">Dated</th>
+						<th data-field="name"></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for hos in nonactive %}
+					<tr>
+						<td align="center">
+							{{ forloop.counter }}.
+						</td>
+						<td align="center">
+							<a href="{{ hos.file.url }}">{{ hos.title }}</a>
+						</td>
+						<td align="center">
+							{{ hos.date }}.
+						</td>
+						<td align="center">
+							<a href="#!" onclick="activate('{{ hos.id }}')">Activate Notice</a>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="pagination center">
+				<span class="step-links">
+					{% if nonactive.has_previous %}
+					<a href="?page={{ nonactive.previous_page_number }}#archive">previous</a>
+					{% endif %}
+
+					<span class="current">
+						Page {{ nonactive.number }} of {{ nonactive.paginator.num_pages }}
+					</span>
+
+					{% if nonactive.has_next %}
+					<a href="?page={{ nonactive.next_page_number }}#archive">next</a>
+					{% endif %}
+				</span>
+			</div>
+		</div>
+		{% endif %}
+	</div>
 </div>
 <script type='text/javascript' >
 	function myFunction(hosid) {
 		if (confirm("Delete Notice ?") == true) {
 			window.location = "/warden/deletenotice/"+hosid
+		}
+	}
+	function activate(hosid) {
+		if (confirm("Activate Notice ?") == true) {
+			window.location = "/warden/activatenotice/"+hosid
 		}
 	}
 </script>

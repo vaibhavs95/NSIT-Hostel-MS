@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^student/search/rollno/$',views.searchstudentrollno, name='chiefwarden-search-student-rollno'),
     url(r'^student/search/other/$',views.searchstudentother, name='chiefwarden-search-student-other'),
     url(r'^deletenotice/(?P<target>[0-9a-zA-Z]*)/$', views.delNotice , name = 'chiefwarden-delnotice'),
+    url(r'^activatenotice/(?P<target>[0-9a-zA-Z]*)/$', views.activateNotice , name = 'chiefwarden-activatenotice'),
     url(r'^delete/(?P<target>[0-9a-z]*)/$',views.delete_hos,name = 'hos_delete'),
     url(r'^student/profile/(?P<student>[0-9]+-[A-Z]+-[0-9]+)/$',views.StudentProfile,name='chief-student-profile'),
     url(r'^student/fine/add/(?P<student>[0-9]+-[A-Z]+-[0-9]+)/$',views.addfine,name='chief-add-fine'),
