@@ -9,14 +9,14 @@ __pycache__
 *.swp
 *.swn
 *_auto_*.py
-settings.py
+# settings.py
 # Directories #
 ###############
 logs/
 
 # Specific files #
 ##################
-testuser/testuser/settings.py
+# testuser/testuser/settings.py
 
 # OS generated files #
 ######################
