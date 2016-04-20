@@ -16,7 +16,7 @@ logs/
 
 # Specific files #
 ##################
-# testuser/testuser/settings.py
+testuser/testuser/settings.py
 
 # OS generated files #
 ######################
