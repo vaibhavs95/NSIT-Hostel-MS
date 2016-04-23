@@ -4,9 +4,9 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 from django.conf import settings
 from django.core.mail import send_mail
 h = Hostels.objects.all()
-	lst = []
-	x = 1
-	for i in h:
+lst = []
+x = 1
+for i in h:
 	if i.semEndDate == date.today() or x == 1:
 		# send_mail('NSIT_HMS','Students have been detatched as Sem End Date has been reached. Check the view all students tab to find out the students who were not detatched due to some unpaid fine',settings.EMAIL_HOST_USER,[i.email,])
 		s = Students.objects.all()
@@ -35,4 +35,5 @@ h = Hostels.objects.all()
 				delta = PreviousHostelDetail(hostel_name = i.hostel_name,room_no = rom.room_no,student = stu,hostel_join_date = stu.current_hostel_join_date,
 					hostel_leave_date = date.today())
 				delta.save()
+		
 			
