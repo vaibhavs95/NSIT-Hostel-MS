@@ -17,8 +17,9 @@
 	<hr>
 	<div class="col s12">
 		<ul class="tabs">
-			<li class="tab col s6"><a class="active" href="#add">Add Branch</a></li>
-			{% if all_branch|length > 0 %}<li class="tab col s6"><a class="" href="#all">All Branches</a></li>{% endif %}
+			<li class="tab col s4"><a class="active" href="#add">Add Branch</a></li>
+			{% if all_branch|length > 0 %}<li class="tab col s4"><a class="" href="#all">All Branches</a></li>{% endif %}
+			{% if editformvisible %}<li class="tab col s4"><a class="" href="#edit">Edit Branch</a></li>{% endif %}
 		</ul>
 	</div>
 	<div class="col s12 m12 l12" id="add">
@@ -28,7 +29,7 @@
 			<form method="post" action="{% url 'chief_branch' %}">
 				{% csrf_token %}
 				<input type="hidden" name="next" value="{{ next }}" />
-				{% form form=form %}
+				{% form form=addbranchform %}
 				{% endform %}
 				<div class="row">
 					<div class="col s12"> 
@@ -39,6 +40,7 @@
 		</div>
 	</div>
 	<div class="col s12" id="all">
+	{% if all_branch|length > 0 %}
 		<div class="card addcard">
 			<h5>All Branches</h5>
 			<hr>
@@ -49,29 +51,53 @@
 						<th data-field="name">Branch Code</th>
 						<th data-field="name">Branch Name</th>
 						<th data-field="name">Roll Code</th>
+						<th data-field="name">Action</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for hos in all_branch %}
 					<tr>
-						<td align="center">
+						<td >
 							{{ forloop.counter }}.
 						</td>
-						<td align="center">
+						<td >
 							{{ hos.title }}
 						</td>
-						<td align="center">
+						<td >
 							{{ hos.name }}
 						</td>
-						<td align="center">
+						<td >
 							{{ hos.roll_code }}
+						</td>
+						<td>
+						<a href="/chiefwarden/branch/edit/{{ hos.pk }}/#edit">Edit Branch</a>
 						</td>
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
 		</div>
+		{% endif %}
 	</div>
+	{% if editformvisible %}
+	<div class="col s12 m12 l12" id="edit">
+		<div class="card addcard">
+		<h5>Edit Branch</h5>
+		<hr>
+			<form method="post" action="/chiefwarden/branch/edit/{{ pk }}/#edit">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ next }}" />
+				{% form form=brancheditform %}
+				{% endform %}
+				<div class="row">
+					<div class="col s12"> 
+						<button type="submit" name="add-room" class="btn waves-effect waves-light left">Edit Branch</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	{% endif %}
 </div>
 {% endblock %}
 

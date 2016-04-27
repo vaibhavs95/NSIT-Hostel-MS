@@ -126,8 +126,8 @@ class Hostels(models.Model):
 		return self.username
 
 class Branch(models.Model):
-	title = models.CharField(max_length = 20, primary_key = True, null=False, default='')
-	name = models.CharField(max_length = 100, null=False,default = 'COMPUTER SCIENCE AND ENGINEERING')
+	title = models.CharField(max_length = 20, null=False, default='')
+	name = models.CharField(max_length = 100, null=False,default = '')
 	roll_code = models.CharField(max_length = 5,null = False, default='')
 	def __str__(self):
 		return "%s" % (self.title)

@@ -37,10 +37,10 @@ class CreateWardenForm(forms.Form):
     def get_user(self):
         return self.user_cache
 
-class AddBranchForm(forms.Form):
-    title = forms.CharField(max_length = 5)
-    name = forms.CharField(max_length = 100)
-    Roll_Code = forms.CharField(max_length = 5,required = True)
+class AddBranchForm(forms.ModelForm):
+    class Meta:
+        model=Branch
+        fields = "__all__"
     def __init__(self, *args, **kwargs):
         super(AddBranchForm, self).__init__(*args, **kwargs)
     def clean_title(self):
@@ -54,7 +54,6 @@ class AddBranchForm(forms.Form):
         if b is not None:
             raise forms.ValidationError('Branch Already Exists')
         return title
-    
     def clean_name(self):
         
         name = self.cleaned_data.get('name')
@@ -65,20 +64,40 @@ class AddBranchForm(forms.Form):
         except ObjectDoesNotExist:
             pass
         if b is not None:
-            raise forms.ValidationError('This code Already Exists')
+            raise forms.ValidationError('This Name Already Exists')
         return name
-    def clean_Roll_Code(self):
-        
-        Roll_Code= self.cleaned_data.get('Roll_Code')
-        Roll_Code= Roll_Code.upper()
+    def clean_roll_code(self):
+        roll_code= self.cleaned_data.get('roll_code')
+        roll_code= roll_code.upper()
         b = None
         try:
-            b = Branch.objects.get(roll_code=Roll_Code)
+            b = Branch.objects.get(roll_code=roll_code)
         except ObjectDoesNotExist:
             pass
         if b is not None:
             raise forms.ValidationError('This code Already Exists')
-        return Roll_Code
+        return roll_code
+class EditBranchForm(forms.ModelForm):
+    class Meta:
+        model = Branch
+        fields = "__all__"
+    def __init__(self, *args, **kwargs):
+        self.pk = kwargs.pop('pk', None)
+        super(EditBranchForm, self).__init__(*args, **kwargs)
+    def clean(self):
+        title = self.cleaned_data.get('title')
+        roll_code = self.cleaned_data.get('roll_code')
+        name = self.cleaned_data.get('name')
+        e = Branch.objects.all()
+        for i in e:
+            if int(i.pk) != int(self.pk):
+                if i.title.upper() == title.upper():
+                    raise forms.ValidationError('Branch with same title already exists')
+                elif i.name.upper() == name.upper():
+                    raise forms.ValidationError('Branch with same Name already exists')
+                elif i.roll_code.upper() == roll_code.upper():
+                    raise forms.ValidationError('Branch with same Roll Code already exists')
+        return self.cleaned_data
 
 class AddNoticeForm(forms.ModelForm):
     class Meta:
@@ -91,7 +110,6 @@ class SearchHostelRoomForm(forms.Form):
     room_no = forms.CharField(max_length=10,help_text='Search Room by Room Number, format : AA-111')
     def __init__(self, *args, **kwargs):
         super(SearchHostelRoomForm, self).__init__(*args, **kwargs)
-#        self.fields['hostel'].queryset = Hostels.objects.all()
     def clean(self):
         room_no = self.cleaned_data.get('room_no')
         if room_no:
@@ -113,3 +131,18 @@ class addBankForm(forms.ModelForm):
     class Meta:
         model = Banks
         fields = ['name',]
+class EditBankForm(forms.ModelForm):
+    class Meta:
+        model = Banks
+        fields = "__all__"
+    def __init__(self, *args, **kwargs):
+        self.pk = kwargs.pop('pk', None)
+        super(EditBankForm, self).__init__(*args, **kwargs)
+    def clean(self):
+        ba = Banks.objects.all()
+        name = self.cleaned_data.get('name')
+        for i in ba:
+            if int(i.pk) != int(self.pk):   
+                if i.name.upper() == name.upper():
+                    raise forms.ValidationError("Error: bank with this name already exists.")
+        return self.cleaned_data

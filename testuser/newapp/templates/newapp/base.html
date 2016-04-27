@@ -78,7 +78,7 @@
                     </div>        
                     <div class="collapsible-body">
                         <table>
-                            {% if noti %}
+                            {% if noti|length > 0 %}
                             {% for i in noti %}
                             <tr>
                                 <td id="tNoti" class="center">

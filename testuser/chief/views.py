@@ -54,8 +54,7 @@ def addbranch(request):
         fb = AddBranchForm(request.POST or None)
         mes = None
         if fb.is_valid():
-            b = Branch(title = fb.cleaned_data.get('title'),name = fb.cleaned_data.get('name'),roll_code=fb.cleaned_data.get('Roll_Code'))
-            b.save()
+            fb.save()
             mes = 'Branch added successfully.'
         a=Hostels.objects.all();
         b=[]
@@ -63,8 +62,49 @@ def addbranch(request):
             d={'name':i.hostel_name,'id':i.username,'warden_name':i.name,'warden_nu':i.phone}
             b.append(d)
         a= Branch.objects.all()
-        data = {'all_branch':a,'form':fb,'mes':mes,'all_hostels':b}        
+        data = {'all_branch':a,'addbranchform':fb,'mes':mes,'all_hostels':b}        
         return render(request,'chief/branches.html',data)
+    else:
+        return redirect('logout')
+@login_required
+@require_http_methods(['GET', 'POST'])
+def editbranch(request,pk):
+    alpha = str(request.user)
+    if alpha =='chiefwarden':
+        addbranchform = AddBranchForm()
+        a=Hostels.objects.all();
+        b=[]
+        for i in a:
+            d={'name':i.hostel_name,'id':i.username,'warden_name':i.name,'warden_nu':i.phone}
+            b.append(d)
+        a = Branch.objects.all()
+        data = {'all_branch':a,'addbranchform':addbranchform,'all_hostels':b,'pk':pk}
+        br = None        
+        try:
+            br = Branch.objects.get(pk=pk)
+        except:
+            return redirect('logout')
+        fb = EditBranchForm(request.POST or None,instance=br,pk=pk)
+        mes = None
+        if request.method == 'POST':
+            fb = EditBranchForm(request.POST or None,instance=br,pk=pk)
+            if fb.is_valid():
+                x = fb.save(commit=False)
+                x.title = x.title.upper()
+                x.name = x.name.upper()
+                x.roll_code = x.roll_code.upper()
+                x.save()
+                data['editformvisible'] = None
+                return redirect('chief_branch')
+            else:
+                data['brancheditform'] = fb    
+                data['editformvisible'] = 'yes'   
+                return render(request,'chief/branches.html',data)
+        else:
+            fb = EditBranchForm(instance=br)
+            data['editformvisible'] = 'yes'
+            data['brancheditform'] = fb
+            return render(request,'chief/branches.html',data)
     else:
         return redirect('logout')
 
@@ -508,7 +548,43 @@ def addBank(request):
             d={'name':i.hostel_name,'id':i.username,'warden_name':i.name,'warden_nu':i.phone}
             b.append(d)
         delta = Banks.objects.all()
-        data = {'all_hostels': b,'form':f,'banks':delta}
+        data = {'all_hostels': b,'addbankform':f,'banks':delta}
         return render(request, 'chief/addBank.html',data)
+    else:
+        return redirect('logout')
+def editBank(request,pk):
+    if str(request.user) == 'chiefwarden':
+        addbankform = addBankForm(request.POST or None)
+        a=Hostels.objects.all();
+        b=[]
+        for i in a:
+            d={'name':i.hostel_name,'id':i.username,'warden_name':i.name,'warden_nu':i.phone}
+            b.append(d)
+        delta = Banks.objects.all()
+        data = {'all_hostels': b,'addbankform':addbankform,'banks':delta,'pk':pk}
+        ba=None
+        try:
+            ba = Banks.objects.get(pk=pk)
+        except:
+            pass
+        if request.method == "POST":
+            f = EditBankForm(request.POST, pk=pk, instance = ba)
+            if f.is_valid():
+                kent = f.save(commit=False)
+                kent.name = kent.name.upper()
+                kent.save()
+                return redirect('chiefAddBank')
+            else:
+                data['bankeditform'] = f
+                data['editformvisible'] = 'yes'
+                print(ba)
+                print(f)
+                return render(request,'chief/addBank.html',data)
+                
+        else:
+            f = EditBankForm(instance = ba)
+            data['editformvisible'] = 'yes'
+            data['bankeditform'] = f
+            return render(request,'chief/addBank.html',data)
     else:
         return redirect('logout')

@@ -244,7 +244,7 @@ class AddStudentForm(forms.ModelForm):
         }
     def __init__(self, user, *args, **kwargs):
         super(AddStudentForm, self).__init__(*args, **kwargs)
-        self.fields['room_number'].queryset = Rooms.objects.filter(capacity_remaining__gt = 0, hostel = Hostels.objects.get(username=user))
+        self.fields['room_number'].queryset = Rooms.objects.filter(capacity_remaining__gt = 0, hostel = Hostels.objects.get(username=user).order_by('room_number'))
         self.fields['username'].help_text='Roll No: 111-CO-16'
         self.fields['branch'].help_text='Select one from dropdown'
         self.fields['room_number'].help_text='Select one from dropdown'
