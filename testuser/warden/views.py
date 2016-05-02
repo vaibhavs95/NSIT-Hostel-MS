@@ -123,22 +123,9 @@ def mainpageedit(request):
 			else:
 				homebasic(request, request.user)
 				data['editmaindetailform'] = f
-				
-				#data['userid'] = h
-				#if h.warden_photo:
-				#	data['userid'] = h
-				#	data['wardenphoto'] = 'yes'
-				#else:
-				#	data['userid'] = None
 				return render(request, 'warden/home.html', data)
 		else:
-			#if h.warden_photo:
-			#	data['userid'] = h
-			#	data['wardenphoto'] = 'yes'
-			#else:
-			#	data['userid'] = None
 			f = MainDetailEditForm(instance=h)
-			#data['userid'] = h
 			data['editmaindetailform'] = f
 			return render(request, 'warden/home.html', data)
 	else:

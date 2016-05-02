@@ -19,6 +19,8 @@ class CreateStudentForm(forms.ModelForm):
             raise forms.ValidationError('Enter your valid 10 digit phone number')
 
         distance_from_nsit = self.cleaned_data.get('distance_from_nsit')
+        if type(distance_from_nsit) != int:
+            raise forms.ValidationError('This field has to be an integer')
         if distance_from_nsit > 0:
             pass
         else:

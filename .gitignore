@@ -10,7 +10,7 @@ __pycache__
 *.swp
 *.swn
 *_auto_*.py
-# settings.py
+settings.py
 # Directories #
 ###############
 logs/

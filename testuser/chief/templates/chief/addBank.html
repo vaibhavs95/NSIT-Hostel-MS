@@ -22,6 +22,7 @@
 		<ul class="tabs">
 			<li class="tab col s6"><a class="active" href="#add">Add Bank</a></li>
 			{% if banks|length > 0 %}<li class="tab col s6"><a class="" href="#all">All Banks</a></li>{% endif %}
+			{% if editformvisible %} <li class="tab col s6"><a class="active" href="#edit">Edit Bank</a></li>{% endif %}
 		</ul>
 	</div>
 	<div class="col s12 m12 l12" id="add">
@@ -31,7 +32,7 @@
 			<form method="post" action="">
 				{% csrf_token %}
 				<input type="hidden" name="next" value="{{ next }}" />
-				{% form form=form %}
+				{% form form=addbankform %}
 				{% endform %}
 				<div class="row">
 					<div class="col s12"> 
@@ -41,6 +42,7 @@
 			</form>
 		</div>
 	</div>
+	{% if banks|length > 0 %}
 	<div class="col s12" id="all">
 		<div class="card addcard">
 			<h5>All Banks</h5>
@@ -50,16 +52,20 @@
 					<tr>
 						<th data-field="id">S. No.</th>
 						<th data-field="name">Bank Name</th>
+						<th data-field="name">Action</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for hos in banks %}
 					<tr>
-						<td align="center">
+						<td >
 							{{ forloop.counter }}.
 						</td>
-						<td align="center">
+						<td >
 							{{ hos.name }}
+						</td>
+						<td >
+							<a href="/chiefwarden/addBank/edit/{{ hos.pk }}/#edit">Edit Bank</a>
 						</td>
 					</tr>
 					{% endfor %}
@@ -67,6 +73,26 @@
 			</table>
 		</div>
 	</div>
+	{% endif %}
+	{% if editformvisible %}
+	<div class="col s12 m12 l12" id="edit">
+		<div class="card addcard">
+			<h5>Edit Bank</h5>
+			<hr>
+			<form method="post" action="/chiefwarden/addBank/edit/{{ pk }}/#edit">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ next }}" />
+				{% form form=bankeditform %}
+				{% endform %}
+				<div class="row">
+					<div class="col s12"> 
+						<button type="submit" name="add-room" class="btn waves-effect waves-light left">Edit Bank</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	{% endif %}
 </div>
 
 
