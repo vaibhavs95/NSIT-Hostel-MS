@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^activatenotice/(?P<target>[0-9a-zA-Z]*)/$', views1.activateNotice , name = 'WardenactivateNotice'),
     url(r'^notices/$',views1.notices, name='warden-notices'),
     url(r'^payfine/(?P<primkey>[0-9a-zA-Z]*)/(?P<stu>[0-9A-Za-z-]*)/$',views1.payfine,name='WardenPayFine'),
+    url(r'^editPayment/(?P<primkey>[0-9a-zA-Z]*)/(?P<stu>[0-9A-Za-z-]*)/$',views1.editPayment,name='WardenEditPayment'),
     #student
     url(r'^student/$',views.student, name='warden-student'),
     url(r'^student/all/$',views.studentall, name='warden-student-full'),

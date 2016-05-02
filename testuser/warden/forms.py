@@ -504,3 +504,38 @@ class EditWardenProfileForm(forms.ModelForm):
                 #pass
                # raise forms.ValidationError('Add Photo of correct format - JPG,jpeg,PNG,png,jpg,JPEG')
         return self.cleaned_data
+
+class editPaymentForm(forms.ModelForm):
+    class Meta:
+        model = PaymentDetails
+        exclude = ['student']
+        widgets = {
+        'paymentDate':AdminDateWidget,
+        }
+
+    def __init__(self, user,*args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(editPaymentForm, self).__init__(*args, **kwargs)
+        self.fields['bank'].queryset = Banks.objects.all()
+        self.user = user
+
+    def clean_paymentDate(self):
+        date = self.cleaned_data.get('paymentDate')
+        try:
+            a = Hostels.objects.get(username = self.user)
+            a=a.semEndDate
+        except ObjectDoesNotExist:
+            pass
+        if date>date.today():
+            raise forms.ValidationError('Payment date can\'t be in future')
+        elif date>a:
+            raise forms.ValidationError('You might want to change sem end date, payment date can\'t be greater than sem end date')
+        else:
+            return date
+
+    def clean_paymentAmount(self):
+        amount = self.cleaned_data.get('paymentAmount')
+        if amount<0:
+            raise forms.ValidationError('This field has to be non-negative')
+        else:
+            return amount

@@ -25,9 +25,9 @@ ADMINS = (('sitedevelopers', 'nsithms@gmail.com'), )
 SERVER_EMAIL = 'nsithms@gmail.com'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["nsithostels.pythonanywhere.com"]
+ALLOWED_HOSTS = []
 
 
 # Application definition

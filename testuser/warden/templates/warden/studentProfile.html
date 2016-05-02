@@ -406,7 +406,7 @@
 							{% endif %}
 						</td>
 						<td>
-							{% if i.paid == False and i.student.room_number %}
+							{% if i.paid == False and i.student.room_number and selfhos %}
 							<a href="#!" onclick="PayFine('{{ i.pk }}','{{i.student}}')">Pay</a>
 							{% endif %}
 						</td>
@@ -440,9 +440,12 @@
 				<th >
 					Receipt Number
 				</th>
-				<td>
+				<th>
 					Payment Amount
-				</td>
+				</th>
+				<th>
+					
+				</th>
 			</tr>
 				
 			</thead>
@@ -464,6 +467,11 @@
 				<td>
 					{{i.paymentAmount}}
 				</td>
+				<td>
+					{% if selfhos %}
+						<a href="#!" onclick="editPayment('{{ i.pk }}','{{i.student}}')">Edit payment details</a>
+					{% endif %}
+				</td>
 				</tr>
 			{% endfor %}
 			</tbody>
@@ -481,6 +489,11 @@
 	function PayFine(fineid,student) {
 		if (confirm("Are you sure to pay Fine ?") == true) {
 			window.location = '/warden/payfine/'+fineid+'/'+student+'/'
+		}
+	}
+	function editPayment(fineid,student) {
+		if (confirm("Are you sure to edit payment  data ?") == true) {
+			window.location = '/warden/editPayment/'+fineid+'/'+student+'/'
 		}
 	}
 </script>

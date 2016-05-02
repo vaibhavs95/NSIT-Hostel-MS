@@ -200,7 +200,12 @@ def StudentProfile(request,student):
             payments = PaymentDetails.objects.filter(student = u).order_by('paymentDate')
         except:
             pass
-        data = {'all_hostels': b,'student':'yes','s': u,'prev':prev,'crim':crimi,'paym':payments}
+        if u.room_number!=None:
+            if u.room_number.hostel.username == str(request.user) :
+                selfhos = True
+            else:
+                selfhos=False
+        data = {'all_hostels': b,'student':'yes','s': u,'prev':prev,'crim':crimi,'paym':payments,'selfhos':selfhos}
         return render(request,'warden/studentProfile.html',data)
     else:
         return redirect('logout')
@@ -367,5 +372,31 @@ def viewDefaulters(request):
         data['list'] = lis
         data['count'] = count
         return render(request,'warden/defaulterslist.html',data)
+    else:
+        return redirect('logout')
+
+
+def editPayment(request,primkey,stu):
+    alpha = str(request.user)
+    if re.match("[bg]h[0-9]+warden",str(request.user))!=None:
+        alpha = None
+        try:
+            alpha = PaymentDetails.objects.get(pk=primkey)
+        except ObjectDoesNotExist:
+            pass
+        if request.method == 'POST':
+            f = editPaymentForm(request.user,request.POST,instance = alpha)
+            if f.is_valid():
+                f.save()
+                return redirect("{% url 'WardenViewStudentProfile' stu %}")
+        else:
+            f=editPaymentForm(request.user,instance=alpha)
+        a=Hostels.objects.all()
+        b=[]
+        for i in a:
+            d={'name':i.hostel_name,'id':i.username}
+            b.append(d)
+        data = {'all_hostels':b,'form':f,'student':stu}
+        return render(request,'warden/editPayment.html',data)
     else:
         return redirect('logout')

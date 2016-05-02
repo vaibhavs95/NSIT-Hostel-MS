@@ -110,7 +110,7 @@ class Hostels(models.Model):
 	username = models.CharField(max_length = 20, primary_key = True, default='')
 	name = models.CharField(max_length = 50, default='',null=True)
 	hostel_name = models.CharField(max_length = 20, default='')
-	semEndDate = models.DateField(null = False,default = timezone.now())
+	semEndDate = models.DateField(null = True,default = date.today())
 	room_capacity = models.IntegerField(null=True, blank=True)		# calculate from 
 	room_available = models.IntegerField(null=True, blank=True)		# update with each entry
 	phone = models.CharField(null = True,max_length=20, blank=True)        #Check if it has 10 digits

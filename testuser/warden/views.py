@@ -84,8 +84,22 @@ def home(request):
 		try:
 			a = HostelAttachDates.objects.filter(student__room_number__hostel__username = str(request.user),hostel_last_date__lte=date.today()).count()
 			if a>0:
-				mes = 'There are %s students who have not filled in their details yet for over 10 days.'%a
+				mes = 'There are %s students who have not filled in their details for over 10 days.'%a
+				if a==1:
+					mes = 'There is %s student who has not filled in his details for over 10 days.'%a
 				data['mes']=mes
+		except ObjectDoesNotExist:
+			pass
+		try:
+			a = Hostels.objects.get(username = request.user)
+			days = str(a.semEndDate - date.today())
+			days = days.split(',')[0]
+			if (a.semEndDate>date.today()) and (a.semEndDate>=date.today()-timedelta(15)):
+				if days[0]=='1' and days[1]==' ':
+					mes2 = 'There is %s left before sem date expires'%(days)
+				else:
+					mes2 = 'There are %s left before sem date expires'%(days)
+				data['mes2']=mes2
 		except ObjectDoesNotExist:
 			pass
 		return render(request, 'warden/home.html', data)
