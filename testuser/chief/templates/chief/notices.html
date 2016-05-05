@@ -59,7 +59,7 @@
 							{{ forloop.counter }}.
 						</td>
 						<td align="center">
-							<a href="{{ hos.file.url }}">{{ hos.title }}</a>
+							<a href="{{ hos.file.url }}">{{ hos.title|linebreaks }}</a>
 						</td>
 						<td align="center">
 							{{ hos.date }}.

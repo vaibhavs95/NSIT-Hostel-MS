@@ -219,7 +219,7 @@ def roomall(request):
 		d = {'room': i, 'students': student}
 		rooms.append(d)
 
-	paginator = Paginator(rooms, 1) # Show 1 contacts per page
+	paginator = Paginator(rooms, 20) # Show 1 contacts per page
 	page = request.GET.get('page')
 	try:
 	    rooms = paginator.page(page)
@@ -850,7 +850,7 @@ def studentall(request):
 	user = request.user
 	h = Hostels.objects.get(username=user)
 	s = Students.objects.filter(room_number__hostel = h)
-	paginator = Paginator(s, 1) # Show 1 contacts per page
+	paginator = Paginator(s, 20) # Show 1 contacts per page
 	page = request.GET.get('page')
 	try:
 	    s = paginator.page(page)
@@ -903,7 +903,7 @@ def addstudent(request):
 				user.save()
 				hostelAttach = HostelAttachDates(hostel_last_date = last_date,student=s)
 				hostelAttach.save()
-				ins = PaymentDetails(student = s,bank = bank,paymentDate = payDate,receiptNumber=receipt)
+				ins = PaymentDetails(student = s,bank = bank,paymentDate = payDate,receiptNumber=receipt,paymentAmount = f.cleaned_data.get('payment_amount'))
 				ins.save()
 				room_number.capacity_remaining -= 1
 				room_number.save()
@@ -983,11 +983,11 @@ def editstudent(request, student):
 				prev = None
 				crimi = None
 				try:
-					prev = PreviousHostelDetail.objects.filter(student=u)
+					prev = PreviousHostelDetail.objects.filter(student=u).order_by('hostel_join_date')
 				except ObjectDoesNotExist:
 					pass
 				try:
-					i = CriminalRecord.objects.filter(student=u)
+					i = CriminalRecord.objects.filter(student=u).order_by('date_of_action')
 				except ObjectDoesNotExist:
 					pass
 				data['student'] = 'yes'
@@ -996,11 +996,11 @@ def editstudent(request, student):
 				data['prev'] = prev
 				data['crim'] = crimi
 				try:
-					payments = PaymentDetails.objects.filter(student = u)
+					payments = PaymentDetails.objects.filter(student = u).order_by('paymentDate')
 					data['paym']=payments
 				except:
 					pass
-				return render(request, 'warden/wardenstudentProfile.html', data)
+				return render(request, 'warden/studentProfile.html', data)
 			else:
 				data['form'] = f
 				data['student'] = None
@@ -1135,11 +1135,11 @@ def attachstudent(request,student):
 				receipt = f.cleaned_data.get('receiptNumber')
 				room_number = f.cleaned_data.get('room_number')
 				f.save()
-				ins = PaymentDetails(student = s,bank = bank,paymentDate = payDate,receiptNumber=receipt)
+				ins = PaymentDetails(student = s,bank = bank,paymentDate = payDate,receiptNumber=receipt,paymentAmount = f.cleaned_data.get('payment_amount'))
 				ins.save()
 				room_number.capacity_remaining -= 1
 				room_number.save()
-				return redirect('warden-student')
+				return redirect('WardenViewStudentProfile', student=s.username)
 			else:
 				data['student'] = s.username
 				data['attachstudentform'] = f

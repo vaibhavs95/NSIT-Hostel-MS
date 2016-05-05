@@ -74,7 +74,7 @@
                         {% for i in noti %}
                         <tr>
                         <td>
-                        <a href="http://127.0.0.1:8000{{i.file.url}}" target="_blank">{{ i.title }}</a>
+                        <a href="http://127.0.0.1:8000{{i.file.url}}" target="_blank">{{ i.title|linebreaks }}</a>
                         </td>
                         <td>
                             {{ i.date }}
@@ -116,7 +116,7 @@
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p id="hDesc">{{ hos.hostel_text }}</p>
+                                        <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
                                     </div>
                                     <div class="card-action">
                                         <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
@@ -135,7 +135,7 @@
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p id="hDesc">{{ hos.hostel_text }}</p>
+                                        <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
                                     </div>
                                     <div class="card-action">
                                         <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
@@ -160,7 +160,7 @@
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p id="hDesc">{{ hos.hostel_text }}</p>
+                                        <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
                                     </div>
                                     <div class="card-action">
                                         <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
@@ -181,7 +181,7 @@
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                    <p id="hDesc">{{ hos.hostel_text }}</p>
+                                    <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
                                     </div>
                                     <div class="card-action">
                                         <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>
@@ -200,7 +200,7 @@
                                         <span class="card-title">{{ hos.hostel_name }}</span>
                                     </div>
                                     <div class="card-content">
-                                        <p id="hDesc">{{ hos.hostel_text }}</p>
+                                        <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
                                     </div>
                                     <div class="card-action">
                                         <a href="/newapp/{{ hos.username }}/#main" >More Info.</a>

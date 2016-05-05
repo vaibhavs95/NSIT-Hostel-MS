@@ -28,7 +28,7 @@ def completeStudent(request, student_id):
     for i in a:
         d={'name':i.hostel_name,'id':i.username}
         b.append(d)
-    if re.match("[0-9]+-[a-zA-Z0-9]*",student_id)!=None:
+    if re.match(str(request.user),student_id)!=None:
         if request.method == 'POST':
             u = Students.objects.get(username = student_id)
             f = CreateStudentForm(request.POST or None, request.FILES, instance = u)
@@ -43,17 +43,25 @@ def completeStudent(request, student_id):
                         pass
                     f.student_photo = request.FILES['student_photo']
                 f.save()
+                deaf = HostelAttachDates.objects.filter(student = u)
+                deaf.delete
                 prev = None
                 crimi = None
                 try:
-                    prev = PreviousHostelDetail.objects.filter(student = u)
+                    prev = PreviousHostelDetail.objects.filter(student = u).order_by('hostel_join_date')
                 except ObjectDoesNotExist:
                     pass
                 try:
-                    crimi = CriminalRecord.objects.filter(student = u)
+                    crimi = CriminalRecord.objects.filter(student = u).order_by('date_of_action')
                 except ObjectDoesNotExist:
                     pass
-                data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi}
+                payment = None
+                try:
+                    payment = PaymentDetails.objects.filter(student = u).order_by('paymentDate')
+                except ObjectDoesNotExist:
+                    pass
+                print(payment)
+                data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi,'paym':payment}
                 return render(request,'student/students/studentProfile.html',data)
             else:
                 data = {'form': f, 'all_hostels': b,'student':None, 'username': student_id}
@@ -64,14 +72,19 @@ def completeStudent(request, student_id):
             prev = None
             crimi = None
             try:
-                prev = PreviousHostelDetail.objects.filter(student = u)
+                prev = PreviousHostelDetail.objects.filter(student = u).order_by('hostel_join_date')
             except ObjectDoesNotExist:
                 pass
             try:
-                crimi = CriminalRecord.objects.filter(student = u)
+                crimi = CriminalRecord.objects.filter(student = u).order_by('date_of_action')
             except ObjectDoesNotExist:
                 pass
-            data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi}
+            payment = None
+            try:
+                payment = PaymentDetails.objects.filter(student = u).order_by('paymentDate')
+            except ObjectDoesNotExist:
+                pass
+            data = {'all_hostels': b,'student':'yes', 'username': student_id, 's': u,'prev':prev,'crim':crimi,'paym':payment}
             if (u.distance_from_nsit != 0):
                 return render(request,'student/students/studentProfile.html',data)    
             f = CreateStudentForm(instance = u)

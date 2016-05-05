@@ -208,7 +208,7 @@ overflow-x: hidden;
 							{% for n in notices %}
 							<tr>
 								<td>
-									<a href="{{ n.file.url }}" target="__blank">{{ n.title }}</a>
+									<a href="{{ n.file.url }}" target="__blank">{{ n.title|linesbreak }}</a>
 								</td>
 								<td>{{ n.time|date }}</td>
 							</tr>
@@ -228,7 +228,7 @@ overflow-x: hidden;
 							{% for h in hosform %}
 							<tr>
 								<td>
-									<a href="{{ h.hosf.file.url }}" target="__blank">{{ h.hosf.title }}</a>
+									<a href="{{ h.hosf.file.url }}" target="__blank">{{ h.hosf.title|linesbreak }}</a>
 								</td>
 							</tr>
 							{% endfor %}
@@ -326,7 +326,7 @@ overflow-x: hidden;
 							<div class="card-content black-text row">
 								<div class="col s12 l6 m6">
 									<span class="card-title deep-orange-text">{{ f.fac.facility_name }}</span>
-									<p class="brown-text text-darken-2">{{ f.fac.facility_description }}</p>
+									<p class="brown-text text-darken-2">{{ f.fac.facility_description|linesbreak }}</p>
 								</div>
 								<div class="col s12 l6 m6">
 									{% if f.photo %}
@@ -353,7 +353,7 @@ overflow-x: hidden;
 						<div class="card addcard">
 							<div class="card-content">
 								<span class="card-title deep-orange-text">{{ e.title }}</span>
-								<p class="brown-text text-darken-2">{{ e.description }}</p>
+								<p class="brown-text text-darken-2">{{ e.description|linesbreak }}</p>
 							</div>
 							<div class="card-action">
 								<a href="{% url 'newapp-event-view' e.pk %}">View Event</a>

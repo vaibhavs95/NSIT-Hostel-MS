@@ -234,9 +234,10 @@ class AddStudentForm(forms.ModelForm):
     paymentDate = forms.DateField(required=True)
     receiptNumber = forms.IntegerField(required = True)
     bank = forms.ModelChoiceField(required = True,queryset = Banks.objects.all())
+    payment_amount = forms.IntegerField(required = True)
     class Meta:
         model = Students
-        fields = ['username','branch','room_number','student_email','current_hostel_join_date']+['bank','receiptNumber','paymentDate']
+        fields = ['username','branch','room_number','student_email','current_hostel_join_date']+['bank','receiptNumber','payment_amount','paymentDate']
         widgets = {
             'current_hostel_join_date': AdminDateWidget(),
             'paymentDate':AdminDateWidget(),
@@ -304,6 +305,13 @@ class AddStudentForm(forms.ModelForm):
         else:
             return date
 
+    def clean_payment_amount(self):
+        pay = self.cleaned_data.get('payment_amount')
+        if pay < 0:
+            raise forms.ValidationError('This field has to be non-negative value')
+        else:
+            return pay
+
 class EditStudentForm(forms.ModelForm):
     class Meta:
         model = Students
@@ -361,9 +369,10 @@ class AttachStudentForm(forms.ModelForm):
     paymentDate = forms.DateField(required=True)
     receiptNumber = forms.IntegerField(required = True)
     bank = forms.ModelChoiceField(required = True,queryset = Banks.objects.all())
+    payment_amount = forms.IntegerField(required=True)
     class Meta:
         model = Students
-        fields = ['username', 'room_number','current_hostel_join_date']+['bank','receiptNumber','paymentDate']
+        fields = ['username', 'room_number','current_hostel_join_date']+['bank','receiptNumber','payment_amount','paymentDate']
         widgets = {
             'current_hostel_join_date': AdminDateWidget(),
             'paymentDate':AdminDateWidget(),
@@ -375,6 +384,9 @@ class AttachStudentForm(forms.ModelForm):
         self.fields['room_number'].queryset = Rooms.objects.filter(capacity_remaining__gt = 0, hostel = Hostels.objects.get(username=user))
         self.user = user
     def clean(self):
+        pay=self.cleaned_data.get('payment_amount')
+        if pay <0:
+            raise forms.ValidationError('This field has to be non-negative value')
         return self.cleaned_data
 
     def clean_paymentDate(self):
