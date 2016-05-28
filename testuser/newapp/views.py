@@ -29,7 +29,9 @@ def base(request):
         pass
     data = { 'next' : next_url, 'form': f,'hostels':hos,'len':len(hos),'noti':noti}
     return render(request, 'newapp/base.html', data);
-
+@require_http_methods(['GET'])
+def team(request):
+    return render(request,'newapp/team.html')
 @require_http_methods(['GET', 'POST'])
 def handleLogin(request):
     if request.user.is_authenticated():

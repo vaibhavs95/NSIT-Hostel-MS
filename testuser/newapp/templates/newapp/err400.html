@@ -61,14 +61,21 @@
         </main>
 
     <!-- Footer --> 
-
-    <footer class="page-footer grey darken-4">
+    <footer id="footr"class="page-footer footr grey darken-4">
         <div class="container footer">
             <a class="grey-text text-lighten-3 modal-trigger" href="#about">About</a>
             <!-- <a class="grey-text text-lighten-3" href="#!">Contact Us</a>
              --><a class="grey-text text-lighten-3 modal-trigger" href="#locate">Locate Us</a>
-            <a class="grey-text text-lighten-3" href="https://docs.google.com/forms/d/15YfpMLeOaOc9gBiR-S2X8jMWS7zjmd1HaFdyK9dQoDc/viewform">Feedback</a>
+            <a class="grey-text text-lighten-3" href="https://docs.google.com/forms/d/15YfpMLeOaOc9gBiR-S2X8jMWS7zjmd1HaFdyK9dQoDc/viewform" target="_blank">Feedback</a>
             <a class="grey-text text-lighten-3" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
+        </div>
+        <div class="container footer2 grey-text text-darken-1">
+            <div class="container-footer">
+                Copyright © 2016 NSIT. All Rights Reserved.
+            </div>
+            <div>
+                Designed and Developed by <a href="{% url 'team' %}" class="white-text">Team</a>
+            </div>
         </div>
     </footer>
 

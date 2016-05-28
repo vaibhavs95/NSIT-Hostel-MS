@@ -10,6 +10,35 @@ Header
 .addcard{
 	padding: 2%;
 }
+
+.name{
+	color: #828282;
+	text-align: center;
+}
+.image-container{
+	display: flex;
+	flex-wrap: wrap;
+}
+.image-container div{
+	margin: auto;
+}
+.image-container p{
+	font-size: 20px;
+}
+.profilepic{
+		width: 180px;
+		height: 180px;
+		border: 1px solid;
+		border-radius: 50%;
+		//margin-left: 20%;
+		//margin-top: 10%;
+		background-repeat: no-repeat;
+		background-position: center center;
+  		background-size: cover;
+	}
+.addcard{
+	padding: 2%;
+}
 #frame{
    display: table;
    height: 100%
@@ -46,16 +75,16 @@ Header
 	float: left;
 }
 .profilepic{
-		width: 180px;
-		height: 180px;
-		border: 1px solid;
-		border-radius: 50%;
-		margin-left: 20%;
-		margin-top: 10%;
-		background-repeat: no-repeat;
-		background-position: center center;
-  		background-size: cover;
-	}
+	width: 180px;
+	height: 180px;
+	border: 1px solid;
+	border-radius: 50%;
+	margin-left: 20%;
+	margin-top: 10%;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+}
 #logo1{
 	margin: 5% 0% 0% 5%;
 	width: 110px;
@@ -319,9 +348,41 @@ th, table
 	font-size: 30px;
 }
 
+.name{
+	color: #828282;
+	text-align: center;
+}
+.image-container{
+	display: flex;
+	flex-wrap: wrap;
+}
+.image-container div{
+	margin: auto;
+}
+.image-container p{
+	font-size: 20px;
+}
+.profilepic{
+		width: 180px;
+		height: 180px;
+		border: 1px solid;
+		border-radius: 50%;
+		//margin-left: 20%;
+		//margin-top: 10%;
+		background-repeat: no-repeat;
+		background-position: center center;
+  		background-size: cover;
+	}
+	.footer, .footer2{
+	display: flex;
+	justify-content: space-between;
+	padding-bottom: 20px;
+	flex-wrap: wrap;
+}
+
+
 #footr
 {
-	/*margin-left: 100px;*/
 	position: relative !important;
 	width: 82%;
 	margin-left: 18%;

@@ -9,8 +9,6 @@ django-material
 requests
 reportlab
 django-request
-django-material
-reportlab
 django-multiupload
 django-cron==0.4.6
 django-crontab==0.7.1
