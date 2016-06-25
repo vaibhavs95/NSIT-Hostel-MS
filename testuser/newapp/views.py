@@ -47,11 +47,11 @@ def handleLogin(request):
             a = ChiefWarden.objects.get(username = user)
             data = {'next' : nexturl, 'name': a.name}
             return redirect('chiefwarden-home')
-        re.match("[a-zA-Z0-9_]*warden",str(user))!=None:
+        elif re.match("[a-zA-Z0-9_]*warden",str(user))!=None:
             a = Hostels.objects.get(username = user)
             data = {'next' : nexturl, 'name': a.username}
             return redirect('warden-home')
-        re.match("[0-9]*-[A-Za-z0-9]*",str(user))!=None:
+        elif re.match("[0-9]*-[A-Za-z0-9]*",str(user))!=None:
             a = Students.objects.get(username = user)
             data = {'username': user}
             return redirect('studentid', student_id = user)
