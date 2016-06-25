@@ -80,11 +80,11 @@ class MyUser(AbstractBaseUser):
 		"Is the user a member of staff?"
 		# Simplest possible answer: All admins are staff
 		return self.is_admin
-		
+
 GENDER_CHOICES = (('M', 'Male'), ('F', 'Female'))
 MEMBER_CHOICES = (('F', 'Faculty'), ('S', 'Student'))
 #DEPT_CHOICES = (('COE', 'Computer Science Engineering'), ('ECE', 'Electoincs Engineering'))
-COLLEGE_CAT = (('DGEN','Delhi General'), ('DOB','Delhi OBC'),('DSC','Delhi SC'), ('DST','Delhi ST'), ('DKM','Delhi Kashmiri Migrant'), ('DDC','Delhi Defense Category'), ('DPH','Delhi Physically Handicapped'), ('DOP','Delhi OP'), 
+COLLEGE_CAT = (('DGEN','Delhi General'), ('DOB','Delhi OBC'),('DSC','Delhi SC'), ('DST','Delhi ST'), ('DKM','Delhi Kashmiri Migrant'), ('DDC','Delhi Defense Category'), ('DPH','Delhi Physically Handicapped'), ('DOP','Delhi OP'),
 			   ('OGEN','Outside Delhi General'), ('OOB','Outside Delhi OBC'),('OSC','Outside Delhi SC'), ('OST','Outside Delhi ST'), ('OKM','Outside Delhi Kashmiri Migrant'), ('ODC','Outside Delhi Defense Category'), ('OPH','Outside Delhi Physically Handicapped'), ('OOP','Outside Delhi OP'))
 #HOSTEL_CAT = ((''))
 BLOOD_GROUP = (('B+','B Positive'),('A+','A Positive'),('AB+','AB Positive'),
@@ -111,7 +111,7 @@ class Hostels(models.Model):
 	name = models.CharField(max_length = 50, default='',null=True)
 	hostel_name = models.CharField(max_length = 20, default='')
 	semEndDate = models.DateField(null = True,default = date.today())
-	room_capacity = models.IntegerField(null=True, blank=True)		# calculate from 
+	room_capacity = models.IntegerField(null=True, blank=True)		# calculate from
 	room_available = models.IntegerField(null=True, blank=True)		# update with each entry
 	phone = models.CharField(null = True,max_length=20, blank=True)        #Check if it has 10 digits
 	email = models.EmailField(null = True, blank=True)
@@ -119,7 +119,7 @@ class Hostels(models.Model):
 	portfolio = models.CharField(null = True,max_length = 40, blank=True)
 	department = models.CharField(null = True,max_length = 20, blank=True)
 	chief_warden = models.ForeignKey(ChiefWarden)
-	warden_photo = models.ImageField(upload_to = warden_photo_name, null = True, blank = True)	
+	warden_photo = models.ImageField(upload_to = warden_photo_name, null = True, blank = True)
 	hostel_photo = models.ImageField(upload_to = main_page_photo_name, null = True, blank=True)
 	hostel_text = models.CharField(max_length=100, default='')
 	def __str__(self):              # __unicode__ on Python 2
@@ -182,7 +182,7 @@ class Students(models.Model):
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.username)
 
-	
+
 class HostelAttachDates(models.Model):
 	hostel_last_date = models.DateField(blank=False,default=datetime.now)
 	student = models.ForeignKey(Students,null=False)
@@ -197,7 +197,7 @@ class Banks(models.Model):
 	name = models.CharField(null=False,max_length = 100,default = '',unique = True)
 	def __str__(self):
 		return '%s'%(self.name)
-		
+
 class MedicalHistory(models.Model):
 	#code
 	description = models.CharField(null=False,max_length = 250)
@@ -219,10 +219,10 @@ class CriminalRecord(models.Model):
 	paid = models.BooleanField(null=False,default = False)
 	date_of_action = models.DateField(null=False)
 	file = models.FileField(upload_to = CriminalRecordFile,blank = False)
-	
+
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.description)
-	
+
 class PaymentDetails(models.Model):
 	student = models.ForeignKey(Students,null = False)
 	bank = models.ForeignKey(Banks,null = False)
@@ -254,7 +254,7 @@ class Complaints(models.Model):
 
 	def __str__(self):              # __unicode__ on Python 2
 		return "%s" % (self.description)
-		
+
 #this table holds details of caretakers, mess/hostel secretary, sports/mess/library/cultural/etc. committee and its members
 def council_photo_name(instance, filename):
 	ext = filename.split('.')[-1]

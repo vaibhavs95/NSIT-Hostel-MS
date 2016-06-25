@@ -47,11 +47,11 @@ def handleLogin(request):
             a = ChiefWarden.objects.get(username = user)
             data = {'next' : nexturl, 'name': a.name}
             return redirect('chiefwarden-home')
-        elif re.match("[a-zA-Z0-9_]*warden",str(user))!=None:
+        re.match("[a-zA-Z0-9_]*warden",str(user))!=None:
             a = Hostels.objects.get(username = user)
             data = {'next' : nexturl, 'name': a.username}
             return redirect('warden-home')
-        elif re.match("[0-9]*-[A-Za-z0-9]*",str(user))!=None:
+        re.match("[0-9]*-[A-Za-z0-9]*",str(user))!=None:
             a = Students.objects.get(username = user)
             data = {'username': user}
             return redirect('studentid', student_id = user)
@@ -104,7 +104,7 @@ def handleLogin(request):
     data = {'all_hostels': b,'form':f,'forgetform':forgot,'mes':mes}
     return render(request,'newapp/login.html',data)
 
-@require_GET    
+@require_GET
 @login_required
 def home(request):
     a=request.user
@@ -157,7 +157,7 @@ def hostels(request,hostel_name):
         if i.username == hostel_name:
             c = i
     data = {'all_hostels': b,'target_hostel':c,'form':f}
-    
+
     h = Hostels.objects.get(username = hostel_name)
     a = Facilities.objects.filter(hostel = h)
     facilities = []
@@ -243,7 +243,7 @@ def bad_request(request):
 
 def permission_denied(request):
     return render(request,'newapp/err403.html',)
-    
+
 def page_not_found(request):
     return render(request,'newapp/err404.html',)
 
