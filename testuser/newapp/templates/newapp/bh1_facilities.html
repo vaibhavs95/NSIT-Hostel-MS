@@ -7,14 +7,16 @@
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	{% include 'material/includes/material_css.html' %}   
 	<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
-	<link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/styleHostelByUdit.css' %}"/>
+	<!-- <link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/styleHostelByUdit.css' %}"/> -->
+	<link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/styleHostel.css' %}"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
 <style type="text/css">
-	.container ul{
+	.container ul
+	{
 		overflow-y: hidden;
-overflow-x: hidden;
+		overflow-x: hidden;
 	}
 	
 	
@@ -24,20 +26,34 @@ overflow-x: hidden;
 
 	<header>
 		<nav class="indigo">
-			<div class="nav-wrapper">
-				<a href="#!" class="brand-logo "><img id="logo1" src= "{% static 'assets/main-page/media/images/logo.png' %}">
+			<div class="nav-wrapper" id="headerContent">
+				<a href="#!" data-activates="mobile-demo" class="button-collapse"><i class="material-icons mdi-navigation-menu"></i></a>
+				<div id="nsitPlusHms">
+					<div id="header-text-nsit" class="brand-logo flow-text">
+                    	<a href='{% url "base" %}'>Netaji Subhas Institute of Technology</a>
+                    </div>
+                    <div id="header-text-hms" class="brand-logo flow-text">
+                    	<a href='{% url "base" %}'>Hostel Management System</a>
+                    </div>
+				</div>
+
+
+
+				<!-- <a href="#!" class="brand-logo "><img id="logo1" src= "{% static 'assets/main-page/media/images/logo.png' %}">
 					<div id="header-text-nsit" class="brand-logo flow-text left-align">
 						Netaji Subhas Institute of Technology
 					</div>
 					<div id="header-text-hms" class="brand-logo flow-text left-align">
 						Hostel Management System
 					</div>
-				</a>
-				<a href="#!" data-activates="mobile-demo" class="button-collapse"><i class="material-icons mdi-navigation-menu"></i></a>
-				<ul class="right hide-on-med-and-down">
+				</a> -->
+				
+				<ul class="right hide-on-med-and-down" id="myLogin">
 					{% if user.is_authenticated %}
 					<!-- Dropdown Trigger -->
-					<a class='dropdown-button btn login-button' href='#' data-activates='dropdown2'>{{user}}</a>
+					<a class='dropdown-button btn login-button' href='#' data-activates='dropdown2'>
+						<span id="loginText">{{user}}</span>
+					</a>
 
 					<ul id='dropdown2' class='dropdown-content'>
 						<li><a href="{% url 'home' %}">Profile</a></li>
@@ -84,7 +100,7 @@ overflow-x: hidden;
 	</ul>
 	<!-- for mobile version -->
 	<ul class="side-nav" id="mobile-demo">
-		<li><a href='{% url "base" %}'><img id="logoMob" src= '{% static "assets/main-page/media/images/logo.png" %}'></a></li>
+		<li id="liLogo"><a href='{% url "base" %}'><img id="logoMob" src= '{% static "assets/main-page/media/images/logo.png" %}'></a></li>
 		<br><br><br>
 		{% if user.is_authenticated %}
 		

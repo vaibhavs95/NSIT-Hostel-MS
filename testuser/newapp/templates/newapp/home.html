@@ -23,19 +23,51 @@
 	<!-- Header -->
 	<header>
 		<nav class="indigo">
-			<a href="#" data-activates="nav-mobile" class="button-collapse top-nav waves-effect waves-light circle hide-on-large-only"><i class="mdi-navigation-menu"></i></a>
-			<div class="nav-wrapper">
-				<a href='{% url "base" %}' class="brand-logo ">
+			<div class="nav-wrapper" id="headerContent">
+				<a href="#" data-activates="nav-mobile" class="button-collapse top-nav waves-effect waves-light circle hide-on-large-only"><i class="mdi-navigation-menu"></i></a>
+				
+				<div id="nsitPlusHms">
+					<div id="header-text-nsit" class="brand-logo flow-text">
+                    	<a href='{% url "base" %}'>Netaji Subhas Institute of Technology</a>
+                    </div>
+                    <div id="header-text-hms" class="brand-logo flow-text">
+                    	<a href='{% url "base" %}'>Hostel Management System</a>
+                    </div>
+				</div>
+
+
+
+				<!-- <a href='{% url "base" %}' class="brand-logo ">
 					<div id="header-text-nsit" class="brand-logo flow-text left-align">
 						Netaji Subhas Institute of Technology
 					</div>
 					<div id="header-text-hms" class="brand-logo flow-text left-align">
 						Hostel Management System
 					</div>
-				</a>
-				<ul class="right hide-on-med-and-down">
+				</a> -->
+
+				<ul class="right hide-on-med-and-down" id="myLogin">
 					{% if user.is_authenticated %}
 					<!-- Dropdown Trigger -->
+					<a class='dropdown-button btn login-button' href='#' data-activates='dropdown2'>
+						<span id="loginText">{{user}}</span>
+					</a>
+
+					<ul id='dropdown2' class='dropdown-content'>
+						<li><a href="{% url 'home' %}">Profile</a></li>
+						<li><a href="{% url 'newappResetPassword' %}">Reset Password</a></li>
+						<li><a href="{% url 'logout' %}">Logout</a></li>
+					</ul>
+
+					{% else %}
+					<li class="login-button">
+						<a class="waves-effect waves-light btn" href="{% url 'login' %}">Login</a>
+					</li>
+					{% endif %}
+				</ul>
+				<!-- <ul class="right hide-on-med-and-down">
+					{% if user.is_authenticated %}
+					
 					<a class='dropdown-button btn login-button' href='#' data-activates='dropdown2'>{{user}}</a>
 
 					<ul id='dropdown2' class='dropdown-content'>
@@ -49,7 +81,7 @@
 						Login
 					</a></li>
 					{% endif %}
-				</ul>	
+				</ul> -->	
 			</div>
 		</nav>
 	</header>

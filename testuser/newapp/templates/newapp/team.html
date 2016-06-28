@@ -18,17 +18,27 @@
 
     <header>
         <nav class="indigo">
-            <div class="nav-wrapper">
-                <a href='{% url "base" %}' class="brand-logo "><img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'>
-                    <div id="header-text-nsit" class="brand-logo flow-text left-align">Netaji Subhas Institute of Technology
-                    </div>
-                    <div id="header-text-hms" class="brand-logo flow-text left-align">Hostel Management System</div>
-                </a>
+            <div class="nav-wrapper" id="headerContent">
+            
                 <a href="#!" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
-                <ul class="right hide-on-med-and-down">
+                <a href='{% url "base" %}' class="brand-logo hide-on-med-and-down">
+                    <img id="logo" src= '{% static "assets/main-page/media/images/logo.png" %}'>
+                </a>
+                <div id="nsitPlusHms">
+                    <div id="header-text-nsit" class="brand-logo flow-text">
+                        <a href='{% url "base" %}'>Netaji Subhas Institute of Technology</a>
+                    </div>
+                    <div id="header-text-hms" class="brand-logo flow-text">
+                        <a href='{% url "base" %}'>Hostel Management System</a>
+                    </div>
+                </div>
+                
+                <ul id="myLogin" class="right hide-on-med-and-down">
                     {% if user.is_authenticated %}
                     <!-- Dropdown Trigger -->
-                    <a class='dropdown-button btn login-button' href='#' data-activates='dropdown2'>{{user}}</a>
+                    <a class='dropdown-button btn login-button' href='#' data-activates='dropdown2'>
+                        <span id="loginText">{{user}}</span>
+                    </a>
                                       
                     <ul id='dropdown2' class='dropdown-content'>
                       <li><a href="{% url 'home' %}">Profile</a></li>                      
@@ -37,18 +47,29 @@
                     </ul>
                         
                     {% else %}
-                    <li class="login-button"><a class="waves-effect waves-light btn" href="{% url 'login' %}">
-                        Login
-                    </a></li>
+                    <li class="login-button">
+                        <a class="waves-effect waves-light btn" href="{% url 'login' %}">
+                            Login
+                        </a>
+                    </li>
                     {% endif %}
                 </ul>
                 
                 <ul class="side-nav" id="mobile-demo">
-                    <li><a href='{% url "base" %}'><img id="logoMob" src='{% static "assets/main-page/media/images/logo.png" %}'></a></li><br>
+                    <li id="liLogo">
+                        <a href='{% url "base" %}'>
+                            <img id="logoMob" src='{% static "assets/main-page/media/images/logo.png" %}'>
+                        </a>
+                    </li>
+                    <!-- <br> -->
+                    <!-- <hr> -->
+                    <!-- <br> -->
                     {% if user.is_authenticated %}
                     <ul class="collapsible collapsible-accordion"> 
                         <li>
-                            <a class="btn collapsible-header waves-effect waves-teal">{{ user }}</a>
+                            <a class="btn collapsible-header waves-effect waves-teal waves-light">
+                                <span id="loginText">{{ user }}</span>
+                            </a>
                             <div class="collapsible-body">
                                 <ul id="colBod">
                                     <li><a class="waves-effect" href="{% url 'home' %}">Profile</a></li>
@@ -59,7 +80,11 @@
                         </li>
                     </ul>
                     {% else %}
-                    <li><a class="waves-effect waves-light btn" href="{% url 'login' %}">Login</a></li>
+                    <li>
+                        <a class="waves-effect waves-light btn" href="{% url 'login' %}">
+                            <span id="loginText">Login</span>
+                        </a>
+                    </li>
                     {% endif %}
                 </ul>
             </div>
