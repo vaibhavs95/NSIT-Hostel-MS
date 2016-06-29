@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import re, os
 import base64
+from django.contrib.auth.models import Group
 from django.shortcuts import render,redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
@@ -24,6 +25,8 @@ def home(request):
         f = CreateWardenForm(request.POST or None)
         if f.is_valid():
             user = MyUser.objects.create_user(f.cleaned_data.get('userid'), '2016-02-02', f.cleaned_data.get('password'))
+            g = Group.objects.get(name='warden')
+            user.groups.add(g)
             user.save()
             warden = Hostels(username = f.cleaned_data.get('userid'),email = f.cleaned_data.get('email'))
             warden.chief_warden = ChiefWarden.objects.all()[0]

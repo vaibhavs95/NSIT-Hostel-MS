@@ -924,6 +924,46 @@ media queries
 	margin: 60px 100% 0% -28%;
 }
 }
+.top {
+          display: inline-block;
+          position: fixed;
+          bottom: 70px;
+          right: 15px;
+          visibility: hidden;
+          opacity: 0;
+          -webkit-transition: opacity .3s 0s, visibility 0s .3s;
+          -moz-transition: opacity .3s 0s, visibility 0s .3s;
+          transition: opacity .3s 0s, visibility 0s .3s;
+        }
+        .top.is-visible, .top.fade-out, .no-touch .top:hover {
+          -webkit-transition: opacity .3s 0s, visibility 0s 0s;
+          -moz-transition: opacity .3s 0s, visibility 0s 0s;
+          transition: opacity .3s 0s, visibility 0s 0s;
+        }
+        .top.is-visible {
+          visibility: visible;
+          opacity: 1;
+        }
+        .top.fade-out {
+          opacity: .5;
+        }
+        .no-touch .top:hover {
+          background-color: #e86256;
+          opacity: 1;
+        }
+        @media only screen and (min-width: 768px) {
+          .top {
+            right: 25px;
+            bottom: 75px;
+          }
+        }
+        @media only screen and (min-width: 1024px) {
+          .top {
+            right: 30px;
+            bottom: 75px;
+          }
+        }
+/*<<<<<<< HEAD*/
 @media only screen and (min-width: 1440px)
 {
 	#dropdown2
@@ -1006,3 +1046,9 @@ media queries
 		margin-bottom: -30vh;
 	}*/
 }
+/*=======*/
+/*
+scroll to top button
+*/
+
+/*>>>>>>> 51db5371f2130c01d96837de90aff06037c4cc75*/

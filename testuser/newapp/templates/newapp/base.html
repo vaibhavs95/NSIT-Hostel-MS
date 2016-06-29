@@ -3,19 +3,18 @@
 {% load staticfiles %}
 {% load material_form %}
 <head>
-   <meta charset="utf-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name = "viewport" content = "width=device-width, initial-scale = 1">
-   <title> {% block title %} Welcome-HMS {% endblock %} </title>
-   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-   {% include 'material/includes/material_css.html' %}
-   <link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/style.css' %}"/>
-   <link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/font-awesome-4.5.0/css/font-awesome.min.css' %}"/>
+ <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name = "viewport" content = "width=device-width, initial-scale = 1">
+ <title> {% block title %} Welcome-HMS {% endblock %} </title>
+ <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+ {% include 'material/includes/material_css.html' %}
+ <link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/style.css' %}"/>
+ <link type="text/css" rel="stylesheet" href="{% static 'assets/main-page/css/font-awesome-4.5.0/css/font-awesome.min.css' %}"/>
 </head>
 
 <body>
     <!-- Header -->
-
     <header>
         <nav class="indigo">
             <div class="nav-wrapper" id="headerContent">
@@ -36,14 +35,20 @@
                 <ul id="myLogin" class="right hide-on-med-and-down">
                     {% if user.is_authenticated %}
                     <!-- Dropdown Trigger -->
+<!-- <<<<<<< HEAD -->
                     <a class='dropdown-button btn login-button' href='#' data-activates='dropdown2'>
                     	<span id="loginText">{{user}}</span>
                     </a>
                                       
+<!-- ======= -->
+                    <!-- <a class='dropdown-button btn login-button' href='#' data-activates='dropdown2'>{{user}}</a> -->
+
+<!-- >>>>>>> 51db5371f2130c01d96837de90aff06037c4cc75 -->
                     <ul id='dropdown2' class='dropdown-content'>
                       <li><a href="{% url 'home' %}">Profile</a></li>                      
                       <li><a href="{% url 'newappResetPassword' %}">Reset Password</a></li>
                       <li><a href="{% url 'logout' %}">Logout</a></li>
+<!-- <<<<<<< HEAD -->
                     </ul>
                         
                     {% else %}
@@ -86,13 +91,43 @@
                         </a>
                     </li>
                     {% endif %}
+<!-- =======
+                  </ul>
+
+                  {% else %}
+                  <li class="login-button"><a class="waves-effect waves-light btn" href="{% url 'login' %}">
+                    Login
+                </a></li>
+                {% endif %}
+            </ul>
+
+            <ul class="side-nav" id="mobile-demo">
+                <li><a href='{% url "base" %}'><img id="logoMob" src='{% static "assets/main-page/media/images/logo.png" %}'></a></li><br>
+                {% if user.is_authenticated %}
+                <ul class="collapsible collapsible-accordion"> 
+                    <li>
+                        <a class="btn collapsible-header waves-effect waves-teal">{{ user }}</a>
+                        <div class="collapsible-body">
+                            <ul id="colBod">
+                                <li><a class="waves-effect" href="{% url 'home' %}">Profile</a></li>
+                                <li><a class="waves-effect" href="{% url 'newappResetPassword' %}">Reset password</a></li>
+                                <li><a class="waves-effect" href="{% url 'logout' %}">Logout</a></li>
+                            </ul>
+                        </div>
+                    </li>
+>>>>>>> 51db5371f2130c01d96837de90aff06037c4cc75 -->
                 </ul>
-            </div>
-        </nav>
-    </header>
+                {% else %}
+                <li><a class="waves-effect waves-light btn" href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</header>
 
-    <!-- Main Content -->
+<!-- Main Content -->
 
+<<<<<<< HEAD
     <main>
         <div id="rSideContainer">
             
@@ -107,23 +142,83 @@
                             {% for i in noti %}
                             <tr>
                                 <td id="tNoti" class="center">
+=======
+<main>
+    <div id="rSideContainer">
+
+        <ul class="collapsible" data-collapsible="accordion">
+            <li>
+                <div class="collapsible-header active" id="news">
+                    <i class="fa fa-sort-desc"></i>News/Announcements
+                </div>        
+                <div class="collapsible-body">
+                    <table>
+                        {% if noti|length > 0 %}
+                        {% for i in noti %}
+                        <tr>
+                            <td id="tNoti" class="center">
+>>>>>>> 51db5371f2130c01d96837de90aff06037c4cc75
                                 <a href="http://127.0.0.1:8000{{i.file.url}}" target="_blank">{{ i.title|linebreaks }}</a>
-                                </td>
-                                <td class="center">
-                                    {{ i.date }}
-                                </td>
-                            </tr>
-                            {% endfor %}
-                            {% else %}
-                            <tr>
-                                <td>No notifications</td>
-                            </tr>
-                            {% endif %}
-                        </table>
+                            </td>
+                            <td class="center">
+                                {{ i.date }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td>No notifications</td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="container" id="sideContainer">
+        {% if len|divisibleby:2 %}
+        {% for hos in hostels %}
+        {% if forloop.counter0|divisibleby:2 %}
+        <div class="row" id="hCards">
+            <div class="col s12 m6 l6">
+                <div class="card">
+                    <div class="card-image gradient">
+                        {% if hos.hostel_photo %}
+                        <img src="{{ hos.hostel_photo.url }}">
+                        {% else %}
+                        <img src="/media/hosteldemo.jpg">
+                        {% endif %}
+                        <span class="card-title">{{ hos.hostel_name }}</span>
                     </div>
-                </li>
-            </ul>
+                    <div class="card-content">
+                        <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="/{{ hos.username }}/#main" >More Info.</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col s12 m6 l6">
+                <div class="card">
+                    <div class="card-image  gradient">
+                        {% if hos.hostel_photo %}
+                        <img src="{{ hos.hostel_photo.url }}">
+                        {% else %}
+                        <img src="/media/hosteldemo.jpg">
+                        {% endif %}
+                        <span class="card-title">{{ hos.hostel_name }}</span>
+                    </div>
+                    <div class="card-content">
+                        <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="/{{ hos.username }}/#main" >More Info.</a>
+                    </div>
+                </div>
+            </div>
         </div>
+<<<<<<< HEAD
         <div class="container" id="sideContainer">
             {% if len|divisibleby:2 %}
                 {% for hos in hostels %}
@@ -235,88 +330,158 @@
                     {% endif %}
                 {% endfor %}
             {% endif %}
+=======
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        {% for hos in hostels %}
+        {% if forloop.last %}
+        <div class="row" id="hCards">
+            <div class="col s6 offset-s3">
+                <div class="card">
+                    <div class="card-image gradient">
+                        {% if hos.hostel_photo %}
+                        <img src="{{ hos.hostel_photo.url }}">
+                        {% else %}
+                        <img src="/media/hosteldemo.jpg">
+                        {% endif %}
+                        <span class="card-title">{{ hos.hostel_name }}</span>
+                    </div>
+                    <div class="card-content">
+                        <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="/{{ hos.username }}/#main" >More Info.</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-    </main>
+        {% elif forloop.counter0|divisibleby:2 %}
+        <div class="row" id="hCards">
+            <div class="col s12 m6 l6">
+                <div class="card">
+                    <div class="card-image gradient">
+                        {% if hos.hostel_photo %}
+                        <img src="{{ hos.hostel_photo.url }}">
+                        {% else %}
+                        <img src="/media/hosteldemo.jpg">
+                        {% endif %}
+                        <span class="card-title">{{ hos.hostel_name }}</span>
+                    </div>
+                    <div class="card-content">
+                        <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="/{{ hos.username }}/#main" >More Info.</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col s12 m6 l6">
+                <div class="card">
+                    <div class="card-image  gradient">
+                        {% if hos.hostel_photo %}
+                        <img src="{{ hos.hostel_photo.url }}">
+                        {% else %}
+                        <img src="/media/hosteldemo.jpg">
+                        {% endif %}
+                        <span class="card-title">{{ hos.hostel_name }}</span>
+                    </div>
+                    <div class="card-content">
+                        <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="/{{ hos.username }}/#main" >More Info.</a>
+                    </div>
+                </div>
+            </div>
+>>>>>>> 51db5371f2130c01d96837de90aff06037c4cc75
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+    </div>
+    <a href="#0" class="top btn-floating light-blue"><i class="material-icons">navigation</i></a>
+</main>
 
-    <!-- Footer --> 
+<!-- Footer --> 
 
-    <footer class="page-footer grey darken-4">
-        <div class="container footer">
-            <a class="grey-text text-lighten-3 modal-trigger" href="#about">About</a>
+<footer class="page-footer grey darken-4">
+    <div class="container footer">
+        <a class="grey-text text-lighten-3 modal-trigger" href="#about">About</a>
             <!-- <a class="grey-text text-lighten-3" href="#!">Contact Us</a>
-             --><a class="grey-text text-lighten-3 modal-trigger" href="#locate">Locate Us</a>
-            <a class="grey-text text-lighten-3" href="https://docs.google.com/forms/d/15YfpMLeOaOc9gBiR-S2X8jMWS7zjmd1HaFdyK9dQoDc/viewform" target="_blank">Feedback</a>
-            <a class="grey-text text-lighten-3" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
+        --><a class="grey-text text-lighten-3 modal-trigger" href="#locate">Locate Us</a>
+        <a class="grey-text text-lighten-3" href="https://docs.google.com/forms/d/15YfpMLeOaOc9gBiR-S2X8jMWS7zjmd1HaFdyK9dQoDc/viewform" target="_blank">Feedback</a>
+        <a class="grey-text text-lighten-3" href="http://www.nsit.ac.in" target="_blank">nsit.ac.in</a>
+    </div>
+    <div class="container footer2 grey-text text-darken-1">
+        <div class="container-footer">
+            Copyright © 2016 NSIT. All Rights Reserved.
         </div>
-        <div class="container footer2 grey-text text-darken-1">
-            <div class="container-footer">
-                Copyright © 2016 NSIT. All Rights Reserved.
-            </div>
-            <div>
-                Designed and Developed by <a href="{% url 'team' %}" class="white-text">Team</a>
-            </div>
+        <div>
+            Designed and Developed by <a href="{% url 'team' %}" class="white-text">Team</a>
         </div>
-    </footer>
+    </div>
+</footer>
 
-    <!-- Modals -->
+<!-- Modals -->
 
-    <!-- About -->
-		<div id="about" class="modal">
-			<div class="modal-content">
-				<h4 class="center">
-					About us
-				</h4>
-				<hr>
-				<p>
-					Hostel Management System of NSIT.
-				</p>
-			</div>
-		</div>
-		
-		<!-- Locate Us -->
-		<div id="locate" class="modal">
-			<div class="modal-content">
-				<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.6879906005356!2d77.03287455023379!3d28.609135591804954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d053516783c9b%3A0x7e540ab22a28446!2sNetaji+Subhas+Institute+Of+Technology!5e0!3m2!1sen!2sin!4v1458988779817" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
-			</div>
-		</div>
-    
-    <!-- forgot password -->
+<!-- About -->
+<div id="about" class="modal">
+ <div class="modal-content">
+    <h4 class="center">
+       About us
+   </h4>
+   <hr>
+   <p>
+       Hostel Management System of NSIT.
+   </p>
+</div>
+</div>
 
-    <div id="forgot-password" class="modal">
-        <div class="modal-content">
-            <h4> Forgot Password</h4>
-            <hr>
-            <div class="row">
-                <div class="input-field col s12">
-                    <input id="username" type="text" class="validate">
-                    <label for="username">Username/Roll No.</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <input type="date" class="datepicker">
-                    <label for="password">Date of Birth</label>
-                </div>
-            </div>
-            <div class="row">
-                <button class="btn waves-effect waves-light" type="submit" name="action">Reset Password</button>
-                <button id="flogin-button" class="btn waves-effect waves-light" type="submit" name="action">Log In</button>
-            </div>
-            <div class="modal-footer">
-                <a href="#!" class="modal-action modal-close waves-effect btn-flat ">Cancel</a>
+<!-- Locate Us -->
+<div id="locate" class="modal">
+ <div class="modal-content">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.6879906005356!2d77.03287455023379!3d28.609135591804954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d053516783c9b%3A0x7e540ab22a28446!2sNetaji+Subhas+Institute+Of+Technology!5e0!3m2!1sen!2sin!4v1458988779817" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+</div>
+</div>
+
+<!-- forgot password -->
+
+<div id="forgot-password" class="modal">
+    <div class="modal-content">
+        <h4> Forgot Password</h4>
+        <hr>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="username" type="text" class="validate">
+                <label for="username">Username/Roll No.</label>
             </div>
         </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input type="date" class="datepicker">
+                <label for="password">Date of Birth</label>
+            </div>
+        </div>
+        <div class="row">
+            <button class="btn waves-effect waves-light" type="submit" name="action">Reset Password</button>
+            <button id="flogin-button" class="btn waves-effect waves-light" type="submit" name="action">Log In</button>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect btn-flat ">Cancel</a>
+        </div>
+    </div>
 
-        <!--Scripts -->
-        <script type="text/javascript" src='{% static "assets/main-page/js/jquery-1.11.3.min.js" %}'></script>
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        {% include 'material/includes/material_js.html' %}
-        <script type="text/javascript" src='{% static "assets/main-page/js/script.js" %}'></script>
-        <script type="text/javascript">
-            $( window ).load(function() {
-                main();
-            });
-        </script>
-    </body>
-    </html>
+    <!--Scripts -->
+    <script type="text/javascript" src='{% static "assets/main-page/js/jquery-1.11.3.min.js" %}'></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    {% include 'material/includes/material_js.html' %}
+    <script type="text/javascript" src='{% static "assets/main-page/js/script.js" %}'></script>
+    <script type="text/javascript">
+        $( window ).load(function() {
+            main();
+        });
+    </script>
+</body>
+</html>
