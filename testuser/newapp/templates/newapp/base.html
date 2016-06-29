@@ -35,20 +35,20 @@
                 <ul id="myLogin" class="right hide-on-med-and-down">
                     {% if user.is_authenticated %}
                     <!-- Dropdown Trigger -->
-<!-- <<<<<<< HEAD -->
+
                     <a class='dropdown-button btn login-button' href='#' data-activates='dropdown2'>
                     	<span id="loginText">{{user}}</span>
                     </a>
                                       
-<!-- ======= -->
-                    <!-- <a class='dropdown-button btn login-button' href='#' data-activates='dropdown2'>{{user}}</a> -->
 
-<!-- >>>>>>> 51db5371f2130c01d96837de90aff06037c4cc75 -->
+                    
+
+
                     <ul id='dropdown2' class='dropdown-content'>
                       <li><a href="{% url 'home' %}">Profile</a></li>                      
                       <li><a href="{% url 'newappResetPassword' %}">Reset Password</a></li>
                       <li><a href="{% url 'logout' %}">Logout</a></li>
-<!-- <<<<<<< HEAD -->
+
                     </ul>
                         
                     {% else %}
@@ -91,35 +91,9 @@
                         </a>
                     </li>
                     {% endif %}
-<!-- =======
-                  </ul>
 
-                  {% else %}
-                  <li class="login-button"><a class="waves-effect waves-light btn" href="{% url 'login' %}">
-                    Login
-                </a></li>
-                {% endif %}
-            </ul>
-
-            <ul class="side-nav" id="mobile-demo">
-                <li><a href='{% url "base" %}'><img id="logoMob" src='{% static "assets/main-page/media/images/logo.png" %}'></a></li><br>
-                {% if user.is_authenticated %}
-                <ul class="collapsible collapsible-accordion"> 
-                    <li>
-                        <a class="btn collapsible-header waves-effect waves-teal">{{ user }}</a>
-                        <div class="collapsible-body">
-                            <ul id="colBod">
-                                <li><a class="waves-effect" href="{% url 'home' %}">Profile</a></li>
-                                <li><a class="waves-effect" href="{% url 'newappResetPassword' %}">Reset password</a></li>
-                                <li><a class="waves-effect" href="{% url 'logout' %}">Logout</a></li>
-                            </ul>
-                        </div>
-                    </li>
->>>>>>> 51db5371f2130c01d96837de90aff06037c4cc75 -->
                 </ul>
-                {% else %}
-                <li><a class="waves-effect waves-light btn" href="{% url 'login' %}">Login</a></li>
-                {% endif %}
+                
             </ul>
         </div>
     </nav>
@@ -127,7 +101,7 @@
 
 <!-- Main Content -->
 
-<<<<<<< HEAD
+
     <main>
         <div id="rSideContainer">
             
@@ -142,22 +116,7 @@
                             {% for i in noti %}
                             <tr>
                                 <td id="tNoti" class="center">
-=======
-<main>
-    <div id="rSideContainer">
 
-        <ul class="collapsible" data-collapsible="accordion">
-            <li>
-                <div class="collapsible-header active" id="news">
-                    <i class="fa fa-sort-desc"></i>News/Announcements
-                </div>        
-                <div class="collapsible-body">
-                    <table>
-                        {% if noti|length > 0 %}
-                        {% for i in noti %}
-                        <tr>
-                            <td id="tNoti" class="center">
->>>>>>> 51db5371f2130c01d96837de90aff06037c4cc75
                                 <a href="http://127.0.0.1:8000{{i.file.url}}" target="_blank">{{ i.title|linebreaks }}</a>
                             </td>
                             <td class="center">
@@ -218,7 +177,7 @@
                 </div>
             </div>
         </div>
-<<<<<<< HEAD
+
         <div class="container" id="sideContainer">
             {% if len|divisibleby:2 %}
                 {% for hos in hostels %}
@@ -330,72 +289,7 @@
                     {% endif %}
                 {% endfor %}
             {% endif %}
-=======
-        {% endif %}
-        {% endfor %}
-        {% else %}
-        {% for hos in hostels %}
-        {% if forloop.last %}
-        <div class="row" id="hCards">
-            <div class="col s6 offset-s3">
-                <div class="card">
-                    <div class="card-image gradient">
-                        {% if hos.hostel_photo %}
-                        <img src="{{ hos.hostel_photo.url }}">
-                        {% else %}
-                        <img src="/media/hosteldemo.jpg">
-                        {% endif %}
-                        <span class="card-title">{{ hos.hostel_name }}</span>
-                    </div>
-                    <div class="card-content">
-                        <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="/{{ hos.username }}/#main" >More Info.</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% elif forloop.counter0|divisibleby:2 %}
-        <div class="row" id="hCards">
-            <div class="col s12 m6 l6">
-                <div class="card">
-                    <div class="card-image gradient">
-                        {% if hos.hostel_photo %}
-                        <img src="{{ hos.hostel_photo.url }}">
-                        {% else %}
-                        <img src="/media/hosteldemo.jpg">
-                        {% endif %}
-                        <span class="card-title">{{ hos.hostel_name }}</span>
-                    </div>
-                    <div class="card-content">
-                        <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="/{{ hos.username }}/#main" >More Info.</a>
-                    </div>
-                </div>
-            </div>
-            {% else %}
-            <div class="col s12 m6 l6">
-                <div class="card">
-                    <div class="card-image  gradient">
-                        {% if hos.hostel_photo %}
-                        <img src="{{ hos.hostel_photo.url }}">
-                        {% else %}
-                        <img src="/media/hosteldemo.jpg">
-                        {% endif %}
-                        <span class="card-title">{{ hos.hostel_name }}</span>
-                    </div>
-                    <div class="card-content">
-                        <p id="hDesc">{{ hos.hostel_text|linebreaks }}</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="/{{ hos.username }}/#main" >More Info.</a>
-                    </div>
-                </div>
-            </div>
->>>>>>> 51db5371f2130c01d96837de90aff06037c4cc75
+
         </div>
         {% endif %}
         {% endfor %}
