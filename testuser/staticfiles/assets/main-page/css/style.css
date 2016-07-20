@@ -1,46 +1,123 @@
 /******
 Header
 ******/
+tr
+{
+	width: 100%;
+}
+.addcard{
+	padding: 2%;
+}
+
+.name{
+	color: #828282;
+	text-align: center;
+}
+.image-container{
+	display: flex;
+	flex-wrap: wrap;
+}
+.image-container div{
+	align-content: center;
+	align-self: center;
+	margin: auto;
+}
+.image-container p{
+	font-size: 20px;
+}
+.profilepic{
+		width: 180px;
+		height: 180px;
+		border: 1px solid;
+		border-radius: 50%;
+		margin-left: 10%;
+		margin-top: 10%;
+		background-repeat: no-repeat;
+		background-position: center center;
+  		background-size: cover;
+	}
+#tNoti
+{
+	width: 80%;
+}
 #logoMob{
 	margin: 5% 0% 0% 15%;
 	width: 110px;
 	border-radius: 50%;
+}
+#liLogo
+{
+	background-color: #3f51b5;
+	height: 130px;
+	margin-bottom: 10px;
+}
+#mobile-demo
+{
+	background-color: #e8eaf6;
 }
 #logo{
 	margin: 5% 0% 0% 5%;
 	width: 110px;
 	border-radius: 50%;
 }
+#headerContent
+{
+	width: 100%;
+	/*background-color: grey !important;*/
+	height: 125px;
+}
+#nsitPlusHms
+{
+	width: 60%;
+	margin-left:10%;
+	margin-top: 0px; 
+	height: 125px;
+	float: left;
+}
 #header-text-nsit{
-	margin: 10% 0% 0% 15%;
+	margin-top: 1%;
 	font-size: 2rem;
+	width: 60%;
+	text-align: center;
 }
 #header-text-hms{
-	margin: 40% 0% 0% 15%;
+	margin-top: 4%;
 	font-size: 1.5rem;
+	width: 60%;
+	text-align: center;
 }
-.login-button{
-	margin: 37% 0% 0% -28%;
-	
+#myLogin
+{
+	margin: 2% 5% 0% 0% !important;	
 }
 #dropdown2
 {
-    margin-left: 4%;
-	margin-top: 3%;
+	/*margin: 0% 0% 0% 0% !important;*/
+    margin-left: 2%;
+	margin-top: 4%;
 	/*background-color: red;*/
 }
+header
+{
+	width: 100%;
+	height: 125px;
+}
 nav{
+	width: 100%;
 	height: 125px;
 }
 #sideContainer
 {
 	width: 70%;
 	float: left;
+	/*margin-left: 5%;*/
 }
 #rSideContainer
 {
 	width: 30%;
 	float: right;
+	margin-right: 5%;
+	margin-left: -5%;
 }
 table
 {
@@ -60,7 +137,7 @@ table
 {
 	font-size: small;
 }
-td,#news
+#news
 {
 	width: 100%;
 	text-align: center;
@@ -97,6 +174,7 @@ footer
 ******/
 
 body{
+	/*width: 100%;*/
 	display: flex;
 	min-height: 100vh;
 	flex-direction: column;
@@ -104,9 +182,9 @@ body{
 main {
 	flex: 1 0 auto;
 }
-.footer{
+.footer, .footer2{
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 	padding-bottom: 20px;
 	flex-wrap: wrap;
 }
@@ -119,7 +197,7 @@ media queries
 	#logo{
 		display: none;
 	}
-	#header-text-nsit{
+	/*#header-text-nsit{
 		margin: 0% 0% 0% 0%;
 		transform: translateX(-55%);
 		font-size: 1.6rem;
@@ -128,14 +206,53 @@ media queries
 		transform: translateX(-95%);
 		margin: 40px 0% 0% 0px;
 		font-size: 1.2rem;
+	}*/
+	#headerContent
+	{
+		/*width: 100%;*/
+		/*background-color: grey !important;*/
+		height: 125px;
+		float: left;
 	}
-	nav{
+	header
+	{
+		/*background-color: grey !important;*/
+		/*width: 100%;*/
 		height: 125px;
 	}
+	nav{
+
+		width: 100%;
+		height: 125px;
+	}
+	#nsitPlusHms
+	{
+
+		width: 60%;
+		/*margin-left:10%;*/
+		margin-top: 0px; 
+		/*height: 125px;*/
+		float:left;
+	}
+	#header-text-nsit{
+		margin-top: 1%;
+		font-size: 2.25rem;
+		width: 100%;
+		text-align: center;
+	}
+	#header-text-hms{
+		margin-top: 6%;
+		font-size: 1.75rem;
+		width: 100%;
+		text-align: center;
+	}
+	
 	#rSideContainer
 	{
 		width: 100%;
 		float: left;
+		margin-left: 0%;
+		margin-right: 0%;
 	}
 	#sideContainer
 	{
@@ -151,23 +268,66 @@ media queries
 		margin-left: 0%;
 		margin-right: 0%;
 	}
+	#header-text-nsit{
+		margin-top: 1%;
+		font-size: 1.75rem;
+		width: 100%;
+		text-align: center;
+	}
+	#header-text-hms{
+		margin-top: 6%;
+		font-size: 1.25rem;
+		width: 100%;
+		text-align: center;
+	}
+	nav
+	{
+		height: 100px;
+	}
+	
 }
 @media only screen and (max-width: 480px){
 	#logo{
 		display: none;
 	}
-	#header-text-nsit{
-		margin: 0% 0% 0% 0%;
-		transform: translateX(-50%);
-		font-size: 1rem;
+	
+	/*nav{
+		height: 100px;
+	}*/
+	#headerContent
+	{
+		width: 100%;
+		height: 100px;
+		float: left;
 	}
-	#header-text-hms{
-		transform: translateX(-80%);
-		margin: 25px 0% 0% 0px;
-		font-size: 0.8rem;
+	header
+	{
+		width: 100%;
+		height: 100px;
 	}
 	nav{
+		width: 100%;
 		height: 100px;
+	}
+	#nsitPlusHms
+	{
+		width: 50%;
+		/*margin-left:100px !important;*/
+		margin-top: 0px; 
+		height: 100px;
+		float: left;
+	}
+	#header-text-nsit{
+		margin-top: 1%;
+		font-size: 1.5rem;
+		width: 80%;
+		text-align: center;
+	}
+	#header-text-hms{
+		margin-top: 8%;
+		font-size: 1.25rem;
+		width: 80%;
+		text-align: center;
 	}
 	#sideContainer
 	{
@@ -177,3 +337,189 @@ media queries
 		margin-right: 0%;
 	}
 }
+/*<<<<<<< HEAD*/
+@media only screen and (min-width: 1440px)
+{
+	#dropdown2
+	{
+		/*background-color: red;*/
+		margin-left: 1%;
+		margin-top: 3%;
+	}
+	#headerContent
+	{
+		width: 100%;
+		height: 150px;
+		float: left;
+	}
+	header
+	{
+		width: 100%;
+		height: 150px;
+	}
+	nav{
+		width: 100%;
+		height: 150px;
+	}
+	#nsitPlusHms
+	{
+		width: 60%;
+		/*margin-left:100px !important;*/
+		margin-top: 0px; 
+		height: 150px;
+		float: left;
+	}
+	#header-text-nsit{
+		margin-top: 1%;
+		font-size: 3rem;
+		width: 80%;
+		text-align: center;
+	}
+	#header-text-hms{
+		margin-top: 4%;
+		font-size: 2.5rem;
+		width: 80%;
+		text-align: center;
+	}
+	#logo
+	{
+		margin: 4% 0% 0% 25%;
+		width: 140px;
+		border-radius: 50%;
+	}
+	#loginText
+	{
+		font-size: 1.5rem;
+	}
+	#sideContainer
+	{
+		width: 70%;
+		float: left;
+		/*margin-left: 5%;*/
+	}
+	#rSideContainer
+	{
+		width: 30%;
+		float: right;
+		margin-right: 5%;
+		margin-left: -5%;
+	}
+	
+
+}
+@media only screen and (min-width: 2000px)
+{
+	#dropdown2
+	{
+		/*background-color: red;*/
+		margin-left: 1%;
+		margin-top: 3%;
+	}
+	#headerContent
+	{
+		width: 100%;
+		height: 150px;
+		float: left;
+	}
+	header
+	{
+		width: 100%;
+		height: 150px;
+	}
+	nav{
+		width: 100%;
+		height: 150px;
+	}
+	#nsitPlusHms
+	{
+		width: 60%;
+		/*margin-left:100px !important;*/
+		margin-top: 0px; 
+		height: 150px;
+		float: left;
+	}
+	#header-text-nsit{
+		margin-top: 1%;
+		font-size: 3rem;
+		width: 80%;
+		text-align: center;
+	}
+	#header-text-hms{
+		margin-top: 3.25%;
+		font-size: 2.5rem;
+		width: 80%;
+		text-align: center;
+	}
+	#logo
+	{
+		margin: 4% 0% 0% 25%;
+		width: 140px;
+		border-radius: 50%;
+	}
+	#loginText
+	{
+		font-size: 1.5rem;
+	}
+	#sideContainer
+	{
+		/*background-color: grey;*/
+		max-width: 70%;
+		float: left;
+		/*margin-left: 5%;*/
+	}
+	#rSideContainer
+	{
+		/*background-color: yellow;*/
+		max-width: 30%;
+		float: right;
+		margin-right: 5%;
+		margin-left: -5%;
+	}
+
+	
+
+}
+/*=======*/
+/*
+scroll to top button
+*/
+.top {
+          display: inline-block;
+          position: fixed;
+          bottom: 70px;
+          right: 15px;
+          visibility: hidden;
+          opacity: 0;
+          -webkit-transition: opacity .3s 0s, visibility 0s .3s;
+          -moz-transition: opacity .3s 0s, visibility 0s .3s;
+          transition: opacity .3s 0s, visibility 0s .3s;
+        }
+        .top.is-visible, .top.fade-out, .no-touch .top:hover {
+          -webkit-transition: opacity .3s 0s, visibility 0s 0s;
+          -moz-transition: opacity .3s 0s, visibility 0s 0s;
+          transition: opacity .3s 0s, visibility 0s 0s;
+        }
+        .top.is-visible {
+          visibility: visible;
+          opacity: 1;
+        }
+        .top.fade-out {
+          opacity: .5;
+        }
+        .no-touch .top:hover {
+          background-color: #e86256;
+          opacity: 1;
+        }
+        @media only screen and (min-width: 768px) {
+          .top {
+            right: 25px;
+            bottom: 75px;
+          }
+        }
+        @media only screen and (min-width: 1024px) {
+          .top {
+            right: 30px;
+            bottom: 75px;
+          }
+        }
+/*>>>>>>> 51db5371f2130c01d96837de90aff06037c4cc75*/
